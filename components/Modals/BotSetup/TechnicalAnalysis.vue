@@ -1,9 +1,11 @@
 <template>
 <div class="d-flex flex-column align-center">
     <h3>Choose Technical Analysis</h3>
+    <v-btn small @click="logger">logger</v-btn>
     <v-row style="width:100%;">
         <v-col cols="8">
-            <v-select v-model="technical.first_analysis.analysis" :items="analysisList" label="Choose Analysis" dense outlined></v-select>
+            <v-select v-model="technical.first_analysis.analysis" item-value="id" item-text="name" :items="analysisList" label="Choose Analysis" dense outlined>
+            </v-select>
         </v-col>
         <v-col cols="4" class="mx-0">
             <v-select v-model="technical.first_analysis.time" :items="timeList" label="Timeframe" dense outlined></v-select>
@@ -24,7 +26,7 @@
     </v-row>
     <v-row style="width:100%;">
         <v-col cols="8">
-            <v-select v-model="technical.second_analysis.analysis" :items="analysisList" label="Choose Analysis" dense outlined></v-select>
+            <v-select v-model="technical.second_analysis.analysis" item-value="id" item-text="name":items="analysisList" label="Choose Analysis" dense outlined></v-select>
         </v-col>
         <v-col cols="4" class="mx-0">
             <v-select v-model="technical.second_analysis.time" :items="timeList" label="Timeframe" dense outlined></v-select>
@@ -55,13 +57,53 @@ export default {
                 },
                 minimum_trading_volume: null
             },
-            analysisList: ['Bollinger Bands', 'CCI', 'RSI', 'Stochastic RSI', 'Stochastic', 'EMA'],
+            analysisList: [{
+                id: "EMA",
+                name: "Exponential Moving Average"
+            }, {
+                id: "SMA",
+                name: "Moving Average"
+            }, {
+                id: "BB",
+                name: "Bollinger Band"
+            }, {
+                id: "RSI",
+                name: "RSI"
+            }, {
+                id: "STOCHASTIC",
+                name: "Stochastic"
+            }, {
+                id: "MACD",
+                name: "MACD"
+            }, {
+                id: "STOCHASTIC_RSI",
+                name: "Stochastic RSI"
+            }, {
+                id: "CCI",
+                name: "CCI"
+            }],
             timeList: ['5m', '15m', '30m', '1h', '2h', '4h', '12h'],
             condition: 'AND',
         }
     },
-    methods:{
-
+    methods: {
+        logger() {
+            console.log(this.technical);
+        },
+        clearData() {
+            this.technical = {
+                first_analysis: {
+                    analysis: null,
+                    time: null
+                },
+                condition: null,
+                second_analysis: {
+                    analysis: null,
+                    time: null
+                },
+                minimum_trading_volume: null
+            }
+        }
     },
     watch: {
         technical: {

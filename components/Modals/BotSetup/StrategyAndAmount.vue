@@ -160,12 +160,11 @@ export default {
                 usdt_per_order: 0,
                 max_concurrent_trading_pair: 0,
                 style: {
-                    text: null,
+                    name: null,
                 }
             },
             applyBalance: 100,
             selectedItem: 1,
-            selectedStyle: null,
             styleList: [],
         }
     },
@@ -178,7 +177,7 @@ export default {
             this.styleList = res.data;
             this.styleList.push({
                 name: "Custom",
-                active:false,
+                active: false,
                 steps: [{
                         step: 1,
                         drop_rate: 5,
@@ -216,10 +215,23 @@ export default {
         // TRIGGER
         selectStyle(val) {
             console.log(val);
-            this.selectedStyle = val;
             this.strategy.style = val;
-            // this.strategy.style.text = val;
         },
+
+        clearData() {
+            alert("TESTREF");
+            this.strategy = {
+                usdt_to_apply: 0,
+                usdt_per_order: 0,
+                max_concurrent_trading_pair: 0,
+                style: {
+                    name: null,
+                }
+            }
+            this.styleList = [];
+            this.fetchFormula();
+        },
+
         async _logger() {
             console.log(this.styleList);
             console.log(this.strategy);

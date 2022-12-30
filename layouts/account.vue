@@ -1,6 +1,7 @@
 <template>
 <v-app>
     <GlobalsAddOnLoader />
+    <GlobalsAddOnSnackbar />
     <v-navigation-drawer v-model="drawer" :mini-variant.sync="miniVariant" permanent fixed app>
         <v-list v-if="user">
             <v-list-item class="ml-1" two-line>

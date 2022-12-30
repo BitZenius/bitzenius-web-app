@@ -2,7 +2,12 @@ export const state = () => ({
   title: 'Zoku Bot',
   authUser: null,
   theme: 'dark',
-  isLoading:false
+  isLoading: false,
+  snackbar: {
+    show: false,
+    message: null,
+    color: null
+  }
 })
 
 export const actions = {
@@ -43,6 +48,9 @@ export const mutations = {
   },
   setIsLoading(state, cond) {
     state.isLoading = cond;
+  },
+  setShowSnackbar(state, cond) {
+    state.snackbar = cond;
   }
 }
 
@@ -59,5 +67,8 @@ export const getters = {
   },
   isLoading: (state) => {
     return state.isLoading
+  },
+  snackbar: (state) => {
+    return state.snackbar
   }
 }

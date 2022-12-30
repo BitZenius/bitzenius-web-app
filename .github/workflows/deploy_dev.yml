@@ -6,7 +6,7 @@ name: Build And Deploy Dev
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ dev/dashboard ]
+    branches: [ main ]
  
  
   # Allows you to run this workflow manually from the Actions tab
@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@main
         with:
           repository: ${{github.repository}}
-          ref: dev/dashboard
+          ref: main
       - uses: actions/setup-node@v3
         with:
           node-version: 16.16.0
@@ -48,16 +48,16 @@ jobs:
         with:
           name: dist
           path: dist
-      - name: Change to project Zokubot Dev
+      - name: Change to project Bitzenius Dev
         uses: w9jds/firebase-action@master
         with:
-          args: use zokutrade-dev
+          args: use bitzenius-dev
         env:
           FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting:zokutrade-dev
+          args: deploy --only hosting:bitzenius-dev
           path: dist
         env:
           FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}

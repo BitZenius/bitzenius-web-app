@@ -1,12 +1,12 @@
 {
   "projects": {
-    "default": "zokutrade-dev"
+    "default": "bitzenius-dev"
   },
   "targets": {
-    "zokutrade-dev": {
+    "bitzenius-dev": {
       "hosting": {
-        "zokutrade-dev": [
-          "zokutrade-dev"
+        "bitzenius-dev": [
+          "bitzenius-dev"
         ]
       }
     }

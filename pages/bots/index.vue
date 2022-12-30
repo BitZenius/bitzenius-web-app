@@ -20,10 +20,10 @@
                     {{$moment(item.created_at).format("DD/MM/YYYY HH:mm")}}
                 </template>
                 <template v-slot:item.status="{ item }">
-                    <span v-if="item.active === true" color="success--text">
+                    <span v-if="item.active == true" class="success--text">
                         ON
                     </span>
-                    <span else class="danger--text">
+                    <span v-else class="danger--text">
                         OFF
                     </span>
                 </template>

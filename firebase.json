@@ -1,7 +1,7 @@
 {
     "hosting": [
         {
-            "site": "zokutrade-dev",
+            "site": "bitzenius-dev",
             "public": "dist",
             "ignore": [
                 "firebase.json",

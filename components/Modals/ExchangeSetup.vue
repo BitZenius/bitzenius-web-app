@@ -13,7 +13,7 @@
             </v-row>
             <v-row class="d-flex align-center justify-center" style="width:100%;">
                 <v-col cols="12" md="12">
-                    <v-text-field dense class="mt-2" v-model="exchange" label="Exchange Name" outlined></v-text-field>
+                    <v-select dense v-model="exchange" :items="exchangeItems" label="Choose Available Exchange" outlined />
                 </v-col>
             </v-row>
             <v-row class="d-flex align-center justify-center" style="width:100%;">
@@ -46,13 +46,17 @@ export default {
             name: null,
             exchange: null,
             api_key: null,
-            secret_key: null
+            secret_key: null,
+            exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
         }
     },
     methods: {
         // TRIGGER
         closeModal() {
             this.$emit('close-modal', false);
+        },
+        _logger() {
+            console.log(this.exchange);
         },
         async _save() {
             let paramTemp = {};
@@ -64,6 +68,11 @@ export default {
             this.$store.commit('setIsLoading', true);
             setTimeout(() => {
                 this.$emit('close-modal', false);
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Successfuly Added New Bot!",
+                    color: "success"
+                })
                 this.$store.commit('setIsLoading', false);
             })
         }

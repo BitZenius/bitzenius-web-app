@@ -4,6 +4,8 @@
         Add Bot
         <v-btn class="ml-2" small @click="logger">logger</v-btn>
         <v-btn class="ml-2" small @click="loader">loader</v-btn>
+        <v-btn class="ml-2" small @click="snackbar">snackbar</v-btn>
+        <v-btn class="ml-2" small @click="resetModalState">reset modal</v-btn>
     </v-card-title>
     <v-card-text class="my-3">
         <v-stepper elevation="0" class="basic-1" v-model="e1">
@@ -50,7 +52,7 @@
 
                 <v-stepper-content step="2">
                     <v-card flat>
-                        <ModalsBotSetupStrategyAndAmount @onSelected="onStrategySelected" />
+                        <ModalsBotSetupStrategyAndAmount ref="strategyRef" @onSelected="onStrategySelected" />
                     </v-card>
                     <div class="d-flex float-right">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
@@ -64,7 +66,7 @@
 
                 <v-stepper-content step="3">
                     <v-card flat min-height="200px">
-                        <ModalsBotSetupTechnicalAnalysis @onAlaysisSelected="onAlaysisSelected" />
+                        <ModalsBotSetupTechnicalAnalysis  ref="analysisRef" @onAlaysisSelected="onAlaysisSelected" />
                     </v-card>
                     <div class="d-flex float-right">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 2" text>
@@ -124,6 +126,13 @@
 </template>
 
 <script>
+import {
+    mapGetters,
+    mapMutations,
+    mapActions,
+    mapState
+} from "vuex";
+
 export default {
     data() {
         return {
@@ -131,9 +140,11 @@ export default {
                 selected_exchange: null,
                 strategy: {
                     style: {
-                        text: null,
+                        name: null,
                     },
-                    usdt_to_apply: null
+                    usdt_to_apply: 0,
+                    usdt_per_order: 0,
+                    max_concurrent_trading_pair: 0,
                 },
                 analysis: {
                     first_analysis: {
@@ -202,6 +213,7 @@ export default {
         }
     },
     methods: {
+        ...mapMutations("exchange", ["setSelectedExchange"]),
         // TRIGGER
         onStrategySelected(val) {
             console.log(val);
@@ -220,6 +232,16 @@ export default {
         logger() {
             console.log('logger');
             console.log(this.bot);
+            this.$refs.strategyRef.clearData();
+            this.$refs.analysisRef.clearData();
+        },
+        snackbar() {
+            console.log('snackbar');
+            this.$store.commit('setShowSnackbar', {
+                show: true,
+                message: "Hello World",
+                color: "success"
+            })
         },
         loader() {
             setTimeout(() => {
@@ -246,30 +268,32 @@ export default {
         },
 
         // ADD-ON
-        resetModalState(){
+        resetModalState() {
             this.bot = {
-                selected_exchange: null,
-                strategy: {
-                    style: {
-                        name: null,
+                    selected_exchange: null,
+                    strategy: {
+                        style: {
+                            name: null,
+                        },
+                        usdt_to_apply: null
                     },
-                    usdt_to_apply: null
+                    analysis: {
+                        first_analysis: {
+                            analysis: null
+                        },
+                        second_analysis: {
+                            analysis: null
+                        },
+                        condition: null,
+                        minimum_trading_volume: null
+                    },
+                    token_exception: null
                 },
-                analysis: {
-                    first_analysis: {
-                        analysis: null
-                    },
-                    second_analysis: {
-                        analysis: null
-                    },
-                    condition: null,
-                    minimum_trading_volume: null
-                },
-                token_exception: null
-            },
-            this.e1 = 1;
+                this.e1 = 1;
             this.tokenException = [];
             this.searchTerm = "";
+            this.setSelectedExchange(null);
+            console.log(this.bot);
         },
 
         // CONSUME API
@@ -305,6 +329,11 @@ export default {
             setTimeout(() => {
                 this.$emit('close-modal', false);
                 this.$store.commit('setIsLoading', false);
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Successfuly Added New Bot!",
+                    color: "success"
+                })
                 this.resetModalState();
             })
         }
