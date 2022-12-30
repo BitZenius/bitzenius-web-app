@@ -1,0 +1,31 @@
+// Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+
+$body-font-family: 'Nunito';
+$font-size-root: 16px;
+$input-font-size: 16px;
+$list-item-title-font-size: 16px;
+$list-item-subtitle-font-size: 16px;
+$list-item-dense-title-font-size: 16px;
+$list-item-dense-subtitle-font-size: 16px;
+$data-table-regular-header-font-size: 16px;
+$data-table-regular-row-font-size: 16px;
+$btn-letter-spacing: 0;
+$btn-font-weight: 700;
+$border-radius-root: 10px;
+$shadow-key-umbra-opacity: rgba(#222222, 0.1);
+$shadow-key-penumbra-opacity: rgba(#222222, 0.07);
+$shadow-key-ambient-opacity: rgba(#222222, 0.06);
+$navigation-drawer-border-width: 0;
+$material-dark: (
+  app-bar: #28243d,
+  navigation-drawer: #28243d,
+  background: #28243d,
+  cards: #312d4b
+);
+
+$material-light: (
+  app-bar: #F4F5FB,
+  navigation-drawer: #F4F5FB,
+  background: #F4F5FB,
+  cards: #FFFFFF
+);

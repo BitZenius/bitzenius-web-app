@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "zokutrade-dev"
+  },
+  "targets": {
+    "zokutrade-dev": {
+      "hosting": {
+        "zokutrade-dev": [
+          "zokutrade-dev"
+        ]
+      }
+    }
+  }
+}

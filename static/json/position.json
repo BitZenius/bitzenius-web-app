@@ -1,0 +1,93 @@
+[
+    {
+        "id":1,
+        "pair_from":"AVAX",
+        "pair_to":"USDT",
+        "price":{
+            "value":"$ 0.01185",
+            "percentage":-5.83
+        },
+        "profit":{
+            "value":-0.823,
+            "percentage":-2
+        },
+        "logo":"/avalanche.png",
+        "status":"Active"
+    },
+    {
+        "id": 2,
+        "pair_from": "CELR",
+        "pair_to": "USDT",
+        "price": {
+            "value": "$ 0,01199",
+            "percentage": 1.1
+        },
+        "profit": {
+            "value": 0.088,
+            "percentage": 1
+        },
+        "logo": "/celer.png",
+        "status": "Active"
+    },
+    {
+        "id": 3,
+        "pair_from": "CRO",
+        "pair_to": "USDT",
+        "price": {
+            "value": "$ 0.01185",
+            "percentage": -5.83
+        },
+        "profit": {
+            "value": -0.823,
+            "percentage": -2
+        },
+        "logo": "/cronos.png",
+        "status": "Active"
+    },
+    {
+        "id": 4,
+        "pair_from": "LTC",
+        "pair_to": "USDT",
+        "price": {
+            "value": "$ 0,01199",
+            "percentage": 1.1
+        },
+        "profit": {
+            "value": 0.088,
+            "percentage": 1
+        },
+        "logo": "/litecoin.png",
+        "status": "Active"
+    },
+        {
+            "id": 5,
+            "pair_from": "XMR",
+            "pair_to": "USDT",
+            "price": {
+                "value": "$ 0.01185",
+                "percentage": -5.83
+            },
+            "profit": {
+                "value": -0.823,
+                "percentage": -2
+            },
+            "logo": "/monero.png",
+            "status": "Active"
+        },
+        {
+            "id": 6,
+            "pair_from": "MATIC",
+            "pair_to": "USDT",
+            "price": {
+                "value": "$ 0,01199",
+                "percentage": 1.1
+            },
+            "profit": {
+                "value": 0.088,
+                "percentage": 1
+            },
+            "logo": "/polygon.png",
+            "status": "Active"
+        }
+]
+
