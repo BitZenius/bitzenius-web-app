@@ -63,7 +63,7 @@
                                         <h3 class="text-center mt-2 primary--text">Fully Automated</h3>
                                         <div class="d-flex justify-center align-center my-3">
                                             <p class="text-justify px-4" style="font-size:0.9rem;">
-                                                Zoku Trade's trading bots are fully automated,
+                                                BitZenius trading bots are fully automated,
                                                 allowing users to set them up and run them
                                                 without the need for constant monitoring or
                                                 intervention. This allows users to enjoy the

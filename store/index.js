@@ -1,5 +1,5 @@
 export const state = () => ({
-  title: 'Zoku Bot',
+  title: 'BitZenius',
   authUser: null,
   theme: 'dark',
   isLoading: false,
@@ -26,9 +26,8 @@ export const mutations = {
     if (authUser) {
       console.log('store authUser', authUser);
       const { uid, email, phoneNumber, displayName, photoURL, emailVerified, refreshToken } = authUser
-      const { admin, premium } = claims
-      state.authUser = { uid, email, phoneNumber, displayName, photoURL, emailVerified, admin, premium }
-      // PREMIUM -> to SUBSCRIPTION_DATE (if value exist = true otherwise false)
+      const { trial, subscription } = claims
+      state.authUser = { uid, email, phoneNumber, displayName, photoURL, emailVerified, trial, subscription }
     } else {
       state.authUser = null
     }

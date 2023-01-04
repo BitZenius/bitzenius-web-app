@@ -26,7 +26,12 @@
                 </template>
                 <template v-slot:top>
                     <div>
-                        <v-btn color="primary" class="mb-5 elevation-0" @click="_addExchange">
+                        <v-btn
+                            color="primary"
+                            class="mb-5 elevation-0"
+                            :disabled="!user.subscription"
+                            @click="_addExchange"
+                        >
                             <v-icon left>
                                 mdi-plus
                             </v-icon>
@@ -141,6 +146,9 @@ export default {
     computed: {
         formTitle() {
             return this.id === null ? 'Add New' : 'Edit'
+        },
+        user() {
+            return this.$store.state.authUser
         }
     },
     watch: {

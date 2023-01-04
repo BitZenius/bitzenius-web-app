@@ -44,7 +44,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-text class="white--text">
-        &copy;{{ new Date().getFullYear() }} — <strong>ZokuTrade Company</strong>
+        &copy;{{ new Date().getFullYear() }} — <strong>BitZenius</strong>
       </v-card-text>
     </v-card>
   </v-footer>

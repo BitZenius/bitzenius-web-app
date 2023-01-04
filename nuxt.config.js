@@ -6,7 +6,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Zoku Trade',
+    titleTemplate: '%s - BitZenius',
     title: 'The best investment tools',
     meta: [
       { charset: 'utf-8' },

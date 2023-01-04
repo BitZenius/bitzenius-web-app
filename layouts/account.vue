@@ -150,6 +150,29 @@
                     <v-list-item-content>
                         <v-list-item-title class="text-h6 font-weight-bold">{{ user.displayName }}</v-list-item-title>
                         <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
+                        <v-list-item-subtitle>
+                          <v-chip
+                            v-if="user.subscription"
+                            class="success mt-2"
+                            small
+                          >
+                            ACTIVE
+                          </v-chip>
+                          <v-chip
+                            v-else
+                            class="mt-2"
+                            small
+                          >
+                            INACTIVE
+                          </v-chip>
+                          <v-chip
+                            v-if="user.trial"
+                            class="warning mt-2"
+                            small
+                          >
+                            TRIAL
+                          </v-chip>
+                        </v-list-item-subtitle>
                     </v-list-item-content>
                 </v-list-item>
                 <v-divider class="my-2" />
@@ -179,7 +202,7 @@
     </v-main>
     <v-footer>
         <v-col class="text-right text--disabled" cols="12">
-            &copy;{{ new Date().getFullYear() }} - ZokuTrade. Version 0.0.1
+            &copy;{{ new Date().getFullYear() }} - BitZenius
         </v-col>
     </v-footer>
 </v-app>
