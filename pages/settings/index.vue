@@ -49,12 +49,6 @@
                                 <v-text-field class="pa-2" v-model="phone" label="Phone Number" outlined></v-text-field>
                             </v-col>
                             <v-col cols="6" class="pb-0">
-                                <v-text-field class="pa-2" v-model="address" label="Address" outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field class="pa-2" v-model="country" label="Country" outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
                                 <div class="d-flex flex-wrap">
                                     <v-btn color="primary" class="ml-2">Save Changes</v-btn>
                                     <v-btn color="danger white--text" class="ml-2">Reset</v-btn>

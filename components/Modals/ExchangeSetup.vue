@@ -1,7 +1,7 @@
 <template>
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
-        Add New Exchange
+        Add <strong>&nbsp;{{exchange}}&nbsp;</strong> As Your Exchange
     </v-card-title>
     <v-card-text class="mt-3 pb-0">
         <v-card elevation="0" class="mb-12 d-flex flex-column align-center">
@@ -9,11 +9,6 @@
             <v-row class="d-flex align-center justify-center" style="width:100%;">
                 <v-col cols="12" md="12">
                     <v-text-field dense class="mt-2" v-model="name" label="Custom Title" outlined></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row class="d-flex align-center justify-center" style="width:100%;">
-                <v-col cols="12" md="12">
-                    <v-select dense v-model="exchange" :items="exchangeItems" label="Choose Available Exchange" outlined />
                 </v-col>
             </v-row>
             <v-row class="d-flex align-center justify-center" style="width:100%;">
@@ -41,13 +36,14 @@
 
 <script>
 export default {
+    props:['exchange'],
     data() {
         return {
             name: null,
-            exchange: null,
+            exchange: this.exchange,
             api_key: null,
             secret_key: null,
-            exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
+            // exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
         }
     },
     methods: {

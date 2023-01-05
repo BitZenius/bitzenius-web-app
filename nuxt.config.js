@@ -138,5 +138,10 @@ export default {
         ["@babel/plugin-proposal-private-property-in-object", { "loose": true }]
       ]
     }
+  },
+
+  env: {
+    SERVER: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-l7vwn.ondigitalocean.app/",
+
   }
 }

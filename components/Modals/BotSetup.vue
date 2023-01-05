@@ -1,11 +1,17 @@
 <template>
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
-        Add Bot
-        <v-btn class="ml-2" small @click="logger">logger</v-btn>
-        <v-btn class="ml-2" small @click="loader">loader</v-btn>
-        <v-btn class="ml-2" small @click="snackbar">snackbar</v-btn>
-        <v-btn class="ml-2" small @click="resetModalState">reset modal</v-btn>
+        <v-row>
+            <v-col cols="12" class="d-flex justify-center">Add Bot {{exchange}}</v-col>
+        </v-row>
+        <!-- <v-row>
+            <v-col cols="12">
+                <v-btn class="ml-2" small @click="logger">logger</v-btn>
+                <v-btn class="ml-2" small @click="loader">loader</v-btn>
+                <v-btn class="ml-2" small @click="snackbar">snackbar</v-btn>
+                <v-btn class="ml-2" small @click="resetModalState">reset modal</v-btn>
+            </v-col>
+        </v-row> -->
     </v-card-title>
     <v-card-text class="my-3">
         <v-stepper elevation="0" class="basic-1" v-model="e1">
@@ -15,34 +21,33 @@
 
                 <v-divider></v-divider>
 
-                <v-stepper-step :complete="e1 > 2" step="2">
-
+                <v-stepper-step :complete="e1 > 1" step="2">
                 </v-stepper-step>
 
                 <v-divider></v-divider>
 
-                <v-stepper-step :complete="e1 > 3" step="3">
+                <v-stepper-step :complete="e1 > 2" step="3">
                 </v-stepper-step>
+
                 <v-divider></v-divider>
 
                 <v-stepper-step :complete="e1 > 3" step="4">
-                </v-stepper-step>
-                <v-divider></v-divider>
-
-                <v-stepper-step :complete="e1 > 4" step="5">
                 </v-stepper-step>
             </v-stepper-header>
 
             <v-stepper-items>
                 <v-stepper-content step="1">
-                    <v-card flat class="mb-12 d-flex flex-column align-center">
-                        <h3>Choose an Exchange</h3>
-                        <GlobalsExchangeList @onSelected="onExchangeSelected" class="mt-3" style="width:100%;" />
+                    <v-card flat>
+                        <ModalsBotSetupStrategyAndAmount v-if="showStrategySetup" :selected-strategy="bot.strategy" ref="strategyRef" @onSelected="onStrategySelected" />
                     </v-card>
-
+                    <!-- <div class="d-flex float-left">
+                        <v-btn class="danger white--text" @click="_deleteBot( bot.id)">
+                            Delete Bot
+                        </v-btn>
+                    </div> -->
                     <div class="d-flex float-right">
-                        <v-btn color="blue darken-1" class="mr-2" text @click="closeModal">
-                            Cancel
+                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
+                            Back
                         </v-btn>
                         <v-btn color="primary" @click="e1 = 2">
                             Continue
@@ -51,8 +56,8 @@
                 </v-stepper-content>
 
                 <v-stepper-content step="2">
-                    <v-card flat>
-                        <ModalsBotSetupStrategyAndAmount ref="strategyRef" @onSelected="onStrategySelected" />
+                    <v-card flat min-height="200px">
+                        <ModalsBotSetupTechnicalAnalysis v-if="showTechnicalAnalysis" :selected-technical="bot.analysis" ref="analysisRef" @onAlaysisSelected="onAlaysisSelected" />
                     </v-card>
                     <div class="d-flex float-right">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
@@ -63,21 +68,7 @@
                         </v-btn>
                     </div>
                 </v-stepper-content>
-
                 <v-stepper-content step="3">
-                    <v-card flat min-height="200px">
-                        <ModalsBotSetupTechnicalAnalysis  ref="analysisRef" @onAlaysisSelected="onAlaysisSelected" />
-                    </v-card>
-                    <div class="d-flex float-right">
-                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 2" text>
-                            Back
-                        </v-btn>
-                        <v-btn color="primary" @click="e1 = 4">
-                            Continue
-                        </v-btn>
-                    </div>
-                </v-stepper-content>
-                <v-stepper-content step="4">
                     <v-card flat class="mb-12 d-flex flex-column align-center">
                         <h3>Token Exceptions</h3>
                         <v-select dense class="mt-3" v-model="tokenException" :items="exchanges" chips label="Token Exceptions" multiple outlined>
@@ -92,15 +83,15 @@
                     </v-card>
 
                     <div class="d-flex float-right">
-                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 3" text>
+                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 2" text>
                             Back
                         </v-btn>
-                        <v-btn color="primary" @click="e1 = 5">
+                        <v-btn color="primary" @click="e1 = 4">
                             Continue
                         </v-btn>
                     </div>
                 </v-stepper-content>
-                <v-stepper-content step="5">
+                <v-stepper-content step="4">
                     <v-card class="mb-12 d-flex flex-column align-center" flat min-height="200px">
                         <h3>Summary</h3>
                         <v-row class="mt-1" style="width:100%;">
@@ -111,11 +102,14 @@
                         </v-row>
                     </v-card>
                     <div class="d-flex float-right">
-                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 4" text>
+                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 3" text>
                             Back
                         </v-btn>
-                        <v-btn color="primary" @click="_submitBotSetup">
+                        <v-btn v-if="!isUpdateMode" color="primary" @click="_submitBotSetup(isUpdateMode)">
                             Submit
+                        </v-btn>
+                        <v-btn v-else color="success" @click="_submitBotSetup(isUpdateMode)">
+                            Update
                         </v-btn>
                     </div>
                 </v-stepper-content>
@@ -134,8 +128,23 @@ import {
 } from "vuex";
 
 export default {
+    props: {
+        botProp: {
+            type: Object,
+            default: null
+        },
+        exchange: {
+            type: String
+        }
+    },
     data() {
         return {
+            // STATE
+            isUpdateMode: false,
+
+            exchanges: ['MEXC', 'AVAX', 'CRONOS', 'MONERO'],
+            exchangesCopy: [],
+            tokenException: [],
             bot: {
                 selected_exchange: null,
                 strategy: {
@@ -158,9 +167,6 @@ export default {
                 },
                 token_exception: null
             },
-            exchanges: ['MEXC', 'AVAX', 'CRONOS', 'MONERO'],
-            exchangesCopy: [],
-            tokenException: [],
             e1: 1,
             summaryHeaders: [{
                     text: "Title",
@@ -209,7 +215,14 @@ export default {
                     // value: '$10,000,000'
                     value: null
                 },
-            ]
+            ],
+
+            // VALIDATION
+            stepsValidation: [false, false, false, false],
+
+            // PROPS FOR COMPONENTS
+            showStrategySetup: false,
+            showTechnicalAnalysis: false
         }
     },
     methods: {
@@ -231,9 +244,10 @@ export default {
         },
         logger() {
             console.log('logger');
-            console.log(this.bot);
+            console.log('botProp', this.botProp);
+            console.log('bot', this.bot)
+            console.log('end-of logger')
             this.$refs.strategyRef.clearData();
-            this.$refs.analysisRef.clearData();
         },
         snackbar() {
             console.log('snackbar');
@@ -297,8 +311,23 @@ export default {
         },
 
         // CONSUME API
-        async _submitBotSetup() {
-            console.log(this.bot);
+        async _deleteBot(id) {
+            this.$store.commit('setIsLoading', true);
+            let res = await this.$api.$delete("/user/bot", null, {
+                params: {
+                    id: id
+                }
+            });
+            setTimeout(() => {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Bot Successfuly Deleted!",
+                    color: "danger"
+                })
+                this.$store.commit('setIsLoading', false);
+            })
+        },
+        async _submitBotSetup(isUpdateMode) {
             let paramTemp = {
                 ...this.bot
             };
@@ -323,23 +352,77 @@ export default {
 
             delete paramTemp.analysis;
             paramTemp.analysis = analysis
-            console.log(paramTemp);
-            let res = await this.$api.$post("/user/bot", paramTemp);
             this.$store.commit('setIsLoading', true);
+
+            if (isUpdateMode) {
+                delete paramTemp.id;
+                let query = {
+                    id: this.bot.id
+                }
+
+                console.log('paramTemp', paramTemp);
+                console.log('query', query)
+
+                let res = await this.$api.$put("/user/bot", paramTemp, {
+                    params: query
+                });
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Bot Successfuly Updated!",
+                        color: "success"
+                    })
+                })
+            } else {
+                // ON INSERT
+                let res = await this.$api.$post("/user/bot", paramTemp);
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Successfuly Added New Bot!",
+                        color: "success"
+                    })
+                })
+            }
+
             setTimeout(() => {
                 this.$emit('close-modal', false);
                 this.$store.commit('setIsLoading', false);
-                this.$store.commit('setShowSnackbar', {
-                    show: true,
-                    message: "Successfuly Added New Bot!",
-                    color: "success"
-                })
                 this.resetModalState();
             })
         }
     },
     mounted() {
+        this.bot.selected_exchange = this.exchange;
+        if (this.botProp) {
+            this.isUpdateMode = true;
+            this.bot.id = this.botProp._id;
+            this.bot.strategy = this.botProp.strategy;
+            this.bot.analysis.condition = this.botProp.analysis.condition;
+            this.bot.analysis.minimum_trading_volume = this.botProp.analysis.minimum_trading_volume;
+            let index = 0;
+            for (let indicator of this.botProp.analysis.indicators) {
+                if (index == 0) {
+                    this.bot.analysis.first_analysis = {
+                        analysis: indicator.indicator,
+                        time: indicator.timeperiod
+                    }
+                } else if (index == 1) {
+                    this.bot.analysis.second_analysis = {
+                        analysis: indicator.indicator,
+                        time: indicator.timeperiod
+                    }
+                }
+                console.log(indicator);
+                index++;
+            }
+        }
+
         this.exchangesCopy = [...this.exchanges];
+        setTimeout(() => {
+            this.showStrategySetup = true;
+            this.showTechnicalAnalysis = true;
+        })
     },
     watch: {
         tokenException: {

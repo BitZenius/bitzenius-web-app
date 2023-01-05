@@ -7,7 +7,7 @@
         You don't have any exchanges registered!
     </v-chip>
     <v-select v-else dense v-model="selected" :items="exchangeItems" @change="onExchangeChange(selected)" label="Choose Exchange" outlined />
-    <v-btn small @click="logger">logger</v-btn>
+    <!-- <v-btn small @click="logger">logger</v-btn> -->
 </div>
 </template>
 

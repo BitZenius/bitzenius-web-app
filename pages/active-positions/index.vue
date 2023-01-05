@@ -187,10 +187,10 @@ export default {
     },
     async mounted() {
         let userId = this.$store.state.authUser.uid;
-        console.log('userId', userId);
         this.$socket.on('position', (data) => {
             this.pnl = data.value;
         })
+        this.$socket.on('current_price', (data) => {})
         this.$store.commit('setTitle', this.title)
         const exchanges = []
         for (let i = 0; i < 5; i++) {

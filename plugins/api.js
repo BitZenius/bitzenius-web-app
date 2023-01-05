@@ -16,7 +16,7 @@ export default function ({ $axios, store }, inject) {
       })
     }
 
-    api.setBaseURL('https://bitzenius-rest-server-dev-l7vwn.ondigitalocean.app')
+    api.setBaseURL(process.env.SERVER)
     inject('api', api)
   })()
 }
