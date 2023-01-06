@@ -197,6 +197,7 @@ export default {
             userExchanges: [],
             // END OF CARD EXCHANGE
 
+
             headers: [{
                     text: 'Name/Qty',
                     value: 'pair',
@@ -259,6 +260,7 @@ export default {
             // ACTIVE POSITION FROM STORE
             activePosition: [],
             socket: null,
+            // END OF DATA
         }
     },
     head() {
