@@ -176,7 +176,7 @@ export default {
             let res = await this.$api.$get('/user/formula');
             this.styleList = res.data;
             this.styleList.push({
-                name: "Custom",
+                name: "Custom (ongoing development!)",
                 active: false,
                 steps: [{
                         step: 1,

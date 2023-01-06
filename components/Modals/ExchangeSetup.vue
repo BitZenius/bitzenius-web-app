@@ -1,14 +1,14 @@
 <template>
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
-        Add <strong>&nbsp;{{exchange}}&nbsp;</strong> As Your Exchange
+        Add <strong>&nbsp;{{exchange}}&nbsp;</strong> As Your Exchange {{exist}}
     </v-card-title>
     <v-card-text class="mt-3 pb-0">
         <v-card elevation="0" class="mb-12 d-flex flex-column align-center">
             <!-- <h3>Please fill up the form below</h3> -->
             <v-row class="d-flex align-center justify-center" style="width:100%;">
                 <v-col cols="12" md="12">
-                    <v-text-field dense class="mt-2" v-model="name" label="Custom Title" outlined></v-text-field>
+                    <v-text-field readonly="true" dense class="mt-2" v-model="exchange" label="Title" outlined></v-text-field>
                 </v-col>
             </v-row>
             <v-row class="d-flex align-center justify-center" style="width:100%;">
@@ -27,8 +27,11 @@
         <v-btn color="blue darken-1" class="mr-2" text @click="closeModal">
             Cancel
         </v-btn>
-        <v-btn color="primary" @click="_save">
+        <v-btn v-if="!exist" color="primary" @click="_save">
             Save
+        </v-btn>
+        <v-btn  v-else disabled="true" color="success" >
+            Update
         </v-btn>
     </v-card-actions>
 </v-card>
@@ -36,7 +39,7 @@
 
 <script>
 export default {
-    props:['exchange'],
+    props: ['exchange', 'exist'],
     data() {
         return {
             name: null,

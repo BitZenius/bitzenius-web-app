@@ -2,7 +2,7 @@
 <v-row>
     <v-dialog v-model="showAddExchange" max-width="600">
         <template>
-            <ModalsExchangeSetup :exchange="selectedExchange" @close-modal="closeModal" />
+            <ModalsExchangeSetup :exist="isExist" :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
     <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
@@ -28,8 +28,8 @@
                     </v-col>
                     <v-col cols="12" class="d-flex flex-column justify-start align-center pt-0 pb-10">
                         <h4>{{exchange.name}}</h4>
-                        <v-btn v-if="exchange.active" small class="primary" @click="_addExchange(`${exchange.name}`)">Active Exchange</v-btn>
-                        <v-btn v-else class="default" small @click="_addExchange(`${exchange.name}`)">Setup Exchange</v-btn>
+                        <v-btn v-if="exchange.active" small class="primary" @click="_addExchange(exchange)">Edit Exchange</v-btn>
+                        <v-btn v-else class="default" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
                     </v-col>
                 </v-row>
                 <span class="updated-label" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
@@ -100,6 +100,7 @@ export default {
             dialogDelete: false,
 
             // START OF CARD EXCHANGE
+            isExist:false,
             exchanges: [{
                     name: "Binance",
                     selected: false,
@@ -213,7 +214,8 @@ export default {
                     if (currentExchange.name == exchange.exchange_name) {
                         console.log("IF");
                         currentExchange.active = true;
-                        currentExchange.updateAt = exchange.updated_at
+                        currentExchange.updateAt = exchange.updated_at;
+                        currentExchange.id = exchange._id;
                     }
                 }
             }
@@ -233,7 +235,8 @@ export default {
             console.log(this.exchanges);
         },
         _addExchange(exchange) {
-            this.selectedExchange = exchange;
+            this.selectedExchange = exchange.name;
+            this.isExist = exchange.active;
             this.showAddExchange = true;
             // alert('On going pop-up modal add Exchange')
         },

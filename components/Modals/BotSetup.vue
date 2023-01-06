@@ -14,7 +14,7 @@
         </v-row> -->
     </v-card-title>
     <v-card-text class="my-3">
-        <v-stepper elevation="0" class="basic-1" v-model="e1">
+        <v-stepper class="basic-2" elevation="0" v-model="e1">
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">
                 </v-stepper-step>
@@ -36,8 +36,8 @@
             </v-stepper-header>
 
             <v-stepper-items>
-                <v-stepper-content step="1">
-                    <v-card flat>
+                <v-stepper-content class="py-0" step="1">
+                    <v-card flat class="py-8">
                         <ModalsBotSetupStrategyAndAmount v-if="showStrategySetup" :selected-strategy="bot.strategy" ref="strategyRef" @onSelected="onStrategySelected" />
                     </v-card>
                     <!-- <div class="d-flex float-left">
@@ -45,7 +45,7 @@
                             Delete Bot
                         </v-btn>
                     </div> -->
-                    <div class="d-flex float-right">
+                    <div class="d-flex float-right my-4">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
                             Back
                         </v-btn>
@@ -55,11 +55,11 @@
                     </div>
                 </v-stepper-content>
 
-                <v-stepper-content step="2">
-                    <v-card flat min-height="200px">
+                <v-stepper-content class="py-0" step="2">
+                    <v-card flat min-height="200px" class="py-8">
                         <ModalsBotSetupTechnicalAnalysis v-if="showTechnicalAnalysis" :selected-technical="bot.analysis" ref="analysisRef" @onAlaysisSelected="onAlaysisSelected" />
                     </v-card>
-                    <div class="d-flex float-right">
+                    <div class="d-flex float-right my-4">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
                             Back
                         </v-btn>
@@ -68,10 +68,10 @@
                         </v-btn>
                     </div>
                 </v-stepper-content>
-                <v-stepper-content step="3">
-                    <v-card flat class="mb-12 d-flex flex-column align-center">
+                <v-stepper-content class="py-0" step="3">
+                    <v-card flat class="d-flex flex-column align-center py-8">
                         <h3>Token Exceptions</h3>
-                        <v-select dense class="mt-3" v-model="tokenException" :items="exchanges" chips label="Token Exceptions" multiple outlined>
+                        <v-select dense class="mt-3 px-3" v-model="tokenException" :items="exchanges" chips label="Token Exceptions" multiple outlined>
                             <template v-slot:prepend-item>
                                 <v-list-item>
                                     <v-list-item-content>
@@ -82,7 +82,7 @@
                         </v-select>
                     </v-card>
 
-                    <div class="d-flex float-right">
+                    <div class="d-flex float-right my-4">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 2" text>
                             Back
                         </v-btn>
@@ -91,8 +91,8 @@
                         </v-btn>
                     </div>
                 </v-stepper-content>
-                <v-stepper-content step="4">
-                    <v-card class="mb-12 d-flex flex-column align-center" flat min-height="200px">
+                <v-stepper-content class="py-0" step="4">
+                    <v-card class="d-flex flex-column align-center py-8" flat min-height="200px">
                         <h3>Summary</h3>
                         <v-row class="mt-1" style="width:100%;">
                             <v-col cols="12">
@@ -101,7 +101,7 @@
                             </v-col>
                         </v-row>
                     </v-card>
-                    <div class="d-flex float-right">
+                    <div class="d-flex float-right my-4">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 3" text>
                             Back
                         </v-btn>
