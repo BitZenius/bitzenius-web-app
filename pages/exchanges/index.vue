@@ -5,88 +5,38 @@
             <ModalsExchangeSetup :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
-    <v-col cols="12">
-        <v-card class="pa-8" elevation="8">
-            <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
-                {{ snackbarText }}
-                <template v-slot:action="{ attrs }">
-                    <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
-                        Close
-                    </v-btn>
-                </template>
-            </v-snackbar>
-            <v-row>
-                <v-col col="12" class="d-flex justify-center align-center">
-                    <p class="text-center">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
-                </v-col>
-            </v-row>
-            <v-row class="mt-0">
-                <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
-                    <v-card style="border:2px solid #17576a; position:relative; margin-top:25px; margin-bottom:25px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
-                        <v-row>
-                            <v-col cols="12" class="d-flex align-center justify-start pb-0">
-                                <div style="width:100%;" class="d-flex justify-center align-center">
-                                    <img style="height:115px; padding:25px;" :src="exchange.image" alt="">
-                                </div>
-                            </v-col>
-                            <v-col cols="12" class="d-flex flex-column justify-start align-center pt-0 pb-10">
-                                <h4>{{exchange.name}}</h4>
-                                <v-btn v-if="exchange.active" small class="primary" @click="_addExchange(`${exchange.name}`)">Active Exchange</v-btn>
-                                <v-btn v-else class="default" small @click="_addExchange(`${exchange.name}`)">Setup Exchange</v-btn>
-                            </v-col>
-                        </v-row>
-                        <span class="updated-label" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
-                    </v-card>
-                </v-col>
-            </v-row>
-            <!-- <v-data-table :headers="headers" :items="items" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
-                <template v-slot:item.status="{ item }">
-                    <v-chip small :color="item.is_active ? 'success' : 'grey'" dark label>
-                        {{ item.status }}
-                    </v-chip>
-                </template>
-                <template v-slot:item.created_at="{item}">
-                    {{$moment(item.created_at).format("DD/MM/YYYY HH:mm")}}
-                </template>
-                <template v-slot:top>
-                    <div>
-                        <Form :id="id" :data="editedItem" :dialog.sync="dialog" />
-                        <v-dialog v-model="dialogDelete" max-width="290px" persistent>
-                            <v-card>
-                                <v-card-title class="headline">
-                                    Delete Confirmation
-                                </v-card-title>
-                                <v-card-text>
-                                    Are you sure you want to delete this admin?
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer />
-                                    <v-btn color="blue darken-1" text @click="closeDelete">
-                                        Cancel
-                                    </v-btn>
-                                    <v-btn color="blue darken-1" text @click="deleteItemConfirm">
-                                        OK
-                                    </v-btn>
-                                    <v-spacer />
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                    </div>
-                </template>
-                <template v-slot:item.actions="{ item }">
-                    <v-icon class="mr-2" @click="editItem(item)">
-                        mdi-cog
-                    </v-icon>
-                    <v-icon @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>
-                </template>
-                <template v-slot:no-data>
-                    <p>No record available!</p>
-                </template>
-            </v-data-table> -->
-        </v-card>
+    <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
+        {{ snackbarText }}
+        <template v-slot:action="{ attrs }">
+            <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
+
+    <v-col cols="12" class="d-flex justify-center align-center">
+        <p class="text-center text-info">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
     </v-col>
+    <v-col cols="12" class="d-flex px-0 pt-0">
+        <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
+            <v-card style="border:2px solid #17576a; position:relative; margin-bottom:25px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
+                <v-row>
+                    <v-col cols="12" class="d-flex align-center justify-start pb-0">
+                        <div style="width:100%;" class="d-flex justify-center align-center">
+                            <img style="height:115px; padding:25px;" :src="exchange.image" alt="">
+                        </div>
+                    </v-col>
+                    <v-col cols="12" class="d-flex flex-column justify-start align-center pt-0 pb-10">
+                        <h4>{{exchange.name}}</h4>
+                        <v-btn v-if="exchange.active" small class="primary" @click="_addExchange(`${exchange.name}`)">Active Exchange</v-btn>
+                        <v-btn v-else class="default" small @click="_addExchange(`${exchange.name}`)">Setup Exchange</v-btn>
+                    </v-col>
+                </v-row>
+                <span class="updated-label" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
+            </v-card>
+        </v-col>
+    </v-col>
+
 </v-row>
 </template>
 
@@ -119,6 +69,13 @@
     background: #17576a;
     color: white;
     padding: 5px 22px;
+}
+
+.text-info {
+    background: #177e89;
+    color: white;
+    border-radius: 15px 5px 15px 5px;
+    padding: 13px 10px;
 }
 </style>
 

@@ -5,7 +5,7 @@
     </v-card-title>
     <v-card-text class="mt-3 pb-0">
         <v-card elevation="0" class="mb-12 d-flex flex-column align-center">
-            <h3>Please fill up the form below</h3>
+            <!-- <h3>Please fill up the form below</h3> -->
             <v-row class="d-flex align-center justify-center" style="width:100%;">
                 <v-col cols="12" md="12">
                     <v-text-field dense class="mt-2" v-model="name" label="Custom Title" outlined></v-text-field>

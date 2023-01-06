@@ -10,7 +10,7 @@
                 </v-tabs>
                 <v-tabs-items v-model="currentItem">
                     <v-tab-item v-for="item in tables" :key="item">
-                        <v-row class="mt-1">
+                        <!-- <v-row class="mt-1">
                             <v-col cols="12" md="4">
                                 <v-select :items="availablePair" label="Filter Pair" dense outlined></v-select>
                             </v-col>
@@ -29,16 +29,16 @@
                                     </v-icon>
                                 </v-btn>
                             </v-col>
-                        </v-row>
-                        <v-data-table v-if="item == 'Trading Report'" :headers="tradingHeaders" :items="tradingItems" hide-default-footer class="elevation-2 my-2">
+                        </v-row> -->
+                        <v-data-table v-if="item == 'Trading Report'" :headers="tradingHeaders" :items="tradingItems" class="elevation-2 my-2">
                             <template v-slot:item.pair="{item}">
                                 <v-row>
                                     <v-col cols="12" class="d-flex align-center justify-start">
-                                        <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo/${item.logo}`)" />
+                                        <!-- <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo/${item.logo}`)" /> -->
                                         <div class="d-flex flex-column ml-3">
                                             <div class="d-flex flex-column">
-                                                <span>{{item.pair}}</span>
-                                                <small>{{item.id}}</small>
+                                                <strong>{{item.pair}}</strong>
+                                                <small class="primary--text">{{item.id}}</small>
                                             </div>
                                         </div>
                                     </v-col>
@@ -52,6 +52,9 @@
                                     {{item.type.toUpperCase()}}
                                 </v-chip>
                             </template>
+                            <template v-slot:item.date="{item}">
+                                {{$moment(item.date).format("DD/MM/YYYY HH:mm")}}
+                            </template>
                             <template v-slot:item.desc="{item}">
                                 <div class="d-flex">
                                     <!-- <v-chip small v-if="item.type == 'buy'" color="info">
@@ -63,7 +66,7 @@
                                         </span>
                                     </div>
                                     <div v-else class="d-flex flex-column">
-                                        <small>{{item.type.toUpperCase() == 'SELL' ? 'Profit' : null}}</small>
+                                        <small>{{item.type.toUpperCase() == 'SELL' ? 'PnL' : null}}</small>
                                         <span style="font-weight:bold;">
                                             {{item.desc}}
                                         </span>
@@ -174,58 +177,7 @@ export default {
                 },
             ],
             // ID, Type, Date, Profit, Price, Qty
-            tradingItems: [{
-                    id: "#10001",
-                    pair: "ETH/USDT",
-                    type: "buy",
-                    date: "12-11-2022 ",
-                    desc: "6",
-                    price: "0.2068",
-                    qty: "136",
-                    logo: "polygon.png"
-                },
-                {
-                    id: "#10002",
-                    pair: "ETH/USDT",
-                    type: "buy",
-                    date: "12-11-2022",
-                    desc: "2",
-                    price: "0.2068",
-                    qty: "136",
-                    logo: "celer.png"
-                },
-                {
-                    id: "#10003",
-                    pair: "ETH/USDT",
-                    type: "sell",
-                    date: "12-11-2022",
-                    desc: "0.3672",
-                    price: "0.2068",
-                    qty: "136",
-                    logo: "cronos.png"
-                },
-                {
-                    id: "#10004",
-                    pair: "ETH/USDT",
-                    type: "sell",
-                    date: "12-11-2022",
-                    desc: "0.3672",
-                    price: "0.2068",
-                    qty: "136",
-                    logo: "polygon.png"
-                },
-                {
-                    id: "#10005",
-                    pair: "ETH/USDT",
-                    type: "buy",
-                    date: "12-11-2022",
-                    desc: "3",
-                    price: "0.2068",
-                    qty: "136",
-                    logo: "polygon.png"
-                },
-
-            ],
+            tradingItems: [],
             claimHeaders: [{
                     text: "Date",
                     align: "start",
@@ -282,9 +234,18 @@ export default {
     mounted() {
         this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
-        this.$store.commit('setIsLoading', false);
+        this._fetchReport();
     },
     methods: {
+        // FETCH API
+        async _fetchReport() {
+            console.log("FETCHING TRADING HISTORY");
+            let res = await this.$api.$get('/user/trading-history');
+            console.log(res);
+
+            this.tradingItems = res.data;
+            this.$store.commit('setIsLoading', false);
+        },
         closeModal() {
             alert('closeModal')
         }

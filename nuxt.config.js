@@ -118,7 +118,7 @@ export default {
         dark: {
           primary: '#3c929b',
           danger: '#ff002f',
-          'basic-1':'#312d4b',
+          'basic-1':'#177e89',
         },
         light: {
           primary: '#17576a',

@@ -10,7 +10,35 @@
             <ModalsActivePosition :pair="selectedPair" @close-modal="closeModal" />
         </template>
     </v-dialog>
+    <v-col cols="12" class="d-flex justify-center align-center">
+        <p class="text-center text-info">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
+    </v-col>
+    <v-col cols="12" class="d-flex px-0 pt-0">
+        <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
+            <!-- <v-btn small @click="_loggerExchange(exchange)">logger</v-btn> -->
+            <v-card @click="selectExchangeCard(`${exchange.name}`, index)" style="position:relative;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
+                <div v-if="exchange.selected" class="exchange-selected">
+                    Selected
+                </div>
+                <div v-if="exchange.active">
+                    <v-btn x-small icon fab class="danger white--text delete-button" @click="_deleteBot(exchange)">X</v-btn>
+                </div>
+                <v-row>
+                    <v-col sm="12" md="4" class="d-flex align-center justify-start">
+                        <img style="width:100px; padding:25px;" :src="exchange.image" alt="">
+                    </v-col>
+                    <v-col sm="12" md="8" class="d-flex flex-column justify-center align-center">
+                        <h4>{{exchange.name}}</h4>
+                        <div v-if="exchange.active" class="d-flex justify-center">
+                            <v-btn small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
+                        </div>
+                        <v-btn v-else class="default" small @click="_addBot(exchange)">Setup Bot</v-btn>
+                    </v-col>
+                </v-row>
 
+            </v-card>
+        </v-col>
+    </v-col>
     <v-col cols="12">
         <v-card class="pa-8" elevation="8">
             <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
@@ -21,46 +49,10 @@
                     </v-btn>
                 </template>
             </v-snackbar>
-            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePosition" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait" hide-default-footer disable-pagination disable-sort>
+            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePosition" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait"  disable-sort>
+                <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
                     <div class="mb-5">
-                        <v-row>
-                            <v-col col="12" class="d-flex justify-center align-center">
-                                <p class="text-center">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
-                            </v-col>
-                        </v-row>
-                        <v-row class="mt-0">
-                            <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
-                                <!-- <v-btn small @click="_loggerExchange(exchange)">logger</v-btn> -->
-                                <v-card @click="selectExchangeCard(`${exchange.name}`, index)" style="position:relative;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
-                                    <div v-if="exchange.selected" class="exchange-selected">
-                                        Selected
-                                    </div>
-                                    <div v-if="exchange.active">
-                                        <v-btn x-small icon fab class="danger white--text delete-button" @click="_deleteBot(exchange)">X</v-btn>
-                                    </div>
-                                    <v-row>
-                                        <v-col sm="12" md="4" class="d-flex align-center justify-start">
-                                            <img style="width:100px; padding:25px;" :src="exchange.image" alt="">
-                                        </v-col>
-                                        <v-col sm="12" md="8" class="d-flex flex-column justify-center align-center">
-                                            <h4>{{exchange.name}}</h4>
-                                            <div v-if="exchange.active" class="d-flex justify-center">
-                                                <v-btn small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
-                                            </div>
-                                            <v-btn v-else class="default" small @click="_addBot(exchange)">Setup Bot</v-btn>
-                                        </v-col>
-                                    </v-row>
-
-                                </v-card>
-                            </v-col>
-                        </v-row>
-                        <!-- <v-btn color="primary" class="mb-5 elevation-0" @click="_addBot">
-                            <v-icon left>
-                                mdi-plus
-                            </v-icon>
-                            Add Bot
-                        </v-btn> -->
                         <v-dialog v-model="dialogDelete" max-width="400px" persistent>
                             <v-card>
                                 <v-card-title class="headline">
@@ -168,6 +160,13 @@
     top: -10px;
     right: -10px;
     font-size: 0.8rem;
+}
+
+.text-info {
+    background: #177e89;
+    color: white;
+    border-radius: 15px 5px 15px 5px;
+    padding: 13px 10px;
 }
 </style>
 
@@ -344,13 +343,16 @@ export default {
                     this.exchanges[exchangeIndex].id = exchange._id;
                 })
             }
+            let isAnyData = false;
             for (let i = 0; i < this.exchanges.length; i++) {
                 let exchange = this.exchanges[i];
                 if (exchange.active) {
                     this.selectExchangeCard(exchange.name, i);
+                    isAnyData = true;
                     break;
                 }
             }
+            if(!isAnyData) this.$store.commit('setIsLoading', false);
         },
 
         // LISTENER
