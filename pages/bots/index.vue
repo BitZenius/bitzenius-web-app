@@ -294,6 +294,7 @@ export default {
         }
     },
     async mounted() {
+        this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
         this._fetchBotsList();
 
@@ -307,8 +308,8 @@ export default {
         });
         let userId = this.$store.state.authUser.uid;
         this.socket.on('positions', (data) => {
-            console.log(data);
             this.activePosition = data;
+            this.$store.commit('setIsLoading', false);
         })
         this.socket.on('current_price', (data) => {
             let index = this.activePosition.findIndex(b => b.symbol === data.name);
@@ -317,7 +318,6 @@ export default {
             this.activePosition[index].profit.percentage = data.pnlPercentage;
             this.activePosition[index].quantity = data.quantity;
         })
-
         // END OF CONNECT TO SOCKET IO
     },
     beforeDestroy() {
@@ -378,6 +378,7 @@ export default {
             this.exchanges[index].selected = true;
 
             // RE-FETCH LIST
+            this.$store.commit('setIsLoading', true);
             this.socket.emit("fetch-position", {
                 exchange: val
             });

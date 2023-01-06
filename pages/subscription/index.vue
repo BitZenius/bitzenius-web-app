@@ -108,7 +108,9 @@ export default {
         }
     },
     mounted() {
+        this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
+        this.$store.commit('setIsLoading', false);
     }
 }
 </script>

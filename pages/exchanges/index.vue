@@ -6,7 +6,7 @@
         </template>
     </v-dialog>
     <v-col cols="12">
-        <v-card  class="pa-8" elevation="8">
+        <v-card class="pa-8" elevation="8">
             <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
                 {{ snackbarText }}
                 <template v-slot:action="{ attrs }">
@@ -224,6 +224,7 @@ export default {
     },
     mounted() {
         console.log('moment', this.$moment(new Date).format('DD/MM/YYYY'));
+        this.$store.commit('setIsLoading', true);
         this._fetchExchanges()
         this.$store.commit('setTitle', this.title)
         // this.listener = this.$fire.firestore.collection('user_exchanges').orderBy('created_at', 'desc').onSnapshot((onResult, onError) => {
@@ -259,6 +260,7 @@ export default {
                     }
                 }
             }
+            this.$store.commit('setIsLoading', false);
         },
 
         // LISTENER
