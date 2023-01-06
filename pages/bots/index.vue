@@ -2,7 +2,7 @@
 <v-row>
     <v-dialog v-if="showAddBot" v-model="showAddBot" max-width="600">
         <template>
-            <ModalsBotSetup :bot-prop="selectedBot" :exchange="selectedExchange"  @close-modal="closeModal" />
+            <ModalsBotSetup :bot-prop="selectedBot" :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
     <v-dialog v-model="showActivePosition" max-width="600">
@@ -21,7 +21,7 @@
                     </v-btn>
                 </template>
             </v-snackbar>
-            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePosition" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
+            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePosition" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait" hide-default-footer disable-pagination disable-sort>
                 <template v-slot:top>
                     <div class="mb-5">
                         <v-row>
@@ -36,13 +36,18 @@
                                     <div v-if="exchange.selected" class="exchange-selected">
                                         Selected
                                     </div>
+                                    <div v-if="exchange.active">
+                                        <v-btn x-small icon fab class="danger white--text delete-button" @click="_deleteBot(exchange)">X</v-btn>
+                                    </div>
                                     <v-row>
                                         <v-col sm="12" md="4" class="d-flex align-center justify-start">
                                             <img style="width:100px; padding:25px;" :src="exchange.image" alt="">
                                         </v-col>
                                         <v-col sm="12" md="8" class="d-flex flex-column justify-center align-center">
                                             <h4>{{exchange.name}}</h4>
-                                            <v-btn v-if="exchange.active" small class="primary" @click="_addBot(exchange)">Active Bot</v-btn>
+                                            <div v-if="exchange.active" class="d-flex justify-center">
+                                                <v-btn small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
+                                            </div>
                                             <v-btn v-else class="default" small @click="_addBot(exchange)">Setup Bot</v-btn>
                                         </v-col>
                                     </v-row>
@@ -156,7 +161,13 @@
 
 .exchange-active {
     outline: 2px solid #17576a;
+}
 
+.delete-button {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    font-size: 0.8rem;
 }
 </style>
 
@@ -178,7 +189,7 @@ export default {
             dialog: true,
             dialogDelete: false,
             // START OF CARD EXCHANGE
-            selectedExchange:null,
+            selectedExchange: null,
             selectedExchangeReport: null,
             exchanges: [{
                     name: "Binance",
@@ -193,10 +204,9 @@ export default {
                     image: "/exchange_logo/tokocrypto.png"
                 }
             ],
-            selectedBot:null,
+            selectedBot: null,
             userExchanges: [],
             // END OF CARD EXCHANGE
-
 
             headers: [{
                     text: 'Name/Qty',
@@ -260,7 +270,9 @@ export default {
             // ACTIVE POSITION FROM STORE
             activePosition: [],
             socket: null,
-            // END OF DATA
+
+            // SELECT TO DELETE
+            selectToDelete: null
         }
     },
     head() {
@@ -283,18 +295,19 @@ export default {
     },
     async mounted() {
         this.$store.commit('setTitle', this.title)
+        this._fetchBotsList();
 
         // START CONNECT TO SOCKET IO
         let token = await this.$store.$fire.auth.currentUser.getIdToken()
         this.socket = io(process.env.SERVER, {
             path: "/active-position",
             query: {
-                controller_id: "BZController-a18c3b44",
                 bearer_token: token
             }
         });
         let userId = this.$store.state.authUser.uid;
         this.socket.on('positions', (data) => {
+            console.log(data);
             this.activePosition = data;
         })
         this.socket.on('current_price', (data) => {
@@ -306,7 +319,6 @@ export default {
         })
 
         // END OF CONNECT TO SOCKET IO
-        this._fetchBotsList();
     },
     beforeDestroy() {
         this.socket.emit("disconnect-client", {
@@ -324,14 +336,20 @@ export default {
         async _fetchBotsList() {
             let res = await this.$api.$get('/user/bot');
             let userExchanges = res.data;
-            console.log("USER_EXCHANGES", userExchanges);
-            if (userExchanges.length > 0) {
+            if (userExchanges) {
                 userExchanges.forEach((exchange) => {
                     let exchangeIndex = this.exchanges.findIndex(e => e.name == exchange.selected_exchange);
                     this.exchanges[exchangeIndex].data = exchange;
                     this.exchanges[exchangeIndex].active = true;
                     this.exchanges[exchangeIndex].id = exchange._id;
                 })
+            }
+            for (let i = 0; i < this.exchanges.length; i++) {
+                let exchange = this.exchanges[i];
+                if (exchange.active) {
+                    this.selectExchangeCard(exchange.name, i);
+                    break;
+                }
             }
         },
 
@@ -348,12 +366,21 @@ export default {
         },
 
         // TRIGGER
+        async _deleteBot(val) {
+            this.selectToDelete = val;
+            this.dialogDelete = true;
+        },
         selectExchangeCard(val, index) {
             this.selectedExchangeReport = val;
             for (let i = 0; i < this.exchanges.length; i++) {
                 this.exchanges[i].selected = false
             }
             this.exchanges[index].selected = true;
+
+            // RE-FETCH LIST
+            this.socket.emit("fetch-position", {
+                exchange: val
+            });
         },
         _onSelectPair(val) {
             this.selectedPair = val;
@@ -363,9 +390,9 @@ export default {
         _addBot(val) {
             this.$store.commit('exchange/setSelectedExchange', val.name);
             this.selectedExchange = val.name;
-            if(val.active){
+            if (val.active) {
                 this.selectedBot = val.data
-            }else{
+            } else {
                 this.selectedBot = null;
             }
             this.showAddBot = true;
@@ -387,6 +414,23 @@ export default {
             this.dialogDelete = true
         },
         async deleteItemConfirm() {
+            this.$store.commit('setIsLoading', true);
+            console.log(this.selectToDelete);
+            let res = await this.$api.$delete('/user/bot', {
+                params: {
+                    id: val.id
+                }
+            });
+            console.log(res);
+            setTimeout(() => {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Bot Successfuly Deleted!",
+                    color: "success"
+                })
+            })
+            this.$store.commit('setIsLoading', false);
+            this.dialogDelete = false;
             /*
             this.$axios.delete('admin/exchanges/' + this.id).then((res) => {
               this.snackbarText = res.data.message

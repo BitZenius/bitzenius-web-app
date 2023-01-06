@@ -174,7 +174,6 @@ export default {
         async fetchFormula() {
             console.log("FETCHING DATA USER BOT");
             let res = await this.$api.$get('/user/formula');
-            console.log(res);
             this.styleList = res.data;
             this.styleList.push({
                 name: "Custom",

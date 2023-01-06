@@ -141,7 +141,7 @@ export default {
   },
 
   env: {
-    SERVER: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-l7vwn.ondigitalocean.app/",
+    SERVER: process.env.SERVER,
 
   }
 }

@@ -10,12 +10,12 @@ export default function ({ $axios, store }, inject) {
         headers: {
           common: {
             Accept: 'text/plain, */*',
-            Authorization: `Bearer ${token}`
+            authorization: `Bearer ${token}`
           }
         }
       })
     }
-
+    console.log("ENV SERVER", process.env.SERVER);
     api.setBaseURL(process.env.SERVER)
     inject('api', api)
   })()
