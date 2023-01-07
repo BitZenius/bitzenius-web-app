@@ -87,16 +87,20 @@ export default {
                     id: this.data.id
                 }
             });
-            console.log(res);
-            // setTimeout(() => {
-            //     this.$emit('close-modal', false);
-            //     this.$store.commit('setShowSnackbar', {
-            //         show: true,
-            //         message: "Successfuly Added New Bot!",
-            //         color: "success"
-            //     })
-            //     this.$store.commit('setIsLoading', false);
-            // })
+            setTimeout(() => {
+                this.$emit('close-modal', false);
+                if (res.ok) {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Successfuly Updated!",
+                        color: "success"
+                    })
+                    this.$store.commit('setIsLoading', false);
+                } else {
+
+                }
+
+            })
         }
     }
 }

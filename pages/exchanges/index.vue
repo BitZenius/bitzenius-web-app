@@ -206,6 +206,7 @@ export default {
             console.log("FETCHING DATA EXCHANGES");
             let res = await this.$api.$get('/user/exchange');
             this.clientExchanges = res.data;
+            console.log("DATA EXCHANGES", res.data);
             for (let exchange of this.clientExchanges) {
                 console.log(exchange.exchange_name);
                 for (let i = 0; i < this.exchanges.length; i++) {

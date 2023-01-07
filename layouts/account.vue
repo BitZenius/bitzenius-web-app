@@ -179,7 +179,7 @@
     </v-main>
     <v-footer>
         <v-col class="text-right text--disabled" cols="12">
-            &copy;{{ new Date().getFullYear() }} - ZokuTrade. Version 0.0.1
+            &copy;{{ new Date().getFullYear() }} - ZokuTrade. Version 0.3.3
         </v-col>
     </v-footer>
 </v-app>
