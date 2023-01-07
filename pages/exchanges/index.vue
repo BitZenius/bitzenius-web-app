@@ -1,8 +1,8 @@
 <template>
 <v-row>
-    <v-dialog v-model="showAddExchange" max-width="600">
+    <v-dialog v-if="showAddExchange" v-model="showAddExchange" max-width="600">
         <template>
-            <ModalsExchangeSetup :exist="isExist" :exchange="selectedExchange" @close-modal="closeModal" />
+            <ModalsExchangeSetup :data="data" :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
     <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
@@ -100,7 +100,7 @@ export default {
             dialogDelete: false,
 
             // START OF CARD EXCHANGE
-            isExist:false,
+            data: false,
             exchanges: [{
                     name: "Binance",
                     selected: false,
@@ -235,9 +235,12 @@ export default {
             console.log(this.exchanges);
         },
         _addExchange(exchange) {
+            this.data = null;
             this.selectedExchange = exchange.name;
-            this.isExist = exchange.active;
             this.showAddExchange = true;
+            if (exchange.active) {
+                this.data = exchange;
+            }
             // alert('On going pop-up modal add Exchange')
         },
         addItem() {

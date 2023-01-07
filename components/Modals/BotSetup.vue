@@ -14,7 +14,7 @@
         </v-row> -->
     </v-card-title>
     <v-card-text class="my-3">
-        <v-stepper class="basic-2" elevation="0" v-model="e1">
+        <v-stepper class="basic" elevation="0" v-model="e1">
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">
                 </v-stepper-step>
@@ -37,7 +37,7 @@
 
             <v-stepper-items>
                 <v-stepper-content class="py-0" step="1">
-                    <v-card flat class="py-8">
+                    <v-card flat class="py-8 mt-2">
                         <ModalsBotSetupStrategyAndAmount v-if="showStrategySetup" :selected-strategy="bot.strategy" ref="strategyRef" @onSelected="onStrategySelected" />
                     </v-card>
                     <!-- <div class="d-flex float-left">
@@ -46,9 +46,6 @@
                         </v-btn>
                     </div> -->
                     <div class="d-flex float-right my-4">
-                        <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
-                            Back
-                        </v-btn>
                         <v-btn color="primary" @click="e1 = 2">
                             Continue
                         </v-btn>
@@ -56,7 +53,7 @@
                 </v-stepper-content>
 
                 <v-stepper-content class="py-0" step="2">
-                    <v-card flat min-height="200px" class="py-8">
+                    <v-card flat min-height="200px" class="py-8 mt-2">
                         <ModalsBotSetupTechnicalAnalysis v-if="showTechnicalAnalysis" :selected-technical="bot.analysis" ref="analysisRef" @onAlaysisSelected="onAlaysisSelected" />
                     </v-card>
                     <div class="d-flex float-right my-4">
@@ -69,7 +66,7 @@
                     </div>
                 </v-stepper-content>
                 <v-stepper-content class="py-0" step="3">
-                    <v-card flat class="d-flex flex-column align-center py-8">
+                    <v-card flat class="d-flex flex-column align-center py-8 mt-2">
                         <h3>Token Exceptions</h3>
                         <v-select dense class="mt-3 px-3" v-model="tokenException" :items="exchanges" chips label="Token Exceptions" multiple outlined>
                             <template v-slot:prepend-item>
@@ -92,7 +89,7 @@
                     </div>
                 </v-stepper-content>
                 <v-stepper-content class="py-0" step="4">
-                    <v-card class="d-flex flex-column align-center py-8" flat min-height="200px">
+                    <v-card class="d-flex flex-column align-center py-8 mt-2" flat min-height="200px">
                         <h3>Summary</h3>
                         <v-row class="mt-1" style="width:100%;">
                             <v-col cols="12">
