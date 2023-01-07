@@ -38,6 +38,9 @@ jobs:
         with:
           name: dist
           path: dist
+        env:
+          API_URL: ${{secrets.API_URL}}
+          SOCKET_URL: ${{secrets.SOCKET_URL}}
   deploy:
     name: Deploy
     needs: build
