@@ -15,8 +15,8 @@ export default function ({ $axios, store }, inject) {
         }
       })
     }
-    console.log("ENV SERVER", process.env.SERVER);
-    api.setBaseURL(process.env.SERVER)
+
+    api.setBaseURL(process.env.API_URL)
     inject('api', api)
   })()
 }

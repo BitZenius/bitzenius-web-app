@@ -6,7 +6,7 @@ export default {
 
   // Global page headers: https://go.nuxtjs.dev/config-head
   head: {
-    titleTemplate: '%s - Zoku Trade',
+    titleTemplate: '%s - BitZenius',
     title: 'The best investment tools',
     meta: [
       { charset: 'utf-8' },
@@ -26,10 +26,11 @@ export default {
 
   // Plugins to run before rendering page: https://go.nuxtjs.dev/config-plugins
   plugins: [
-    '~/plugins/api.js',
+    '~/plugins/api',
     '~/plugins/apexchart',
-    '~/plugins/test.js',
-    '~/plugins/socketio.js'
+    '~/plugins/test',
+    '~/plugins/socketio',
+    '~/plugins/vue2-filters'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -143,9 +144,9 @@ export default {
       ]
     }
   },
-
   env: {
-    SERVER: process.env.SERVER,
-
+    SOCKET_URL: process.env.SOCKET_URL,
+    API_URL: process.env.API_URL,
+    SERVER: process.env.SERVER
   }
 }

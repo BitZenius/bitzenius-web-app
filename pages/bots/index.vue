@@ -52,7 +52,18 @@
             <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePosition" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait"  disable-sort>
                 <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
-                    <div class="mb-5">
+                    <div>
+                        <v-btn
+                            color="primary"
+                            class="mb-5 elevation-0"
+                            :disabled="!user.subscription"
+                            @click="_addBot"
+                        >
+                            <v-icon left>
+                                mdi-plus
+                            </v-icon>
+                            Add Bot
+                        </v-btn>
                         <v-dialog v-model="dialogDelete" max-width="400px" persistent>
                             <v-card>
                                 <v-card-title class="headline">
@@ -282,6 +293,9 @@ export default {
     computed: {
         formTitle() {
             return this.id === null ? 'Add New' : 'Edit'
+        },
+        user() {
+            return this.$store.state.authUser
         }
     },
     watch: {

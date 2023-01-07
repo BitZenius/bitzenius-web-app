@@ -1,4 +1,4 @@
-# zokubot-web-app
+# bitzenius-web-app
 
 ## Build Setup
 

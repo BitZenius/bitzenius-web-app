@@ -103,7 +103,7 @@ export default {
             avatar: '@/static/settings/avatar.png',
             first_name: "John",
             last_name: "Doe",
-            email: "johndoe@zoku.com",
+            email: "johndoe@bitzenius.com",
             phone: "+6223123213",
             address: "Lorem Ipsum Dolor Sit Amet",
             country: "Lorem",
