@@ -197,7 +197,7 @@
     </v-app-bar>
     <v-main>
         <v-container fluid>
-            <nuxt class="pa-3" />
+            <nuxt class="px-3" />
         </v-container>
     </v-main>
     <v-footer>

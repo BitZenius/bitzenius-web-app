@@ -20,6 +20,7 @@
     "nuxt": "^2.15.7",
     "socket.io-client": "^4.5.4",
     "vue-apexcharts": "^1.6.2",
+    "vue2-filters": "^0.14.0",
     "vuetify": "^2.5.5"
   },
   "devDependencies": {
