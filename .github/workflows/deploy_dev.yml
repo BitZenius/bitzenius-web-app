@@ -13,6 +13,8 @@ on:
   workflow_dispatch:
  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
+env:
+  SERVER: ${{ secrets.SERVER }}
 jobs:
   build:
     name: Build

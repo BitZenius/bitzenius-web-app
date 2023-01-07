@@ -1,7 +1,7 @@
 <template>
 <div class="d-flex flex-column align-center">
     <h3 class="mb-1">Choose the strategy & Amount</h3>
-    <v-btn small @click="_logger">logger</v-btn>
+    <!-- <v-btn small @click="_logger">logger</v-btn> -->
     <v-tooltip right color="success">
         <template v-slot:activator="{ on, attrs }">
             <v-row v-bind="attrs" v-on="on" class="d-flex align-center justify-center" style="width:100%;">
@@ -153,6 +153,7 @@
 
 <script>
 export default {
+    props:['selectedStrategy'],
     data() {
         return {
             strategy: {
@@ -173,10 +174,9 @@ export default {
         async fetchFormula() {
             console.log("FETCHING DATA USER BOT");
             let res = await this.$api.$get('/user/formula');
-            console.log(res);
             this.styleList = res.data;
             this.styleList.push({
-                name: "Custom",
+                name: "Custom (ongoing development!)",
                 active: false,
                 steps: [{
                         step: 1,
@@ -239,6 +239,10 @@ export default {
         },
     },
     mounted() {
+        if(this.selectedStrategy){
+            this.strategy = this.selectedStrategy
+        }
+
         this.fetchFormula();
     },
     watch: {

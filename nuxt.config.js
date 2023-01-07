@@ -10,7 +10,7 @@ export default {
     title: 'The best investment tools',
     meta: [
       { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
+      { name: 'viewport', content: 'width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no' },
       { hid: 'description', name: 'description', content: '' }
     ],
     link: [
@@ -119,12 +119,16 @@ export default {
         dark: {
           primary: '#3c929b',
           danger: '#ff002f',
-          'basic-1':'#312d4b',
+          basic:'#312d4b',
+          'basic-1': '#177e89',
+          'basic-2':'#312d4b',
         },
         light: {
           primary: '#17576a',
           danger: '#ff002f',
-          'basic-1': '#ffffff'
+          basic:'#ffffff',
+          'basic-1': '#ffffff',
+          'basic-2': '#ffffff',
         }
       }
     }
@@ -142,6 +146,7 @@ export default {
   },
   env: {
     SOCKET_URL: process.env.SOCKET_URL,
-    API_URL: process.env.API_URL
+    API_URL: process.env.API_URL,
+    SERVER: process.env.SERVER
   }
 }
