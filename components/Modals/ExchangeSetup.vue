@@ -1,19 +1,15 @@
 <template>
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
-        Add New Exchange
+        <span>{{data ? "Edit" : "Add"}}</span>
+        <strong>&nbsp;{{exchange}}&nbsp;</strong> As Your Exchange
     </v-card-title>
     <v-card-text class="mt-3 pb-0">
         <v-card elevation="0" class="mb-12 d-flex flex-column align-center">
-            <h3>Please fill up the form below</h3>
+            <!-- <h3>Please fill up the form below</h3> -->
             <v-row class="d-flex align-center justify-center" style="width:100%;">
                 <v-col cols="12" md="12">
-                    <v-text-field dense class="mt-2" v-model="name" label="Custom Title" outlined></v-text-field>
-                </v-col>
-            </v-row>
-            <v-row class="d-flex align-center justify-center" style="width:100%;">
-                <v-col cols="12" md="12">
-                    <v-select dense v-model="exchange" :items="exchangeItems" label="Choose Available Exchange" outlined />
+                    <v-text-field readonly dense class="mt-2" v-model="exchange" label="Title" outlined></v-text-field>
                 </v-col>
             </v-row>
             <v-row class="d-flex align-center justify-center" style="width:100%;">
@@ -32,8 +28,11 @@
         <v-btn color="blue darken-1" class="mr-2" text @click="closeModal">
             Cancel
         </v-btn>
-        <v-btn color="primary" @click="_save">
+        <v-btn v-if="!data" color="primary" @click="_save">
             Save
+        </v-btn>
+        <v-btn v-else color="success" @click="_updateData">
+            Update
         </v-btn>
     </v-card-actions>
 </v-card>
@@ -41,13 +40,13 @@
 
 <script>
 export default {
+    props: ['exchange', 'data'],
     data() {
         return {
-            name: null,
-            exchange: null,
+            name: this.exchange,
             api_key: null,
             secret_key: null,
-            exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
+            // exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
         }
     },
     methods: {
@@ -74,6 +73,33 @@ export default {
                     color: "success"
                 })
                 this.$store.commit('setIsLoading', false);
+            })
+        },
+        async _updateData() {
+            // this.$store.commit('setIsLoading', true);
+            let paramTemp = {};
+            paramTemp.api_key = this.api_key;
+            paramTemp.secret_key = this.secret_key;
+            paramTemp.title = this.exchange;
+            console.log(paramTemp)
+            let res = await this.$api.$put("/user/exchange", paramTemp, {
+                params: {
+                    id: this.data.id
+                }
+            });
+            setTimeout(() => {
+                this.$emit('close-modal', false);
+                if (res.ok) {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Successfuly Updated!",
+                        color: "success"
+                    })
+                    this.$store.commit('setIsLoading', false);
+                } else {
+
+                }
+
             })
         }
     }

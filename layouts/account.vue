@@ -31,17 +31,17 @@
                     <v-icon>mdi-robot-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
-                    <v-list-item-title>Bots</v-list-item-title>
+                    <v-list-item-title>Automated Bots</v-list-item-title>
                 </v-list-item-content>
             </v-list-item>
-            <v-list-item to="/active-positions" exact class="my-2">
+            <!-- <v-list-item to="/active-positions" exact class="my-2">
                 <v-list-item-action>
                     <v-icon>mdi-pin-outline</v-icon>
                 </v-list-item-action>
                 <v-list-item-content>
                     <v-list-item-title>Active Positions</v-list-item-title>
                 </v-list-item-content>
-            </v-list-item>
+            </v-list-item> -->
             <v-list-item to="/trading-history" exact class="my-2">
                 <v-list-item-action>
                     <v-icon>mdi-table-large</v-icon>
@@ -54,7 +54,7 @@
             <v-list-group prepend-icon="mdi-tune-vertical">
                 <template v-slot:activator>
                     <v-list-item-content>
-                        <v-list-item-title>Advance</v-list-item-title>
+                        <v-list-item-title>Advance Bots</v-list-item-title>
                     </v-list-item-content>
                 </template>
                 <v-list-item disabled class="ml-3">
