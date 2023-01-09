@@ -176,7 +176,7 @@
 .text-info {
     background: #177e89;
     color: white;
-    border-radius: 15px 5px 15px 5px;
+    border-radius: 10px;
     padding: 13px 10px;
 }
 </style>

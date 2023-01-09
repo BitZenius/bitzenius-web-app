@@ -10,9 +10,9 @@
                 </v-tabs>
                 <v-tabs-items v-model="currentItem">
                     <v-tab-item v-for="item in tables" :key="item">
-                        <!-- <v-row class="mt-1">
+                        <v-row class="mt-1">
                             <v-col cols="12" md="4">
-                                <v-select :items="availablePair" label="Filter Pair" dense outlined></v-select>
+                                <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter Pair" dense outlined></v-select>
                             </v-col>
                             <v-col cols="6" md="4">
                                 <v-select :items="availableSorting" label="Sorting By" dense outlined></v-select>
@@ -29,7 +29,7 @@
                                     </v-icon>
                                 </v-btn>
                             </v-col>
-                        </v-row> -->
+                        </v-row>
                         <v-data-table v-if="item == 'Trading Report'" :headers="tradingHeaders" :items="tradingItems" class="elevation-2 my-2">
                             <template v-slot:item.pair="{item}">
                                 <v-row>
@@ -101,11 +101,7 @@ export default {
             ],
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in',
             title: 'Transaction Report',
-            availablePair: [
-                "FTM/USDT",
-                "BTC/USDT",
-                "XRP/USDT"
-            ],
+            availablePair: [],
             availableSorting: [
                 "Date",
                 "Type"
@@ -224,6 +220,7 @@ export default {
                 },
             ],
             refferalId: "123XYZ",
+            pairSelected: null,
         }
     },
     head() {
@@ -232,19 +229,29 @@ export default {
         }
     },
     mounted() {
-        this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
         this._fetchReport();
     },
     methods: {
         // FETCH API
         async _fetchReport() {
-            console.log("FETCHING TRADING HISTORY");
-            let res = await this.$api.$get('/user/trading-history');
-            console.log(res);
+            this.$store.commit('setIsLoading', true);
+            let tempParams = {};
+            if (this.pairSelected) {
+                tempParams.symbol = this.pairSelected;
+            }
 
+            let res = await this.$api.$get('/user/trading-history', {
+                params: tempParams
+            });
+            console.log("FETCHING TRADING HISTORY", res);
             this.tradingItems = res.data;
+            this.availablePair = res.pairs;
             this.$store.commit('setIsLoading', false);
+        },
+        // TRIGGER
+        onPairSelected(pair) {
+            this._fetchReport();
         },
         closeModal() {
             alert('closeModal')

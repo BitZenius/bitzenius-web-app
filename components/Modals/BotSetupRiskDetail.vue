@@ -4,7 +4,7 @@
         Detail Risk
     </v-card-title>
     <v-card-text class="my-3">
-        <v-stepper elevation="0" class="basic-1" v-model="e1">
+        <v-stepper elevation="0" class="basic" v-model="e1">
             <v-stepper-header>
                 <v-stepper-step :complete="e1 > 1" step="1">
                 </v-stepper-step>
