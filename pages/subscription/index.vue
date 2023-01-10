@@ -112,7 +112,8 @@
           </v-col>
         </v-row>
       </v-card>
-      <v-card elevation="8" class="pa-5 mt-10">
+      <!-- Temporary to disable montly plans -->
+      <v-card v-show="false" elevation="8" class="pa-5 mt-10">
         <v-row class="pt-8">
           <v-col cols="12" class="d-flex justify-center">
             <div class="d-flex flex-column align-center justify-center" style="max-width:80%;">
@@ -238,6 +239,7 @@
         </v-row>
       </v-card>
       <v-alert
+        v-show="false"
         icon="mdi-information-outline"
         text
         type="info"

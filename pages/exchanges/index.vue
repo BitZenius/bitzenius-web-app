@@ -5,74 +5,6 @@
             <ModalsExchangeSetup :data="data" :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
-    <v-col cols="12">
-        <v-card class="pa-8" elevation="8">
-            <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
-                {{ snackbarText }}
-                <template v-slot:action="{ attrs }">
-                    <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
-                        Close
-                    </v-btn>
-                </template>
-            </v-snackbar>
-            <v-data-table :headers="headers" :items="items" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
-                <template v-slot:item.status="{ item }">
-                    <v-chip small :color="item.is_active ? 'success' : 'grey'" dark label>
-                        {{ item.status }}
-                    </v-chip>
-                </template>
-                <template v-slot:item.created_at="{item}">
-                    {{$moment(item.created_at).format("DD/MM/YYYY HH:mm")}}
-                </template>
-                <template v-slot:top>
-                    <div>
-                        <v-btn
-                            color="primary"
-                            class="mb-5 elevation-0"
-                            :disabled="!user.subscription"
-                            @click="_addExchange"
-                        >
-                            <v-icon left>
-                                mdi-plus
-                            </v-icon>
-                            Add Exchange
-                        </v-btn>
-                        <Form :id="id" :data="editedItem" :dialog.sync="dialog" />
-                        <v-dialog v-model="dialogDelete" max-width="290px" persistent>
-                            <v-card>
-                                <v-card-title class="headline">
-                                    Delete Confirmation
-                                </v-card-title>
-                                <v-card-text>
-                                    Are you sure you want to delete this admin?
-                                </v-card-text>
-                                <v-card-actions>
-                                    <v-spacer />
-                                    <v-btn color="blue darken-1" text @click="closeDelete">
-                                        Cancel
-                                    </v-btn>
-                                    <v-btn color="blue darken-1" text @click="deleteItemConfirm">
-                                        OK
-                                    </v-btn>
-                                    <v-spacer />
-                                </v-card-actions>
-                            </v-card>
-                        </v-dialog>
-                    </div>
-                </template>
-                <template v-slot:item.actions="{ item }">
-                    <v-icon class="mr-2" @click="editItem(item)">
-                        mdi-cog
-                    </v-icon>
-                    <v-icon @click="deleteItem(item)">
-                        mdi-delete
-                    </v-icon>
-                </template>
-                <template v-slot:no-data>
-                    <p>No record available!</p>
-                </template>
-            </v-data-table>
-        </v-card>
     <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
         {{ snackbarText }}
         <template v-slot:action="{ attrs }">
@@ -142,7 +74,7 @@
 .text-info {
     background: #177e89;
     color: white;
-    border-radius: 15px 5px 15px 5px;
+    border-radius: 10px;
     padding: 13px 10px;
 }
 </style>

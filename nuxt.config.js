@@ -145,8 +145,9 @@ export default {
     }
   },
   env: {
-    SOCKET_URL: process.env.SOCKET_URL,
-    API_URL: process.env.API_URL,
-    SERVER: process.env.SERVER
+    // @todo setup github actions secret with ENV
+    SERVER: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app",
+    API_URL: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app",
+    SOCKET_URL: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app"
   }
 }
