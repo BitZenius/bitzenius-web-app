@@ -1,6 +1,6 @@
 <template>
 <div class="d-flex flex-column align-center">
-    <h3 class="mb-1">Choose the strategy & Amount</h3>
+    <h3 class="mb-1">Choose the Amount</h3>
     <!-- <v-btn small @click="_logger">logger</v-btn> -->
     <v-tooltip right color="success">
         <template v-slot:activator="{ on, attrs }">
@@ -71,13 +71,24 @@
         </template>
         <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
     </v-tooltip>
+    <h3 class="mt-3 pb-0">Choose the Strategy</h3>
     <v-row class="d-flex align-center justify-center pt-0 mt-0" style="width:100%;">
-        <v-col cols="12">
+        <v-col cols="12" class="pt-0">
             <v-list>
-                <v-list-group v-for="(item, i) in styleList" :key="item.name" v-model="item.active" prepend-icon="mdi-circle-outline" no-action>
+                <v-list-group v-for="(item, i) in styleList" :key="item.name" v-model="item.active" no-action>
                     <template v-slot:activator>
                         <v-list-item-content>
-                            <v-list-item-title v-text="item.name"></v-list-item-title>
+                            <!-- :prepend-icon="{(item.yes == true) ? 'mdi-circle-outline' : 'mdi-percent'}" -->
+                            <!-- <v-list-item-title v-text="item.name"></v-list-item-title> -->
+                            <v-list-item-title>
+                                <v-icon class="mr-2" small v-if="strategy.style.name == item.name">
+                                    mdi-check-circle
+                                </v-icon>
+                                <v-icon class="mr-2" small v-else>
+                                    mdi-circle-outline
+                                </v-icon>
+                                <span>{{item.name}}</span>
+                            </v-list-item-title>
                         </v-list-item-content>
                     </template>
                     <v-list-item class="pl-6 pr-0">
@@ -93,8 +104,9 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        <tr v-if="item.name != 'Custom'" class="text-center" v-for="(child, y, key) in item.steps" :key="child.key">
-                                            <td>{{y}}</td>
+
+                                        <tr v-if="item.steps[0]" class="text-center" v-for="(child, y, key) in item.steps" :key="child.key">
+                                            <td>{{y+1}}</td>
                                             <td>
                                                 <span>{{child.drop_rate}}</span>
                                                 <v-icon small slot="append" color="primary">
@@ -112,26 +124,34 @@
                                                 <v-icon small slot="append" color="primary">
                                                     mdi-percent
                                                 </v-icon>
+
                                             </td>
                                         </tr>
-                                        <tr v-else>
-                                            <td>{{y}}</td>
+                                        <tr v-if="item.name == 'Custom' && item.steps.length>0">
+                                            <td style="text-align:center;" colspan="4">
+                                                <v-btn x-small @click="resetRowCustom" class="danger--text">RESET CUSTOM STRATEGY</v-btn>
+                                            </td>
+                                        </tr>
+                                        <tr v-if="item.name == 'Custom'">
+                                            <td v-if="item.name == 'Custom'">
+                                                <v-btn class="success" small @click="addRowCustom(customDrop, customBuy, customProfit)">+</v-btn>
+                                            </td>
                                             <td>
-                                                <v-text-field placeholder="1.2">
+                                                <v-text-field v-model="customDrop" placeholder="1.2">
                                                     <v-icon small slot="append" color="primary">
                                                         mdi-percent
                                                     </v-icon>
                                                 </v-text-field>
                                             </td>
                                             <td>
-                                                <v-text-field placeholder="2">
+                                                <v-text-field v-model="customBuy" placeholder="2">
                                                     <v-icon small slot="append" color="primary">
                                                         mdi-close
                                                     </v-icon>
                                                 </v-text-field>
                                             </td>
                                             <td>
-                                                <v-text-field placeholder="1.1">
+                                                <v-text-field v-model="customProfit" placeholder="1.1">
                                                     <v-icon small slot="append" color="primary">
                                                         mdi-percent
                                                     </v-icon>
@@ -153,7 +173,7 @@
 
 <script>
 export default {
-    props:['selectedStrategy'],
+    props: ['selectedStrategy'],
     data() {
         return {
             strategy: {
@@ -167,6 +187,16 @@ export default {
             applyBalance: 100,
             selectedItem: 1,
             styleList: [],
+            // CUSTOM STRATEGY
+            customDrop: null,
+            customBuy: null,
+            customProfit: null,
+            customStyle: {
+                name: "Custom",
+                active: false,
+                steps: [],
+                key: "E"
+            }
         }
     },
     methods: {
@@ -175,47 +205,50 @@ export default {
             console.log("FETCHING DATA USER BOT");
             let res = await this.$api.$get('/user/formula');
             this.styleList = res.data;
-            this.styleList.push({
-                name: "Custom (ongoing development!)",
-                active: false,
-                steps: [{
-                        step: 1,
-                        drop_rate: 5,
-                        multiplier: 2,
-                        take_profit: 2
-                    },
-                    {
-                        step: 1,
-                        drop_rate: 5,
-                        multiplier: 2,
-                        take_profit: 2
-                    },
-                    {
-                        step: 1,
-                        drop_rate: 5,
-                        multiplier: 2,
-                        take_profit: 2
-                    },
-                    {
-                        step: 1,
-                        drop_rate: 5,
-                        multiplier: 2,
-                        take_profit: 2
-                    },
-                    {
-                        step: 1,
-                        drop_rate: 5,
-                        multiplier: 2,
-                        take_profit: 2
-                    },
-                ]
-            })
+            this.styleList.push(this.customStyle);
+            console.log('styleList', this.styleList)
         },
 
         // TRIGGER
+        addRowCustom(drop, multiplier, profit) {
+            if (!drop || !multiplier || !profit) {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Please don't leave any strategy input empty!",
+                    color: "orange"
+                })
+            } else {
+                let strategy = {};
+                strategy.step = this.customStyle.steps.length
+                strategy.drop_rate = parseFloat(drop);
+                strategy.multiplier = parseFloat(multiplier);
+                strategy.take_profit = parseFloat(profit);
+                this.customStyle.steps.push(strategy);
+                this.customDrop = null;
+                this.customBuy = null;
+                this.customProfit = null;
+                // this.styleList[4] = this.customStyle;
+            }
+        },
+        resetRowCustom() {
+            this.customStyle = {
+                    name: "Custom",
+                    active: true,
+                    steps: [],
+                    key: "E"
+                },
+                this.styleList[4] = this.customStyle;
+            this.$forceUpdate();
+        },
+        removeRowCustom(index) {
+            this.customStyle.steps[index]
+        },
         selectStyle(val) {
             console.log(val);
             this.strategy.style = val;
+            for (let i = 0; i < this.styleList.length; i++) {
+                this.styleList[i].active = false;
+            }
         },
 
         clearData() {
@@ -233,24 +266,28 @@ export default {
         },
 
         async _logger() {
-            console.log(this.styleList);
-            console.log(this.strategy);
-            await this.fetchFormula();
+            console.log('strategy',this.strategy);
+            console.log('styleList', this.styleList)
+            console.log(this.customStyle)
+            
+
+            // await this.fetchFormula
         },
     },
     mounted() {
-        if(this.selectedStrategy){
+        if (this.selectedStrategy) {
             this.strategy = this.selectedStrategy
         }
-
         this.fetchFormula();
     },
     watch: {
         strategy: {
             handler(nv, ov) {
-                nv.usdt_to_apply = parseFloat(nv.usdt_to_apply);
-                nv.usdt_per_order = parseFloat(nv.usdt_per_order);
-                nv.max_concurrent_trading_pair = parseFloat(nv.max_concurrent_trading_pair);
+                console.log('onChange');
+                console.log(nv);
+                nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
+                nv.usdt_per_order = nv.usdt_per_order ? parseFloat(nv.usdt_per_order) : 1;
+                nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair ? parseFloat(nv.max_concurrent_trading_pair) : 1;
                 this.$emit('onSelected', nv);
             },
             deep: true

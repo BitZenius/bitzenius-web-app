@@ -63,17 +63,25 @@ export default {
             paramTemp.exchange_name = this.exchange;
             paramTemp.api_key = this.api_key;
             paramTemp.secret_key = this.secret_key
-            let res = await this.$api.$post("/user/exchange", paramTemp);
-            this.$store.commit('setIsLoading', true);
-            setTimeout(() => {
-                this.$emit('close-modal', false);
+            if (!this.exchange || !this.api_key || !this.secret_key) {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
-                    message: "Successfuly Added New Bot!",
-                    color: "success"
+                    message: "Please fill all requirements needed!",
+                    color: "orange"
                 })
-                this.$store.commit('setIsLoading', false);
-            })
+            } else {
+                let res = await this.$api.$post("/user/exchange", paramTemp);
+                this.$store.commit('setIsLoading', true);
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Successfuly Added New Bot!",
+                        color: "success"
+                    })
+                    this.$store.commit('setIsLoading', false);
+                })
+            }
         },
         async _updateData() {
             // this.$store.commit('setIsLoading', true);

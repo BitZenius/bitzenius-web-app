@@ -21,7 +21,6 @@ export default {
     watch: {
         isLoading: {
             handler(nv, ov) {
-                console.log(arguments);
                 this.loading = nv;
             },
             immediate: true

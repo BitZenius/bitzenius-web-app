@@ -1,6 +1,6 @@
 <template>
 <div class="d-flex flex-column align-center">
-    <h3>Choose Technical Analysis</h3>
+    <h3>Choose First Analysis</h3>
     <!-- <v-btn small @click="logger">logger</v-btn> -->
     <v-row style="width:100%;">
         <v-col cols="8">
@@ -24,6 +24,7 @@
             </v-btn-toggle>
         </v-col>
     </v-row>
+    <h3 class="mt-3">Choose Second Analysis</h3>
     <v-row style="width:100%;">
         <v-col cols="8">
             <v-select v-model="technical.second_analysis.analysis" item-value="id" item-text="name":items="analysisList" label="Choose Analysis" dense outlined></v-select>

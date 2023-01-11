@@ -46,7 +46,7 @@
                         </v-btn>
                     </div> -->
                     <div class="d-flex float-right my-4">
-                        <v-btn color="primary" @click="e1 = 2">
+                        <v-btn color="primary" @click="_continue(2)">
                             Continue
                         </v-btn>
                     </div>
@@ -60,7 +60,7 @@
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
                             Back
                         </v-btn>
-                        <v-btn color="primary" @click="e1 = 3">
+                        <v-btn color="primary" @click="_continue(3)">
                             Continue
                         </v-btn>
                     </div>
@@ -225,6 +225,61 @@ export default {
     methods: {
         ...mapMutations("exchange", ["setSelectedExchange"]),
         // TRIGGER
+        _continue(target) {
+            console.log(target);
+            if (target == 2) {
+                let allowed = false;
+                if (
+                    this.bot.strategy.style.name &&
+                    this.bot.strategy.style.name != 0 &&
+                    this.bot.strategy.usdt_to_apply &&
+                    this.bot.strategy.usdt_to_apply != 0 &&
+                    this.bot.strategy.usdt_per_order &&
+                    this.bot.strategy.usdt_per_order != 0 &&
+                    this.bot.strategy.max_concurrent_trading_pair) {
+                    allowed = true
+                }
+                if (allowed) {
+                    this.e1 = target;
+                } else {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Please fill all requirements needed!",
+                        color: "orange"
+                    })
+                }
+            } else if (target == 3) {
+                let allowed = false;
+                //                 first_analysis: {
+                //     analysis: null
+                // },
+                // second_analysis: {
+                //     analysis: null
+                // },
+                // condition: null,
+                // minimum_trading_volume: null
+                if (
+                    this.bot.analysis.first_analysis.analysis &&
+                    this.bot.analysis.second_analysis.analysis &&
+                    this.bot.analysis.condition &&
+                    this.bot.analysis.minimum_trading_volume) {
+                    allowed = true
+                }
+                if (allowed) {
+                    this.e1 = target;
+                } else {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Please fill all requirements needed!",
+                        color: "orange"
+                    })
+                }
+                console.log(this.bot.analysis);
+            }
+        },
+        loggerContinue() {
+            console.log("loggerContinue", this.bot);
+        },
         onStrategySelected(val) {
             console.log(val);
         },

@@ -49,21 +49,36 @@
                     </v-btn>
                 </template>
             </v-snackbar>
-            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePosition" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait"  disable-sort>
+            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait" disable-sort>
                 <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
+                    <v-row class="mt-1">
+                        <v-col cols="12" md="4">
+                            <v-text-field v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
+                        </v-col>
+                        <!-- <v-col cols="12" md="1">
+                            <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter by Pair" dense outlined></v-select>
+                        </v-col> -->
+                        <v-col cols="6" md="4">
+                            <v-select item-value="id" item-text="name" v-model="sortSelected" :items="availableSorting" label="Sorting By" dense outlined></v-select>
+                        </v-col>
+                        <v-col cols="6" md="4">
+                            <v-btn :class="{success:ascending}" @click="onSortClicked(sortSelected, 'ascending')">
+                                <v-icon>
+                                    mdi-arrow-up-circle
+                                </v-icon>
+                            </v-btn>
+                            <v-btn :class="{success:descending, 'ml-2':true}" @click="onSortClicked(sortSelected, 'descending')">
+                                <v-icon>
+                                    mdi-arrow-down-circle
+                                </v-icon>
+                            </v-btn>
+                            <v-btn class="ml-2" @click="resetFilter()">
+                                Reset
+                            </v-btn>
+                        </v-col>
+                    </v-row>
                     <div>
-                        <v-btn
-                            color="primary"
-                            class="mb-5 elevation-0"
-                            :disabled="!user.subscription"
-                            @click="_addBot"
-                        >
-                            <v-icon left>
-                                mdi-plus
-                            </v-icon>
-                            Add Bot
-                        </v-btn>
                         <v-dialog v-model="dialogDelete" max-width="400px" persistent>
                             <v-card>
                                 <v-card-title class="headline">
@@ -267,7 +282,6 @@ export default {
             pnl: 0,
             dialog: false,
             dialogDelete: false,
-            showAddBot: false,
 
             // ACTIVE POSITIONS
             // MODAL ADD EXCHANGE
@@ -282,7 +296,21 @@ export default {
             socket: null,
 
             // SELECT TO DELETE
-            selectToDelete: null
+            selectToDelete: null,
+
+            // SEARCH
+            searchQuery: null,
+
+            // SORTING
+            availablePair: [],
+            availableSorting: [{
+                id: "symbol",
+                name: "Trading Pair"
+            }],
+            pairSelected: null,
+            sortSelected: null,
+            ascending: false,
+            descending: false
         }
     },
     head() {
@@ -296,6 +324,24 @@ export default {
         },
         user() {
             return this.$store.state.authUser
+        },
+        activePositionFiltered() {
+            let temp = this.activePosition;
+
+            if (this.searchQuery != '' && this.searchQuery) {
+                temp = temp.filter((position) => {
+                    return position.symbol
+                        .toUpperCase()
+                        .includes(this.searchQuery.toUpperCase())
+                })
+            }
+
+            temp.sort((a, b) => {
+                if (a.status > b.status) return 1;
+                if (a.status < b.status) return -1;
+                return 0;
+            });
+            return temp
         }
     },
     watch: {
@@ -309,7 +355,7 @@ export default {
     async mounted() {
         this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
-        this._fetchBotsList();
+        this._fetchBotsList(null);
 
         // START CONNECT TO SOCKET IO
         let token = await this.$store.$fire.auth.currentUser.getIdToken()
@@ -320,16 +366,18 @@ export default {
             }
         });
         let userId = this.$store.state.authUser.uid;
-        this.socket.on('positions', (data) => {
-            this.activePosition = data;
-            this.$store.commit('setIsLoading', false);
-        })
+        this._listenPosition();
         this.socket.on('current_price', (data) => {
             let index = this.activePosition.findIndex(b => b.symbol === data.name);
             this.activePosition[index].price.value = data.priceValue;
             this.activePosition[index].profit.value = data.pnl;
             this.activePosition[index].profit.percentage = data.pnlPercentage;
             this.activePosition[index].quantity = data.quantity;
+            this.activePosition.sort((a, b) => {
+                if (a.pnl > b.pnl) return 1;
+                if (a.pnl < b.pnl) return -1;
+                return 0;
+            });
         })
         // END OF CONNECT TO SOCKET IO
     },
@@ -341,16 +389,30 @@ export default {
     methods: {
         ...mapActions("position", ["fetchPosition"]),
 
+        test() {
+            this.activePosition.sort((a, b) => {
+                return a.profit.value - b.profit.value;
+            })
+        },
         async _disconnectSocket() {
             console.log("disconnect");
             this.$socket.removeAllListeners("position");
         },
         //FETCH API
-        async _fetchBotsList() {
+        async _listenPosition() {
+            this.socket.on('positions', (data) => {
+                this.$store.commit('setIsLoading', true);
+                this.activePosition = data.data;
+                this.availablePair = data.pairs;
+                this.$store.commit('setIsLoading', false);
+            })
+        },
+        async _fetchBotsList(sorting) {
             let res = await this.$api.$get('/user/bot');
             let userExchanges = res.data;
             if (userExchanges) {
                 userExchanges.forEach((exchange) => {
+                    // LOGIC GET CHANGE FROM BINANCE
                     let exchangeIndex = this.exchanges.findIndex(e => e.name == exchange.selected_exchange);
                     this.exchanges[exchangeIndex].data = exchange;
                     this.exchanges[exchangeIndex].active = true;
@@ -366,13 +428,22 @@ export default {
                     break;
                 }
             }
-            if(!isAnyData) this.$store.commit('setIsLoading', false);
+            if (!isAnyData) this.$store.commit('setIsLoading', false);
+        },
+        async _fetchPosition(sorting) {
+            let exchange = this.selectedExchangeReport;
+            let symbol = this.pairSelected;
+            this.socket.emit("fetch-position", {
+                exchange: exchange,
+                symbol: symbol,
+                sorting: sorting
+            });
         },
 
         // LISTENER
         closeModal(val) {
             this.showAddBot = val;
-            this._fetchBotsList();
+            this._fetchBotsList(null);
         },
         // END OF LISTENER
 
@@ -395,15 +466,36 @@ export default {
 
             // RE-FETCH LIST
             this.$store.commit('setIsLoading', true);
-            this.socket.emit("fetch-position", {
-                exchange: val
-            });
+            this._fetchPosition();
+        },
+        onPairSelected(pair) {
+            this._fetchPosition();
+        },
+        onSortClicked(by, dest) {
+            if (dest == 'ascending') {
+                this.descending = false;
+                this.ascending = true;
+            } else {
+                this.descending = true;
+                this.ascending = false;
+            }
+            if (!by) alert("Please, select atleast one sorting by")
+            let sort = {};
+            sort[by] = dest;
+            this._fetchPosition(sort);
         },
         _onSelectPair(val) {
             this.selectedPair = val;
             this.showActivePosition = true;
         },
-
+        resetFilter() {
+            this.descending = false;
+            this.ascending = false;
+            this.sortSelected = false;
+            this.pairSelected = null;
+            this.searchQuery = null;
+            this._fetchPosition();
+        },
         _addBot(val) {
             this.$store.commit('exchange/setSelectedExchange', val.name);
             this.selectedExchange = val.name;
