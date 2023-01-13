@@ -239,7 +239,7 @@ export default {
             console.log(this.chartData.series[0].data);
             this.chartData.options.xaxis.categories = res.categories;
             this.chartData.series[0].data = res.series;
-            this.$forceUpdate();
+            this.showChart = true;
         },
         async _fetchDailyDeals() {
             let res = await this.$api.$get('/user/deal', {
@@ -261,7 +261,6 @@ export default {
         this._fetchDailyDeals();
         setTimeout(() => {
             this.$store.commit('setIsLoading', false);
-            this.showChart = true;
         }, 500)
     }
 }
