@@ -233,15 +233,13 @@ export default {
     },
     methods: {
         // FETCH API
-        async test() {
-            return "HELLO WORLD"
-        },
         async _fetchChart() {
             let res = await this.$api.$get('/user/chart');
             console.log(this.chartData.options.xaxis.categories);
             console.log(this.chartData.series[0].data);
             this.chartData.options.xaxis.categories = res.categories;
             this.chartData.series[0].data = res.series;
+            this.$forceUpdate();
         },
         async _fetchDailyDeals() {
             let res = await this.$api.$get('/user/deal', {
