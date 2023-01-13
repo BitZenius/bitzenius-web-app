@@ -24,7 +24,7 @@
         <template v-slot:activator="{ on, attrs }">
             <v-row v-bind="attrs" v-on="on" class="d-flex align-center justify-center" style="width:100%;">
                 <v-col cols="7" md="7">
-                    <v-text-field number dense class="mt-2" v-model="strategy.usdt_per_order" label="USDT Per Order" outlined></v-text-field>
+                    <v-text-field ref="usdt_per_order" @blur="onUsdtPerOrderChanged(strategy.usdt_per_order)" number dense class="mt-2" v-model="strategy.usdt_per_order" label="USDT Per Order" outlined></v-text-field>
                 </v-col>
                 <v-col v-bind="attrs" v-on="on" cols="5" md="5" class="mx-0">
                     <v-chip class="d-flex align-center justify-center" color="primary" label text-color="white">
@@ -93,6 +93,7 @@
                     </template>
                     <v-list-item class="pl-6 pr-0">
                         <v-list-item-content>
+                            <v-btn color="primary" @click="selectStyle(item)">Select Style</v-btn>
                             <v-simple-table dense>
                                 <template>
                                     <thead>
@@ -210,6 +211,21 @@ export default {
         },
 
         // TRIGGER
+        onUsdtPerOrderChanged(value) {
+            let usdtValue = parseFloat(value);
+            if (usdtValue < 15) {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "USDT Per Order Cannot Be Under 15!",
+                    color: "orange"
+                })
+
+                setTimeout(() => {
+                    this.strategy.usdt_per_order = 15;
+                    this.$refs.usdt_per_order.focus();
+                })
+            }
+        },
         addRowCustom(drop, multiplier, profit) {
             if (!drop || !multiplier || !profit) {
                 this.$store.commit('setShowSnackbar', {
@@ -266,10 +282,9 @@ export default {
         },
 
         async _logger() {
-            console.log('strategy',this.strategy);
+            console.log('strategy', this.strategy);
             console.log('styleList', this.styleList)
             console.log(this.customStyle)
-            
 
             // await this.fetchFormula
         },
@@ -283,8 +298,7 @@ export default {
     watch: {
         strategy: {
             handler(nv, ov) {
-                console.log('onChange');
-                console.log(nv);
+                console.log('nv.usdt_per_order', nv.usdt_per_order);
                 nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
                 nv.usdt_per_order = nv.usdt_per_order ? parseFloat(nv.usdt_per_order) : 1;
                 nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair ? parseFloat(nv.max_concurrent_trading_pair) : 1;

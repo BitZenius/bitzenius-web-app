@@ -33,6 +33,8 @@
                             </div>
                         </div>
                     </v-col>
+                </v-row>
+                <v-row>
                     <v-col cols="12" class="pt-0 mb-7">
                         <v-divider class="pb-2" />
                         <v-row>
@@ -80,6 +82,14 @@
                                         <span>Enable Two-Factor Authentication</span>
                                     </v-btn>
                                 </v-col>
+                                <v-col cols="12" class="d-flex justify-end px-5">
+                                    <a style="width:100%;" target="#" :href="telegramBotUrl">
+                                        <v-btn color="#799eab" class="white--text" style="height:54px; width:100%;">
+                                            <img class="mr-3" style="width:1.5rem;" src="/logo/telegram.png" alt="" />
+                                            <span>Connect Telegram Bot</span>
+                                        </v-btn>
+                                    </a>
+                                </v-col>
                             </v-row>
                         </div>
                     </v-col>
@@ -92,6 +102,19 @@
     </v-row>
 </div>
 </template>
+
+<style scoped>
+a {
+    color: #0060B6;
+    text-decoration: none;
+}
+
+a:hover {
+    color: #00A0C6;
+    text-decoration: none;
+    cursor: pointer;
+}
+</style>
 
 <script>
 export default {
@@ -109,7 +132,8 @@ export default {
             country: "Lorem",
             showBotAlert: false,
             showTestingModal: false,
-            showEnableTwoFactorModal: false
+            showEnableTwoFactorModal: false,
+            telegramBotUrl: 'https://t.me/'
         }
     },
     head() {
@@ -134,12 +158,31 @@ export default {
         closeModal() {
             alert('closed');
             this.showTestingModal = false;
+        },
+        generateBotUrl() {
+            this.telegramBotUrl += process.env.BOT_ID;
+            this.telegramBotUrl += '?start=';
+            this.telegramBotUrl += this.user.uid;
+        }
+    },
+    computed: {
+        // this.$store.state.authUser
+        user() {
+            return this.$store.state.authUser;
+        },
+        userToken(){
+            return this.$store.state.token;
         }
     },
     mounted() {
         this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title);
         this.$store.commit('setIsLoading', false);
+        console.log("SERVER", process.env.SERVER);
+        console.log("BOT_ID", process.env.BOT_ID);
+        console.log("USER", this.user);
+        console.log("TOKEN", this.$store.state.token);
+        this.generateBotUrl();
     }
 }
 </script>

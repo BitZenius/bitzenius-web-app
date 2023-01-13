@@ -13,7 +13,7 @@
             <CardProfit />
         </v-col>
         <v-col cols="12" md="4">
-            <CardDeals />
+            <CardDeals :deal="deal" />
         </v-col>
     </v-row>
     <v-row>
@@ -25,7 +25,7 @@
         <v-col cols="12" md="12">
             <v-card class="pa-2" elevation="8">
                 <v-sheet class="text-h6 font-weight-bold ma-4">
-                    Profit Revenue
+                    Daily Profit Revenue
                 </v-sheet>
                 <apexchart v-if="showChart" height="300" type="bar" :options="chartData.options" :series="chartData.series"></apexchart>
             </v-card>
@@ -176,8 +176,8 @@ export default {
                 data: [30, 40, 35, 50, 49, 60, 70, 91]
             }],
             e1: 1,
-            showChart:false,
-
+            showChart: false,
+            deal: 0,
             // STEPPER VARIABLES
             applyBalance: 100,
             selectedItem: 1,
@@ -226,10 +226,29 @@ export default {
                     colors: this.$store.getters.theme == 'dark' ? '#49b5b2' : '#17576a'
                 },
                 series: [{
-                    name: 'series-1',
+                    name: 'PnL',
                     data: [30, 40, 35, 50, 49, 60, 70, 91]
                 }]
             }
+        }
+    },
+    methods: {
+        // FETCH API
+        async _fetchChart() {
+            let res = await this.$api.$get('/user/chart');
+            console.log(this.chartData.options.xaxis.categories);
+            console.log(this.chartData.series[0].data);
+            this.chartData.options.xaxis.categories = res.categories;
+            this.chartData.series[0].data = res.series;
+        },
+        async _fetchDailyDeals() {
+            let res = await this.$api.$get('/user/deal', {
+                params:{
+                    range:'daily'
+                }
+            });
+            this.deal = res.data.trades;
+            console.log('dailyDeals', res);
         }
     },
     beforeMount() {
@@ -238,6 +257,8 @@ export default {
     mounted() {
         console.log(this.$store.getters.theme);
         this.$store.commit('setTitle', this.title);
+        this._fetchChart();
+        this._fetchDailyDeals();
         setTimeout(() => {
             this.$store.commit('setIsLoading', false);
             this.showChart = true;

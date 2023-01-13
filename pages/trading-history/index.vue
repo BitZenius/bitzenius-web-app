@@ -11,14 +11,30 @@
                 <v-tabs-items v-model="currentItem">
                     <v-tab-item v-for="item in tables" :key="item">
                         <v-row class="mt-1">
-                            <v-col cols="12" md="4">
-                                <v-text-field v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
+                            <v-col cols="12" md="3">
+                                <v-menu ref="menu" v-model="menu" :close-on-content-click="false" :return-value.sync="date" transition="scale-transition" offset-y min-width="auto">
+                                    <template v-slot:activator="{ on, attrs }">
+                                        <v-text-field v-model="dateRangeText" label="Date Range Picker" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
+                                    </template>
+                                    <v-date-picker v-model="dates" range no-title scrollable>
+                                        <v-spacer></v-spacer>
+                                        <v-btn text color="primary" @click="menu = false">
+                                            Cancel
+                                        </v-btn>
+                                        <v-btn text color="primary" @click="onDateChanged(dates)">
+                                            OK
+                                        </v-btn>
+                                    </v-date-picker>
+                                </v-menu>
+                            </v-col>
+                            <v-col cols="12" md="3">
+                                <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
                                 <!-- <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter by Pair" dense outlined></v-select> -->
                             </v-col>
-                            <v-col cols="6" md="4">
+                            <v-col cols="6" md="3">
                                 <v-select item-value="id" item-text="name" v-model="sortSelected" :items="availableSorting" label="Sorting By" dense outlined></v-select>
                             </v-col>
-                            <v-col cols="6" md="4">
+                            <v-col cols="6" md="3">
                                 <v-btn :class="{success:ascending}" @click="onSortClicked(sortSelected, 'ascending')">
                                     <v-icon>
                                         mdi-arrow-up-circle
@@ -34,7 +50,7 @@
                                 </v-btn>
                             </v-col>
                         </v-row>
-                        <v-data-table v-if="item == 'Trading Report'" :headers="tradingHeaders" :items="tradingItemsFiltered" :page="lastPage" class="elevation-2 my-2">
+                        <v-data-table v-if="item == 'Trading Report'" :headers="tradingHeaders" :items="tradingItemsFiltered" class="elevation-2 my-2" disable-sort>
                             <template v-slot:item.pair="{item}">
                                 <v-row>
                                     <v-col cols="12" class="d-flex align-center justify-start">
@@ -49,10 +65,10 @@
                                 </v-row>
                             </template>
                             <template v-slot:item.type="{item}">
-                                <v-chip small v-if="item.type == 'buy'" color="success">
+                                <v-chip small v-if="item.type == 'buy'" color="info">
                                     {{item.type.toUpperCase()}}
                                 </v-chip>
-                                <v-chip small v-else color="danger" class="white--text">
+                                <v-chip small v-else color="orange" class="white--text">
                                     {{item.type.toUpperCase()}}
                                 </v-chip>
                             </template>
@@ -71,14 +87,17 @@
                                     </div>
                                     <div v-else class="d-flex flex-column">
                                         <small>{{item.type.toUpperCase() == 'SELL' ? 'PnL' : null}}</small>
-                                        <span style="font-weight:bold;">
+                                        <span v-if="parseFloat(item.desc) > 0" class="success--text" style="font-weight:bold;">
+                                            {{item.desc | currency}}
+                                        </span>
+                                        <span v-else class="danger--text">
                                             {{item.desc}}
                                         </span>
                                     </div>
-                                    <!-- <v-chip small v-if="item.type == 'sell'" color="info">
-                                        Profit - {{item.desc}}
-                                    </v-chip> -->
                                 </div>
+                            </template>
+                            <template v-slot:item.price="{item}">
+                                {{item.price |currency}}
                             </template>
                         </v-data-table>
                         <template v-slot:item.amount="{item}">
@@ -105,34 +124,6 @@ export default {
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in',
             title: 'Transaction Report',
             showClaimRewardModal: false,
-            referralTableHeaders: [{
-                    text: "Title",
-                    align: "start",
-                    value: "title"
-                },
-                {
-                    text: "Value",
-                    align: "start",
-                    value: "value",
-                    cellClass: "font-weight-bold"
-                },
-            ],
-            referralItems: [{
-                    title: 'Total Deposit',
-                    value: '$1000',
-                    type: 'money'
-                },
-                {
-                    title: 'Total Profit',
-                    value: '$1200',
-                    type: 'money'
-                },
-                {
-                    title: 'Total Referral Reward',
-                    value: "$120",
-                    type: 'money'
-                }
-            ],
             // ID, Type, Date, Profit, Price, Qty
             tradingHeaders: [{
                     text: "Pair",
@@ -193,6 +184,12 @@ export default {
             ],
             refferalId: "123XYZ",
 
+            // DATERANGE
+            dates: [],
+            date: (new Date(Date.now() - (new Date()).getTimezoneOffset() * 60000)).toISOString().substr(0, 10),
+            menu: false,
+            modal: false,
+            menu2: false,
             // SEARCHING
             searchQuery: null,
             // SORTING PURPOSE
@@ -231,35 +228,23 @@ export default {
                         .includes(this.searchQuery.toUpperCase())
                 })
             }
-
-            // page*limit - length.array
-            // let loopEmpty = 
-            // for (let i = 0; i < 9; i++) {
-            //     temp.push({
-            //         date: "2023-01-07T10:47:15.670Z",
-            //         desc: 0,
-            //         id: "63b94db42fca3876ec2dbadc",
-            //         logo: null,
-            //         pair: "LDO / USDT",
-            //         price: "1.4940",
-            //         qty: "10.0200",
-            //         type: "buy"
-            //     });
-            // }
             return temp
         },
         lastPage() {
             return Math.ceil(this.tradingItemsFiltered.length / 10);
-        }
+        },
+        dateRangeText() {
+            return this.dates.join(' - ')
+        },
     },
     mounted() {
         this.$store.commit('setTitle', this.title)
         this._fetchReport(null);
         if (!this.sortSelected) {
             this.sortSelected = this.availableSorting[1].id;
-            this.ascending = true;
+            this.descending = true;
             this._fetchReport({
-                created_at: 'ascending'
+                created_at: 'descending'
             });
         }
     },
@@ -275,6 +260,11 @@ export default {
                 tempParams.sorting = sorting;
             }
 
+            if (this.dates.length > 0){
+                console.log(this.dates);
+                tempParams.dates = this.dates;
+            }
+
             let res = await this.$api.$get('/user/trading-history', {
                 params: tempParams
             });
@@ -283,6 +273,10 @@ export default {
             this.$store.commit('setIsLoading', false);
         },
         // TRIGGER
+        onDateChanged(dates) {
+            let sort = {};
+            this._fetchReport()
+        },
         onPairSelected(pair) {
             this._fetchReport(null);
         },
@@ -304,6 +298,7 @@ export default {
             this.ascending = false;
             this.pairSelected = null;
             this.searchQuery = null;
+            this.dates = [];
             this._fetchReport(null);
         },
         closeModal() {

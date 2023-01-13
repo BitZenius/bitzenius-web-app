@@ -1,6 +1,7 @@
 export const state = () => ({
   title: 'BitZenius',
   authUser: null,
+  token:null,
   theme: 'dark',
   isLoading: false,
   snackbar: {
@@ -31,6 +32,9 @@ export const mutations = {
     } else {
       state.authUser = null
     }
+  },
+  setToken(state, token) {
+    state.token = token;
   },
   setUser (state, user) {
     state.authUser = {

@@ -148,6 +148,7 @@ export default {
     // @todo setup github actions secret with ENV
     SERVER: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app",
     API_URL: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app",
-    SOCKET_URL: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app"
+    SOCKET_URL: process.env.SERVER ? process.env.SERVER : "https://bitzenius-rest-server-dev-onhwa.ondigitalocean.app",
+    BOT_ID: process.env.BOT_ID
   }
 }
