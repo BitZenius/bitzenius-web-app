@@ -172,7 +172,7 @@ export default {
             // CHART
             title: 'Dashboard',
             series: [{
-                name: 'series-1',
+                name: 'PnL',
                 data: [30, 40, 35, 50, 49, 60, 70, 91]
             }],
             e1: 1,
@@ -202,23 +202,14 @@ export default {
                     icon: "mdi-information"
                 },
             ],
-        }
-    },
-    head() {
-        return {
-            title: this.title
-        }
-    },
-    computed: {
-        chartData() {
-            return {
+            chartData: {
                 options: {
                     chart: {
                         id: 'vuechart-example',
                         background: '0'
                     },
                     xaxis: {
-                        categories: [1991, 1992, 1993, 1994, 1995, 1996, 1997, 1998]
+                        categories: []
                     },
                     theme: {
                         mode: this.$store.getters.theme
@@ -227,13 +218,24 @@ export default {
                 },
                 series: [{
                     name: 'PnL',
-                    data: [30, 40, 35, 50, 49, 60, 70, 91]
+                    data: []
                 }]
             }
         }
     },
+    head() {
+        return {
+            title: this.title
+        }
+    },
+    computed: {
+
+    },
     methods: {
         // FETCH API
+        async test() {
+            return "HELLO WORLD"
+        },
         async _fetchChart() {
             let res = await this.$api.$get('/user/chart');
             console.log(this.chartData.options.xaxis.categories);
@@ -243,8 +245,8 @@ export default {
         },
         async _fetchDailyDeals() {
             let res = await this.$api.$get('/user/deal', {
-                params:{
-                    range:'daily'
+                params: {
+                    range: 'daily'
                 }
             });
             this.deal = res.data.trades;
