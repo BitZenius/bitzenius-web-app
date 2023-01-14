@@ -28,8 +28,8 @@
                     </v-col>
                     <v-col cols="12" class="d-flex flex-column justify-start align-center pt-0 pb-10">
                         <h4>{{exchange.name}}</h4>
-                        <v-btn v-if="exchange.active" small class="primary" @click="_addExchange(exchange)">Edit Exchange</v-btn>
-                        <v-btn v-else class="default" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-if="exchange.active" small class="primary" @click="_addExchange(exchange)">Edit Exchange</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="default" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
                     </v-col>
                 </v-row>
                 <span class="updated-label" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
@@ -184,7 +184,7 @@ export default {
         }
     },
     mounted() {
-        console.log('moment', this.$moment(new Date).format('DD/MM/YYYY'));
+        console.log("USER!!", this.user);
         this.$store.commit('setIsLoading', true);
         this._fetchExchanges()
         this.$store.commit('setTitle', this.title)

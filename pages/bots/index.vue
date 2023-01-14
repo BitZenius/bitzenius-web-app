@@ -30,9 +30,9 @@
                     <v-col sm="12" md="8" class="d-flex flex-column justify-center align-center">
                         <h4>{{exchange.name}}</h4>
                         <div v-if="exchange.active" class="d-flex justify-center">
-                            <v-btn small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
+                            <v-btn :disabled="!user.subscription || user.subscription == false" small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
                         </div>
-                        <v-btn v-else class="default" small @click="_addBot(exchange)">Setup Bot</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="default" small @click="_addBot(exchange)">Setup Bot</v-btn>
                     </v-col>
                 </v-row>
 
@@ -353,6 +353,7 @@ export default {
         }
     },
     async mounted() {
+        console.log("USER!!", this.user);
         this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
         this._fetchBotsList(null);

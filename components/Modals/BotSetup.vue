@@ -102,10 +102,10 @@
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 3" text>
                             Back
                         </v-btn>
-                        <v-btn v-if="!isUpdateMode" color="primary" @click="_submitBotSetup(isUpdateMode)">
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-if="!isUpdateMode" color="primary" @click="_submitBotSetup(isUpdateMode)">
                             Submit
                         </v-btn>
-                        <v-btn v-else color="success" @click="_submitBotSetup(isUpdateMode)">
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else color="success" @click="_submitBotSetup(isUpdateMode)">
                             Update
                         </v-btn>
                     </div>
@@ -220,6 +220,11 @@ export default {
             // PROPS FOR COMPONENTS
             showStrategySetup: false,
             showTechnicalAnalysis: false
+        }
+    },
+    computed:{
+        user() {
+            return this.$store.state.authUser
         }
     },
     methods: {
@@ -380,9 +385,18 @@ export default {
             })
         },
         async _submitBotSetup(isUpdateMode) {
+            if(!this.user.subscription){
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "You haven't subsrcibe to any plan",
+                    color: "orange"
+                })
+                return;
+            }
             let paramTemp = {
                 ...this.bot
             };
+
             let analysis = {};
             analysis.condition = this.bot.analysis.condition;
             analysis.minimum_trading_volume = this.bot.analysis.minimum_trading_volume;

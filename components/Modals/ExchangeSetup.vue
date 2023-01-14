@@ -28,10 +28,10 @@
         <v-btn color="blue darken-1" class="mr-2" text @click="closeModal">
             Cancel
         </v-btn>
-        <v-btn v-if="!data" color="primary" @click="_save">
+        <v-btn v-if="!data" :disabled="!user.subscription || user.subscription == false" color="primary" @click="_save">
             Save
         </v-btn>
-        <v-btn v-else color="success" @click="_updateData">
+        <v-btn v-else :disabled="!user.subscription || user.subscription == false" color="success" @click="_updateData">
             Update
         </v-btn>
     </v-card-actions>
@@ -49,6 +49,11 @@ export default {
             // exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
         }
     },
+    computed:{
+        user() {
+            return this.$store.state.authUser
+        },
+    },
     methods: {
         // TRIGGER
         closeModal() {
@@ -58,6 +63,15 @@ export default {
             console.log(this.exchange);
         },
         async _save() {
+            if(!this.user.subscription){
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "You haven't subsrcibe to any plan",
+                    color: "orange"
+                })
+                return;
+            }
+            this.$store.commit('setIsLoading', true);
             let paramTemp = {};
             paramTemp.title = this.name;
             paramTemp.exchange_name = this.exchange;
@@ -70,45 +84,94 @@ export default {
                     color: "orange"
                 })
             } else {
-                let res = await this.$api.$post("/user/exchange", paramTemp);
-                this.$store.commit('setIsLoading', true);
-                setTimeout(() => {
-                    this.$emit('close-modal', false);
+                console.log(paramTemp);
+                try {
+                    let validateExchangeKey = await this.$api.$post("/user/validate-user-exchange", paramTemp);
+                    if(validateExchangeKey.success){
+                        this.$store.commit('setShowSnackbar', {
+                            show: true,
+                            message: "Your api key and secret key are valid!",
+                            color: "success"
+                        })
+                        let res = await this.$api.$post("/user/exchange", paramTemp);
+                        this.$store.commit('setIsLoading', true);
+                        setTimeout(() => {
+                            this.$emit('close-modal', false);
+                            this.$store.commit('setShowSnackbar', {
+                                show: true,
+                                message: "Successfuly Added New Bot!",
+                                color: "success"
+                            })
+                            this.$store.commit('setIsLoading', false);
+                        })
+                    }
+                } catch (error) {
+                    console.log(error.message)
                     this.$store.commit('setShowSnackbar', {
                         show: true,
-                        message: "Successfuly Added New Bot!",
-                        color: "success"
+                        message: "Please insert valid api key and secret key",
+                        color: "orange"
                     })
-                    this.$store.commit('setIsLoading', false);
-                })
+                }
             }
         },
         async _updateData() {
-            // this.$store.commit('setIsLoading', true);
+            if(!this.user.subscription){
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "You haven't subsrcibe to any plan",
+                    color: "orange"
+                })
+                return;
+            }
+            this.$store.commit('setIsLoading', true);
             let paramTemp = {};
             paramTemp.api_key = this.api_key;
             paramTemp.secret_key = this.secret_key;
             paramTemp.title = this.exchange;
-            console.log(paramTemp)
-            let res = await this.$api.$put("/user/exchange", paramTemp, {
-                params: {
-                    id: this.data.id
-                }
-            });
-            setTimeout(() => {
-                this.$emit('close-modal', false);
-                if (res.ok) {
+            if (!this.exchange || !this.api_key || !this.secret_key) {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Please fill all requirements needed!",
+                    color: "orange"
+                })
+            } else {
+                console.log(paramTemp);
+                try {
+                    let validateExchangeKey = await this.$api.$post("/user/validate-user-exchange", paramTemp);
+                    if(validateExchangeKey.success){
+                        this.$store.commit('setShowSnackbar', {
+                            show: true,
+                            message: "Your api key and secret key are valid!",
+                            color: "success"
+                        });
+                        let res = await this.$api.$put("/user/exchange", paramTemp, {
+                            params: {
+                                id: this.data.id
+                            }
+                        });
+                        setTimeout(() => {
+                            this.$emit('close-modal', false);
+                            if (res.ok) {
+                                this.$store.commit('setShowSnackbar', {
+                                    show: true,
+                                    message: "Successfuly Updated!",
+                                    color: "success"
+                                })
+                                this.$store.commit('setIsLoading', false);
+                            } else {
+                            }
+                        })
+                    }
+                } catch (error) {
+                    console.log(error.message)
                     this.$store.commit('setShowSnackbar', {
                         show: true,
-                        message: "Successfuly Updated!",
-                        color: "success"
+                        message: "Please insert valid api key and secret key",
+                        color: "orange"
                     })
-                    this.$store.commit('setIsLoading', false);
-                } else {
-
                 }
-
-            })
+            }
         }
     }
 }
