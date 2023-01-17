@@ -31,7 +31,7 @@
                                 <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
                                 <!-- <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter by Pair" dense outlined></v-select> -->
                             </v-col>
-                            <v-col cols="6" md="3">
+                            <!-- <v-col cols="6" md="3">
                                 <v-select item-value="id" item-text="name" v-model="sortSelected" :items="availableSorting" label="Sorting By" dense outlined></v-select>
                             </v-col>
                             <v-col cols="6" md="3">
@@ -48,9 +48,9 @@
                                 <v-btn class="ml-2" @click="resetFilter()">
                                     Reset
                                 </v-btn>
-                            </v-col>
+                            </v-col> -->
                         </v-row>
-                        <v-data-table v-if="item == 'Trading Report'" :headers="tradingHeaders" :items="tradingItemsFiltered" class="elevation-2 my-2" disable-sort>
+                        <v-data-table v-if="item == 'Trading Report' && showTradingHistory" :headers="tradingHeaders" :items="tradingItemsFiltered" class="elevation-2 my-2">
                             <template v-slot:item.pair="{item}">
                                 <v-row>
                                     <v-col cols="12" class="d-flex align-center justify-start">
@@ -183,6 +183,8 @@ export default {
                 }
             ],
             refferalId: "123XYZ",
+            // TABLE
+            showTradingHistory:false,
 
             // DATERANGE
             dates: [],
@@ -246,6 +248,7 @@ export default {
             this._fetchReport({
                 created_at: 'descending'
             });
+            this.showTradingHistory = true;
         }
     },
     methods: {

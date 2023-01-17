@@ -2,7 +2,6 @@
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
         Transaction
-        <v-btn @click="logger">logger</v-btn>
     </v-card-title>
     <v-card-text class="my-3">
         <v-row class="mx-2">

@@ -158,6 +158,9 @@
                                                     </v-icon>
                                                 </v-text-field>
                                             </td>
+                                            <td>
+                                                v-
+                                            </td>
                                         </tr>
                                     </tbody>
                                 </template>

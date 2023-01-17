@@ -49,17 +49,17 @@
                     </v-btn>
                 </template>
             </v-snackbar>
-            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait" disable-sort>
+            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
                 <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
                     <v-row class="mt-1">
                         <v-col cols="12" md="4">
-                            <v-text-field v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
+                            <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
                         </v-col>
                         <!-- <v-col cols="12" md="1">
                             <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter by Pair" dense outlined></v-select>
                         </v-col> -->
-                        <v-col cols="6" md="4">
+                        <!-- <v-col cols="6" md="4">
                             <v-select item-value="id" item-text="name" v-model="sortSelected" :items="availableSorting" label="Sorting By" dense outlined></v-select>
                         </v-col>
                         <v-col cols="6" md="4">
@@ -76,7 +76,7 @@
                             <v-btn class="ml-2" @click="resetFilter()">
                                 Reset
                             </v-btn>
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                     <div>
                         <v-dialog v-model="dialogDelete" max-width="400px" persistent>
@@ -485,7 +485,14 @@ export default {
             sort[by] = dest;
             this._fetchPosition(sort);
         },
-        _onSelectPair(val) {
+        async _onSelectPair(val) {
+            console.log('selectedPair', val);
+            let res = await this.$api.$get('/user/active-position-detail', {
+                params: {
+                    id: val._id
+                }
+            });
+            console.log('resSelectPair', res);
             this.selectedPair = val;
             this.showActivePosition = true;
         },
