@@ -49,13 +49,16 @@
                     </v-btn>
                 </template>
             </v-snackbar>
-            <v-data-table @click:row="_onSelectPair" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
+            <v-data-table @click:row="_onSelectPair" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
                 <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
                     <v-row class="mt-1">
                         <v-col cols="12" md="4">
                             <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
                         </v-col>
+                        <!-- <v-col cols="12" md="4">
+                            <v-btn @click="_sort">SORT</v-btn>
+                        </v-col> -->
                         <!-- <v-col cols="12" md="1">
                             <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter by Pair" dense outlined></v-select>
                         </v-col> -->
@@ -132,7 +135,7 @@
                 </template>
                 <template v-slot:item.profit="{item}">
                     <div class="d-flex flex-column align-center justify-center">
-                        <!-- <code>{{item.profit}}</code> -->
+                        <!-- <code>{{item.status}}</code> -->
                         <strong class="danger--text" v-if="item.status == 'Active' && parseFloat(item.profit.percentage) < 0">{{item.profit.percentage}}%</strong>
                         <strong class="success--text" v-if="item.status == 'Active' && parseFloat(item.profit.percentage) > 0">{{item.profit.percentage}}%</strong>
                         <strong class="primary--text" v-if="item.status == 'Inactive' || parseFloat(item.profit.percentage) == 0">0%</strong>
@@ -142,8 +145,17 @@
                     </div>
                 </template>
                 <template v-slot:item.status="{ item }">
-                    <v-chip small :color="item.status == 'Active' ? 'success' : 'grey'" dark label>
-                        {{ item.status }}
+                    <v-chip v-if="item.status == 'WAITING_POSITION'" small color="orange" dark label>
+                        Waiting for Position
+                    </v-chip>
+                    <v-chip v-if="item.status == 'ACTIVE'" small color="success" dark label>
+                        Active
+                    </v-chip>
+                    <v-chip v-if="item.status == 'INACTIVE'" small color="grey" dark label>
+                        Inactive
+                    </v-chip>
+                    <v-chip v-if="item.status == 'BLACKLISTED'" small color="red" dark label>
+                        Blacklisted
                     </v-chip>
                 </template>
                 <template v-slot:no-data>
@@ -302,6 +314,8 @@ export default {
             searchQuery: null,
 
             // SORTING
+            sortBy: null,
+            sortDesc: null,
             availablePair: [],
             availableSorting: [{
                 id: "symbol",
@@ -327,7 +341,6 @@ export default {
         },
         activePositionFiltered() {
             let temp = this.activePosition;
-
             if (this.searchQuery != '' && this.searchQuery) {
                 temp = temp.filter((position) => {
                     return position.symbol
@@ -336,11 +349,29 @@ export default {
                 })
             }
 
-            temp.sort((a, b) => {
-                if (a.status > b.status) return 1;
-                if (a.status < b.status) return -1;
-                return 0;
-            });
+            if (this.sortBy) {
+                if (this.sortBy == 'pair') {
+                    // sortBy = 'symbol'
+                    temp = this.sortDesc ? temp.sort((a, b) => (a.symbol > b.symbol) ? 1 : ((b.symbol > a.symbol) ? -1 : 0)) : temp.sort((a, b) => (a.symbol < b.symbol) ? 1 : ((b.symbol < a.symbol) ? -1 : 0))
+                } else if (this.sortBy == 'price') {
+                    temp = this.sortDesc ? temp.sort((a, b) => (a.price.value > b.price.value) ? 1 : ((b.price.value > a.price.value) ? -1 : 0)) : temp.sort((a, b) => (a.price.value < b.price.value) ? 1 : ((b.price.value < a.price.value) ? -1 : 0))
+                } else if (this.sortBy == 'profit') {
+                    temp = this.sortDesc ? temp.sort((a, b) => (a.profit.value > b.profit.value) ? 1 : ((b.profit.value > a.profit.value) ? -1 : 0)) : temp.sort((a, b) => (a.profit.value < b.profit.value) ? 1 : ((b.profit.value < a.profit.value) ? -1 : 0))
+                } else {
+                    temp.sort((a, b) => {
+                        if (a.status > b.status) return 1;
+                        if (a.status < b.status) return -1;
+                        return 0;
+                    });
+                }
+            } else {
+                temp.sort((a, b) => {
+                    if (a.status > b.status) return 1;
+                    if (a.status < b.status) return -1;
+                    return 0;
+                });
+            }
+
             return temp
         }
     },
@@ -389,7 +420,9 @@ export default {
     },
     methods: {
         ...mapActions("position", ["fetchPosition"]),
-
+        _sort() {
+            console.log(this.activePositionFiltered);
+        },
         test() {
             this.activePosition.sort((a, b) => {
                 return a.profit.value - b.profit.value;

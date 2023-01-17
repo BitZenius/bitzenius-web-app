@@ -241,14 +241,12 @@ export default {
     },
     mounted() {
         this.$store.commit('setTitle', this.title)
-        this._fetchReport(null);
         if (!this.sortSelected) {
             this.sortSelected = this.availableSorting[1].id;
             this.descending = true;
             this._fetchReport({
                 created_at: 'descending'
             });
-            this.showTradingHistory = true;
         }
     },
     methods: {
@@ -274,6 +272,7 @@ export default {
             this.tradingItems = res.data;
             this.availablePair = res.pairs;
             this.$store.commit('setIsLoading', false);
+            this.showTradingHistory = true;
         },
         // TRIGGER
         onDateChanged(dates) {
