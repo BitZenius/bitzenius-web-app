@@ -475,7 +475,7 @@ export default {
             for (let i = 0; i < this.exchanges.length; i++) {
                 let exchange = this.exchanges[i];
                 if (exchange.active) {
-                    this.selectExchangeCard(exchange.name, null,i);
+                    this.selectExchangeCard(exchange.name, exchange,i);
                     isAnyData = true;
                     break;
                 }
