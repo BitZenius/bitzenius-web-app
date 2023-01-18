@@ -67,7 +67,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "You haven't subsrcibe to any plan",
-                    color: "orange"
+                    color: "customPink"
                 })
                 return;
             }
@@ -81,7 +81,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "Please fill all requirements needed!",
-                    color: "orange"
+                    color: "customPink"
                 })
             } else {
                 console.log(paramTemp);
@@ -110,7 +110,7 @@ export default {
                     this.$store.commit('setShowSnackbar', {
                         show: true,
                         message: "Please insert valid api key and secret key",
-                        color: "orange"
+                        color: "customPink"
                     })
                 }
             }
@@ -120,7 +120,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "You haven't subsrcibe to any plan",
-                    color: "orange"
+                    color: "customPink"
                 })
                 return;
             }
@@ -133,7 +133,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "Please fill all requirements needed!",
-                    color: "orange"
+                    color: "customPink"
                 })
             } else {
                 console.log(paramTemp);
@@ -168,7 +168,7 @@ export default {
                     this.$store.commit('setShowSnackbar', {
                         show: true,
                         message: "Please insert valid api key and secret key",
-                        color: "orange"
+                        color: "customPink"
                     })
                 }
             }

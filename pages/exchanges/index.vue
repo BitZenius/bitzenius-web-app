@@ -15,11 +15,11 @@
     </v-snackbar>
 
     <v-col cols="12" class="d-flex justify-center align-center">
-        <p class="text-center text-info">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
+        <p class="text-center text-info customPink">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
     </v-col>
     <v-col cols="12" class="d-flex px-0 pt-0">
         <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
-            <v-card style="border:2px solid #17576a; position:relative; margin-bottom:25px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
+            <v-card style="position:relative; margin-bottom:25px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
                 <v-row>
                     <v-col cols="12" class="d-flex align-center justify-start pb-0">
                         <div style="width:100%;" class="d-flex justify-center align-center">
@@ -29,10 +29,13 @@
                     <v-col cols="12" class="d-flex flex-column justify-start align-center pt-0 pb-10">
                         <h4>{{exchange.name}}</h4>
                         <v-btn :disabled="!user.subscription || user.subscription == false" v-if="exchange.active" small class="primary" @click="_addExchange(exchange)">Edit Exchange</v-btn>
-                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="default" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="customGreen" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
                     </v-col>
+                    <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
+                        <h3 style="letter-spacing:2px;" class="orange--text">Coming Soon!</h3>
+                    </v-overlay>
                 </v-row>
-                <span class="updated-label" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
+                <span class="updated-label customPink" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
             </v-card>
         </v-col>
     </v-col>
@@ -105,13 +108,29 @@ export default {
                     name: "Binance",
                     selected: false,
                     active: false,
-                    image: "/exchange_logo/binance.png"
+                    image: "/exchange_logo/binance.png",
+                    comingsoon:false
                 },
                 {
+                    name: "Bybit",
+                    selected: false,
+                    active: false,
+                    image: "/exchange_logo/bybit.png",
+                    comingsoon:true
+                },
+                                {
+                    name: "Kucoin",
+                    selected: false,
+                    active: false,
+                    image: "/exchange_logo/kucoin.png",
+                    comingsoon:true
+                },
+                                {
                     name: "Tokocrypto",
                     selected: false,
                     active: false,
-                    image: "/exchange_logo/tokocrypto.png"
+                    image: "/exchange_logo/tokocrypto.png",
+                    comingsoon:true
                 }
             ],
             // END OF CARD EXCHANGE

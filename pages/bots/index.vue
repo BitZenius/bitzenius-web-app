@@ -11,13 +11,13 @@
         </template>
     </v-dialog>
     <v-col cols="12" class="d-flex justify-center align-center">
-        <p class="text-center text-info">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
+        <p class="text-center text-info customPink">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
     </v-col>
     <v-col cols="12" class="d-flex px-0 pt-0">
         <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
             <!-- <v-btn small @click="_loggerExchange(exchange)">logger</v-btn> -->
-            <v-card @click="selectExchangeCard(`${exchange.name}`, index)" style="position:relative;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
-                <div v-if="exchange.selected" class="exchange-selected">
+            <v-card @click="selectExchangeCard(`${exchange.name}`, index)" style="position:relative; height:110px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
+                <div v-if="exchange.selected" class="exchange-selected customPink">
                     Selected
                 </div>
                 <div v-if="exchange.active">
@@ -32,10 +32,12 @@
                         <div v-if="exchange.active" class="d-flex justify-center">
                             <v-btn :disabled="!user.subscription || user.subscription == false" small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
                         </div>
-                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="default" small @click="_addBot(exchange)">Setup Bot</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="customGreen" small @click="_addBot(exchange)">Setup Bot</v-btn>
                     </v-col>
                 </v-row>
-
+                <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
+                    <h3 style="letter-spacing:2px;" class="orange--text">Coming Soon!</h3>
+                </v-overlay>
             </v-card>
         </v-col>
     </v-col>
@@ -136,9 +138,9 @@
                 <template v-slot:item.profit="{item}">
                     <div class="d-flex flex-column align-center justify-center">
                         <!-- <code>{{item.status}}</code> -->
-                        <strong class="danger--text" v-if="item.status == 'Active' && parseFloat(item.profit.percentage) < 0">{{item.profit.percentage}}%</strong>
-                        <strong class="success--text" v-if="item.status == 'Active' && parseFloat(item.profit.percentage) > 0">{{item.profit.percentage}}%</strong>
-                        <strong class="primary--text" v-if="item.status == 'Inactive' || parseFloat(item.profit.percentage) == 0">0%</strong>
+                        <strong class="danger--text" v-if="item.status == 'ACTIVE' && parseFloat(item.profit.percentage) < 0">{{item.profit.percentage}}%</strong>
+                        <strong class="success--text" v-if="item.status == 'ACTIVE' && parseFloat(item.profit.percentage) > 0">{{item.profit.percentage}}%</strong>
+                        <strong class="primary--text" v-if="item.status == 'INACTIVE' || item.status == 'WAITING_POSITION' || parseFloat(item.profit.percentage) == 0">0%</strong>
 
                         <span v-if="parseFloat(item.profit.value) < 0" class="danger--text">{{item.profit.value}} USDT</span>
                         <span v-else class="success--text">{{item.profit.value}} USDT</span>
@@ -230,15 +232,31 @@ export default {
             selectedExchangeReport: null,
             exchanges: [{
                     name: "Binance",
-                    selected: true,
+                    selected: false,
                     active: false,
-                    image: "/exchange_logo/binance.png"
+                    image: "/exchange_logo/binance.png",
+                    comingsoon:false
                 },
                 {
+                    name: "Bybit",
+                    selected: false,
+                    active: false,
+                    image: "/exchange_logo/bybit.png",
+                    comingsoon:true
+                },
+                                {
+                    name: "Kucoin",
+                    selected: false,
+                    active: false,
+                    image: "/exchange_logo/kucoin.png",
+                    comingsoon:true
+                },
+                                {
                     name: "Tokocrypto",
                     selected: false,
                     active: false,
-                    image: "/exchange_logo/tokocrypto.png"
+                    image: "/exchange_logo/tokocrypto.png",
+                    comingsoon:true
                 }
             ],
             selectedBot: null,

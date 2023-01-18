@@ -250,7 +250,7 @@ export default {
                     this.$store.commit('setShowSnackbar', {
                         show: true,
                         message: "Please fill all requirements needed!",
-                        color: "orange"
+                        color: "customPink"
                     })
                 }
             } else if (target == 3) {
@@ -276,7 +276,7 @@ export default {
                     this.$store.commit('setShowSnackbar', {
                         show: true,
                         message: "Please fill all requirements needed!",
-                        color: "orange"
+                        color: "customPink"
                     })
                 }
                 console.log(this.bot.analysis);
@@ -389,7 +389,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "You haven't subsrcibe to any plan",
-                    color: "orange"
+                    color: "customPink"
                 })
                 return;
             }

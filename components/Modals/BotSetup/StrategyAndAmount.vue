@@ -220,7 +220,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "USDT Per Order Cannot Be Under 15!",
-                    color: "orange"
+                    color: "customPink"
                 })
 
                 setTimeout(() => {
@@ -234,7 +234,7 @@ export default {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "Please don't leave any strategy input empty!",
-                    color: "orange"
+                    color: "customPink"
                 })
             } else {
                 let strategy = {};
