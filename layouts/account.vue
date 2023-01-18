@@ -215,7 +215,11 @@
     </v-footer>
 </v-app>
 </template>
-
+<style scoped>
+.v-list-item .v-list-item__title{
+    font-weight:700;
+}
+</style>
 <script>
 export default {
     data() {

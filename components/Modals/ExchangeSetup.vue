@@ -31,7 +31,7 @@
         <v-btn v-if="!data" :disabled="!user.subscription || user.subscription == false" color="primary" @click="_save">
             Save
         </v-btn>
-        <v-btn v-else :disabled="!user.subscription || user.subscription == false" color="success" @click="_updateData">
+        <v-btn v-else :disabled="!user.subscription || user.subscription == false" color="customGreen" @click="_updateData">
             Update
         </v-btn>
     </v-card-actions>

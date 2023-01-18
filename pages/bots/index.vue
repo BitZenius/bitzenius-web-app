@@ -10,14 +10,14 @@
             <ModalsActivePosition :pair="selectedPair" @close-modal="closeModal" />
         </template>
     </v-dialog>
-    <v-col cols="12" class="d-flex justify-center align-center">
-        <p class="text-center text-info customPink">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
-    </v-col>
+    <!-- <v-col cols="12" class="d-flex justify-center align-center">
+        <p class="text-center text-info primary">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
+    </v-col> -->
     <v-col cols="12" class="d-flex px-0 pt-0">
         <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
             <!-- <v-btn small @click="_loggerExchange(exchange)">logger</v-btn> -->
-            <v-card @click="selectExchangeCard(`${exchange.name}`, index)" style="position:relative; height:110px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
-                <div v-if="exchange.selected" class="exchange-selected customPink">
+            <v-card @click="selectExchangeCard(`${exchange.name}`, exchange, index)" style="position:relative; height:110px;" :class="{'d-flex align-center justify-center exchange-active': exchange.selected, 'd-flex align-center justify-center': !exchange.selected}" elevation="3">
+                <div v-if="exchange.selected" class="exchange-selected">
                     Selected
                 </div>
                 <div v-if="exchange.active">
@@ -475,7 +475,7 @@ export default {
             for (let i = 0; i < this.exchanges.length; i++) {
                 let exchange = this.exchanges[i];
                 if (exchange.active) {
-                    this.selectExchangeCard(exchange.name, i);
+                    this.selectExchangeCard(exchange.name, null,i);
                     isAnyData = true;
                     break;
                 }
@@ -509,7 +509,9 @@ export default {
             this.selectToDelete = val;
             this.dialogDelete = true;
         },
-        selectExchangeCard(val, index) {
+        selectExchangeCard(val, exchange, index) {
+            if(exchange.comingsoon) return;
+
             this.selectedExchangeReport = val;
             for (let i = 0; i < this.exchanges.length; i++) {
                 this.exchanges[i].selected = false

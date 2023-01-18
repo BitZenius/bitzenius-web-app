@@ -102,6 +102,7 @@
                                             <th>Drop Rate</th>
                                             <th>Buy Multiplier</th>
                                             <th>Take Profit</th>
+                                            <th>Type</th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -125,17 +126,19 @@
                                                 <v-icon small slot="append" color="primary">
                                                     mdi-percent
                                                 </v-icon>
-
+                                            </td>
+                                            <td>
+                                                <span>{{child.type}}</span>
                                             </td>
                                         </tr>
                                         <tr v-if="item.name == 'Custom' && item.steps.length>0">
-                                            <td style="text-align:center;" colspan="4">
+                                            <td style="text-align:center;" colspan="5">
                                                 <v-btn x-small @click="resetRowCustom" class="danger--text">RESET CUSTOM STRATEGY</v-btn>
                                             </td>
                                         </tr>
                                         <tr v-if="item.name == 'Custom'">
                                             <td v-if="item.name == 'Custom'">
-                                                <v-btn class="success" small @click="addRowCustom(customDrop, customBuy, customProfit)">+</v-btn>
+                                                <v-btn class="customGreen" small @click="addRowCustom(customDrop, customBuy, customProfit, customType)">+</v-btn>
                                             </td>
                                             <td>
                                                 <v-text-field v-model="customDrop" placeholder="1.2">
@@ -159,7 +162,7 @@
                                                 </v-text-field>
                                             </td>
                                             <td>
-                                                v-
+                                                <v-select :items="types" v-model="customType" label="Type"></v-select>
                                             </td>
                                         </tr>
                                     </tbody>
@@ -200,7 +203,8 @@ export default {
                 active: false,
                 steps: [],
                 key: "E"
-            }
+            },
+            types:["DCA","GRID"]
         }
     },
     methods: {
@@ -229,7 +233,12 @@ export default {
                 })
             }
         },
-        addRowCustom(drop, multiplier, profit) {
+        addRowCustom(drop, multiplier, profit, type) {
+            // if GRID selected, don't allow to select DCA;
+            if(type == 'GRID'){
+                this.types = ['GRID'];
+            }
+
             if (!drop || !multiplier || !profit) {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
@@ -242,21 +251,24 @@ export default {
                 strategy.drop_rate = parseFloat(drop);
                 strategy.multiplier = parseFloat(multiplier);
                 strategy.take_profit = parseFloat(profit);
+                strategy.type = type;
                 this.customStyle.steps.push(strategy);
                 this.customDrop = null;
                 this.customBuy = null;
                 this.customProfit = null;
+                this.customType = null;
                 // this.styleList[4] = this.customStyle;
             }
         },
         resetRowCustom() {
+            this.types = ['DCA', 'GRID']
             this.customStyle = {
                     name: "Custom",
                     active: true,
                     steps: [],
                     key: "E"
                 },
-                this.styleList[4] = this.customStyle;
+            this.styleList[4] = this.customStyle;
             this.$forceUpdate();
         },
         removeRowCustom(index) {

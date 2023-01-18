@@ -15,7 +15,7 @@
     </v-snackbar>
 
     <v-col cols="12" class="d-flex justify-center align-center">
-        <p class="text-center text-info customPink">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
+        <p class="text-center text-info primary">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
     </v-col>
     <v-col cols="12" class="d-flex px-0 pt-0">
         <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
@@ -35,7 +35,7 @@
                         <h3 style="letter-spacing:2px;" class="orange--text">Coming Soon!</h3>
                     </v-overlay>
                 </v-row>
-                <span class="updated-label customPink" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
+                <span class="updated-label primary" v-if="exchange.updateAt">Latest Update : {{$moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")}}</span>
             </v-card>
         </v-col>
     </v-col>

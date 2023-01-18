@@ -53,7 +53,7 @@
                             <v-col cols="6" class="pb-0">
                                 <div class="d-flex flex-wrap">
                                     <v-btn color="primary" class="ml-2">Save Changes</v-btn>
-                                    <v-btn color="danger white--text" class="ml-2">Reset</v-btn>
+                                    <v-btn color="customPink white--text" class="ml-2">Reset</v-btn>
                                 </div>
                             </v-col>
                         </v-row>
