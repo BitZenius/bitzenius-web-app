@@ -2,7 +2,11 @@
 <v-app>
     <GlobalsAddOnLoader />
     <GlobalsAddOnSnackbar />
-    <v-navigation-drawer v-model="drawer" :mini-variant.sync="miniVariant" permanent fixed app>
+    <v-navigation-drawer
+      v-model="drawer"
+      flat
+      app
+    >
         <v-list v-if="user">
             <v-list-item class="ml-1" two-line>
                 <v-list-item-content>
@@ -128,8 +132,12 @@
             </v-list-item>
         </v-list>
     </v-navigation-drawer>
-    <v-app-bar fixed flat app>
-        <v-app-bar-nav-icon @click.stop="miniVariant = !miniVariant" />
+    <v-app-bar
+      fixed
+      flat
+      app
+    >
+      <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
         <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" />
         <v-spacer />
         <v-btn v-show="false" icon class="mr-2">
@@ -215,7 +223,6 @@ export default {
             clipped: false,
             drawer: false,
             fixed: false,
-            miniVariant: false,
             right: true,
             rightDrawer: false
         }
@@ -237,6 +244,10 @@ export default {
             })
         }
     },
-    mounted() {}
+    mounted() {
+      if (!this.$vuetify.breakpoint.mobile) {
+        this.drawer = true
+      }
+    }
 }
 </script>
