@@ -10,6 +10,14 @@
             <ModalsActivePosition :pair="selectedPair" @close-modal="closeModal" />
         </template>
     </v-dialog>
+    <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
+        {{ snackbarText }}
+        <template v-slot:action="{ attrs }">
+            <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+                Close
+            </v-btn>
+        </template>
+    </v-snackbar>
     <!-- <v-col cols="12" class="d-flex justify-center align-center">
         <p class="text-center text-info primary">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
     </v-col> -->
@@ -43,21 +51,15 @@
     </v-col>
     <v-col cols="12">
         <v-card class="pa-8" elevation="8">
-            <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
-                {{ snackbarText }}
-                <template v-slot:action="{ attrs }">
-                    <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
-                        Close
-                    </v-btn>
-                </template>
-            </v-snackbar>
-            <v-data-table @click:row="_onSelectPair" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
+            <v-row class="mb-3">
+                <v-col cols="12" md="4">
+                    <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
+                </v-col>
+            </v-row>
+            <v-data-table style="overflow-y:scroll; height:50vh; overflow-x:hidden;" @click:row="_onSelectPair" disable-pagination :hide-default-footer="true" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
                 <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
                     <v-row class="mt-1">
-                        <v-col cols="12" md="4">
-                            <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
-                        </v-col>
                         <!-- <v-col cols="12" md="4">
                             <v-btn @click="_sort">SORT</v-btn>
                         </v-col> -->
@@ -163,7 +165,7 @@
                 <template v-slot:no-data>
                     <p>No record available!</p>
                 </template>
-            </v-data-table>
+            </v-data-table>              
         </v-card>
     </v-col>
 </v-row>
@@ -174,7 +176,7 @@
     position: absolute;
     bottom: -20px;
     right: 5px;
-    background: #17576a;
+    background: #3394F8;
     color: white;
     padding: 0px 15px;
     border-radius: 0px 0px 15px 15px !important;
@@ -192,7 +194,7 @@
 }
 
 .exchange-active {
-    outline: 2px solid #17576a;
+    outline: 2px solid #3394F8;
 }
 
 .delete-button {
@@ -306,7 +308,7 @@ export default {
             snackbarTimeout: 5000,
 
             // MODAL ADD EXCHANGE
-            isLoading: false,
+            isLoading: true,
 
             listener: null,
             pnl: 0,
@@ -403,7 +405,6 @@ export default {
     },
     async mounted() {
         console.log("USER!!", this.user);
-        this.$store.commit('setIsLoading', true);
         this.$store.commit('setTitle', this.title)
         this._fetchBotsList(null);
 
@@ -428,6 +429,7 @@ export default {
                 if (a.pnl < b.pnl) return -1;
                 return 0;
             });
+            this.isLoading = false;
         })
         // END OF CONNECT TO SOCKET IO
     },
@@ -453,10 +455,8 @@ export default {
         //FETCH API
         async _listenPosition() {
             this.socket.on('positions', (data) => {
-                this.$store.commit('setIsLoading', true);
                 this.activePosition = data.data;
                 this.availablePair = data.pairs;
-                this.$store.commit('setIsLoading', false);
             })
         },
         async _fetchBotsList(sorting) {
@@ -475,7 +475,7 @@ export default {
             for (let i = 0; i < this.exchanges.length; i++) {
                 let exchange = this.exchanges[i];
                 if (exchange.active) {
-                    this.selectExchangeCard(exchange.name, null,i);
+                    this.selectExchangeCard(exchange.name, exchange, i);
                     isAnyData = true;
                     break;
                 }
@@ -510,6 +510,7 @@ export default {
             this.dialogDelete = true;
         },
         selectExchangeCard(val, exchange, index) {
+            console.log(exchange);
             if(exchange.comingsoon) return;
 
             this.selectedExchangeReport = val;
@@ -519,7 +520,6 @@ export default {
             this.exchanges[index].selected = true;
 
             // RE-FETCH LIST
-            this.$store.commit('setIsLoading', true);
             this._fetchPosition();
         },
         onPairSelected(pair) {

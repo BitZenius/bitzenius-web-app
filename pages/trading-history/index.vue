@@ -50,7 +50,7 @@
                                 </v-btn>
                             </v-col> -->
                         </v-row>
-                        <v-data-table v-if="item == 'Trading Report' && showTradingHistory" :headers="tradingHeaders" :items="tradingItemsFiltered" class="elevation-2 my-2">
+                        <v-data-table v-if="item == 'Trading Report'" :loading="isLoading" :headers="tradingHeaders" :items="tradingItemsFiltered" class="elevation-2 my-2">
                             <template v-slot:item.pair="{item}">
                                 <v-row>
                                     <v-col cols="12" class="d-flex align-center justify-start">
@@ -123,7 +123,7 @@ export default {
             ],
             text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in',
             title: 'Transaction Report',
-            showClaimRewardModal: false,
+            isLoading:true,
             // ID, Type, Date, Profit, Price, Qty
             tradingHeaders: [{
                     text: "Pair",
@@ -252,7 +252,7 @@ export default {
     methods: {
         // FETCH API
         async _fetchReport(sorting) {
-            this.$store.commit('setIsLoading', true);
+            this.isLoading = true;
             let tempParams = {};
             if (this.pairSelected) {
                 tempParams.symbol = this.pairSelected;
@@ -271,8 +271,8 @@ export default {
             });
             this.tradingItems = res.data;
             this.availablePair = res.pairs;
-            this.$store.commit('setIsLoading', false);
             this.showTradingHistory = true;
+            this.isLoading = false;
         },
         // TRIGGER
         onDateChanged(dates) {
