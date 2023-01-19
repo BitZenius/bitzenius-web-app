@@ -264,7 +264,6 @@ export default {
             selectedBot: null,
             userExchanges: [],
             // END OF CARD EXCHANGE
-
             headers: [{
                     text: 'Name/Qty',
                     value: 'pair',
