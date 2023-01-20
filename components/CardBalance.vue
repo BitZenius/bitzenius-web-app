@@ -62,7 +62,31 @@
               class="mt-5"
             >
               <p>Network<br/><strong>POLYGON (ERC20)</strong></p>
-              <p>Address<br/><strong>{{ userData.wallet_va }}</strong></p>
+              <p>
+                Address<br/><strong>{{ userData.wallet_va }}</strong>
+                <v-tooltip
+                  v-model="copied"
+                  top
+                >
+                  <template v-slot:activator="{ on, attrs }">
+                    <v-btn
+                      icon
+                      v-bind="attrs"
+                      v-on="on"
+                      color="primary"
+                      size="16"
+                      v-clipboard:copy="userData.wallet_va"
+                      v-clipboard:success="onCopy"
+                      v-clipboard:error="onError"
+                    >
+                      <v-icon color="grey lighten-1">
+                        mdi-content-copy
+                      </v-icon>
+                    </v-btn>
+                  </template>
+                  <span>{{ copied ? 'Copy' : 'Copied' }}</span>
+                </v-tooltip>
+              </p>
             </v-alert>
           </v-card-text>
           <v-card-text
@@ -125,7 +149,8 @@ export default {
       userData: null,
       balance: 0,
       depositDialog: false,
-      withdrawDialog: false
+      withdrawDialog: false,
+      copied: false
     }
   },
   mounted() {
@@ -161,6 +186,12 @@ export default {
     },
     showWithdraw() {
       this.withdrawDialog = true
+    },
+    onCopy: function (e) {
+      this.copied = !this.copied
+    },
+    onError: function (e) {
+      alert('Failed to copy: ' + e.text)
     }
   }
 }

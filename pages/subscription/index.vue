@@ -29,7 +29,7 @@
                       color="success"
                       class="mt-5"
                       large
-                      disabled
+                      @click="openOrderDialog(mainPlan.id)"
                     >
                       Subscribe Now
                     </v-btn>
@@ -113,7 +113,7 @@
         </v-row>
       </v-card>
       <!-- Temporary to disable montly plans -->
-      <v-card v-show="false" elevation="8" class="pa-5 mt-10">
+      <v-card elevation="8" class="pa-5 mt-10">
         <v-row class="pt-8">
           <v-col cols="12" class="d-flex justify-center">
             <div class="d-flex flex-column align-center justify-center" style="max-width:80%;">
@@ -227,7 +227,7 @@
                       depressed
                       color="primary"
                       large
-                      disabled
+                      @click="openOrderDialog(i.id)"
                     >
                       Subscribe
                     </v-btn>
@@ -243,7 +243,7 @@
         icon="mdi-information-outline"
         text
         type="info"
-        class="mt-5"
+        class="pa-5 mt-10"
       >
         <strong>All plans are includes :</strong>
         <ul>
@@ -251,7 +251,108 @@
           <li>24x7 Support</li>
         </ul>
       </v-alert>
+      <Invoices :invoice_id.sync="invoiceId" />
     </v-col>
+    <v-dialog v-model="orderDialog" max-width="600" scrollable>
+      <template>
+        <v-card
+          v-if="selectedPlan"
+        >
+          <v-card-title>
+            Subscription Order
+            <v-spacer></v-spacer>
+            <v-btn
+              icon
+              @click="closeOrderDialog"
+            >
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-text
+            class="mt-3"
+          >
+            <table class="invoice">
+              <thead>
+                <tr>
+                  <th class="text-left">
+                    Description
+                  </th>
+                  <th class="text-right">
+                    Amount
+                  </th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>{{ selectedPlan.name }} ({{ selectedPlan.cicle == 1 ? 'Monthly Subscription' : 'Yearly Subscription' }})</td>
+                  <td class="text-right">{{ selectedPlan.price | currency('$') }}</td>
+                </tr>
+              </tbody>
+              <tfoot>
+                <tr>
+                  <th class="text-right">Subtotal</th>
+                  <th class="text-right">{{ selectedPlan.price | currency('$') }}</th>
+                </tr>
+                <tr>
+                  <th class="text-right">Discount</th>
+                  <th class="text-right">{{ selectedPlan.discount | currency('$') }}</th>
+                </tr>
+                <tr>
+                  <th class="text-right">Grand Total</th>
+                  <th class="text-right">{{ selectedPlan.total | currency('$') }}</th>
+                </tr>
+              </tfoot>
+            </table>
+            <div
+              class="my-5"
+            >
+              <p>Have a promo code?</p>
+              <v-row>
+                <v-col cols="6">
+                  <v-text-field
+                    v-model="promoCode"
+                    dense
+                    clear-icon="mdi-close-circle"
+                    clearable
+                    type="text"
+                    outlined
+                    @click:clear="clearPromoCode"
+                  />
+                </v-col>
+                <v-col cols="6">
+                  <v-btn
+                    class="py-5 text-capitalize"
+                    :loading="isValidatingPromoCode"
+                    block
+                    depressed
+                    @click="validatePromoCode"
+                  >
+                    Apply Promo
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-alert
+                v-if="promoCodeData"
+                class="mt-3"
+                dense
+                text
+                :type="promoCodeData.error ? 'error' : 'success'"
+              >
+                {{ promoCodeData.message }}
+              </v-alert>
+            </div>
+            <v-btn
+              depressed
+              color="success"
+              :loading="isLoading"
+              @click="purchaseSubscription(selectedPlan.id)"
+            >
+              Purchase
+            </v-btn>
+          </v-card-text>
+        </v-card>
+      </template>
+    </v-dialog>
   </v-row>
 </template>
 
@@ -261,30 +362,30 @@ export default {
   data () {
     return {
       title: 'Subscription',
+      isLoading: false,
+      isValidatingPromoCode: false,
       plans: {
         monthly: [],
         yearly: []
       },
       pricings: [],
-      plan: {
-        title: 'ONE PRICE FOR ALL ( PAY ANNUALLY)',
-        tagLine: 'For small to medium businesses',
-        price: '$13.3',
-        profitSharing: '15%',
-      },
       mainPlan: null,
-      availableFeatures: [
-        'Access To All Features',
-        'Unlimited DCA Bot',
-        'Unlimited Grid Bot',
-        '24/7 Support',
-      ],
-      monthly: true
+      selectedPlan: null,
+      monthly: true,
+      invoiceId: null,
+      orderDialog: false,
+      promoCode: '',
+      promoCodeData: null
     }
   },
   head () {
     return {
       title: this.title
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.authUser
     }
   },
   watch: {
@@ -293,9 +394,6 @@ export default {
     }
   },
   mounted () {
-    this.$store.commit('setIsLoading', true)
-    this.$store.commit('setTitle', this.title)
-    this.$store.commit('setIsLoading', false)
     this.$store.commit('setTitle', this.title)
     this.initialize()
   },
@@ -349,7 +447,96 @@ export default {
       } else {
         this.pricings = this.plans.yearly
       }
+    },
+    purchaseSubscription (planId) {
+      this.isLoading = true
+      this.$api.$post('/user/subscription/purchase', {
+        plan_id: planId,
+        promo_code: this.promoCode
+      }).then((data) => {
+        this.invoiceId = data.result._id
+        this.closeOrderDialog()
+      }).catch((err) => {
+        this.$store.commit('setShowSnackbar', {
+          show: true,
+          message: err.response.data.message,
+          color: '#E53935'
+        })
+        console.log(err)
+        this.isLoading = false
+      }).finally(() => {
+        this.isLoading = false
+      })
+    },
+    openOrderDialog (planId) {
+      this.selectedPlan = this.pricings.find(obj => obj.id == planId)
+
+      if (!this.selectedPlan) {
+        this.selectedPlan = this.mainPlan
+      }
+
+      this.selectedPlan.discount = 0
+      this.selectedPlan.total = this.selectedPlan.price
+
+      this.orderDialog = true
+    },
+    closeOrderDialog () {
+      this.orderDialog = false
+      this.selectedPlan = null
+      this.promoCode = ''
+      this.promoCodeData = null
+    },
+    validatePromoCode () {
+      this.isValidatingPromoCode = true
+      this.$api.$post('/user/subscription/validate-promo-code', {
+        plan_id: this.selectedPlan.id,
+        promo_code: this.promoCode
+      }).then((result) => {
+        this.selectedPlan.discount = result.discount
+        this.selectedPlan.total = this.selectedPlan.price + result.discount
+
+        this.promoCodeData = result.data
+        this.promoCodeData.message = `Yeay! ${result.data.description} has been applied to this order`
+        this.promoCodeData.error = false
+      }).catch((err) => {
+        this.isValidatingPromoCode = false
+
+        this.promoCodeData = {}
+        this.promoCodeData.message = err.response.data.message
+        this.promoCodeData.error = true
+
+        this.selectedPlan.discount = 0
+        this.selectedPlan.total = this.selectedPlan.price
+      }).finally(() => {
+        this.isValidatingPromoCode = false
+      })
+    },
+    clearPromoCode () {
+      this.promoCode = ''
+      this.promoCodeData = null
+      this.selectedPlan.discount = 0
+      this.selectedPlan.total = this.selectedPlan.price
     }
   }
 }
 </script>
+
+<style>
+  table.invoice {
+    width: 100%;
+    margin: 25px 0;
+  }
+
+  table.invoice , table.invoice th, table.invoice td {
+    border: 1px solid rgb(190, 190, 190);
+    border-collapse: collapse;
+  }
+
+  table.invoice th {
+    font-weight: bold;
+  }
+
+  table.invoice th, table.invoice td {
+    padding: 6px 15px;
+  }
+</style>

@@ -36,7 +36,6 @@
         :loading="isLoading"
         :options.sync="options"
         :server-items-length="totalItems"
-        :page="lastPage"
         :items-per-page="rowsPerPage"
         disable-sort
         class="elevation-0"
@@ -181,9 +180,6 @@ export default {
     },
     user() {
       return this.$store.state.authUser
-    },
-    lastPage() {
-      return Math.ceil(this.totalItems / this.rowsPerPage)
     }
   },
   watch: {
@@ -195,9 +191,6 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit('setIsLoading', true);
-    this.$store.commit('setTitle', this.title);
-    this.$store.commit('setIsLoading', false);
     this.$store.commit('setTitle', this.title)
     this.initialize()
   },
@@ -209,11 +202,10 @@ export default {
 
       this.$api.$get('/user/balance', {
         params: {
-          limit: itemsPerPage,
+          limit: itemsPerPage == -1 ? this.totalItems : itemsPerPage,
           page
         }
       }).then((res) => {
-        console.log(res)
         this.totalItems = res.result.total
         const transactions = []
         
