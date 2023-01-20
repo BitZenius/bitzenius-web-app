@@ -30,7 +30,8 @@ export default {
     '~/plugins/apexchart',
     '~/plugins/test',
     '~/plugins/socketio',
-    '~/plugins/vue2-filters'
+    '~/plugins/vue2-filters',
+    '~/plugins/clipboard'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

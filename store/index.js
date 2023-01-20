@@ -13,6 +13,8 @@ export const state = () => ({
 
 export const actions = {
   onAuthStateChangedAction: (ctx, { authUser, claims }) => {
+    console.log('AUTHUSER:', authUser)
+    console.log('CLAIMS:', claims)
     if (!authUser) {
       // claims = null
       // Perform logout operations
@@ -27,6 +29,7 @@ export const mutations = {
     if (authUser) {
       console.log('store authUser', authUser);
       const { uid, email, phoneNumber, displayName, photoURL, emailVerified, refreshToken } = authUser
+      console.log('RefreshToken', refreshToken)
       const { trial, subscription } = claims
       state.authUser = { uid, email, phoneNumber, displayName, photoURL, emailVerified, trial, subscription }
     } else {
