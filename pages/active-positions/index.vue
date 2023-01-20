@@ -55,11 +55,12 @@
                 <template v-slot:item.pair="{item}">
                     <v-row>
                         <v-col cols="12" class="d-flex align-center justify-start">
-                            <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo${item.logo}`)" />
+                            <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo/${item.pair_from.toUpperCase()}.png`)" />
                             <div class="d-flex flex-column ml-3">
                                 <div class="d-flex">
                                     <strong>{{item.pair_from}}</strong>
-                                    <span>/ {{item.pair_to}}</span>
+                                    <strong>{{item.pair_from}}</strong>
+                                    <span>/ AWDAWDIAJWODAWO IDJAWDOIAWJ{{item.pair_to}}</span>
                                 </div>
                                 <span>0</span>
                             </div>

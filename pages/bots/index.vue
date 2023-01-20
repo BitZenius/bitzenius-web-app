@@ -5,9 +5,9 @@
             <ModalsBotSetup :bot-prop="selectedBot" :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
-    <v-dialog v-model="showActivePosition" max-width="600">
+    <v-dialog v-if="showActivePosition" v-model="showActivePosition" max-width="600">
         <template>
-            <ModalsActivePosition :pair="selectedPair" @close-modal="closeModal" />
+            <ModalsActivePosition :detail="botsDetail" :pair="selectedPair" @close-modal="closeModal" />
         </template>
     </v-dialog>
     <v-snackbar v-model="snackbar" :timeout="snackbarTimeout" dark bottom color="success" elevation="15">
@@ -119,7 +119,9 @@
                 <template v-slot:item.pair="{item}">
                     <v-row>
                         <v-col cols="12" class="d-flex align-center justify-start">
-                            <!-- <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo${item.logo}`)" /> -->
+                            <!-- <code>{{item.pair_from.toUpperCase()}}.png</code> -->
+                            <img style="width:28px;" :alt="item.logo" :src="'/token_logo/'+item.pair_from.toUpperCase()+'.png'" />
+                            <!-- <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo/INJ.png`)" /> -->
                             <div class="d-flex flex-column ml-3">
                                 <div class="d-flex">
                                     <strong>{{item.pair_from}} </strong>
@@ -165,7 +167,7 @@
                 <template v-slot:no-data>
                     <p>No record available!</p>
                 </template>
-            </v-data-table>              
+            </v-data-table>
         </v-card>
     </v-col>
 </v-row>
@@ -237,28 +239,28 @@ export default {
                     selected: false,
                     active: false,
                     image: "/exchange_logo/binance.png",
-                    comingsoon:false
+                    comingsoon: false
                 },
                 {
                     name: "Bybit",
                     selected: false,
                     active: false,
                     image: "/exchange_logo/bybit.png",
-                    comingsoon:true
+                    comingsoon: true
                 },
-                                {
+                {
                     name: "Kucoin",
                     selected: false,
                     active: false,
                     image: "/exchange_logo/kucoin.png",
-                    comingsoon:true
+                    comingsoon: true
                 },
-                                {
+                {
                     name: "Tokocrypto",
                     selected: false,
                     active: false,
                     image: "/exchange_logo/tokocrypto.png",
-                    comingsoon:true
+                    comingsoon: true
                 }
             ],
             selectedBot: null,
@@ -307,7 +309,7 @@ export default {
             snackbarTimeout: 5000,
 
             // MODAL ADD EXCHANGE
-            isLoading: true,
+            isLoading: false,
 
             listener: null,
             pnl: 0,
@@ -319,6 +321,7 @@ export default {
             showAddBot: false,
 
             // MODAL SHOW ACTIVE POSITION
+            botsDetail: null,
             selectedPair: null,
             showActivePosition: false,
 
@@ -417,6 +420,14 @@ export default {
         });
         let userId = this.$store.state.authUser.uid;
         this._listenPosition();
+
+        // this.socket.on('current_price_all', (data) => {
+        //     console.log('current_price_all');
+        //     console.log(data);
+        //     this.activePosition = data;
+        // })
+
+        // TESTING PURPOSE
         this.socket.on('current_price', (data) => {
             let index = this.activePosition.findIndex(b => b.symbol === data.name);
             this.activePosition[index].price.value = data.priceValue;
@@ -431,6 +442,11 @@ export default {
             this.isLoading = false;
         })
         // END OF CONNECT TO SOCKET IO
+
+        setTimeout(() => {
+            console.log('this.activePosition', this.activePosition);
+            console.log('this.activePositionFiltered', this.activePositionFiltered);
+        },5000)
     },
     beforeDestroy() {
         this.socket.emit("disconnect-client", {
@@ -453,6 +469,7 @@ export default {
         },
         //FETCH API
         async _listenPosition() {
+            this.isLoading = true;
             this.socket.on('positions', (data) => {
                 this.activePosition = data.data;
                 this.availablePair = data.pairs;
@@ -510,7 +527,7 @@ export default {
         },
         selectExchangeCard(val, exchange, index) {
             console.log(exchange);
-            if(exchange.comingsoon) return;
+            if (exchange.comingsoon) return;
 
             this.selectedExchangeReport = val;
             for (let i = 0; i < this.exchanges.length; i++) {
@@ -544,9 +561,23 @@ export default {
                     id: val._id
                 }
             });
-            console.log('resSelectPair', res);
-            this.selectedPair = val;
-            this.showActivePosition = true;
+
+            try {
+                console.log('resSelectPair', res);
+                this.selectedPair = val;
+                this.botsDetail = res.data;
+                this.showActivePosition = true;
+            } catch (error) {
+                console.log(error);
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Error get bot detail",
+                        color: "customPink"
+                    })
+                })
+            }
+
         },
         resetFilter() {
             this.descending = false;

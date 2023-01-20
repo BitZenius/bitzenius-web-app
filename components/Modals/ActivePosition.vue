@@ -6,12 +6,12 @@
     <v-card-text class="my-3">
         <v-row class="mx-2">
             <v-scroll-y-transition>
-                <v-col style="border-radius:15px; background:#177e89;" class="d-flex align-center justify-center flex-column" cols="12">
-                    <img style="width:60px;" :alt="pair.logo" :src="require(`~/assets/token_logo${pair.logo}`)" />
+                <v-col style="border-radius:15px; background:#3394F8;" class="d-flex align-center justify-center flex-column" cols="12">
+                    <img style="width:60px;" :alt="pair.logo" :src="'/token_logo/'+pair.pair_from.toUpperCase()+'.png'"  />
                     <h4 class="mt-2 white--text">{{pair.pair_from}} / {{pair.pair_to}}</h4>
                     <v-row class="mt-2">
                         <v-col cols="6" md="3">
-                            <v-btn style="width:100%;" color="primary" small @click="onTabSelect('detail')">
+                            <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('detail')">
                                 <v-icon small class="mr-1">
                                     mdi-pencil
                                 </v-icon>
@@ -19,7 +19,7 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="6" md="3">
-                            <v-btn style="width:100%;" color="primary" small @click="onTabSelect('strategy')">
+                            <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('strategy')">
                                 <v-icon small class="mr-1">
                                     mdi-lightbulb-outline
                                 </v-icon>
@@ -27,7 +27,7 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="6" md="3">
-                            <v-btn style="width:100%;" color="primary" small @click="onTabSelect('formula')">
+                            <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('formula')">
                                 <v-icon small class="mr-1">
                                     mdi-file-table-box-outline
                                 </v-icon>
@@ -44,7 +44,7 @@
                         </v-col>
                     </v-row>
                     <v-scale-transition>
-                        <v-row class="my-2" v-show="showSetting" style="width:100%;">
+                        <!-- <v-row class="my-2" v-show="showSetting" style="width:100%;">
                             <v-col cols="6" class="pb-0 mb-0">
                                 <div class="setting-container success d-flex flex-column justify-center align-center white--text" style="width:100%;">
                                     <v-icon color="white">
@@ -61,7 +61,7 @@
                                     <h5>Blacklist</h5>
                                 </div>
                             </v-col>
-                        </v-row>
+                        </v-row> -->
                     </v-scale-transition>
                 </v-col>
             </v-scroll-y-transition>
@@ -76,16 +76,32 @@
                         </v-icon>
                         <span>{{item.title}}</span>
                     </template>
+                    <template v-slot:item.value="{item}">
+                        <span v-if="item.key == 'take_profit_price' ||item.key == 'next_step_price'">
+                            {{item.value | currency('$', 6)}}
+                        </span>
+                        <span v-else>
+                            {{item.value}}
+                        </span>
+                    </template>
                 </v-data-table>
                 <v-data-table v-show="tabs.detail" :headers="tableDetailTitle" :items="detailItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
                     <template v-slot:item.title="{item}">
                         <span>{{item.title}}</span>
                     </template>
+                    <template v-slot:item.value="{item}">
+                        <span v-if="item.key == 'average'">
+                            {{item.value | currency('$', 6)}}
+                        </span>
+                        <span v-else>
+                            {{item.value}}
+                        </span>
+                    </template>              
                 </v-data-table>
 
                 <!-- START OF FORMULA -->
                 <div v-show="tabs.formula" class="pt-0">
-                    <v-card elevation="3" class="ma-3 pa-3">
+                    <!-- <v-card elevation="3" class="ma-3 pa-3">
                         <v-tooltip right color="success">
                             <template v-slot:activator="{ on, attrs }">
                                 <v-row v-bind="attrs" v-on="on" class="d-flex align-center justify-center" style="width:100%;">
@@ -131,9 +147,10 @@
                             </template>
                             <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
                         </v-tooltip>
-                    </v-card>
+                    </v-card> -->
                     <v-card elevation="3" class="ma-3 pa-3">
-                        <div class="d-flex flex-column align-center">
+                        <ModalsBotSetupTechnicalAnalysis v-if="analysis.condition" :selected-technical="analysis" ref="analysisRef" @onAnalysisSelected="onAnalysisSelected"/>
+                        <!-- <div class="d-flex flex-column align-center">
                             <h3>Choose Technical Analysis</h3>
                             <v-row style="width:100%;">
                                 <v-col cols="8">
@@ -170,11 +187,11 @@
                                     <v-select :items="['$10,000,000','$1,000,000', '$100,000']" label="Trading Volume" dense outlined></v-select>
                                 </v-col>
                             </v-row>
-                        </div>
+                        </div> -->
                     </v-card>
                     <v-row>
                         <v-col cols="12" class="d-flex justify-center">
-                            <v-btn color="success" @click="showAveragingFormula = !showAveragingFormula">
+                            <v-btn disabled color="success" @click="showAveragingFormula = !showAveragingFormula">
                                 <v-icon small class="mr-1">
                                     mdi-cog
                                 </v-icon>
@@ -219,17 +236,17 @@
         </v-row>
         <v-row v-if="!tabs.formula">
             <v-col cols="12" md="6">
-                <v-btn color="orange white--text" style="width:100%;" @click="_pause">PAUSE</v-btn>
+                <v-btn color="orange white--text" disabled style="width:100%;" @click="_pause">PAUSE</v-btn>
             </v-col>
             <v-col cols="12" md="6">
-                <v-btn color="danger white--text" style="width:100%;" @click="_forceSell">
+                <v-btn color="customPink white--text" disabled style="width:100%;" @click="_forceSell">
                     FORCE SELL
                 </v-btn>
             </v-col>
         </v-row>
         <v-row v-else>
             <v-col cols="12">
-                <v-btn color="success white--text" style="width:100%;">SAVE</v-btn>
+                <v-btn color="success white--text" disabled style="width:100%;">SAVE</v-btn>
             </v-col>
         </v-row>
     </v-card-text>
@@ -242,6 +259,10 @@ export default {
         pair: {
             type: Object,
             default: null
+        },
+        detail:{
+            type:Object,
+            default:null
         }
     },
     data() {
@@ -259,6 +280,17 @@ export default {
             },
 
             // ANALYSIS
+            analysis: {
+                first_analysis: {
+                    analysis: null
+                },
+                second_analysis: {
+                    analysis: null
+                },
+                condition: null,
+                minimum_trading_volume: null
+            },
+
             analysisList: [{
                 id: "EMA",
                 name: "Exponential Moving Average"
@@ -335,23 +367,27 @@ export default {
             ],
             detailItems: [{
                     title: "Amount",
-                    value: "$" + 118.98212
+                    key:"total_amount",
+                    value: 0
                 },
                 {
                     title: "Average Price",
-                    value: 1133.1213
+                    key:"average",
+                    value: 0
                 },
                 {
                     title: "Step",
-                    value: 5
+                    key:"total_step",
+                    value: 0
                 },
                 {
                     title: "Quantity",
-                    value: 0.21513
+                    key:"total_quantity",
+                    value: 0
                 },
                 {
                     title: "Change",
-                    value: -2.77 + "%"
+                    value: 0
                 },
             ],
 
@@ -368,47 +404,58 @@ export default {
                     cellClass: "font-weight-bold"
                 }
             ],
+            conditionList:[],
             conditionItems: [{
                     icon: "mdi-arrow-up-drop-circle-outline",
                     title: "Next Step Price",
-                    value: 1121.64905
+                    key:"next_step_price",
+                    value: 0
                 },
                 {
                     icon: "mdi-arrow-down-drop-circle-outline",
                     title: "Next Step Drop Rate",
-                    value: 1.5 + "%"
+                    key:"next_step_drop_rate",
+                    value: 0
                 },
                 {
                     icon: "mdi-currency-usd",
                     title: "Take Profit Price",
-                    value: 1153.53349
+                    key:"take_profit_price",
+                    value: 0
                 },
                 {
                     icon: "mdi-percent-outline",
                     title: "Take Profit Ratio",
-                    value: 1.3 + "%"
+                    key:"take_profit_ratio",
+                    value: 0
                 },
                 {
                     icon: "mdi-wallet-outline",
                     title: "Buy Amount",
-                    value: 15
+                    key:"total_buy_amount",
+                    value: 0
                 },
                 {
                     icon: "mdi-car-speed-limiter",
                     title: "Averaging Limit",
-                    value: 18
+                    key:"averaging_limit",
+                    value: 0
                 },
             ]
         }
     },
     methods: {
         // TRIGGER
+        _logSetup(){
+
+        },
+        onAnalysisSelected(val){
+            console.log(val);
+        },
         logger() {
 
         },
         onTabSelect(tab) {
-            console.log(tab);
-            console.log(this.tabs);
             for (let key in this.tabs) {
                 if (key == tab) {
                     this.tabs[key] = true
@@ -473,7 +520,50 @@ export default {
         },
         _riskSelected(risk) {
             console.log(risk.text);
+        },
+        setStrategy(){
+            for(let data of this.conditionItems){
+                data.value = this.detail[data.key];
+            }
+        },
+        setDetail(){
+            for(let data of this.detailItems){
+                if(data.key){
+                    data.value = this.detail[data.key]
+                }
+            }
+        },
+        setAnalysis(){
+            let analysis = {};
+            analysis.condition = this.detail.analysis.condition;
+            analysis.minimum_trading_volume = -1;
+            analysis.first_analysis = {};
+            
+            let index = 0;
+            for (let indicator of this.detail.analysis.indicators) {
+                if (index == 0) {
+                    analysis.first_analysis = {
+                        analysis: indicator.id,
+                        time: indicator.timeperiod
+                    }
+                } else if (index == 1) {
+                    analysis.second_analysis = {
+                        analysis: indicator.id,
+                        time: indicator.timeperiod
+                    }
+                }
+                console.log(indicator);
+                index++;
+            }
+
+            console.log('tempAnalysis', analysis);
+            this.analysis = analysis;
         }
+    },
+    async mounted(){
+        this.setStrategy();
+        this.setDetail();
+        this.setAnalysis();
     }
 }
 </script>

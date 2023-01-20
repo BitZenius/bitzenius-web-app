@@ -119,7 +119,7 @@ export default {
         dark: {
           customGreen:"#C3F239",
           customPink:"#FE759F",
-          primary: '#3c929b',
+          primary: '#3394F8',
           danger: '#ff002f',
           basic:'#312d4b',
           'basic-1': '#177e89',

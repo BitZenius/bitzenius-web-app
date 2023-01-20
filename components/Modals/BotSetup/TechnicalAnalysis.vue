@@ -33,8 +33,8 @@
             <v-select v-model="technical.second_analysis.time" :items="timeList" label="Timeframe" dense outlined></v-select>
         </v-col>
     </v-row>
-    <h3 class="mt-3">Minimum trading volume in 24h</h3>
-    <v-row style="width:100%;">
+    <h3 class="mt-3" v-if="technical.minimum_trading_volume != -1">Minimum trading volume in 24h</h3>
+    <v-row style="width:100%;" v-if="technical.minimum_trading_volume != -1">
         <v-col class="d-flex justify-center" cols="12">
             <v-select v-model="technical.minimum_trading_volume" item-value="value" item-text="name":items="tradingVolumeList" label="Trading Volume" dense outlined></v-select>
         </v-col>
@@ -136,13 +136,14 @@ export default {
     mounted(){
         if(this.selectedTechnical){
             this.technical = this.selectedTechnical
+            console.log('selectedTechnical', this.selectedTechnical);
         }
     },
     watch: {
         technical: {
             handler(nv, ov) {
                 nv.minimum_trading_volume = parseFloat(nv.minimum_trading_volume);
-                this.$emit('onAlaysisSelected', nv);
+                this.$emit('onAnalysisSelected', nv);
             },
             deep: true
         }

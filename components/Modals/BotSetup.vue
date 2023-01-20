@@ -54,7 +54,7 @@
 
                 <v-stepper-content class="py-0" step="2">
                     <v-card flat min-height="200px" class="py-8 mt-2">
-                        <ModalsBotSetupTechnicalAnalysis v-if="showTechnicalAnalysis" :selected-technical="bot.analysis" ref="analysisRef" @onAlaysisSelected="onAlaysisSelected" />
+                        <ModalsBotSetupTechnicalAnalysis v-if="showTechnicalAnalysis" :selected-technical="bot.analysis" ref="analysisRef" @onAnalysisSelected="onAnalysisSelected" />
                     </v-card>
                     <div class="d-flex float-right my-4">
                         <v-btn color="blue darken-1" class="mr-2" @click="e1 = 1" text>
@@ -295,8 +295,8 @@ export default {
             console.log('onStrategySelected');
             this.bot.strategy = val;
         },
-        onAlaysisSelected(val) {
-            console.log('onAlaysisSelected');
+        onAnalysisSelected(val) {
+            console.log('onAnalysisSelected');
             this.bot.analysis = val;
         },
         logger() {
