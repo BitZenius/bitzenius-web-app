@@ -88,7 +88,7 @@
                                     <div v-else class="d-flex flex-column">
                                         <small>{{item.type.toUpperCase() == 'SELL' ? 'PnL' : null}}</small>
                                         <span v-if="parseFloat(item.desc) > 0" class="success--text" style="font-weight:bold;">
-                                            {{item.desc | currency}}
+                                            {{item.desc | currency('$', 6)}}
                                         </span>
                                         <span v-else class="danger--text">
                                             {{item.desc}}
@@ -97,7 +97,7 @@
                                 </div>
                             </template>
                             <template v-slot:item.price="{item}">
-                                {{item.price |currency}}
+                                {{item.price |currency('$', 6)}}
                             </template>
                         </v-data-table>
                         <template v-slot:item.amount="{item}">
