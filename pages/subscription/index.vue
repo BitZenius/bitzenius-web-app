@@ -253,7 +253,12 @@
       </v-alert>
       <Invoices :invoice_id.sync="invoiceId" />
     </v-col>
-    <v-dialog v-model="orderDialog" max-width="600" scrollable>
+    <v-dialog
+      v-model="orderDialog"
+      max-width="600"
+      scrollable
+      :fullscreen="$vuetify.breakpoint.mobile"
+    >
       <template>
         <v-card
           v-if="selectedPlan"

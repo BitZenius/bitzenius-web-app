@@ -63,7 +63,12 @@
         </v-btn>
       </template>
     </v-data-table>
-    <v-dialog v-model="invoiceDialog" max-width="600" scrollable>
+    <v-dialog
+      v-model="invoiceDialog"
+      max-width="600"
+      scrollable
+      :fullscreen="$vuetify.breakpoint.mobile"
+    >
       <template>
         <v-card
           v-if="activeInvoice"

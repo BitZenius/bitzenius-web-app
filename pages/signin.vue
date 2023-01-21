@@ -6,13 +6,13 @@
     >
       <v-col
         cols="12"
-        md="9"
+        md="8"
         class="d-none d-sm-flex"
       >
       </v-col>
       <v-col
         cols="12"
-        md="3"
+        md="4"
       >
         <div
           class="cardColor"
@@ -23,7 +23,7 @@
           >
             <v-img
               :src="$vuetify.theme.dark ? '/bitzenius-logo-white.png' : '/bitzenius-logo.png'"
-              height="64"
+              height="32"
               contain
               position="center"
             />

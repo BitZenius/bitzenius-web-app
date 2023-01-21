@@ -10,7 +10,7 @@
         <v-list v-if="user">
             <v-list-item class="ml-1" two-line>
                 <v-list-item-content>
-                    <v-img :src="$vuetify.theme.dark ? '/bitzenius-logo-white.png' : '/bitzenius-logo.png'" height="48" contain position="left center" />
+                    <v-img :src="$vuetify.theme.dark ? '/bitzenius-logo-white.png' : '/bitzenius-logo.png'" height="24" contain position="left center" />
                 </v-list-item-content>
             </v-list-item>
             <v-list-item to="/" exact class="my-2">
@@ -204,11 +204,38 @@
         </v-menu>
     </v-app-bar>
     <v-main>
-        <v-container fluid>
-            <nuxt class="px-3" />
-        </v-container>
+      <v-container fluid>
+        <nuxt :class="$vuetify.breakpoint.mobile ? 'pb-5' : 'px-3'" />
+      </v-container>
     </v-main>
-    <v-footer>
+    <v-bottom-navigation
+      v-if="$vuetify.breakpoint.mobile"
+      v-model="bottomNav"
+      fixed
+      app
+      grow
+      height="72"
+    >
+      <v-btn value="home" to="/">
+        <span>Home</span>
+        <v-icon>mdi-home-outline</v-icon>
+      </v-btn>
+      <v-btn value="exchange" to="/exchanges">
+        <span>Exchanges</span>
+        <v-icon>mdi-briefcase-outline</v-icon>
+      </v-btn>
+      <v-btn value="bot" to="/bots">
+        <span>Bots</span>
+        <v-icon>mdi-robot-outline</v-icon>
+      </v-btn>
+      <v-btn value="trading" to="/trading-history">
+        <span>Trading</span>
+        <v-icon>mdi-table-large</v-icon>
+      </v-btn>
+    </v-bottom-navigation>
+    <v-footer
+      v-else
+    >
         <v-col class="text-right text--disabled" cols="12">
             &copy;{{ new Date().getFullYear() }} - BitZenius
         </v-col>
@@ -228,7 +255,8 @@ export default {
             drawer: false,
             fixed: false,
             right: true,
-            rightDrawer: false
+            rightDrawer: false,
+            buttomNav: 'home'
         }
     },
     computed: {

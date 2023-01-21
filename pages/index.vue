@@ -18,7 +18,7 @@
     </v-row>
     <v-row>
         <v-col cols="12">
-            <GlobalsAddBalance class="px-2 py-5" />
+            <CardBalance class="px-2 py-5" />
         </v-col>
     </v-row>
     <v-row>

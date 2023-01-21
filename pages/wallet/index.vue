@@ -1,15 +1,11 @@
 <template>
 <v-row>
   <v-col cols="12">
+    <CardBalance class="mb-6" />
     <v-card
       elevation="8"
       class="pa-3"
     >
-      <v-row>
-        <v-col cols="12">
-          <CardBalance />
-        </v-col>
-      </v-row>
       <v-row v-show="false" class="mt-1">
         <v-col cols="12" md="4">
           <v-select :items="availablePair" label="Filter" dense outlined></v-select>
