@@ -68,7 +68,7 @@
                 <v-stepper-content class="py-0" step="3">
                     <v-card flat class="d-flex flex-column align-center py-8 mt-2">
                         <h3>Token Exceptions</h3>
-                        <v-select dense class="mt-3 px-3" v-model="tokenException" :items="exchanges" chips label="Token Exceptions" multiple outlined>
+                        <v-select v-if="tokens.length > 0" dense class="mt-3 px-3" v-model="tokenException" :items="tokens" chips label="Token Exceptions" multiple outlined>
                             <template v-slot:prepend-item>
                                 <v-list-item>
                                     <v-list-item-content>
@@ -117,6 +117,7 @@
 </template>
 
 <script>
+import { exec } from 'apexcharts';
 import {
     mapGetters,
     mapMutations,
@@ -139,8 +140,8 @@ export default {
             // STATE
             isUpdateMode: false,
 
-            exchanges: ['MEXC', 'AVAX', 'CRONOS', 'MONERO'],
-            exchangesCopy: [],
+            tokens: [],
+            tokensCopy: [],
             tokenException: [],
             bot: {
                 selected_exchange: null,
@@ -328,12 +329,12 @@ export default {
         searchFruits(e) {
             console.log(e);
             console.log(this.searchTerm);
-            console.log(this.exchangesCopy);
+            console.log(this.tokensCopy);
             if (!this.searchTerm) {
-                this.exchanges = [...this.exchangesCopy];
+                this.tokens = [...this.tokensCopy];
             }
 
-            this.exchanges = this.exchangesCopy.filter((exchange) => {
+            this.tokens = this.tokensCopy.filter((exchange) => {
                 return exchange.toLowerCase().indexOf(this.searchTerm.toLowerCase()) > -1;
             });
         },
@@ -456,9 +457,28 @@ export default {
                 this.$store.commit('setIsLoading', false);
                 this.resetModalState();
             })
+        },
+        async _fetchTokenList(){
+            console.log('fetch token');
+            console.log('exchange', this.exchange);
+            let paramTemp = {exchange:this.exchange}
+            let execute = await this.$api.$get("/user/available-tokens", {
+                params:paramTemp
+            });
+            if(!execute.success){
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Failed To Fetch Token List!",
+                    color: "customPink"
+                })
+            }
+            this.tokens = execute.data.result;
+            this.tokensCopy = this.tokens;
+            console.log('tokenlist', execute.data.result);
+            // this.tokensCopy = [...this.tokens];
         }
     },
-    mounted() {
+    async mounted() {
         this.bot.selected_exchange = this.exchange;
         if (this.botProp) {
             this.isUpdateMode = true;
@@ -483,8 +503,7 @@ export default {
                 index++;
             }
         }
-
-        this.exchangesCopy = [...this.exchanges];
+        this._fetchTokenList();
         setTimeout(() => {
             this.showStrategySetup = true;
             this.showTechnicalAnalysis = true;

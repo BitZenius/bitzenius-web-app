@@ -106,7 +106,6 @@
                                         </tr>
                                     </thead>
                                     <tbody>
-
                                         <tr v-if="item.steps[0]" class="text-center" v-for="(child, y, key) in item.steps" :key="child.key">
                                             <td>{{y+1}}</td>
                                             <td>

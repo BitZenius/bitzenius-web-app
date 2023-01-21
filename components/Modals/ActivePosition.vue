@@ -10,7 +10,7 @@
                     <img style="width:60px;" :alt="pair.logo" :src="'/token_logo/'+pair.pair_from.toUpperCase()+'.png'"  />
                     <h4 class="mt-2 white--text">{{pair.pair_from}} / {{pair.pair_to}}</h4>
                     <v-row class="mt-2">
-                        <v-col cols="6" md="3">
+                        <v-col cols="6" md="4">
                             <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('detail')">
                                 <v-icon small class="mr-1">
                                     mdi-pencil
@@ -18,7 +18,7 @@
                                 Detail
                             </v-btn>
                         </v-col>
-                        <v-col cols="6" md="3">
+                        <v-col cols="6" md="4">
                             <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('strategy')">
                                 <v-icon small class="mr-1">
                                     mdi-lightbulb-outline
@@ -26,7 +26,7 @@
                                 Strategy
                             </v-btn>
                         </v-col>
-                        <v-col cols="6" md="3">
+                        <v-col cols="6" md="4">
                             <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('formula')">
                                 <v-icon small class="mr-1">
                                     mdi-file-table-box-outline
@@ -34,35 +34,7 @@
                                 Formula
                             </v-btn>
                         </v-col>
-                        <v-col cols="6" md="3">
-                            <v-btn class="white--text" style="width:100%;" color="orange" small @click="showSetting = !showSetting">
-                                <v-icon small class="mr-1">
-                                    mdi-cog
-                                </v-icon>
-                                Setting
-                            </v-btn>
-                        </v-col>
                     </v-row>
-                    <v-scale-transition>
-                        <!-- <v-row class="my-2" v-show="showSetting" style="width:100%;">
-                            <v-col cols="6" class="pb-0 mb-0">
-                                <div class="setting-container success d-flex flex-column justify-center align-center white--text" style="width:100%;">
-                                    <v-icon color="white">
-                                        mdi-weight
-                                    </v-icon>
-                                    <h5>Averaging: ON</h5>
-                                </div>
-                            </v-col>
-                            <v-col cols="6" class="pb-0 mb-0">
-                                <div class="danger setting-container success d-flex flex-column justify-center align-center white--text" style="width:100%;">
-                                    <v-icon color="white">
-                                        mdi-alert-octagon-outline
-                                    </v-icon>
-                                    <h5>Blacklist</h5>
-                                </div>
-                            </v-col>
-                        </v-row> -->
-                    </v-scale-transition>
                 </v-col>
             </v-scroll-y-transition>
 
@@ -101,97 +73,12 @@
 
                 <!-- START OF FORMULA -->
                 <div v-show="tabs.formula" class="pt-0">
-                    <!-- <v-card elevation="3" class="ma-3 pa-3">
-                        <v-tooltip right color="success">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-row v-bind="attrs" v-on="on" class="d-flex align-center justify-center" style="width:100%;">
-                                    <v-col cols="7" md="9">
-                                        <v-text-field dense class="mt-2 ml-3" label="Buy Amount" outlined></v-text-field>
-                                    </v-col>
-                                    <v-col v-bind="attrs" v-on="on" cols="5" md="3" class="pr-0">
-                                        <v-chip class="d-flex align-center justify-center" color="primary" label text-color="white">
-                                            USDT
-                                        </v-chip>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                        </v-tooltip>
-                        <v-tooltip right color="success">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-row v-bind="attrs" v-on="on" class="d-flex align-center justify-center" style="width:100%;">
-                                    <v-col cols="7" md="9">
-                                        <v-text-field dense class="mt-2 ml-3" label="Averaging Limit" outlined></v-text-field>
-                                    </v-col>
-                                    <v-col v-bind="attrs" v-on="on" cols="5" md="3" class="pr-0">
-                                        <v-chip class="d-flex align-center justify-center" color="primary" label text-color="white">
-                                            STEPS
-                                        </v-chip>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                        </v-tooltip>
-                        <v-tooltip right color="success">
-                            <template v-slot:activator="{ on, attrs }">
-                                <v-row v-bind="attrs" v-on="on" class="d-flex align-center justify-center" style="width:100%;">
-                                    <v-col cols="7" md="9">
-                                        <v-text-field dense class="mt-2 ml-3" label="Take Profit Ratio" outlined></v-text-field>
-                                    </v-col>
-                                    <v-col v-bind="attrs" v-on="on" cols="5" md="3" class="pr-0">
-                                        <v-chip class="d-flex align-center justify-center" color="primary" label text-color="white">
-                                            %
-                                        </v-chip>
-                                    </v-col>
-                                </v-row>
-                            </template>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
-                        </v-tooltip>
-                    </v-card> -->
                     <v-card elevation="3" class="ma-3 pa-3">
                         <ModalsBotSetupTechnicalAnalysis v-if="analysis.condition" :selected-technical="analysis" ref="analysisRef" @onAnalysisSelected="onAnalysisSelected"/>
-                        <!-- <div class="d-flex flex-column align-center">
-                            <h3>Choose Technical Analysis</h3>
-                            <v-row style="width:100%;">
-                                <v-col cols="8">
-                                    <v-select :items="analysisList" label="Choose Analysis" dense outlined></v-select>
-                                </v-col>
-                                <v-col cols="4" class="mx-0">
-                                    <v-select :items="timeList" label="Minutes" dense outlined></v-select>
-                                </v-col>
-                            </v-row>
-                            <h3 class="mt-3">Condition</h3>
-                            <v-row style="width:100%;">
-                                <v-col class="d-flex justify-center" cols="12">
-                                    <v-btn-toggle style="width:100%;" v-model="condition" borderless color="primary">
-                                        <v-btn style="width:50%;" value="AND">
-                                            AND
-                                        </v-btn>
-                                        <v-btn style="width:50%;" value="OR">
-                                            OR
-                                        </v-btn>
-                                    </v-btn-toggle>
-                                </v-col>
-                            </v-row>
-                            <v-row style="width:100%;">
-                                <v-col cols="8">
-                                    <v-select :items="analysisList" label="Choose Analysis" dense outlined></v-select>
-                                </v-col>
-                                <v-col cols="4" class="mx-0">
-                                    <v-select :items="timeList" label="Minutes" dense outlined></v-select>
-                                </v-col>
-                            </v-row>
-                            <h3 class="mt-3">Minimum trading volume in 24h</h3>
-                            <v-row style="width:100%;">
-                                <v-col class="d-flex justify-center" cols="12">
-                                    <v-select :items="['$10,000,000','$1,000,000', '$100,000']" label="Trading Volume" dense outlined></v-select>
-                                </v-col>
-                            </v-row>
-                        </div> -->
                     </v-card>
                     <v-row>
                         <v-col cols="12" class="d-flex justify-center">
-                            <v-btn disabled color="success" @click="showAveragingFormula = !showAveragingFormula">
+                            <v-btn color="success" @click="showAveragingFormula = !showAveragingFormula">
                                 <v-icon small class="mr-1">
                                     mdi-cog
                                 </v-icon>
@@ -208,21 +95,66 @@
                                         <th>Drop Rate</th>
                                         <th>Buy Multiplier</th>
                                         <th>Take Profit</th>
+                                        <th>Type</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr class="text-center" v-for="(child, index) in tableItems" :key="index">
+                                    <tr v-if="steps[0]" class="text-center" v-for="(child, y, key) in steps" :key="child.key">
+                                        <td>{{y+1}}</td>
                                         <td>
-                                            <span>{{child.step}}</span>
-                                        </td>
-                                        <td>
-                                            <span>{{child.dropRate}} %</span>
+                                            <span>{{child.drop_rate}}</span>
+                                            <v-icon small slot="append" color="primary">
+                                                mdi-percent
+                                            </v-icon>
                                         </td>
                                         <td>
                                             <span>{{child.multiplier}}</span>
+                                            <v-icon small slot="append" color="primary">
+                                                mdi-close
+                                            </v-icon>
                                         </td>
                                         <td>
-                                            <span>{{child.takeProfit}} %</span>
+                                            <span>{{child.take_profit}}</span>
+                                            <v-icon small slot="append" color="primary">
+                                                mdi-percent
+                                            </v-icon>
+                                        </td>
+                                        <td>
+                                            <span>{{child.type}}</span>
+                                        </td>
+                                    </tr>
+                                    <tr v-if="steps.length>0">
+                                        <td style="text-align:center;" colspan="5">
+                                            <v-btn x-small @click="resetRowCustom" class="danger--text">RESET CUSTOM STRATEGY</v-btn>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <v-btn class="customGreen" small @click="addRowCustom(customDrop, customBuy, customProfit, customType)">+</v-btn>
+                                        </td>
+                                        <td>
+                                            <v-text-field v-model="customDrop" placeholder="1.2">
+                                                <v-icon small slot="append" color="primary">
+                                                    mdi-percent
+                                                </v-icon>
+                                            </v-text-field>
+                                        </td>
+                                        <td>
+                                            <v-text-field v-model="customBuy" placeholder="2">
+                                                <v-icon small slot="append" color="primary">
+                                                    mdi-close
+                                                </v-icon>
+                                            </v-text-field>
+                                        </td>
+                                        <td>
+                                            <v-text-field v-model="customProfit" placeholder="1.1">
+                                                <v-icon small slot="append" color="primary">
+                                                    mdi-percent
+                                                </v-icon>
+                                            </v-text-field>
+                                        </td>
+                                        <td>
+                                            <v-select :items="types" v-model="customType" label="Type"></v-select>
                                         </td>
                                     </tr>
                                 </tbody>
@@ -235,18 +167,64 @@
             </v-col>
         </v-row>
         <v-row v-if="!tabs.formula">
-            <v-col cols="12" md="6">
-                <v-btn color="orange white--text" disabled style="width:100%;" @click="_pause">PAUSE</v-btn>
+            <v-col cols="12" md="4">
+                <v-btn color="orange white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement:false">
+                    <span class="danger--text" v-if="!detail.xpaused">STOP TRADING</span>
+                    <span class="customGreen--text" v-else>START TRADING</span>
+                </v-btn>
             </v-col>
-            <v-col cols="12" md="6">
-                <v-btn color="customPink white--text" disabled style="width:100%;" @click="_forceSell">
+            <v-col cols="12" md="4">
+                <v-btn :disabled="detail.positions.length <= 0" color="customPink white--text" style="width:100%;" @click="showSellAgreement = !showSellAgreement; showStopAgreement = false; showAveragingAgreement = false">
                     FORCE SELL
+                </v-btn>
+            </v-col>
+            <v-col cols="12" md="4">
+                <v-btn :disabled="detail.positions.length <= 0" color="primary white--text" style="width:100%;"  @click="showAveragingAgreement = !showAveragingAgreement; showSellAgreement = false; showStopAgreement = false">
+                    AVERAGING: &nbsp;
+                    <span v-if="!detail.xaveraging">OFF</span>
+                    <span v-else>ON</span>
                 </v-btn>
             </v-col>
         </v-row>
         <v-row v-else>
             <v-col cols="12">
-                <v-btn color="success white--text" disabled style="width:100%;">SAVE</v-btn>
+                <v-btn @click="_save" color="success white--text" style="width:100%;">SAVE</v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-if="showStopAgreement">
+            <v-col v-if="!detail.xpaused" cols="12" md="12" class="d-flex flex-column justify-center ">
+                <h4>You're about to stop trading, this action will be stop your trading action:</h4>
+                <ul>
+                    <li>The bot will stays until all the position are closed</li>
+                    <li>After the positions is empty, the bot won't start any trade</li>
+                </ul>
+                <v-btn @click="_stopTrading" class="customGreen">I agree</v-btn>
+            </v-col>
+            <v-col v-else cols="12" md="12" class="d-flex flex-column justify-center ">
+                <h4>You're about to start trading, this action will be start your trading action:</h4>
+                <ul>
+                    <li>The position will start from steps 1</li>
+                </ul>
+                <v-btn @click="_startTrading" class="customGreen">I agree</v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-if="showSellAgreement">
+            <v-col cols="12" md="12" class="d-flex flex-column justify-center ">
+                <h4>You're about to force sell this pair:</h4>
+                <ul>
+                    <li>All the position will be closed immediately after you click the execute button</li>
+                    <li>There's no refund possibility, all risk is on you</li>
+                </ul>
+                <v-btn @click="_forceSell" class="customGreen">I agree</v-btn>
+            </v-col>
+        </v-row>
+        <v-row v-if="showAveragingAgreement">
+            <v-col cols="12" md="12" class="d-flex flex-column justify-center ">
+                <h4>You're about to set the averaging to ON/OFF</h4>
+                <ul>
+                    <li>Lorem ipsum dolor sit amet</li>
+                </ul>
+                <v-btn @click="_averaging" class="customGreen">I agree</v-btn>
             </v-col>
         </v-row>
     </v-card-text>
@@ -279,6 +257,12 @@ export default {
 
             },
 
+            // AVERAGING STEPS
+            customDrop: null,
+            customBuy: null,
+            customProfit: null,
+            customType: null,
+
             // ANALYSIS
             analysis: {
                 first_analysis: {
@@ -290,67 +274,11 @@ export default {
                 condition: null,
                 minimum_trading_volume: null
             },
-
-            analysisList: [{
-                id: "EMA",
-                name: "Exponential Moving Average"
-            }, {
-                id: "SMA",
-                name: "Moving Average"
-            }, {
-                id: "BB",
-                name: "Bollinger Band"
-            }, {
-                id: "RSI",
-                name: "RSI"
-            }, {
-                id: "STOCHASTIC",
-                name: "Stochastic"
-            }, {
-                id: "MACD",
-                name: "MACD"
-            }, {
-                id: "STOCHASTIC_RSI",
-                name: "Stochastic RSI"
-            }, {
-                id: "CCI",
-                name: "CCI"
-            }],
-            timeList: ['5m', '15m', '30m', '1h', '2h', '4h', '12h'],
-            condition:null,
-
-            // STRATEGY
-            tableItems: [{
-                    step: 1,
-                    dropRate: 5,
-                    multiplier: 2,
-                    takeProfit: 2
-                },
-                {
-                    step: 2,
-                    dropRate: 5,
-                    multiplier: 2,
-                    takeProfit: 2
-                },
-                {
-                    step: 3,
-                    dropRate: 5,
-                    multiplier: 2,
-                    takeProfit: 2
-                },
-                {
-                    step: 4,
-                    dropRate: 5,
-                    multiplier: 2,
-                    takeProfit: 2
-                },
-                {
-                    step: 5,
-                    dropRate: 5,
-                    multiplier: 2,
-                    takeProfit: 2
-                },
-            ],
+            steps: this.detail.averaging_steps,
+            types:["DCA","GRID"],
+            showStopAgreement:false,
+            showSellAgreement:false,
+            showAveragingAgreement:false,
 
             // TABLE DETAIL
             tableDetailTitle: [{
@@ -453,7 +381,8 @@ export default {
             console.log(val);
         },
         logger() {
-
+            console.log('pair', this.pair)
+            console.log('detail', this.detail)
         },
         onTabSelect(tab) {
             for (let key in this.tabs) {
@@ -464,57 +393,190 @@ export default {
                 }
             }
         },
-        async _pause() {
-            console.log(this.pair);
-            let query = {};
-            query.id = this.pair._id
-            query.action = "PAUSE"
-            query.status = "REQUESTED"
-            query.message = null
-            query.details = {
-                bot_id: this.pair.bot_id
+        addRowCustom(drop, multiplier, profit, type) {
+            // if GRID selected, don't allow to select DCA;
+            if(type == 'GRID'){
+                this.types = ['GRID'];
             }
 
-            let res = await this.$api.$post("/user/action", query);
-            console.log(res);
-
-            this.$store.commit('setIsLoading', true);
-            setTimeout(() => {
-                this.$emit('close-modal', false);
+            if (!drop || !multiplier || !profit) {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
-                    message: "Successfuly Added Action Pause!",
-                    color: "success"
+                    message: "Please don't leave any strategy input empty!",
+                    color: "customPink"
                 })
-                this.$store.commit('setIsLoading', false);
-            })
+            } else {
+                let strategy = {};
+                strategy.step = this.steps.length
+                strategy.drop_rate = parseFloat(drop);
+                strategy.multiplier = parseFloat(multiplier);
+                strategy.take_profit = parseFloat(profit);
+                strategy.type = type;
+                this.steps.push(strategy);
+                this.customDrop = null;
+                this.customBuy = null;
+                this.customProfit = null;
+                this.customType = null;
+            }
         },
+        resetRowCustom() {
+            this.types = ['DCA', 'GRID'];
+            this.steps = [];
+            this.$forceUpdate();
+        },
+        async _startTrading(){
 
+        },
+        async _stopTrading() {
+            let query = {id:this.pair._id};
+            let paramTemp = {key:"paused"}
+            let res = await this.$api.$put("/user/action", paramTemp, {
+                params:query
+            });
+            console.log(res);
+            this.$store.commit('setIsLoading', true);
+            if(res.success){
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Stop Trading Successfully Executed!",
+                        color: "success"
+                    })
+                    this.$forceUpdate();
+                    this.$store.commit('setIsLoading', false);
+                })
+            }else{
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: res.msg,
+                        color: "customPink"
+                    })
+                    this.$store.commit('setIsLoading', false);
+                })
+            }
+        },
+        async _averaging(){
+            let query = {id:this.pair._id};
+            let paramTemp = {key:"averaging"}
+            let res = await this.$api.$put("/user/action", paramTemp, {
+                params:query
+            });
+            console.log('res', res);
+            this.$store.commit('setIsLoading', true);
+            if(res.success){
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Averaging Successfully Executed!",
+                        color: "success"
+                    })
+                    this.$forceUpdate();
+                    this.$store.commit('setIsLoading', false);
+                })
+            }else{
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: res.msg,
+                        color: "customPink"
+                    })
+                    this.$forceUpdate();
+                    this.$store.commit('setIsLoading', false);
+                })
+            }
+        },
         async _forceSell() {
-            console.log(this.pair);
-            let query = {};
-            query.id = this.pair._id
-            query.action = "FORCE_SELL"
-            query.status = "REQUESTED"
-            query.message = null
-            query.details = {
-                bot_id: this.pair.bot_id
+            let query = {id:this.pair._id};
+            let paramTemp = {key:"force_sell"}
+            let res = await this.$api.$put("/user/action", paramTemp, {
+                params:query
+            });
+            console.log('res', res);
+            this.$store.commit('setIsLoading', true);
+            if(res.success){
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Force Sell Successfully Executed!",
+                        color: "success"
+                    })
+                    this.$forceUpdate();
+                    this.$store.commit('setIsLoading', false);
+                })
+            }else{
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: res.msg,
+                        color: "customPink"
+                    })
+                    this.$store.commit('setIsLoading', false);
+                })
+            }
+        },
+
+        async _save(){
+            let query = {id:this.pair._id};
+            let analysis = {};
+            let averaging_steps = [];
+            analysis.condition = this.analysis.condition;
+            analysis.indicators = [];
+
+            if (this.analysis.first_analysis) {
+                analysis.indicators.push({
+                    id: this.analysis.first_analysis.analysis,
+                    timeperiod: this.analysis.first_analysis.time
+                })
             }
 
-            let res = await this.$api.$post("/user/action", query);
-            console.log(res);
-
-            this.$store.commit('setIsLoading', true);
-            setTimeout(() => {
-                this.$emit('close-modal', false);
-                this.$store.commit('setShowSnackbar', {
-                    show: true,
-                    message: "Successfuly Added Action Stop!",
-                    color: "success"
+            if (this.analysis.second_analysis) {
+                analysis.indicators.push({
+                    id: this.analysis.second_analysis.analysis,
+                    timeperiod: this.analysis.second_analysis.time
                 })
-                this.$store.commit('setIsLoading', false);
-            })
+            }
+
+            averaging_steps = this.steps;
+            console.log(this.steps);
+            console.log(this.analysis);
+            console.log('analysis', analysis);
+            console.log('averaging_steps', averaging_steps);
+            let res = await this.$api.$put("/user/analysis", {averaging_steps:averaging_steps, analysis:analysis}, {
+                params:query
+            });
+            
+            this.$store.commit('setIsLoading', true);
+            if(res.success){
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Analysis Update Successfully Executed!",
+                        color: "success"
+                    })
+                    this.$forceUpdate();
+                    this.$store.commit('setIsLoading', false);
+                })
+            }else{
+                setTimeout(() => {
+                    this.$emit('close-modal', false);
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: res.msg,
+                        color: "customPink"
+                    })
+                    this.$store.commit('setIsLoading', false);
+                })
+            }
         },
+
         closeModal() {
             this.$emit('close-modal', false);
         },
