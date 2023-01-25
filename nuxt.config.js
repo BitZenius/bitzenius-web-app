@@ -123,9 +123,9 @@ export default {
           customYellow:"#FEE603",
           primary: '#3394F8',
           danger: '#ff002f',
-          basic:'#312d4b',
+          basic:'#2B2B2B',
           'basic-1': '#177e89',
-          'basic-2':'#312d4b',
+          'basic-2':'#2B2B2B',
         },
         light: {
           customGreen:"#C3F239",
