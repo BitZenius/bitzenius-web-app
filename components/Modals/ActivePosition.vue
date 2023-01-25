@@ -11,7 +11,7 @@
                     <h4 class="mt-2 white--text">{{pair.pair_from}} / {{pair.pair_to}}</h4>
                     <v-row class="mt-2">
                         <v-col cols="6" md="4">
-                            <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('detail')">
+                            <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('detail')">
                                 <v-icon small class="mr-1">
                                     mdi-pencil
                                 </v-icon>
@@ -19,7 +19,7 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="6" md="4">
-                            <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('strategy')">
+                            <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('strategy')">
                                 <v-icon small class="mr-1">
                                     mdi-lightbulb-outline
                                 </v-icon>
@@ -27,7 +27,7 @@
                             </v-btn>
                         </v-col>
                         <v-col cols="6" md="4">
-                            <v-btn style="width:100%;" color="customGreen" small @click="onTabSelect('formula')">
+                            <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('formula')">
                                 <v-icon small class="mr-1">
                                     mdi-file-table-box-outline
                                 </v-icon>
@@ -168,7 +168,7 @@
         </v-row>
         <v-row v-if="!tabs.formula">
             <v-col cols="12" md="4">
-                <v-btn color="orange white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement:false">
+                <v-btn color="customYellow white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement:false">
                     <span class="danger--text" v-if="!detail.xpaused">STOP TRADING</span>
                     <span class="customGreen--text" v-else>START TRADING</span>
                 </v-btn>
@@ -198,14 +198,14 @@
                     <li>The bot will stays until all the position are closed</li>
                     <li>After the positions is empty, the bot won't start any trade</li>
                 </ul>
-                <v-btn @click="_stopTrading" class="customGreen">I agree</v-btn>
+                <v-btn @click="_stopTrading" class="customGreen black--text">I agree</v-btn>
             </v-col>
             <v-col v-else cols="12" md="12" class="d-flex flex-column justify-center ">
                 <h4>You're about to start trading, this action will be start your trading action:</h4>
                 <ul>
                     <li>The position will start from steps 1</li>
                 </ul>
-                <v-btn @click="_startTrading" class="customGreen">I agree</v-btn>
+                <v-btn @click="_startTrading" class="customGreen black--text">I agree</v-btn>
             </v-col>
         </v-row>
         <v-row v-if="showSellAgreement">
@@ -215,7 +215,7 @@
                     <li>All the position will be closed immediately after you click the execute button</li>
                     <li>There's no refund possibility, all risk is on you</li>
                 </ul>
-                <v-btn @click="_forceSell" class="customGreen">I agree</v-btn>
+                <v-btn @click="_forceSell" class="customGreen black--text">I agree</v-btn>
             </v-col>
         </v-row>
         <v-row v-if="showAveragingAgreement">
@@ -224,7 +224,7 @@
                 <ul>
                     <li>Lorem ipsum dolor sit amet</li>
                 </ul>
-                <v-btn @click="_averaging" class="customGreen">I agree</v-btn>
+                <v-btn @click="_averaging" class="customGreen black--text">I agree</v-btn>
             </v-col>
         </v-row>
     </v-card-text>

@@ -68,7 +68,7 @@
                                 <v-chip small v-if="item.type == 'buy'" color="info">
                                     {{item.type.toUpperCase()}}
                                 </v-chip>
-                                <v-chip small v-else color="orange" class="white--text">
+                                <v-chip small v-else color="customYellow black--text">
                                     {{item.type.toUpperCase()}}
                                 </v-chip>
                             </template>

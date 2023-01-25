@@ -40,11 +40,11 @@
                         <div v-if="exchange.active" class="d-flex justify-center">
                             <v-btn :disabled="!user.subscription || user.subscription == false" small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
                         </div>
-                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="customGreen" small @click="_addBot(exchange)">Setup Bot</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="customGreen black--text" small @click="_addBot(exchange)">Setup Bot</v-btn>
                     </v-col>
                 </v-row>
                 <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
-                    <h3 style="letter-spacing:2px;" class="orange--text">Coming Soon!</h3>
+                    <h3 style="letter-spacing:2px;" class="customYellow--text">Coming Soon!</h3>
                 </v-overlay>
             </v-card>
         </v-col>
@@ -151,10 +151,10 @@
                     </div>
                 </template>
                 <template v-slot:item.status="{ item }">
-                    <v-chip v-if="item.status == 'WAITING_POSITION'" small color="orange" dark label>
+                    <v-chip v-if="item.status == 'WAITING_POSITION'" class="black--text" small color="customYellow black--text" dark label>
                         Waiting for Position
                     </v-chip>
-                    <v-chip v-if="item.status == 'ACTIVE'" small color="success" dark label>
+                    <v-chip v-if="item.status == 'ACTIVE'" small class="black--text" color="customGreen" dark label>
                         Active
                     </v-chip>
                     <v-chip v-if="item.status == 'INACTIVE'" small color="grey" dark label>

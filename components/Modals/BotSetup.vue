@@ -105,7 +105,7 @@
                         <v-btn :disabled="!user.subscription || user.subscription == false" v-if="!isUpdateMode" color="primary" @click="_submitBotSetup(isUpdateMode)">
                             Submit
                         </v-btn>
-                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else color="customGreen" @click="_submitBotSetup(isUpdateMode)">
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else color="customGreen black--text" @click="_submitBotSetup(isUpdateMode)">
                             Update
                         </v-btn>
                     </div>

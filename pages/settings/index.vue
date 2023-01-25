@@ -78,7 +78,7 @@
                                     </v-btn>
                                 </v-col>
                                 <v-col cols="12" class="d-flex justify-end px-5">
-                                    <v-btn @click="showEnableTwoFactorModal = true" color="orange white--text" style="height:54px; width:100%;">
+                                    <v-btn @click="showEnableTwoFactorModal = true" color="customYellow black--text" style="height:54px; width:100%;">
                                         <span>Enable Two-Factor Authentication</span>
                                     </v-btn>
                                 </v-col>

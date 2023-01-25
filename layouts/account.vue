@@ -67,7 +67,7 @@
                     </v-list-item-icon>
                     <v-list-item-title class="d-flex flex-column">
                         Grid
-                        <small style="color:orange;">Coming Soon!</small>
+                        <small style="color:customYellow;">Coming Soon!</small>
                     </v-list-item-title>
                 </v-list-item>
                 <v-list-item disabled class="ml-3">
@@ -76,7 +76,7 @@
                     </v-list-item-icon>
                     <v-list-item-title class="d-flex flex-column">
                         DCA
-                        <small style="color:orange;">Coming Soon!</small>
+                        <small style="color:customYellow;">Coming Soon!</small>
                     </v-list-item-title>
                 </v-list-item>
                 <v-list-item disabled class="ml-3">
@@ -85,7 +85,7 @@
                     </v-list-item-icon>
                     <v-list-item-title class="d-flex flex-column">
                         Smart Trade
-                        <small style="color:orange;">Coming Soon!</small>
+                        <small style="color:customYellow;">Coming Soon!</small>
                     </v-list-item-title>
                 </v-list-item>
             </v-list-group>

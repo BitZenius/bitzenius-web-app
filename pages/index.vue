@@ -214,7 +214,7 @@ export default {
                     theme: {
                         mode: this.$store.getters.theme
                     },
-                    colors: this.$store.getters.theme == 'dark' ? '#49b5b2' : '#17576a'
+                    colors: this.$store.getters.theme == 'dark' ? '#3394F8' : '#3394F8'
                 },
                 series: [{
                     name: 'PnL',

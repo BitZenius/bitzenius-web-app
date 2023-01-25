@@ -119,7 +119,8 @@ export default {
       themes: {
         dark: {
           customGreen:"#C3F239",
-          customPink:"#FE759F",
+          customPink: "#FE759F",
+          customYellow:"#FEE603",
           primary: '#3394F8',
           danger: '#ff002f',
           basic:'#312d4b',
@@ -128,7 +129,8 @@ export default {
         },
         light: {
           customGreen:"#C3F239",
-          customPink:"#FE759F",
+          customPink: "#FE759F",
+          customYellow: "#FEE603",
           primary: '#3394F8',
           danger: '#ff002f',
           basic:'#ffffff',

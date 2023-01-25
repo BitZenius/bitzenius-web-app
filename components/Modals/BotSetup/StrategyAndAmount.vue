@@ -137,7 +137,7 @@
                                         </tr>
                                         <tr v-if="item.name == 'Custom'">
                                             <td v-if="item.name == 'Custom'">
-                                                <v-btn class="customGreen" small @click="addRowCustom(customDrop, customBuy, customProfit, customType)">+</v-btn>
+                                                <v-btn class="customGreen black--text" small @click="addRowCustom(customDrop, customBuy, customProfit, customType)">+</v-btn>
                                             </td>
                                             <td>
                                                 <v-text-field v-model="customDrop" placeholder="1.2">
