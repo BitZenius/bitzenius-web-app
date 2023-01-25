@@ -256,7 +256,7 @@ export default {
             fixed: false,
             right: true,
             rightDrawer: false,
-            buttomNav: 'home'
+            bottomNav: 'home'
         }
     },
     computed: {

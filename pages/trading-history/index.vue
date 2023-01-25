@@ -54,7 +54,7 @@
                             <template v-slot:item.pair="{item}">
                                 <v-row>
                                     <v-col cols="12" class="d-flex align-center justify-start">
-                                        <!-- <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo/${item.logo}`)" /> -->
+                                        <img style="width:28px;" :alt="item.pair" :src="'/token_logo/'+item.pair.replace(/\s/g, '').split('/')[0].toUpperCase()+'.png'" />
                                         <div class="d-flex flex-column ml-3">
                                             <div class="d-flex flex-column">
                                                 <strong>{{item.pair}}</strong>
