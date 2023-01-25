@@ -119,9 +119,7 @@
                 <template v-slot:item.pair="{item}">
                     <v-row>
                         <v-col cols="12" class="d-flex align-center justify-start">
-                            <!-- <code>{{item.pair_from.toUpperCase()}}.png</code> -->
                             <img style="width:28px;" :alt="item.logo" :src="'/token_logo/'+item.pair_from.toUpperCase()+'.png'" />
-                            <!-- <img style="width:28px;" :alt="item.logo" :src="require(`~/assets/token_logo/INJ.png`)" /> -->
                             <div class="d-flex flex-column ml-3">
                                 <div class="d-flex">
                                     <strong>{{item.pair_from}} </strong>
@@ -419,12 +417,21 @@ export default {
             }
         });
         let userId = this.$store.state.authUser.uid;
+
+
         this._listenPosition();
 
         // this.socket.on('current_price_all', (data) => {
         //     console.log('current_price_all');
         //     console.log(data);
         //     this.activePosition = data;
+        // })
+
+        //GLOBAL 
+        // this.socket.on('current_price', (data) => {
+        //     console.log(data);
+        //     let index = this.activePosition.findIndex(b => b.symbol === data.pair);
+        //     this.activePosition[index].price.value = data.value;
         // })
 
         // TESTING PURPOSE
@@ -471,32 +478,48 @@ export default {
         async _listenPosition() {
             this.isLoading = true;
             this.socket.on('positions', (data) => {
+                console.log('this.activePosition', this.activePosition);
                 this.activePosition = data.data;
                 this.availablePair = data.pairs;
             })
         },
         async _fetchBotsList(sorting) {
-            let res = await this.$api.$get('/user/bot');
-            let userExchanges = res.data;
-            if (userExchanges) {
-                userExchanges.forEach((exchange) => {
-                    // LOGIC GET CHANGE FROM BINANCE
-                    let exchangeIndex = this.exchanges.findIndex(e => e.name == exchange.selected_exchange);
-                    this.exchanges[exchangeIndex].data = exchange;
-                    this.exchanges[exchangeIndex].active = true;
-                    this.exchanges[exchangeIndex].id = exchange._id;
+            let res = await this.$api.$get('/user/bot-user', {params:{
+                exchange:"Binance"
+            }});
+            alert('fetchbot')
+            console.log('_fetchBotsList', res);
+            this.activePosition = res.data;
+            this.availablePair = res.pairs;
+
+            this.availablePair.forEach((symbol)=>{
+                this.socket.on(symbol.id, (data) => {
+                    console.log(data);
+                    // let index = this.activePosition.findIndex(b => b.symbol === data.pair);
+                    // this.activePosition[index].price.value = data.value;
                 })
-            }
-            let isAnyData = false;
-            for (let i = 0; i < this.exchanges.length; i++) {
-                let exchange = this.exchanges[i];
-                if (exchange.active) {
-                    this.selectExchangeCard(exchange.name, exchange, i);
-                    isAnyData = true;
-                    break;
-                }
-            }
-            if (!isAnyData) this.$store.commit('setIsLoading', false);
+            })
+            // let userExchanges = res.data;
+
+            // if (userExchanges) {
+            //     userExchanges.forEach((exchange) => {
+            //         // LOGIC GET CHANGE FROM BINANCE
+            //         let exchangeIndex = this.exchanges.findIndex(e => e.name == exchange.selected_exchange);
+            //         this.exchanges[exchangeIndex].data = exchange;
+            //         this.exchanges[exchangeIndex].active = true;
+            //         this.exchanges[exchangeIndex].id = exchange._id;
+            //     })
+            // }
+            // let isAnyData = false;
+            // for (let i = 0; i < this.exchanges.length; i++) {
+            //     let exchange = this.exchanges[i];
+            //     if (exchange.active) {
+            //         this.selectExchangeCard(exchange.name, exchange, i);
+            //         isAnyData = true;
+            //         break;
+            //     }
+            // }
+            // if (!isAnyData) this.$store.commit('setIsLoading', false);
         },
         async _fetchPosition(sorting) {
             let exchange = this.selectedExchangeReport;
