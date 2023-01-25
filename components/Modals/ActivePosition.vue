@@ -1,7 +1,12 @@
 <template>
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
-        Transaction
+        <v-row>
+            <v-col cols="6">Transaction</v-col>
+            <v-col cols="6" class="d-flex justify-end">
+                <v-btn class="danger white--text" @click="closeModal">Close</v-btn>
+            </v-col>
+        </v-row>
     </v-card-title>
     <v-card-text class="my-3">
         <v-row class="mx-2">
@@ -393,6 +398,10 @@ export default {
                 }
             }
         },
+        closeModal(){
+            this.$emit('close-modal', false);
+        },
+
         addRowCustom(drop, multiplier, profit, type) {
             // if GRID selected, don't allow to select DCA;
             if(type == 'GRID'){

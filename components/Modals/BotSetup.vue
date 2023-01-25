@@ -2,7 +2,10 @@
 <v-card elevation="8">
     <v-card-title class="text-h6 lighten-2">
         <v-row>
-            <v-col cols="12" class="d-flex justify-center">Add Bot {{exchange}}</v-col>
+            <v-col cols="6" class="d-flex justify-start">Add Bot {{exchange}}</v-col>
+            <v-col cols="6" class="d-flex justify-end">
+                <v-btn class="danger white--text" @click="closeModal">Close</v-btn>
+            </v-col>
         </v-row>
         <!-- <v-row>
             <v-col cols="12">

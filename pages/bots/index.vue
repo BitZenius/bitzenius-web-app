@@ -1,11 +1,11 @@
 <template>
 <v-row>
-    <v-dialog v-if="showAddBot" v-model="showAddBot" max-width="600">
+    <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
         <template>
             <ModalsBotSetup :bot-prop="selectedBot" :exchange="selectedExchange" @close-modal="closeModal" />
         </template>
     </v-dialog>
-    <v-dialog v-if="showActivePosition" v-model="showActivePosition" max-width="600">
+    <v-dialog persistent v-if="showActivePosition" v-model="showActivePosition" max-width="600">
         <template>
             <ModalsActivePosition :detail="botsDetail" :pair="selectedPair" @close-modal="closeModal" />
         </template>
@@ -419,7 +419,7 @@ export default {
         let userId = this.$store.state.authUser.uid;
 
 
-        this._listenPosition();
+        // this._listenPosition();
 
         // this.socket.on('current_price_all', (data) => {
         //     console.log('current_price_all');
@@ -487,11 +487,9 @@ export default {
             let res = await this.$api.$get('/user/bot-user', {params:{
                 exchange:"Binance"
             }});
-            alert('fetchbot')
             console.log('_fetchBotsList', res);
             this.activePosition = res.data;
             this.availablePair = res.pairs;
-
             this.availablePair.forEach((symbol)=>{
                 this.socket.on(symbol.id, (data) => {
                     console.log(data);
