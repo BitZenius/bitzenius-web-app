@@ -112,6 +112,7 @@ export default {
                         message: "Please insert valid api key and secret key",
                         color: "customPink"
                     })
+                    this.$store.commit('setIsLoading', false);
                 }
             }
         },
@@ -128,13 +129,14 @@ export default {
             let paramTemp = {};
             paramTemp.api_key = this.api_key;
             paramTemp.secret_key = this.secret_key;
-            paramTemp.title = this.exchange;
+            paramTemp.exchange_name = this.exchange;
             if (!this.exchange || !this.api_key || !this.secret_key) {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "Please fill all requirements needed!",
                     color: "customPink"
                 })
+                this.$store.commit('setIsLoading', false);
             } else {
                 console.log(paramTemp);
                 try {
@@ -170,6 +172,7 @@ export default {
                         message: "Please insert valid api key and secret key",
                         color: "customPink"
                     })
+                    this.$store.commit('setIsLoading', false);
                 }
             }
         }

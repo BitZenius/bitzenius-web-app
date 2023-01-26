@@ -109,28 +109,28 @@ export default {
                     selected: false,
                     active: false,
                     image: "/exchange_logo/binance.png",
-                    comingsoon:false
+                    comingsoon: false
                 },
                 {
                     name: "Bybit",
                     selected: false,
                     active: false,
                     image: "/exchange_logo/bybit.png",
-                    comingsoon:true
+                    comingsoon: false
                 },
-                                {
+                {
                     name: "Kucoin",
                     selected: false,
                     active: false,
                     image: "/exchange_logo/kucoin.png",
-                    comingsoon:true
+                    comingsoon: true
                 },
-                                {
+                {
                     name: "Tokocrypto",
                     selected: false,
                     active: false,
                     image: "/exchange_logo/tokocrypto.png",
-                    comingsoon:true
+                    comingsoon: true
                 }
             ],
             // END OF CARD EXCHANGE
@@ -229,20 +229,29 @@ export default {
             let res = await this.$api.$get('/user/exchange');
             this.clientExchanges = res.data;
             console.log("DATA EXCHANGES", res.data);
-            for (let exchange of this.clientExchanges) {
-                console.log(exchange.exchange_name);
-                for (let i = 0; i < this.exchanges.length; i++) {
-                    let currentExchange = this.exchanges[i];
-                    console.log(`comparing ${currentExchange.name} & ${exchange.exchange_name} ==`)
-                    if (currentExchange.name == exchange.exchange_name) {
-                        console.log("IF");
-                        currentExchange.active = true;
-                        currentExchange.updateAt = exchange.updated_at;
-                        currentExchange.id = exchange._id;
+            if (res.data) {
+                for (let exchange of this.clientExchanges) {
+                    console.log(exchange.exchange_name);
+                    for (let i = 0; i < this.exchanges.length; i++) {
+                        let currentExchange = this.exchanges[i];
+                        console.log(`comparing ${currentExchange.name} & ${exchange.exchange_name} ==`)
+                        if (currentExchange.name == exchange.exchange_name) {
+                            console.log("IF");
+                            currentExchange.active = true;
+                            currentExchange.updateAt = exchange.updated_at;
+                            currentExchange.id = exchange._id;
+                        }
                     }
                 }
+                this.$store.commit('setIsLoading', false);
+            } else {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Unable to fetch user exchanges!",
+                    color: "customPink"
+                })
+                this.$store.commit('setIsLoading', false);
             }
-            this.$store.commit('setIsLoading', false);
         },
 
         // LISTENER

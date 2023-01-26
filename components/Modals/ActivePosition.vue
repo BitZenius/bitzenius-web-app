@@ -4,7 +4,7 @@
         <v-row>
             <v-col cols="6">Transaction</v-col>
             <v-col cols="6" class="d-flex justify-end">
-                <v-btn class="danger white--text" @click="closeModal">Close</v-btn>
+                <v-btn text class="danger--text" @click="closeModal">Close</v-btn>
             </v-col>
         </v-row>
     </v-card-title>

@@ -244,7 +244,7 @@ export default {
                     selected: false,
                     active: false,
                     image: "/exchange_logo/bybit.png",
-                    comingsoon: true
+                    comingsoon: false
                 },
                 {
                     name: "Kucoin",
