@@ -163,7 +163,6 @@
     </v-row> -->
 </div>
 </template>
-
 <script>
 export default {
     layout: 'account',
@@ -204,9 +203,33 @@ export default {
             ],
             chartData: {
                 options: {
+                    colors:['#F44336', '#E91E63', '#9C27B0'],
                     chart: {
                         id: 'vuechart-example',
                         background: '0'
+                    },
+                    dataLabels: {
+                        enabled: true,
+                        formatter: function (value) {
+                            console.log(`value: ${value}`);
+                            let val = (value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            return '$ '+val;
+                        }
+                    },
+                    fill:{
+                        opacity:1
+                    },
+                    yaxis: {
+                        style:{
+                            colors:['#3394f8']
+                        },
+                        labels: {
+                            formatter: function (value) {
+                                console.log(`value: ${value}`);
+                                let val = (value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                                return '$ '+val;
+                            }
+                        },
                     },
                     xaxis: {
                         categories: []
@@ -217,7 +240,7 @@ export default {
                     colors: this.$store.getters.theme == 'dark' ? '#3394F8' : '#3394F8'
                 },
                 series: [{
-                    name: 'PnL',
+                    name: 'P&L',
                     data: []
                 }]
             }
@@ -235,10 +258,19 @@ export default {
         // FETCH API
         async _fetchChart() {
             let res = await this.$api.$get('/user/chart');
+            console.log('_fetchChart', res);
             console.log(this.chartData.options.xaxis.categories);
             console.log(this.chartData.series[0].data);
             this.chartData.options.xaxis.categories = res.categories;
+            let value = [];
+            res.series.forEach((val)=>{
+                console.log(val);
+                let convert = "$"+(parseFloat(val)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                value.push(convert)
+            })
             this.chartData.series[0].data = res.series;
+            // this.chartData.series[0].data = value;
+            console.log('array for series', value);
             this.showChart = true;
         },
         async _fetchDailyDeals() {

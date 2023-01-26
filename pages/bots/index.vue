@@ -435,19 +435,19 @@ export default {
         // })
 
         // TESTING PURPOSE
-        this.socket.on('current_price', (data) => {
-            let index = this.activePosition.findIndex(b => b.symbol === data.name);
-            this.activePosition[index].price.value = data.priceValue;
-            this.activePosition[index].profit.value = data.pnl;
-            this.activePosition[index].profit.percentage = data.pnlPercentage;
-            this.activePosition[index].quantity = data.quantity;
-            this.activePosition.sort((a, b) => {
-                if (a.pnl > b.pnl) return 1;
-                if (a.pnl < b.pnl) return -1;
-                return 0;
-            });
-            this.isLoading = false;
-        })
+        // this.socket.on('current_price', (data) => {
+        //     let index = this.activePosition.findIndex(b => b.symbol === data.name);
+        //     this.activePosition[index].price.value = data.priceValue;
+        //     this.activePosition[index].profit.value = data.pnl;
+        //     this.activePosition[index].profit.percentage = data.pnlPercentage;
+        //     this.activePosition[index].quantity = data.quantity;
+        //     this.activePosition.sort((a, b) => {
+        //         if (a.pnl > b.pnl) return 1;
+        //         if (a.pnl < b.pnl) return -1;
+        //         return 0;
+        //     });
+        //     this.isLoading = false;
+        // })
         // END OF CONNECT TO SOCKET IO
 
         setTimeout(() => {
