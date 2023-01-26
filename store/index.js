@@ -1,7 +1,8 @@
 export const state = () => ({
   title: 'BitZenius',
   authUser: null,
-  token:null,
+  subscription: null,
+  token: null,
   theme: 'dark',
   isLoading: false,
   snackbar: {
@@ -13,8 +14,6 @@ export const state = () => ({
 
 export const actions = {
   onAuthStateChangedAction: (ctx, { authUser, claims }) => {
-    console.log('AUTHUSER:', authUser)
-    console.log('CLAIMS:', claims)
     if (!authUser) {
       // claims = null
       // Perform logout operations
@@ -27,9 +26,7 @@ export const actions = {
 export const mutations = {
   ON_AUTH_STATE_CHANGED_MUTATION: (state, { authUser, claims }) => {
     if (authUser) {
-      console.log('store authUser', authUser);
       const { uid, email, phoneNumber, displayName, photoURL, emailVerified, refreshToken } = authUser
-      console.log('RefreshToken', refreshToken)
       const { trial, subscription } = claims
       state.authUser = { uid, email, phoneNumber, displayName, photoURL, emailVerified, trial, subscription }
     } else {
@@ -49,7 +46,6 @@ export const mutations = {
     state.title = title
   },
   setTheme(state, theme) {
-    console.log('store theme ', theme);
     state.theme = theme
   },
   setIsLoading(state, cond) {
@@ -57,6 +53,9 @@ export const mutations = {
   },
   setShowSnackbar(state, cond) {
     state.snackbar = cond;
+  },
+  setSubscription(state, subscription) {
+    state.subscription = subscription;
   }
 }
 

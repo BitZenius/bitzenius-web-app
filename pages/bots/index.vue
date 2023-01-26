@@ -449,7 +449,6 @@ export default {
         //     this.isLoading = false;
         // })
         // END OF CONNECT TO SOCKET IO
-
         setTimeout(() => {
             console.log('this.activePosition', this.activePosition);
             console.log('this.activePositionFiltered', this.activePositionFiltered);
