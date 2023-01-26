@@ -291,10 +291,18 @@ export default {
 
           if (onResult.exists) {
             const subscriptionData = onResult.data()
+            
+            // save subscription data into store
             await this.$store.commit('setSubscription', {
               ...subscriptionData,
               start: subscriptionData.start.toDate(),
               end: subscriptionData.end.toDate()
+            })
+
+            // also update subscription and trial status into store
+            await this.$store.commit('setUser', {
+              subscription: subscriptionData.id > 0,
+              trial: subscriptionData.trial
             })
           }
         })

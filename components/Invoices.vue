@@ -8,7 +8,7 @@
         <div class="d-flex flex-column align-center justify-center" style="max-width:80%;">
           <h2>Invoices</h2>
           <p class="text-center mt-2">
-            Invoices of your subscription history can be manage here
+            Track your invoices or subscription history
           </p>
         </div>
       </v-col>
