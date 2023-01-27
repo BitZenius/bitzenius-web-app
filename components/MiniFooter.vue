@@ -45,7 +45,7 @@
       </v-card-text>
       <v-divider></v-divider>
       <v-card-text class="white--text">
-        &copy;{{ new Date().getFullYear() }} — <strong>BitZenius 0.1.4</strong>
+        &copy;{{ new Date().getFullYear() }} - BitZenius
       </v-card-text>
     </v-card>
   </v-footer>

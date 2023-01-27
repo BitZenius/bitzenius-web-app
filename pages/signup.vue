@@ -54,6 +54,12 @@
                     outlined
                     class="mb-2"
                   ></v-text-field>
+                  <v-text-field
+                    v-model="referral"
+                    label="Referral Code"
+                    outlined
+                    class="mb-2"
+                  ></v-text-field>
                   <v-btn
                     style="width: 100%"
                     color="customGreen"
@@ -118,10 +124,14 @@ export default {
       v => !!v || 'Password is required',
       v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain at least lowercase letter, one number, a special character and one uppercase letter'
     ],
+    referral: '',
     isLoading: false
   }),
   head: {
-    title: 'Daftar'
+    title: 'Signup'
+  },
+  mounted () {
+    this.referral = this.$route.query.referral
   },
   methods: {
     validate () {
