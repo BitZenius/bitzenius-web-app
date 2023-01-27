@@ -4,7 +4,9 @@
         <v-row>
             <v-col cols="6" class="d-flex justify-start">Add Bot {{exchange}}</v-col>
             <v-col cols="6" class="d-flex justify-end">
-                <v-btn text class="danger--text" @click="closeModal">Close</v-btn>
+                <v-btn icon @click="closeModal">
+                    <v-icon>mdi-close</v-icon>
+                </v-btn>
             </v-col>
         </v-row>
         <!-- <v-row>
@@ -120,7 +122,9 @@
 </template>
 
 <script>
-import { exec } from 'apexcharts';
+import {
+    exec
+} from 'apexcharts';
 import {
     mapGetters,
     mapMutations,
@@ -226,7 +230,7 @@ export default {
             showTechnicalAnalysis: false
         }
     },
-    computed:{
+    computed: {
         user() {
             return this.$store.state.authUser
         }
@@ -389,7 +393,7 @@ export default {
             })
         },
         async _submitBotSetup(isUpdateMode) {
-            if(!this.user.subscription){
+            if (!this.user.subscription) {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "You haven't subsrcibe to any plan",
@@ -461,14 +465,16 @@ export default {
                 this.resetModalState();
             })
         },
-        async _fetchTokenList(){
+        async _fetchTokenList() {
             console.log('fetch token');
             console.log('exchange', this.exchange);
-            let paramTemp = {exchange:this.exchange}
+            let paramTemp = {
+                exchange: this.exchange
+            }
             let execute = await this.$api.$get("/user/available-tokens", {
-                params:paramTemp
+                params: paramTemp
             });
-            if(!execute.success){
+            if (!execute.success) {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: "Failed To Fetch Token List!",

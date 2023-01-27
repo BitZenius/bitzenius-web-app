@@ -428,6 +428,15 @@ export default {
                 if (index < 0) return;
                 this.activePosition[index].price.value = data.c;
                 this.activePosition[index].price.percentage = data.P;
+
+                // PNL CALCULATION
+                if(this.activePosition[index].quantity > 0){
+                    let average = parseFloat(this.activePosition[index].average);
+                    let percentage = average == 0 ? 0 : (((parseFloat(data.c) - average) / average));
+                    let pnl = parseFloat(this.activePosition[index].amountUsd) * percentage;
+                    this.activePosition[index].profit.value = pnl.toFixed(6);
+                    this.activePosition[index].profit.percentage = percentage.toFixed(6);
+                }
             })
         })
 
