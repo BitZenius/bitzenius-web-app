@@ -29,7 +29,7 @@
                     <v-col cols="12" class="d-flex flex-column justify-start align-center pt-0 pb-10">
                         <h4>{{exchange.name}}</h4>
                         <v-btn :disabled="!user.subscription || user.subscription == false" v-if="exchange.active" small class="primary" @click="_addExchange(exchange)">Edit Exchange</v-btn>
-                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="customGreen black--text" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="primary" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
                     </v-col>
                     <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
                         <h3 style="letter-spacing:2px;" class="customYellow--text">Coming Soon!</h3>
