@@ -159,3 +159,15 @@ export default {
     BOT_ID: process.env.BOT_ID
   }
 }
+
+/**
+ * Color pallete:
+ * 
+ * #3795f3
+ * #dfebf9
+ * #7ed1b7
+ * #c9ec3b
+ * #f17c9b
+ * #222222
+ * #2B2B2B
+ */

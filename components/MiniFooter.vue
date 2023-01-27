@@ -5,8 +5,9 @@
     <v-card
       flat
       tile
-      class="white--text text-center"
+      class="cardColor white--text text-center"
       width="100%"
+      fixed
     >
       <v-card-text>
         <v-btn
@@ -49,3 +50,10 @@
     </v-card>
   </v-footer>
 </template>
+
+<style>
+  .cardColor {
+    background-color: rgba(51, 148, 248, 0.9) !important;
+    border-color: rgba(51, 148, 248, 0.9) !important;
+  }
+</style>

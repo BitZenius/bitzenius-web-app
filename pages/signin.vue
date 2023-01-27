@@ -34,7 +34,7 @@
               class="mt-10"
             >
               <div class="text-center my-5">
-                Don’t you have an account? <a @click="$router.push('/signup')">Sign up</a>
+                Don’t you have an account? <a class="white--text" @click="$router.push('/signup')"><b>Sign up</b></a>
               </div>
               <v-row>
                 <v-col
@@ -46,6 +46,7 @@
                     label="Email"
                     outlined
                     required
+                    class="mb-2"
                   />
                   <v-text-field
                     v-model="password"
@@ -54,14 +55,15 @@
                     label="Password"
                     outlined
                     required
+                    class="mb-2"
                   />
                   <v-btn
                     :loading="isLoading"
                     :disabled="isLoading"
                     style="width: 100%"
-                    color="primary"
+                    color="customGreen"
                     x-large
-                    class="text-capitalize"
+                    class="text-capitalize black--text"
                     depressed
                     @click.stop="signIn"
                   >
@@ -70,11 +72,14 @@
                 </v-col>
               </v-row>
               <div
+                v-show="false"
                 class="text-center subtitle-1 my-2"
               >
                 OR
               </div>
-              <v-row>
+              <v-row
+                v-show="false"
+              >
                 <v-col
                   cols="12"
                 >
@@ -178,7 +183,7 @@ export default {
   }
 
   .cardColor {
-    background-color: rgba(49, 45, 75, 0.9) !important;
+    background-color: rgba(51, 148, 248, 0.9) !important;
     border-color: white !important;
     height: 100%;
   }

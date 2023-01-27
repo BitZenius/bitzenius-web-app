@@ -8,7 +8,7 @@
         <div class="d-flex flex-column align-center justify-center" style="max-width:80%;">
           <h2>Invoices</h2>
           <p class="text-center mt-2">
-            Invoices of your subscription history can be manage here
+            Track your invoices or subscription history
           </p>
         </div>
       </v-col>
@@ -114,6 +114,12 @@
                     </v-chip>
                   </td>
                 </tr>
+                <tr v-if="activeInvoice.payment.method">
+                  <td><b>Payment Method</b></td>
+                  <td class="text-right">
+                    {{ activeInvoice.payment.method.replace('_', ' ').toUpperCase() }}
+                  </td>
+                </tr>
               </tbody>
             </table>
             <table class="invoice">
@@ -139,7 +145,7 @@
                   <th class="text-right">{{ activeInvoice.totals.subtotal | currency('$') }}</th>
                 </tr>
                 <tr>
-                  <th class="text-right">{{ activeInvoice.discount.source == 'promo-code' ? 'Promo Code Discount' : (activeInvoice.discount.source == 'referral' ? 'Referral Discount' : 'Discount') }}</th>
+                  <th class="text-right">{{ translateDiscount(activeInvoice.discount.source) }}</th>
                   <th class="text-right">{{ activeInvoice.totals.discount * -1 | currency('$') }}</th>
                 </tr>
                 <tr>
@@ -225,7 +231,16 @@
             <div
               v-else
             >
-              <p>Thank you for your payment</p>
+              <v-alert
+                dense
+                text
+                type="success"
+              >
+                <p>
+                  <b>Thank you for your payment.</b><br />
+                  <span v-if="activeInvoice.discount.source == 'trial'">Your free trial subscription starting from {{  $moment(activeInvoice.created_at).format('DD MMM YYYY') }} to {{ $moment(activeInvoice.created_at).add(7, 'd').format('DD MMM YYYY') }}</span>
+                </p>
+              </v-alert>
             </div>
           </v-card-text>
         </v-card>
@@ -392,6 +407,19 @@
       },
       onError: function (e) {
         alert('Failed to copy: ' + e.text)
+      },
+      translateDiscount (source) {
+        const sources = {
+          'promo-code': 'Promo Code Discount',
+          'trial': 'Trial Discount',
+          'referral': 'Referral Discount'
+        }
+
+        if (typeof(sources[source]) == 'undefined') {
+          return 'Discount'
+        }
+
+        return sources[source]
       }
     }
   }

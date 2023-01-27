@@ -28,7 +28,7 @@
               position="center"
             />
             <v-form class="mt-10">
-              <div class="text-center mb-5">Already have an account? <a @click="$router.push('/signin')">Log in</a></div>
+              <div class="text-center mb-5">Already have an account? <a class="white--text" @click="$router.push('/signin')"><b>Log in</b></a></div>
               <v-row>
                 <v-col
                   cols="12"
@@ -38,24 +38,27 @@
                     :rules="nameRules"
                     label="Full Name"
                     outlined
+                    class="mb-2"
                   ></v-text-field>
                   <v-text-field
                     v-model="email"
                     :rules="emailRules"
                     label="Email"
                     outlined
+                    class="mb-2"
                   ></v-text-field>
                   <v-text-field
                     v-model="password"
                     :rules="passwordRules"
                     label="Password"
                     outlined
+                    class="mb-2"
                   ></v-text-field>
                   <v-btn
                     style="width: 100%"
-                    color="primary"
+                    color="customGreen"
                     x-large
-                    class="text-capitalize"
+                    class="text-capitalize black--text"
                     depressed
                     @click.stop="signUp"
                   >
@@ -63,8 +66,8 @@
                   </v-btn>
                 </v-col>
               </v-row>
-              <div class="text-center subtitle-1 my-2">OR</div>
-              <v-row>
+              <div v-show="false" class="text-center subtitle-1 my-2">OR</div>
+              <v-row v-show="false">
                 <v-col
                   cols="12"
                 >
@@ -183,7 +186,7 @@ export default {
   }
 
   .cardColor {
-    background-color: rgba(49, 45, 75, 0.9) !important;
+    background-color: rgba(51, 148, 248, 0.9) !important;
     border-color: white !important;
     height: 100%;
   }
