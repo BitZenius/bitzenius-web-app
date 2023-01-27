@@ -5,7 +5,7 @@
     dark
     tile
     dense
-    class="text-center black--text"
+    class="fixed-alert text-center black--text"
     ref="fixedAlert"
   >
     <v-row align="center">
@@ -85,7 +85,7 @@ export default {
 </script>
 
 <style>
-.v-alert {
+.v-alert.fixed-alert {
   position: fixed;
   left: 10;
   top: 0;
