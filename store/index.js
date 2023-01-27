@@ -9,6 +9,9 @@ export const state = () => ({
     show: false,
     message: null,
     color: null
+  },
+  globalCss: {
+    topMargin: 0
   }
 })
 
@@ -56,6 +59,12 @@ export const mutations = {
   },
   setSubscription(state, subscription) {
     state.subscription = subscription;
+  },
+  setGlobalCss(state, globalCss) {
+    state.globalCss = {
+      ...state.globalCss,
+      ...globalCss
+    }
   }
 }
 
@@ -63,6 +72,13 @@ export const getters = {
   isLoggedIn: (state) => {
     try {
       return state.authUser.uid !== null
+    } catch {
+      return false
+    }
+  },
+  isEmailVerified: (state) => {
+    try {
+      return state.authUser.emailVerified !== false
     } catch {
       return false
     }

@@ -77,6 +77,23 @@
                   </v-btn>
                 </v-col>
               </v-row>
+              <v-row v-else-if="config.mode == 'requestEmailVerify'">
+                <v-col
+                  cols="12"
+                >
+                  <v-btn
+                    :loading="isLoading"
+                    style="width: 100%"
+                    color="customGreen"
+                    x-large
+                    class="text-capitalize black--text"
+                    depressed
+                    @click.stop="requestVerifyEmail"
+                  >
+                    Send Verification
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-form>
           </div>
           <MiniFooter />
@@ -103,7 +120,8 @@ export default {
       v => !!v || 'Password is required',
       v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain at least lowercase letter, one number, a special character and one uppercase letter'
     ],
-    confirmPassword: ''
+    confirmPassword: '',
+    message: null
   }),
   head: {
     title: 'Auth Action'
@@ -116,6 +134,12 @@ export default {
         (v) => (v === this.password) || 'Senhas diferentes!',
       ];
     },
+    user() {
+      return this.$store.state.authUser
+    },
+    subscription() {
+      return this.$store.state.subscription
+    }
   },
   mounted () {
     const config = {
@@ -137,6 +161,9 @@ export default {
       case 'verifyEmail':
         this.title = 'Verify your email'
         break
+      case 'requestVerifyEmail':
+        this.title = 'Request verify email'
+        break
       case 'resetPassword':
         this.title = 'Reset your password'
         break
@@ -144,7 +171,7 @@ export default {
         this.title = 'Recover your email'
         break
       default:
-        this.$router.push('/')
+        // this.$router.push('/')
         break
     }
   },
@@ -155,8 +182,8 @@ export default {
         this.$api.$post('/user/auth/verify', {
           email: this.config.email
         }).then((result) => {
-          console.log(result)
-          this.$router.push('/')
+          this.message = result.message
+          this.$router.go({ path: '/' })
         }).catch((err) => {
           console.log(err)
         }).finally(() => {
@@ -164,6 +191,19 @@ export default {
         })
       }).catch((error) => {
         console.log(error)
+      }).finally(() => {
+        this.isLoading = false
+      })
+    },
+    requestVerifyEmail () {
+      this.isLoading = true
+      this.$api.$post('/user/auth/verify', {
+        email: this.user.email
+      }).then((result) => {
+        console.log(result)
+        // this.$router.push('/')
+      }).catch((err) => {
+        console.log(err)
       }).finally(() => {
         this.isLoading = false
       })

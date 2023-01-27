@@ -13,6 +13,8 @@
         <v-btn
           class="mx-4 white--text"
           icon
+          href="https://twitter.com"
+          target="_blank"
         >
           <v-icon size="24px">
             mdi-twitter
@@ -21,6 +23,8 @@
         <v-btn
           class="mx-4 white--text"
           icon
+          href="https://instagram.com"
+          target="_blank"
         >
           <v-icon size="24px">
             mdi-instagram
@@ -29,6 +33,8 @@
         <v-btn
           class="mx-4 white--text"
           icon
+          href="https://facebook.com"
+          target="_blank"
         >
           <v-icon size="24px">
             mdi-facebook
@@ -37,6 +43,8 @@
         <v-btn
           class="mx-4 white--text"
           icon
+          href="https://bitzenius.com"
+          target="_blank"
         >
           <v-icon size="24px">
             mdi-web

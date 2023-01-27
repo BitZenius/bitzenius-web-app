@@ -27,7 +27,7 @@
               contain
               position="center"
             />
-            <v-form class="mt-10">
+            <v-form class="mt-10" ref="form">
               <div class="text-center mb-5">Already have an account? <a class="white--text" @click="$router.push('/signin')"><b>Log in</b></a></div>
               <v-row>
                 <v-col
@@ -148,42 +148,36 @@ export default {
       this.$refs.form.resetValidation()
     },
     signUp () {
-      this.isLoading = true
-      this.$fire.auth.createUserWithEmailAndPassword(
-        this.email,
-        this.password
-      ).then((userCredential) => {
-        this.updateProfile()
-      }).catch((e) => {
-        alert(e)
-      }).finally(() => {
-        this.isLoading = false
-      })
-    },
-    updateProfile () {
-      const photo = 'https://cdn.vuetifyjs.com/images/john.jpg'
-      const user = this.$fire.auth.currentUser
-      this.isLoading = true
-      user.updateProfile({
-        displayName: this.name,
-        photoURL: photo
-      }).then(async () => {
-        await this.$store.commit('setUser', {
-          displayName: this.name,
-          photoURL: photo
+      const valid = this.$refs.form.validate()
+      
+      if (valid) {
+        this.$api.$post('/user/auth/signup', {
+          name: this.name,
+          email: this.email,
+          password: this.password,
+          referral: this.referral
+        }).then((result) => {
+          this.isLoading = true
+          this.$fire.auth.signInWithEmailAndPassword(
+            this.email,
+            this.password
+          ).then((r) => {
+            this.isLoading = false
+            this.$router.go({ path: '/' })
+          }).catch((e) => {
+            alert(e)
+          }).finally(() => {
+            this.isLoading = false
+          })
+        }).catch((err) => {
+          console.log(err)
+        }).finally(() => {
+          this.isLoading = true
         })
-
-        this.isLoading = false
-        this.$router.go({ path: '/' })
-      }).catch((err) => {
-        console.warn(err)
-      }).finally(() => {
-        this.isLoading = false
-      })
+      }
     },
     async googleSignin () {
       const provider = new this.$fireModule.auth.GoogleAuthProvider()
-
       await this.$fire.auth.signInWithRedirect(provider)
     }
   }

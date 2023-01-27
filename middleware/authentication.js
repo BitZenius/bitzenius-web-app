@@ -7,7 +7,9 @@ export default function ({ store, route, redirect }) {
 
   if (store.getters.isLoggedIn) {
     if (excludePaths.includes(path)) {
-      redirect('/')
+      if (path != 'auth-action') {
+        redirect('/')
+      }
     }
   } else {
     if (!excludePaths.includes(path)) {
