@@ -87,12 +87,12 @@
                                     </div>
                                     <div v-else class="d-flex flex-column">
                                         <small>{{item.type.toUpperCase() == 'SELL' ? 'PnL' : null}}</small>
-                                        <span v-if="parseFloat(item.desc) > 0" class="success--text" style="font-weight:bold;">
+                                        <v-chip small v-if="parseFloat(item.desc) > 0" class="customGreen black--text" style="font-weight:bold;">
                                             {{item.desc | currency('$', 6)}}
-                                        </span>
-                                        <span v-else class="danger--text">
+                                        </v-chip>
+                                        <v-chip small v-else class="customPink" style="font-weight:bold;">
                                             {{item.desc}}
-                                        </span>
+                                        </v-chip>
                                     </div>
                                 </div>
                             </template>
