@@ -19,7 +19,7 @@
                 mdi-help-circle
               </v-icon>
             </template>
-            <span>All crypto assets on your exchange equivalent to USDT</span>
+            <span>All crypto assets in your exchange equivalent to USDT</span>
           </v-tooltip>
         </v-list-item-subtitle>
         <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">

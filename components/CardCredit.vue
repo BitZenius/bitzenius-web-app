@@ -25,7 +25,7 @@
                 mdi-help-circle
               </v-icon>
             </template>
-            <span>USDT asset on your exchange</span>
+            <span>USDT asset in your exchange</span>
           </v-tooltip>
         </v-list-item-subtitle>
         <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">

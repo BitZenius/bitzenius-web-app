@@ -9,7 +9,7 @@
         color="primary"
       >
         <v-icon large dark>
-          mdi-currency-usd
+          mdi-cash-plus
         </v-icon>
       </v-list-item-avatar>
       <v-list-item-content>

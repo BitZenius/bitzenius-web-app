@@ -14,7 +14,36 @@
             <v-row>
               <v-col cols="12">
                 <v-card
-                  v-if="referralCode"
+                  v-if="!isLoaded"
+                  elevation="0"
+                  class="pa-2"
+                  color="primary"
+                  dark
+                >
+                  <div class="pa-3">
+                    <v-skeleton-loader
+                      loading
+                      type="heading"
+                    />
+                    <v-skeleton-loader
+                      loading
+                      type="heading"
+                      class="mt-2"
+                    />
+                    <v-skeleton-loader
+                      loading
+                      type="heading"
+                      class="mt-5"
+                    />
+                    <v-skeleton-loader
+                      loading
+                      type="heading"
+                      class="mt-2"
+                    />
+                  </div>
+                </v-card>
+                <v-card
+                  v-else-if="referralCode"
                   elevation="0"
                   class="pa-2"
                   color="primary"
@@ -241,6 +270,7 @@ export default {
     return {
       title: 'Referral',
       isLoading: false,
+      isLoaded: false,
       headers: [
         {
           text: "Date",
@@ -310,6 +340,7 @@ export default {
         console.log(err)
       }).finally(() => {
         this.isLoading = false
+        this.isLoaded = true
       })
     },
     countRewards () {
