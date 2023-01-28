@@ -334,7 +334,7 @@ export default {
       this.isLoading = true
       this.$api.$get('/user/referral').then((res) => {
         this.referralCode = res.code
-        this.referralLink = window.location.origin + '/signup?' + res.code
+        this.referralLink = window.location.origin + '/signup?referral=' + res.code
         this.totalReferredUsers = res.total_referred_users
       }).catch((err) => {
         console.log(err)
