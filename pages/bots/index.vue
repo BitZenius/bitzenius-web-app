@@ -38,9 +38,9 @@
                     <v-col sm="12" md="8" class="d-flex flex-column justify-center align-center">
                         <h4>{{exchange.name}}</h4>
                         <div v-if="exchange.active" class="d-flex justify-center">
-                            <v-btn :disabled="!user.subscription || user.subscription == false" small class="primary mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
+                            <v-btn :disabled="!user.subscription || user.subscription == false" small outlined color="primary" class="mr-2" @click="_addBot(exchange)">Edit Bot</v-btn>
                         </div>
-                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else class="primary" small @click="_addBot(exchange)">Setup Bot</v-btn>
+                        <v-btn :disabled="!user.subscription || user.subscription == false" v-else color="primary" small @click="_addBot(exchange)">Setup Bot</v-btn>
                     </v-col>
                 </v-row>
                 <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
@@ -59,32 +59,6 @@
             <v-data-table style="overflow-y:scroll; height:50vh; overflow-x:hidden;" @click:row="_onSelectPair" disable-pagination :hide-default-footer="true" :sort-by.sync="sortBy" :sort-desc.sync="sortDesc" :headers="headers" :items="activePositionFiltered" :loading="isLoading" class="elevation-0" loading-text="Loading... Please wait">
                 <!-- hide-default-footer disable-pagination -->
                 <template v-slot:top>
-                    <v-row class="mt-1">
-                        <!-- <v-col cols="12" md="4">
-                            <v-btn @click="_sort">SORT</v-btn>
-                        </v-col> -->
-                        <!-- <v-col cols="12" md="1">
-                            <v-select item-value="id" item-text="name" @change="onPairSelected(pairSelected)" v-model="pairSelected" :items="availablePair" label="Filter by Pair" dense outlined></v-select>
-                        </v-col> -->
-                        <!-- <v-col cols="6" md="4">
-                            <v-select item-value="id" item-text="name" v-model="sortSelected" :items="availableSorting" label="Sorting By" dense outlined></v-select>
-                        </v-col>
-                        <v-col cols="6" md="4">
-                            <v-btn :class="{success:ascending}" @click="onSortClicked(sortSelected, 'ascending')">
-                                <v-icon>
-                                    mdi-arrow-up-circle
-                                </v-icon>
-                            </v-btn>
-                            <v-btn :class="{success:descending, 'ml-2':true}" @click="onSortClicked(sortSelected, 'descending')">
-                                <v-icon>
-                                    mdi-arrow-down-circle
-                                </v-icon>
-                            </v-btn>
-                            <v-btn class="ml-2" @click="resetFilter()">
-                                Reset
-                            </v-btn>
-                        </v-col> -->
-                    </v-row>
                     <div>
                         <v-dialog v-model="dialogDelete" max-width="400px" persistent>
                             <v-card>
@@ -232,9 +206,10 @@ export default {
             // START OF CARD EXCHANGE
             selectedExchange: null,
             selectedExchangeReport: null,
+            exchangeName: "Binance",
             exchanges: [{
                     name: "Binance",
-                    selected: false,
+                    selected: true,
                     active: false,
                     image: "/exchange_logo/binance.png",
                     comingsoon: false
@@ -406,66 +381,13 @@ export default {
     },
     async mounted() {
         console.log("USER!!", this.user);
-        this.$store.commit('setTitle', this.title)
-        this._fetchBotsList(null);
-
-        // START CONNECT TO SOCKET IO
-        let token = await this.$store.$fire.auth.currentUser.getIdToken()
-        this.socket = io(process.env.SERVER, {
-            path: "/binance-proxy",
-            query: {
-                bearer_token: token
-            }
-        });
+        this.$store.commit('setTitle', this.title);
         let userId = this.$store.state.authUser.uid;
-        // this._listenPosition();
-
-        //GLOBAL 
-        this.socket.on('binance_ticker', (msg) => {
-            let array = JSON.parse(msg);
-            array.forEach((data)=>{
-                let index = this.activePosition.findIndex(b => b.symbol == data.s);
-                if (index < 0) return;
-                this.activePosition[index].price.value = data.c;
-                this.activePosition[index].price.percentage = data.P;
-
-                // PNL CALCULATION
-                if(this.activePosition[index].quantity > 0){
-                    let average = parseFloat(this.activePosition[index].average);
-                    let percentage = average == 0 ? 0 : (((parseFloat(data.c) - average) / average));
-                    let pnl = parseFloat(this.activePosition[index].amountUsd) * percentage;
-                    this.activePosition[index].profit.value = pnl.toFixed(6);
-                    this.activePosition[index].profit.percentage = percentage.toFixed(6);
-                }
-            })
-        })
-
-        // this.socket.on('ticker', (data) => {
-        //     let parseToJson = JSON.parse(data);
-        //     let index = this.activePosition.findIndex(b => b.symbol === parseToJson.s);
-        //     if(index <0) return;
-        //     this.activePosition[index].price.value = parseToJson.c;
-        //     this.activePosition[index].price.percentage = parseToJson.P;
-        // })
-
-        // TESTING PURPOSE
-        // this.socket.on('current_price', (data) => {
-        //     let index = this.activePosition.findIndex(b => b.symbol === data.name);
-        //     this.activePosition[index].price.value = data.priceValue;
-        //     this.activePosition[index].profit.value = data.pnl;
-        //     this.activePosition[index].profit.percentage = data.pnlPercentage;
-        //     this.activePosition[index].quantity = data.quantity;
-        //     this.activePosition.sort((a, b) => {
-        //         if (a.pnl > b.pnl) return 1;
-        //         if (a.pnl < b.pnl) return -1;
-        //         return 0;
-        //     });
-        //     this.isLoading = false;
-        // })
+        this._fetchBotsList("Binance"); // Fetch Bots List
+        this._fetchUserExchange(); // Fetch User Exchang
         // END OF CONNECT TO SOCKET IO
     },
-    unmounted() {
-    },
+    unmounted() {},
     beforeDestroy() {
         this.socket.disconnect();
         // this.socket.emit("disconnect-client", {
@@ -490,76 +412,82 @@ export default {
         async _listenPosition() {
             this.isLoading = true;
             this.socket.on('positions', (data) => {
-                console.log('this.activePosition', this.activePosition);
                 this.activePosition = data.data;
                 this.availablePair = data.pairs;
             })
         },
-        async _fetchBotsList(sorting) {
-            this.listOfSockets.forEach((socket) => {
-                socket.disconnect();
+        async _fetchUserExchange() {
+            let res = await this.$api.$get('/user/bot', {});
+            console.log('fetchUSerExchange', res);
+            if (res.data.length > 0) {
+                let setups = res.data;
+                let availableExchangeSetups = [];
+                res.data.forEach((val) => {
+                    availableExchangeSetups.push(val.selected_exchange);
+                })
+
+                this.userExchanges = res.data;
+                this.exchanges.forEach((exchange) => {
+                    let indexOf = availableExchangeSetups.indexOf(exchange.name);
+                    console.log(`indexOf: ${indexOf} ${exchange.name}`, res.data[indexOf]);
+                    if (indexOf >= 0){
+                         exchange.active = true;
+                         exchange.data = res.data[indexOf];
+                    }
+                });
+            } else {
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "You don't have any bot setup active",
+                    color: "customPink"
+                })
+            }
+        },
+        streamBinance(){
+            this.socket = io(process.env.SERVER, {
+                path: "/binance-proxy",
+                query: {}
+            });
+
+            this.socket.on('binance_ticker', (msg) => {
+                let array = JSON.parse(msg);
+                array.forEach((data)=>{
+                    let index = this.activePosition.findIndex(b => b.symbol == data.s);
+                    if (index < 0) return;
+                    this.activePosition[index].price.value = data.c;
+                    this.activePosition[index].price.percentage = data.P;
+
+                    // PNL CALCULATION
+                    if(this.activePosition[index].quantity > 0){
+                        // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
+                        // data.c   = Current Price (from binance stream)
+                        let average = parseFloat(this.activePosition[index].average);
+                        let percentage = average == 0 ? 0 : (((parseFloat(data.c) - average) / average));
+                        let pnl = parseFloat(this.activePosition[index].amountUsd) * percentage;
+                        this.activePosition[index].profit.value = pnl.toFixed(3);
+                        this.activePosition[index].profit.percentage = percentage.toFixed(3) * 100;
+                    }
+                })
             })
+        },
+        async _fetchBotsList(exchangeName) {
+            this.isLoading = true;
+            if(this.socket) this.socket.disconnect();
+            await this.streamBinance();
 
             let res = await this.$api.$get('/user/bot-user', {
                 params: {
-                    exchange: "Binance"
+                    exchange: exchangeName
                 }
             });
-            console.log('_fetchBotsList', res);
+
             this.activePosition = res.data;
             this.availablePair = res.pairs;
-
-            // BINANCE-PROXY
-            // this.activePosition.forEach((pair) => {
-            //     // let pair = this.activePosition[0];
-            //     pair.price.value = 0;
-            //     pair.price.percentage = 0;
-            //     let socket = io(process.env.SERVER, {
-            //         path: "/binance-proxy",
-            //         query: {
-            //             symbol: pair.symbol
-            //         }
-            //     });
-            //     socket.on(`${pair.symbol}`, (msg) => {
-            //         console.log(JSON.parse(msg));
-            //         // const data = JSON.parse(msg);
-            //         // pair.price.value = data.c;
-            //         // pair.price.percentage = data.P;
-            //     })
-            //     this.listOfSockets.push(socket);
-            // })
-            // END OF BINANCE-PROXY
-
-            // let userExchanges = res.data;
-
-            // if (userExchanges) {
-            //     userExchanges.forEach((exchange) => {
-            //         // LOGIC GET CHANGE FROM BINANCE
-            //         let exchangeIndex = this.exchanges.findIndex(e => e.name == exchange.selected_exchange);
-            //         this.exchanges[exchangeIndex].data = exchange;
-            //         this.exchanges[exchangeIndex].active = true;
-            //         this.exchanges[exchangeIndex].id = exchange._id;
-            //     })
-            // }
-            // let isAnyData = false;
-            // for (let i = 0; i < this.exchanges.length; i++) {
-            //     let exchange = this.exchanges[i];
-            //     if (exchange.active) {
-            //         this.selectExchangeCard(exchange.name, exchange, i);
-            //         isAnyData = true;
-            //         break;
-            //     }
-            // }
-            // if (!isAnyData) this.$store.commit('setIsLoading', false);
+            this.isLoading = false;
         },
         async _fetchPosition(sorting) {
             let exchange = this.selectedExchangeReport;
             let symbol = this.pairSelected;
-            // this.socket.emit("fetch-position", {
-            //     exchange: exchange,
-            //     symbol: symbol,
-            //     sorting: sorting
-            // });
         },
 
         // LISTENER
@@ -567,20 +495,12 @@ export default {
             console.log('val close modal', val);
             this.showAddBot = val;
             this.showActivePosition = val;
-            setTimeout(() => {
-                // this.$forceUpdate()
-                // this._fetchBotsList(null);
-                // this._fetchPosition();
-            })
         },
         // END OF LISTENER
 
         // LOGGER
         logger() {
-            console.log(this.listOfSockets);
-            this.listOfSockets.forEach((socket) => {
-                socket.disconnect();
-            })
+            console.log(this.userExchanges);
         },
 
         // TRIGGER
@@ -589,7 +509,6 @@ export default {
             this.dialogDelete = true;
         },
         selectExchangeCard(val, exchange, index) {
-            console.log(exchange);
             if (exchange.comingsoon) return;
 
             this.selectedExchangeReport = val;
@@ -599,23 +518,7 @@ export default {
             this.exchanges[index].selected = true;
 
             // RE-FETCH LIST
-            this._fetchPosition();
-        },
-        onPairSelected(pair) {
-            this._fetchPosition();
-        },
-        onSortClicked(by, dest) {
-            if (dest == 'ascending') {
-                this.descending = false;
-                this.ascending = true;
-            } else {
-                this.descending = true;
-                this.ascending = false;
-            }
-            if (!by) alert("Please, select atleast one sorting by")
-            let sort = {};
-            sort[by] = dest;
-            this._fetchPosition(sort);
+            this._fetchBotsList(val);
         },
         async _onSelectPair(val) {
             console.log('selectedPair', val);
@@ -642,15 +545,8 @@ export default {
             }
 
         },
-        resetFilter() {
-            this.descending = false;
-            this.ascending = false;
-            this.sortSelected = false;
-            this.pairSelected = null;
-            this.searchQuery = null;
-            this._fetchPosition();
-        },
         _addBot(val) {
+            console.log('addBot', val);
             this.$store.commit('exchange/setSelectedExchange', val.name);
             this.selectedExchange = val.name;
             if (val.active) {
@@ -694,17 +590,6 @@ export default {
             })
             this.$store.commit('setIsLoading', false);
             this.dialogDelete = false;
-            /*
-            this.$axios.delete('admin/exchanges/' + this.id).then((res) => {
-              this.snackbarText = res.data.message
-              this.snackbar = true
-            }).catch((e) => {
-              console.log(e)
-            }).finally(() => {
-              this.isLoading = false
-              this.closeDelete()
-            })
-            */
         },
         close() {
             this.dialog = false

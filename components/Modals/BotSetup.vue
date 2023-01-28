@@ -9,14 +9,6 @@
                 </v-btn>
             </v-col>
         </v-row>
-        <!-- <v-row>
-            <v-col cols="12">
-                <v-btn class="ml-2" small @click="logger">logger</v-btn>
-                <v-btn class="ml-2" small @click="loader">loader</v-btn>
-                <v-btn class="ml-2" small @click="snackbar">snackbar</v-btn>
-                <v-btn class="ml-2" small @click="resetModalState">reset modal</v-btn>
-            </v-col>
-        </v-row> -->
     </v-card-title>
     <v-card-text class="my-3">
         <v-stepper class="basic" elevation="0" v-model="e1">
@@ -511,6 +503,7 @@ export default {
                 console.log(indicator);
                 index++;
             }
+            this.tokenException = this.botProp.token_exception;
         }
         this._fetchTokenList();
         setTimeout(() => {
