@@ -175,7 +175,7 @@
         </v-row>
         <v-row v-if="!tabs.formula">
             <v-col cols="12" md="4">
-                <v-btn color="customYellow white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement:false">
+                <v-btn color="customYellow white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement = false">
                     <span class="danger--text" v-if="!detail.xpaused">STOP TRADING</span>
                     <span class="customGreen--text" v-else>START TRADING</span>
                 </v-btn>

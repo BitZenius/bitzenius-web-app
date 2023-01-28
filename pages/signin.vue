@@ -34,7 +34,7 @@
               class="mt-10"
             >
               <div class="text-center my-5">
-                Don’t you have an account? <a class="white--text" @click="$router.push('/signup')"><b>Sign up</b></a>
+                Does not have an account? <a class="white--text" @click="$router.push('/signup')"><b>Sign up</b></a>
               </div>
               <v-row>
                 <v-col
@@ -69,6 +69,7 @@
                   >
                     Sign in
                   </v-btn>
+                  <p class="mt-5 text-center">Forgot your password? Click <router-link class="white--text" to="/forgot-password">here</router-link></p>
                 </v-col>
               </v-row>
               <div

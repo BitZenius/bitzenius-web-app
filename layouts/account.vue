@@ -3,6 +3,7 @@
   <GlobalsAddOnLoader />
   <GlobalsAddOnSnackbar />
   <v-navigation-drawer
+    :style="`top:${topMargin}px`"
     v-model="drawer"
     flat
     app
@@ -133,6 +134,7 @@
     </v-list>
   </v-navigation-drawer>
   <v-app-bar
+    :style="`top:${topMargin}px`"
     fixed
     flat
     app
@@ -204,8 +206,8 @@
     </v-menu>
   </v-app-bar>
   <v-main>
-    <v-container fluid>
-    <nuxt :class="$vuetify.breakpoint.mobile ? 'pb-5' : 'px-3'" />
+    <v-container :style="`padding-top:${topMargin}px`" fluid>
+      <nuxt :class="$vuetify.breakpoint.mobile ? 'pb-5' : 'px-3'" />
     </v-container>
   </v-main>
   <v-bottom-navigation
@@ -240,6 +242,7 @@
       &copy;{{ new Date().getFullYear() }} - BitZenius
     </v-col>
   </v-footer>
+  <EmailVerification />
 </v-app>
 </template>
 <style scoped>
@@ -269,6 +272,9 @@ export default {
     },
     subscription() {
       return this.$store.state.subscription
+    },
+    topMargin() {
+      return this.$store.state.globalCss.topMargin
     }
   },
   mounted() {

@@ -11,7 +11,7 @@
         <v-list-item two-line>
           <v-list-item-content>
             <v-list-item-subtitle>
-              Balance
+              Credit Balance
             </v-list-item-subtitle>
             <v-list-item-title>
               <span class="text-h4 font-weight-black primary--text text--lighten-2">{{ balance | currency('$') }}</span>
@@ -158,9 +158,9 @@ export default {
     countBalance () {
       this.isLoading = true
       this.$api.$get('/user/balance/total').then((res) => {
-        this.balance = res.result
+        this.balance = res.result ? res.result : 0
       }).catch((err) => {
-        console.log(err)
+        this.balance = 0
         this.isLoading = false
       }).finally(() => {
         this.isLoading = false
@@ -170,7 +170,6 @@ export default {
       this.isLoading = true
       this.$api.$get('/user/profile').then((res) => {
         this.userData = res.result
-        console.log(this.userData)
       }).catch((err) => {
         console.log(err)
         this.isLoading = false

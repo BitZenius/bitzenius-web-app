@@ -279,7 +279,7 @@ export default {
                     range: 'daily'
                 }
             });
-            this.deal = res.data.trades;
+            this.deal = res.data ? res.data.trades : 0;
             console.log('dailyDeals', res);
         }
     },

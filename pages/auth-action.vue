@@ -39,6 +39,7 @@
                     label="Password"
                     outlined
                     class="mb-2"
+                    type="password"
                   ></v-text-field>
                   <v-text-field
                     v-model="confirmPassword"
@@ -46,6 +47,7 @@
                     label="Re-type Password"
                     outlined
                     class="mb-2"
+                    type="password"
                   ></v-text-field>
                   <v-btn
                     :loading="isLoading"
@@ -66,6 +68,7 @@
                 >
                   <v-btn
                     :loading="isLoading"
+                    :disabled="isLoading"
                     style="width: 100%"
                     color="customGreen"
                     x-large
@@ -75,6 +78,11 @@
                   >
                     Verify Now
                   </v-btn>
+                </v-col>
+              </v-row>
+              <v-row v-if="message">
+                <v-col cols="12" class="text-center">
+                  <p class="mt-5">{{ message }}</p>
                 </v-col>
               </v-row>
             </v-form>
@@ -103,7 +111,8 @@ export default {
       v => !!v || 'Password is required',
       v => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain at least lowercase letter, one number, a special character and one uppercase letter'
     ],
-    confirmPassword: ''
+    confirmPassword: '',
+    message: null
   }),
   head: {
     title: 'Auth Action'
@@ -111,11 +120,17 @@ export default {
   computed: {
     confirmPasswordRules() {
       return [
-        (v) => !!v || 'Senha não informada',
-        (v) => (v && v.length >= 8) || 'A senha deve ter no mínimo 8 caracteres',
+        (v) => !!v || 'Password is required',
+        (v) => /(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{6,}/.test(v) || 'Password must contain at least lowercase letter, one number, a special character and one uppercase letter',
         (v) => (v === this.password) || 'Senhas diferentes!',
       ];
     },
+    user() {
+      return this.$store.state.authUser
+    },
+    subscription() {
+      return this.$store.state.subscription
+    }
   },
   mounted () {
     const config = {
@@ -144,7 +159,8 @@ export default {
         this.title = 'Recover your email'
         break
       default:
-        this.$router.push('/')
+        this.message = 'Redirecting to home...'
+        this.goToHome('/')
         break
     }
   },
@@ -152,38 +168,38 @@ export default {
     handleVerifyEmail () {
       this.isLoading = true
       applyActionCode(this.auth, this.config.oobCode).then(() => {
+        const currentEmail = this.user ? this.user.email : this.config.email
+        
         this.$api.$post('/user/auth/verify', {
-          email: this.config.email
+          email: currentEmail
         }).then((result) => {
           console.log(result)
-          this.$router.push('/')
+          this.message = 'Email verification success. Redirecting to home...'
+          this.goToHome(this.config.continueUrl)
         }).catch((err) => {
           console.log(err)
-        }).finally(() => {
-          this.isLoading = true
         })
-      }).catch((error) => {
-        console.log(error)
-      }).finally(() => {
-        this.isLoading = false
+      }).catch((err) => {
+        console.log(err)
+        this.message = 'Redirecting to home...'
+        this.goToHome(this.config.continueUrl)
       })
     },
     handleResetPassword () {
       const valid = this.$refs.form.validate()
 
       if (valid) {
+        this.isLoading = true
         verifyPasswordResetCode(this.auth, this.config.oobCode).then((email) => {
           confirmPasswordReset(this.auth, this.config.oobCode, this.password).then(() => {
-            this.isLoading = true
             this.$fire.auth.signInWithEmailAndPassword(
               email,
               this.password
             ).then((r) => {
-              this.$router.go({ path: '/' })
+              this.message = 'Password changed successfully. Redirecting to home...'
+              this.goToHome(this.config.continueUrl)
             }).catch((e) => {
-              alert(e)
-            }).finally(() => {
-              this.isLoading = false
+              console.log(e)
             })
           }).catch((error) => {
             console.log(error)
@@ -192,6 +208,11 @@ export default {
           console.log(error)
         })
       }
+    },
+    goToHome (url) {
+      setTimeout(() => {
+        window.location = url
+      }, 2000)
     }
   }
 }

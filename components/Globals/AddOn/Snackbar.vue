@@ -1,8 +1,5 @@
 <template>
 <div class="text-center ma-2">
-    <v-btn dark @click="show = true">
-        Open Snackbar
-    </v-btn>
     <v-snackbar timeout="5000" elevation="5" :color="color" v-model="show" top width="100%">
         {{message}}
         <template v-slot:action="{ attrs }">
