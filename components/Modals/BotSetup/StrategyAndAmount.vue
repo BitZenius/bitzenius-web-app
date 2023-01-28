@@ -47,9 +47,9 @@
                 <v-col v-bind="attrs" v-on="on" cols="5" md="5" class="mx-0">
                     <v-chip class="d-flex align-center justify-center" color="primary" label text-color="white">
                         <v-icon left>
-                            mdi-currency-usd
+                            mdi-link-box-variant-outline
                         </v-icon>
-                        USDT
+                        PAIR
                     </v-chip>
                 </v-col>
             </v-row>
