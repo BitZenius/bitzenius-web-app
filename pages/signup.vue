@@ -53,6 +53,7 @@
                     label="Password"
                     outlined
                     class="mb-2"
+                    type="password"
                   ></v-text-field>
                   <v-text-field
                     v-model="referral"
