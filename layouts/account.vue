@@ -99,7 +99,7 @@
           <v-list-item-title>Subscription</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item target="_" href="#" exact class="my-2">
+      <v-list-item disabled target="_" href="#" exact class="my-2">
         <v-list-item-action>
           <v-icon>mdi-human-male-board</v-icon>
         </v-list-item-action>

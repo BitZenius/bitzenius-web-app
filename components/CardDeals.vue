@@ -17,7 +17,12 @@
           Deals in 24hr
         </v-list-item-subtitle>
         <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">
-          {{deal}}
+          <v-skeleton-loader
+            v-if="loading"
+            loading
+            type="heading"
+          />
+          <div v-else>{{ deal }}</div>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -27,7 +32,7 @@
 <script>
 
 export default({
-  props:['deal']
+  props:['deal', 'loading']
 })
 </script>
 

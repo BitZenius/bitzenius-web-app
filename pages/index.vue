@@ -7,16 +7,16 @@
     </v-row> -->
     <v-row>
         <v-col cols="12" md="3">
-            <CardCredit :balance="balance"/>
+            <CardCredit :balance="balance" :loading="isLoading"/>
         </v-col>
         <v-col cols="12" md="3">
-            <CardAsset :balance="balance"/>
+            <CardAsset :balance="balance" :loading="isLoading"/>
         </v-col>
         <v-col cols="12" md="3">
-            <CardProfit :profit="profit" />
+            <CardProfit :profit="profit" :loading="isLoadingProfit"/>
         </v-col>
         <v-col cols="12" md="3">
-            <CardDeals :deal="deal" />
+            <CardDeals :deal="deal" :loading="isLoadingProfit" />
         </v-col>
     </v-row>
     <v-row>
@@ -124,7 +124,10 @@ export default {
                 }]
             },
             profit:0,
-            balance:{}
+            balance:{},
+            isLoading: false,
+            isLoadingProfit: false,
+            isLoadingDeals: false
         }
     },
     head() {
@@ -140,6 +143,7 @@ export default {
     methods: {
         // FETCH API
         async _fetchUserBalance() {
+            this.isLoading = true
             let res = await this.$api.$get('/user/user-exchange-balance', {
                 params: {
                     exchange: this.exchange,
@@ -149,10 +153,12 @@ export default {
                     token:this.userToken
                 }
             });
+            this.isLoading = false
             console.log('userBalance', res);
             this.balance = res.data;
         },
         async _fetchProfit(){
+            this.isLoadingProfit = true
             let res = await this.$api.$get('/user/profit',{
                 params:{
                 exchange:this.exchange,
@@ -161,6 +167,7 @@ export default {
                 side:"SELL"
                 }
             });
+            this.isLoadingProfit = false
             console.log('userProfit', res);
             this.profit = res.data.profit;
         },
@@ -177,12 +184,14 @@ export default {
             this.showChart = true;
         },
         async _fetchDailyDeals() {
+            this.isLoadingDeals = true
             let res = await this.$api.$get('/user/deal', {
                 params: {
                     range: 'daily'
                 }
             });
             this.deal = res.data ? res.data.trades : 0;
+            this.isLoadingDeals = false
             console.log('dailyDeals', res);
         }
     },
