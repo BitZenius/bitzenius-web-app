@@ -22,6 +22,7 @@
       <v-col
         cols="12"
         md="6"
+        class="d-flex justify-end"
       >
         <v-btn
           class="mx-1 text-capitalize"
