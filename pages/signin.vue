@@ -1,5 +1,14 @@
 <template>
   <div class="app">
+    <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
+      <v-progress-circular
+        indeterminate
+        color="customGreen"
+        size="50"
+        width="7"
+      />
+      <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
+    </v-overlay>
     <v-row
       no-gutters
       class="noGutters"
@@ -18,6 +27,25 @@
           class="cardColor"
           elevation="8"
         >
+        <v-alert
+            v-if="message"
+            tile
+            :color="message.color"
+          >
+            <v-row>
+              <v-col class="grow">
+                {{ message.text }}
+              </v-col>
+              <v-col class="shrink">
+                <v-btn
+                  icon
+                  @click.stop = "message = null"
+                >
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-alert>
           <div
             class="pa-md-12 pa-8"
           >
@@ -28,6 +56,30 @@
               position="center"
             />
             <v-form
+              v-if="showOtp"
+              v-model="valid"
+              lazy-validation
+              class="mt-10"
+            >
+              <div class="text-center my-5">
+                Please input verification code
+              </div>
+              <v-row>
+                <v-col
+                  cols="12"
+                >
+                  <v-otp-input
+                    v-model="otpCode"
+                    length="6"
+                    light
+                    :disabled="isLoading"
+                    @finish="onOtpCompleted"
+                  />
+                </v-col>
+              </v-row>
+            </v-form>
+            <v-form
+              v-else
               ref="form"
               v-model="valid"
               lazy-validation
@@ -126,7 +178,11 @@ export default {
       v => !!v || 'Password is required',
       v => (v && v.length >= 8) || 'Password must be greater than 8 characters'
     ],
-    isLoading: false
+    isLoading: false,
+    showOtp: false,
+    otpCode: null,
+    message: null,
+    loadingText: null
   }),
   head: {
     title: 'Login'
@@ -158,21 +214,79 @@ export default {
     },
     signIn () {
       this.isLoading = true
-      this.$fire.auth.signInWithEmailAndPassword(
-        this.email,
-        this.password
-      ).then((r) => {
-        this.isLoading = false
-        this.$router.go({ path: '/' })
-      }).catch((e) => {
-        alert(e)
+      this.loadingText = 'Please wait...'
+      this.$api.$post('/user/auth/signin', {
+        email: this.email,
+        password: this.password
+      }).then((result) => {
+        if (result.method == 'token') {
+          this.$fire.auth.signInWithCustomToken(result.token).then((r) => {
+            console.log(r)
+            this.$router.go({ path: '/' })
+          }).catch((e) => {
+            console.log(e)
+          }).finally(() => {
+            this.isLoading = false
+          })
+        } else {
+          // show otp
+          this.loadingText = ''
+          this.isLoading = false
+          this.showOtp = true
+        }
+      }).catch((err) => {
+        console.log(err)
+        this.message = {
+          text: 'Invalid credentials. Please try again',
+          color: 'error'
+        }
       }).finally(() => {
+        this.loadingText = ''
         this.isLoading = false
       })
     },
     async googleSignin () {
       const provider = new this.$fireModule.auth.GoogleAuthProvider()
       await this.$fire.auth.signInWithRedirect(provider)
+    },
+    onOtpCompleted (result) {
+      this.isLoading = true
+      this.loadingText = 'Verifying OTP. Please wait...'
+      this.$api.$post('/user/auth/otp-verify', {
+        otp: result
+      }).then((result) => {
+        if (result.token) {
+          this.message = null
+          this.otpCode = ''
+          this.isLoading = true
+          this.loadingText = 'Verification success. Logging in...'
+          this.$fire.auth.signInWithCustomToken(result.token).then((r) => {
+            console.log(r)
+            this.otpCode = ''
+            this.$router.go({ path: '/' })
+          }).catch((e) => {
+            console.log(e)
+            this.loadingText = ''
+            this.isLoading = false
+          })
+        } else {
+          this.otpCode = ''
+          this.message = {
+            text: 'Your OTP code is invalid purpose',
+            color: 'error'
+          }
+        }
+      }).catch((err) => {
+        console.log(err)
+        this.otpCode = ''
+        this.message = {
+          text: 'Your OTP code is wrong. Please try again',
+          color: 'error'
+        }
+      }).finally(() => {
+        this.loadingText = ''
+        this.isLoading = false
+      })
     }
   }
 }
