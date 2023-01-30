@@ -14,7 +14,7 @@
               Credit Balance
             </v-list-item-subtitle>
             <v-list-item-title>
-              <span class="text-h4 font-weight-black primary--text text--lighten-2">{{ balance | currency('$') }}</span>
+              <span class="text-h4 font-weight-black primary--text text--lighten-2">{{ balance | currency('$', 2) }}</span>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>

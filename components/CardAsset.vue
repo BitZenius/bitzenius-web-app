@@ -11,7 +11,7 @@
                 Credit Assets
             </v-list-item-subtitle>
             <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">
-                {{balance.equivalent_usdt | currency('$', 3)}}
+                {{balance.equivalent_usdt | currency('$', 2)}}
             </v-list-item-title>
         </v-list-item-content>
     </v-list-item>

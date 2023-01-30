@@ -6,16 +6,16 @@
         </v-col>
     </v-row> -->
     <v-row>
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="6">
             <CardCredit :balance="balance"/>
         </v-col>
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="6">
             <CardAsset :balance="balance"/>
         </v-col>
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="6">
             <CardProfit :profit="profit" />
         </v-col>
-        <v-col cols="12" md="3">
+        <v-col cols="12" md="6">
             <CardDeals :deal="deal" />
         </v-col>
     </v-row>
