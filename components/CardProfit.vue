@@ -9,7 +9,7 @@
         color="primary"
       >
         <v-icon large dark>
-          mdi-currency-usd
+          mdi-cash-plus
         </v-icon>
       </v-list-item-avatar>
       <v-list-item-content>
@@ -17,7 +17,12 @@
           Today's Profit
         </v-list-item-subtitle>
         <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">
-          {{profit | currency('$', 3)}}
+          <v-skeleton-loader
+            v-if="loading"
+            loading
+            type="heading"
+          />
+          <div v-else>{{ profit | currency('$', 3) }}</div>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -26,7 +31,7 @@
 
 <script>
 export default{
-  props:['profit'],
+  props:['profit', 'loading'],
   data(){
     return{
       value:0

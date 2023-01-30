@@ -17,7 +17,28 @@
                     <img style="width:60px;" :alt="pair.logo" :src="'/token_logo/'+pair.pair_from.toUpperCase()+'.png'"  />
                     <h4 class="mt-2 white--text">{{pair.pair_from}} / {{pair.pair_to}}</h4>
                     <v-row class="mt-2">
-                        <v-col cols="6" md="4">
+                        <v-col cols="12">
+                            <v-tabs
+                                v-model="tab"
+                                background-color="customGreen"
+                                color="black"
+                                grow
+                                height="40px"
+                                slider-size="3"
+                                slider-color="basil"
+                            >
+                                <v-tab v-for="item in availableOptions" :key="item.text">
+                                    <v-icon small class="mr-1">
+                                        {{item.icon}}
+                                    </v-icon>
+                                    <span>
+                                        {{item.text.toLowerCase()}}
+                                    </span>
+                                </v-tab>
+                            </v-tabs>
+                        </v-col>
+                        
+                        <!-- <v-col cols="6" md="4">
                             <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('detail')">
                                 <v-icon small class="mr-1">
                                     mdi-pencil
@@ -40,15 +61,24 @@
                                 </v-icon>
                                 Formula
                             </v-btn>
-                        </v-col>
+                        </v-col> -->
                     </v-row>
                 </v-col>
             </v-scroll-y-transition>
 
         </v-row>
         <v-row>
+            <!-- <v-col cols="12">
+                <v-tabs-items v-model="tab">
+                    <v-tab-item v-for="item in availableOptions" :key="item.text">
+                        <v-card color="basil" flat>
+                            <v-card-text>{{tab}}</v-card-text>
+                        </v-card>
+                    </v-tab-item>
+                </v-tabs-items>
+            </v-col> -->
             <v-col cols="12">
-                <v-data-table v-show="tabs.strategy" :headers="tableTitle" :items="conditionItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
+                <v-data-table v-show="tab == 1" :headers="tableTitle" :items="conditionItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
                     <template v-slot:item.title="{item}">
                         <v-icon>
                             {{item.icon}}
@@ -64,7 +94,7 @@
                         </span>
                     </template>
                 </v-data-table>
-                <v-data-table v-show="tabs.detail" :headers="tableDetailTitle" :items="detailItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
+                <v-data-table v-show="tab == 0" :headers="tableDetailTitle" :items="detailItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
                     <template v-slot:item.title="{item}">
                         <span>{{item.title}}</span>
                     </template>
@@ -79,13 +109,13 @@
                 </v-data-table>
 
                 <!-- START OF FORMULA -->
-                <div v-show="tabs.formula" class="pt-0">
+                <div v-show="tab == 2" class="pt-0">
                     <v-card elevation="3" class="ma-3 pa-3">
                         <ModalsBotSetupTechnicalAnalysis v-if="analysis.condition" :selected-technical="analysis" ref="analysisRef" @onAnalysisSelected="onAnalysisSelected"/>
                     </v-card>
                     <v-row>
                         <v-col cols="12" class="d-flex justify-center">
-                            <v-btn color="success" @click="showAveragingFormula = !showAveragingFormula">
+                            <v-btn color="customGreen black--text" @click="showAveragingFormula = !showAveragingFormula">
                                 <v-icon small class="mr-1">
                                     mdi-cog
                                 </v-icon>
@@ -173,7 +203,7 @@
 
             </v-col>
         </v-row>
-        <v-row v-if="!tabs.formula">
+        <v-row v-if="tab != 2">
             <v-col cols="12" md="4">
                 <v-btn color="customYellow white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement = false">
                     <span class="danger--text" v-if="!detail.xpaused">STOP TRADING</span>
@@ -195,7 +225,7 @@
         </v-row>
         <v-row v-else>
             <v-col cols="12">
-                <v-btn @click="_save" color="success white--text" style="width:100%;">SAVE</v-btn>
+                <v-btn @click="_save" color="customGreen black--text" style="width:100%;">SAVE</v-btn>
             </v-col>
         </v-row>
         <v-row v-if="showStopAgreement">
@@ -252,6 +282,14 @@ export default {
     },
     data() {
         return {
+            // TABS
+            tab:null,
+            availableOptions:[
+                {icon:"mdi-pencil", text:"Detail"},
+                {icon:"mdi-lightbulb-outline", text:"Strategy"},
+                {icon:"mdi-file-table-box-outline", text:"Formula"}
+            ],
+
             // SHOW HANDLER
             pairDetailShown: false,
             showSetting: false,

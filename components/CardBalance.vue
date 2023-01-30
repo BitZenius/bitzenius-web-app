@@ -14,7 +14,14 @@
               Credit Balance
             </v-list-item-subtitle>
             <v-list-item-title>
-              <span class="text-h4 font-weight-black primary--text text--lighten-2">{{ balance | currency('$', 2) }}</span>
+              <span class="text-h4 font-weight-black primary--text text--lighten-2">
+                <v-skeleton-loader
+                  v-if="isLoading"
+                  loading
+                  type="heading"
+                />
+                <div v-else>{{ balance | currency('$', 2) }}</div>
+              </span>
             </v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -148,7 +155,8 @@ export default {
       balance: 0,
       depositDialog: false,
       withdrawDialog: false,
-      copied: false
+      copied: false,
+      isLoading: false
     }
   },
   mounted() {

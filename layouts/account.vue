@@ -47,12 +47,12 @@
           <v-list-item-title>Active Positions</v-list-item-title>
         </v-list-item-content>
       </v-list-item> -->
-      <v-list-item to="/trading-history" exact class="my-2">
+      <v-list-item to="/transaction-history" exact class="my-2">
         <v-list-item-action>
           <v-icon>mdi-table-large</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Trading History</v-list-item-title>
+          <v-list-item-title>Transaction History</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-divider class="my-2" />
@@ -99,7 +99,7 @@
           <v-list-item-title>Subscription</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
-      <v-list-item target="_" href="#" exact class="my-2">
+      <v-list-item disabled target="_" href="#" exact class="my-2">
         <v-list-item-action>
           <v-icon>mdi-human-male-board</v-icon>
         </v-list-item-action>

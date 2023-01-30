@@ -9,15 +9,32 @@
         color="primary"
       >
         <v-icon large dark>
-          mdi-credit-card-outline
+          mdi-currency-usd
         </v-icon>
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-subtitle>
-          Credit Balance
+          USDT Balance
+          <v-tooltip top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-icon
+                v-bind="attrs"
+                v-on="on"
+                size="18"
+              >
+                mdi-help-circle
+              </v-icon>
+            </template>
+            <span>USDT asset in your exchange</span>
+          </v-tooltip>
         </v-list-item-subtitle>
         <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">
-          {{balance.free_usdt | currency('$', 2)}}
+          <v-skeleton-loader
+            v-if="loading"
+            loading
+            type="heading"
+          />
+          <div v-else>{{ balance.free_usdt | currency('$', 2) }}</div>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -26,7 +43,7 @@
 
 <script>
 export default{
-  props:['balance'],
+  props:['balance', 'loading'],
   data(){
     return{
       value:0

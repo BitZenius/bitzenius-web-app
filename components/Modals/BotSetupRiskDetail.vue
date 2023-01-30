@@ -61,7 +61,7 @@
                                     </v-col>
                                 </v-row>
                             </template>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+                            <span>The maximum amount of USDT to be spent for the bot</span>
                         </v-tooltip>
                         <v-tooltip right color="success">
                             <template v-slot:activator="{ on, attrs }">
@@ -79,7 +79,7 @@
                                     </v-col>
                                 </v-row>
                             </template>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+                            <span>The amount of USDT purchase per order</span>
                         </v-tooltip>
                         <v-tooltip right color="success">
                             <template v-slot:activator="{ on, attrs }">
@@ -97,7 +97,7 @@
                                     </v-col>
                                 </v-row>
                             </template>
-                            <span>Lorem ipsum dolor sit amet consectetur adipisicing elit.</span>
+                            <span>Maximum number of concurrent trades the bot is allowed to execute</span>
                         </v-tooltip>
                         <v-row class="d-flex align-center justify-center pt-0 mt-0" style="width:100%;">
                             <v-col cols="12">
