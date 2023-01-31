@@ -59,7 +59,6 @@ export default{
   },
   watch:{
     profit(ov,nv){
-      alert("WATCH");
       this.processValue();
     }
   }
