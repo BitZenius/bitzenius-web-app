@@ -34,7 +34,10 @@
             loading
             type="heading"
           />
-          <div v-else>{{ balance.free_usdt | currency('$', 2) }}</div>
+          <div v-else>
+            <!-- {{ balance.free_usdt | currency('$', 4) }} -->
+            <span v-if="convertFinished">${{value.first}}<small>.{{value.second}}</small></span>                
+          </div>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -46,10 +49,34 @@ export default{
   props:['balance', 'loading'],
   data(){
     return{
-      value:0
+      value:0,
+      convertFinished:false
     }
   },
-  mounted(){},
-  methods:{}
+  mounted(){
+    if(this.balance.free_usdt <= 0){
+      this.value = {first:0, second:'0000'};
+      this.convertFinished = true;
+    }
+  },
+  methods:{
+    processValue(){
+      let value = {};
+      if(this.balance.free_usdt > 0){
+        let string = String(parseFloat(this.balance.free_usdt).toFixed(4)).split(".");
+        value.first = parseFloat(string[0]);
+        value.second = parseFloat(string[1]);
+        this.value = value;
+        this.convertFinished = true;
+      }else{
+        this.value = {first:0, second:0};
+      }
+    }
+  },
+  watch:{
+    balance(ov,nv){
+      this.processValue();
+    }
+  }
 }
 </script>

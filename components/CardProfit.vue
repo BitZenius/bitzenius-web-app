@@ -22,7 +22,10 @@
             loading
             type="heading"
           />
-          <div v-else>{{ profit | currency('$', 3) }}</div>
+          <div v-else>
+            <!-- {{ profit | currency('$', 4) }} -->
+            <span v-if="convertFinished">${{value.first}}<small>.{{value.second}}</small></span>                
+          </div>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
@@ -34,10 +37,31 @@ export default{
   props:['profit', 'loading'],
   data(){
     return{
-      value:0
+      value:0,
+      convertFinished:false
     }
   },
-  mounted(){},
-  methods:{ }
+  mounted(){
+    if(this.profit <= 0){
+      this.value = {first:0, second:'0000'};
+      this.convertFinished = true;
+    }
+  },
+  methods:{
+    processValue(){
+      let value = {};
+      let string = String(parseFloat(this.profit).toFixed(4)).split(".");
+      value.first = parseFloat(string[0]);
+      value.second = parseFloat(string[1]);
+      this.value = value;
+      this.convertFinished = true;
+    }
+  },
+  watch:{
+    profit(ov,nv){
+      alert("WATCH");
+      this.processValue();
+    }
+  }
 }
 </script>

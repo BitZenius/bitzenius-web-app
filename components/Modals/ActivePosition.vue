@@ -37,46 +37,12 @@
                                 </v-tab>
                             </v-tabs>
                         </v-col>
-                        
-                        <!-- <v-col cols="6" md="4">
-                            <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('detail')">
-                                <v-icon small class="mr-1">
-                                    mdi-pencil
-                                </v-icon>
-                                Detail
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="6" md="4">
-                            <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('strategy')">
-                                <v-icon small class="mr-1">
-                                    mdi-lightbulb-outline
-                                </v-icon>
-                                Strategy
-                            </v-btn>
-                        </v-col>
-                        <v-col cols="6" md="4">
-                            <v-btn style="width:100%;" color="customGreen black--text" small @click="onTabSelect('formula')">
-                                <v-icon small class="mr-1">
-                                    mdi-file-table-box-outline
-                                </v-icon>
-                                Formula
-                            </v-btn>
-                        </v-col> -->
                     </v-row>
                 </v-col>
             </v-scroll-y-transition>
 
         </v-row>
         <v-row>
-            <!-- <v-col cols="12">
-                <v-tabs-items v-model="tab">
-                    <v-tab-item v-for="item in availableOptions" :key="item.text">
-                        <v-card color="basil" flat>
-                            <v-card-text>{{tab}}</v-card-text>
-                        </v-card>
-                    </v-tab-item>
-                </v-tabs-items>
-            </v-col> -->
             <v-col cols="12">
                 <v-data-table v-show="tab == 1" :headers="tableTitle" :items="conditionItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
                     <template v-slot:item.title="{item}">
@@ -679,6 +645,7 @@ export default {
         }
     },
     async mounted(){
+        this.$store.commit('setIsLoading', false);
         this.setStrategy();
         this.setDetail();
         this.setAnalysis();

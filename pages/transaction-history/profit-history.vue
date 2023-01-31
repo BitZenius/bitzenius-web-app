@@ -7,6 +7,9 @@
                         <v-text-field v-model="dateRangeText" label="Date Range Picker" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
                     </template>
                     <v-date-picker v-model="dates" range no-title scrollable>
+                        <v-btn text color="customPink" @click="onClearDates()">
+                            Clear
+                        </v-btn>
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu = false">
                             Cancel
@@ -16,6 +19,7 @@
                         </v-btn>
                     </v-date-picker>
                 </v-menu>
+                <!-- <v-btn x-small @click="logger">logger</v-btn> -->
             </v-col>
         </v-row>
         <v-data-table :loading="isLoading" :headers="tradingHeaders" :items="profitItemsFiltered" class="elevation-2 my-2">
@@ -24,10 +28,12 @@
             </template>
             <template v-slot:item.profit="{item}">
                 <v-chip small v-if="parseFloat(item.profit) > 0" class="customGreen black--text" style="font-weight:bold;">
-                    {{item.profit | currency('$', 3)}}
+                    <!-- {{item.profit | currency('$', 3)}} -->
+                    <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>
                 </v-chip>
                 <v-chip small v-else class="customPink" style="font-weight:bold;">
-                    {{item.profit | currency('$', 3)}}
+                    <!-- {{item.profit | currency('$', 3)}} -->
+                    <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>
                 </v-chip>
             </template>
         </v-data-table>
@@ -111,7 +117,6 @@ export default {
     },
     methods: {
         logger(){
-            console.log(this.dates);
             this._fetchReport(null);
         },
         async _fetchReport(sorting) {
@@ -135,6 +140,14 @@ export default {
             }).then(res=>{
                 console.log('fetchReport', res);
                 if(res.success){
+                    res.data.forEach((val)=>{
+                        if(val.profit<0) console.log(val);
+                        val._profit = {};
+                        let string = String(val.profit.toFixed(4)).split(".");
+                        if(val.profit<0) console.log(string);
+                        val._profit.first = val.profit < 0? string[0] : parseFloat(string[0]);
+                        val._profit.second = parseFloat(string[1]);
+                    })
                     this.profitItems = res.data;
                     this.isLoading = false
                 }else{
@@ -160,6 +173,11 @@ export default {
             let sort = {};
             this._fetchReport()
         },
+        onClearDates(){
+            this.dates = [];
+            this.menu = false;
+            this._fetchReport();
+        }
     }
 }
 </script>

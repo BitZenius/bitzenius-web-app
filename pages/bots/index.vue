@@ -523,12 +523,12 @@ export default {
         },
         async _onSelectPair(val) {
             console.log('selectedPair', val);
+            this.$store.commit('setIsLoading', true);
             let res = await this.$api.$get('/user/active-position-detail', {
                 params: {
                     id: val._id
                 }
             });
-
             try {
                 console.log('resSelectPair', res);
                 this.selectedPair = val;

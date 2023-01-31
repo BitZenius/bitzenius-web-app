@@ -90,7 +90,6 @@ export default {
                     dataLabels: {
                         enabled: true,
                         formatter: function (value) {
-                            console.log(`value: ${value}`);
                             let val = (value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                             return '$ '+val;
                         }
@@ -104,7 +103,6 @@ export default {
                         },
                         labels: {
                             formatter: function (value) {
-                                console.log(`value: ${value}`);
                                 let val = (value).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
                                 return '$ '+val;
                             }
@@ -154,7 +152,6 @@ export default {
                 }
             });
             this.isLoading = false
-            console.log('userBalance', res);
             this.balance = res.data;
         },
         async _fetchProfit(){
@@ -168,8 +165,8 @@ export default {
                 }
             });
             this.isLoadingProfit = false
-            console.log('userProfit', res);
             this.profit = res.data.profit;
+            console.log("PROFIT", res);
         },
         async _fetchChart() {
             let res = await this.$api.$get('/user/chart');
@@ -192,14 +189,12 @@ export default {
             });
             this.deal = res.data ? res.data.trades : 0;
             this.isLoadingDeals = false
-            console.log('dailyDeals', res);
         }
     },
     beforeMount() {
         this.$store.commit('setIsLoading', true);
     },
     mounted() {
-        console.log(this.$store.getters.theme);
         this.$store.commit('setTitle', this.title);
         this._fetchChart();
         this._fetchDailyDeals();

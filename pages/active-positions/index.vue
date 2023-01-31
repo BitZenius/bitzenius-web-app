@@ -248,7 +248,8 @@ export default {
         // TRIGGER
         _onSelectPair(val) {
             this.selectedPair = val;
-            this.showActivePosition = true;
+            // this.showActivePosition = true;
+            this.$store.commit('setIsLoading', true);
         },
 
         _addBot() {

@@ -7,6 +7,9 @@
                         <v-text-field v-model="dateRangeText" label="Date Range Picker" prepend-icon="mdi-calendar" readonly v-bind="attrs" v-on="on" outlined dense></v-text-field>
                     </template>
                     <v-date-picker v-model="dates" range no-title scrollable>
+                        <v-btn text color="customPink" @click="onClearDates()">
+                            Clear
+                        </v-btn>
                         <v-spacer></v-spacer>
                         <v-btn text color="primary" @click="menu = false">
                             Cancel
@@ -16,6 +19,7 @@
                         </v-btn>
                     </v-date-picker>
                 </v-menu>
+                <!-- <v-btn x-small @click="logger">logger</v-btn> -->
             </v-col>
             <v-col cols="12" md="3">
                 <v-text-field prepend-icon="mdi-magnify" v-model="searchQuery" label="Search By Pair" placeholder="Search By Pair" outlined dense></v-text-field>
@@ -59,16 +63,24 @@
                     <div v-else class="d-flex flex-column">
                         <small>{{item.type.toUpperCase() == 'SELL' ? 'PnL' : null}}</small>
                         <v-chip small v-if="parseFloat(item.desc) > 0" class="customGreen black--text" style="font-weight:bold;">
-                            {{item.desc | currency('$', 6)}}
+                            <!-- {{item.desc | currency('$', 6)}} -->
+                            <span>${{item._desc.first}}<small>.{{item._desc.second}}</small></span>
                         </v-chip>
                         <v-chip small v-else class="customPink" style="font-weight:bold;">
-                            {{item.desc}}
+                            <!-- {{item.desc}} -->
+                            <span>-${{item._desc.first}}<small>.{{item._desc.second}}</small></span>
                         </v-chip>
                     </div>
                 </div>
             </template>
             <template v-slot:item.price="{item}">
-                {{item.price |currency('$', 6)}}
+                <!-- {{item.price |currency('$', 6)}} -->
+                <span>${{item._price.first}}<small>.{{item._price.second}}</small></span>                
+            </template>
+            <template v-slot:item.qty="{item}">
+                <!-- {{item.qty}} -->
+                <span>{{item._qty.first}}<small>.{{item._qty.second}}</small></span>                
+                <!-- </br><code>{{item._qty}}</code> -->
             </template>
         </v-data-table>
     </div>
@@ -213,6 +225,9 @@ export default {
     },
     methods: {
         // FETCH API
+        logger(){
+            this._fetchReport();
+        },
         async _fetchReport(sorting) {
             this.isLoading = true;
             let tempParams = {};
@@ -231,14 +246,56 @@ export default {
             let res = await this.$api.$get('/user/trading-history', {
                 params: tempParams
             });
-            this.tradingItems = res.data;
-            this.availablePair = res.pairs;
-            this.showTradingHistory = true;
-            this.isLoading = false;
+
+            console.log('fetchReportTrading', res)
+            if(res.success){
+                res.data.forEach((val)=>{
+                    // PRICE TO SMALLER AFTER COMMA
+                    val._price = {};
+                    let stringPrice = String(parseFloat(val.price).toFixed(4)).split(".");
+                    val._price.first = parseFloat(stringPrice[0]);
+                    val._price.second = parseFloat(stringPrice[1]);
+
+                    // QTY TO SMALLER AFTER COMMA
+                    val._qty = {};
+                    console.log(val.qty);
+                    let stringQty = String(parseFloat(val.qty).toFixed(4)).split(".");
+                    console.log('stringQty', stringQty);
+                    val._qty.first = parseFloat(stringQty[0]);
+                    val._qty.second = parseFloat(stringQty[1]);
+                    console.log('_qty', val._qty);
+
+                    // DESC SELL TO SMALLER AFTER COMMA
+                    if(val.type.toUpperCase() == 'SELL'){
+                        val._desc = {};
+                        let stringDesc = String(parseFloat(val.desc).toFixed(4)).split(".");
+                        val._desc.first = val.desc > 0 ? parseFloat(stringDesc[0]) : Math.abs(parseFloat(stringDesc[0]));
+                        val._desc.second = parseFloat(stringDesc[1]);
+                    }
+                })
+                this.tradingItems = res.data;
+                this.availablePair = res.pairs;
+                this.isLoading = false
+                this.showTradingHistory = true;
+            }else{
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: "Error",
+                    color: "customPink"
+                })
+                this.isLoading = false
+                this.showTradingHistory = true;
+            }
+
         },
         // TRIGGER
         onDateChanged(dates) {
             let sort = {};
+            this._fetchReport()
+        },
+        onClearDates(){
+            this.dates = [];
+            this.menu = false;
             this._fetchReport()
         },
         onPairSelected(pair) {

@@ -142,10 +142,42 @@
     <v-app-bar-nav-icon @click.stop="drawer = !drawer" />
     <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" />
     <v-spacer />
+    <ThemeToggle />
     <v-btn v-show="false" icon class="mr-2">
       <v-icon>mdi-translate</v-icon>
     </v-btn>
-    <ThemeToggle />
+    <v-menu offset-y>
+      <template #activator="{ on, attrs }">
+        <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
+          <v-icon>mdi-bell</v-icon>
+        </v-btn>
+      </template>
+      <v-list v-if="user">
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>
+            <v-list-item-subtitle>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+        <v-divider/>
+        <v-list-item>
+          <v-list-item-avatar>
+            <v-icon class="customGreen">mdi-check</v-icon>
+          </v-list-item-avatar>
+          <v-list-item-content>
+            <v-list-item-title class="font-weight-bold">You received the highest profit all time!</v-list-item-title>
+            <v-list-item-subtitle>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
+            </v-list-item-subtitle>
+          </v-list-item-content>
+        </v-list-item>
+      </v-list>
+    </v-menu>
     <v-menu offset-y>
       <template #activator="{ on, attrs }">
         <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
