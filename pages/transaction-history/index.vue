@@ -33,7 +33,7 @@ export default {
             currentItem: 'tab-Web',
             tables: [
                 'Daily Profit',
-                'Trading Report'
+                'All Trading History'
             ],
             title: 'Transaction Report',
             isLoading:true,
