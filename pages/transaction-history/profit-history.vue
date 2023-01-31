@@ -20,7 +20,7 @@
         </v-row>
         <v-data-table :loading="isLoading" :headers="tradingHeaders" :items="profitItemsFiltered" class="elevation-2 my-2">
             <template v-slot:item.date="{item, index}">
-                {{$moment(new Date(item._id.year,item._id.month-1,item._id.day)).format("DD/MM/YYYY")}}
+                {{$moment(new Date(item._id.year,item._id.month-1,item._id.day)).format("DD / MMM / YYYY")}}
             </template>
             <template v-slot:item.profit="{item}">
                 <v-chip small v-if="parseFloat(item.profit) > 0" class="customGreen black--text" style="font-weight:bold;">

@@ -465,7 +465,8 @@ export default {
                         let percentage = average == 0 ? 0 : (((parseFloat(data.c) - average) / average));
                         let pnl = parseFloat(this.activePosition[index].amountUsd) * percentage;
                         this.activePosition[index].profit.value = pnl.toFixed(3);
-                        this.activePosition[index].profit.percentage = percentage.toFixed(3) * 100;
+                        let convertPercentage = percentage * 100;
+                        this.activePosition[index].profit.percentage = convertPercentage.toFixed(3);
                     }
                 })
             })
