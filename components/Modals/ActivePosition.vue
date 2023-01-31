@@ -94,6 +94,7 @@
                         </span>
                     </template>
                 </v-data-table>
+                
                 <v-data-table v-show="tab == 0" :headers="tableDetailTitle" :items="detailItems" hide-default-header hide-default-footer class="elevation-2 ma-2">
                     <template v-slot:item.title="{item}">
                         <span>{{item.title}}</span>
@@ -101,6 +102,12 @@
                     <template v-slot:item.value="{item}">
                         <span v-if="item.key == 'average'">
                             {{item.value | currency('$', 6)}}
+                        </span>
+                        <span v-else-if="item.key == 'total_amount'">
+                            {{item.value.toFixed(6)}}
+                        </span>
+                        <span v-else-if="item.key == 'total_step'">
+                            {{item.value - 1}}
                         </span>
                         <span v-else>
                             {{item.value}}
