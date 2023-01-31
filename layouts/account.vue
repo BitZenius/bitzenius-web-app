@@ -52,7 +52,7 @@
           <v-icon>mdi-table-large</v-icon>
         </v-list-item-action>
         <v-list-item-content>
-          <v-list-item-title>Transaction History</v-list-item-title>
+          <v-list-item-title>All Trading History</v-list-item-title>
         </v-list-item-content>
       </v-list-item>
       <v-divider class="my-2" />

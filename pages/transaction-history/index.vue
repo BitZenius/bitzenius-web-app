@@ -10,8 +10,8 @@
                 </v-tabs>
                 <v-tabs-items v-model="currentItem">
                     <v-tab-item v-for="item in tables" :key="item">
-                        <TradingHistory v-if="currentItem == 0" ref="tradingRef" />
-                        <ProfitHistory v-if="currentItem == 1" ref="profitRef" />
+                        <ProfitHistory v-if="currentItem == 0" ref="profitRef" />
+                        <TradingHistory v-if="currentItem == 1" ref="tradingRef" />
                     </v-tab-item>
                 </v-tabs-items>
             </v-card>
@@ -32,8 +32,8 @@ export default {
         return {
             currentItem: 'tab-Web',
             tables: [
-                'Trading Report',
-                'Daily Profit'
+                'Daily Profit',
+                'Trading Report'
             ],
             title: 'Transaction Report',
             isLoading:true,
