@@ -59,7 +59,7 @@ export default {
     processValue(){
       let value = {};
       if(this.balance.equivalent_usdt > 0){
-        let string = String(parseFloat(this.balance.equivalent_usdt).toFixed(4)).split(".");
+        let string = String(parseFloat(this.balance.equivalent_usdt).toFixed(2)).split(".");
         value.first = parseFloat(string[0]);
         value.second = parseFloat(string[1]);
         this.value = value;

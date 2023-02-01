@@ -1,13 +1,14 @@
 <template>
     <v-overlay :value="showOverlay" z-index="5000" opacity="0.9">
-        <v-btn @click="showOverlay = false" fab x-small color="danger" style="position:absolute; top:-5%; right:0;">
+        <v-btn @click="showOverlay = false" fab x-small color="danger" style="position:absolute; top:-3%; right:0;">
             <v-icon>mdi-close</v-icon>
         </v-btn>
         <v-list color="primary" elevation="10" style="border-radius:15px;">
             <div v-for="(val,i) in 5" :key="i">
+                <v-divider></v-divider>
                 <v-list-item>
                     <v-list-item-avatar>
-                        <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
+                        <v-icon large class="customPink">mdi-alert-circle-outline</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
                         <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>

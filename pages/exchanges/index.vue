@@ -63,7 +63,7 @@
                         <v-btn :disabled="!user.subscription || user.subscription == false" v-if="exchange.active" small color="primary" outlined @click="_addExchange(exchange)">Edit Exchange</v-btn>
                         <v-btn :disabled="!user.subscription || user.subscription == false" v-else color="primary" small @click="_addExchange(exchange)">Setup Exchange</v-btn>
                     </v-col>
-                    <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
+                    <v-overlay z-index="1" v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
                         <h3 style="letter-spacing:2px;" class="customYellow--text">Coming Soon!</h3>
                     </v-overlay>
                 </v-row>

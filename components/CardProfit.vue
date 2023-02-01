@@ -43,14 +43,14 @@ export default{
   },
   mounted(){
     if(this.profit <= 0){
-      this.value = {first:0, second:'0000'};
+      this.value = {first:0, second:'00'};
       this.convertFinished = true;
     }
   },
   methods:{
     processValue(){
       let value = {};
-      let string = String(parseFloat(this.profit).toFixed(4)).split(".");
+      let string = String(parseFloat(this.profit).toFixed(2)).split(".");
       value.first = parseFloat(string[0]);
       value.second = parseFloat(string[1]);
       this.value = value;

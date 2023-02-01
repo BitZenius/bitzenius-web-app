@@ -93,7 +93,7 @@
                 <template v-slot:item.pair="{item}">
                     <v-row>
                         <v-col cols="12" class="d-flex align-center justify-start">
-                            <img style="width:28px;" :alt="item.logo" :src="'/token_logo/'+item.pair_from.toUpperCase()+'.png'" />
+                            <v-img style="width:28px !important;" @error="errorHandler" max-width="28" :alt="item.logo" :src="getImgUrl(item.pair_from)" ></v-img>
                             <div class="d-flex flex-column ml-3">
                                 <div class="d-flex">
                                     <strong>{{item.pair_from}} </strong>
@@ -396,6 +396,18 @@ export default {
     },
     methods: {
         ...mapActions("position", ["fetchPosition"]),
+        getImgUrl(val){
+            try{
+                let url = require('@/static/token_logo/'+val.toUpperCase()+'.png');
+                return '/token_logo/'+val.toUpperCase()+'.png'
+            }catch(err){
+                console.log('img not exist', val)
+                return '/token_logo/default.png'
+            }
+        },
+        errorHandler(event){
+            event.target.src = '/token_logo/default.png'
+        },
         _sort() {
             console.log(this.activePositionFiltered);
         },
