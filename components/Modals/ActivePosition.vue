@@ -179,8 +179,8 @@
         <v-row v-if="tab != 2">
             <v-col cols="12" md="4">
                 <v-btn color="customYellow white--text" style="width:100%;" @click="showStopAgreement = !showStopAgreement; showSellAgreement = false; showAveragingAgreement = false">
-                    <span class="danger--text" v-if="!detail.xpaused">STOP TRADING</span>
-                    <span class="customGreen--text" v-else>START TRADING</span>
+                    <span class="danger--text" v-if="!detail.paused">STOP TRADING</span>
+                    <span class="primary--text" v-else>START TRADING</span>
                 </v-btn>
             </v-col>
             <v-col cols="12" md="4">
@@ -191,7 +191,7 @@
             <v-col cols="12" md="4">
                 <v-btn :disabled="detail.positions.length <= 0" color="primary white--text" style="width:100%;"  @click="showAveragingAgreement = !showAveragingAgreement; showSellAgreement = false; showStopAgreement = false">
                     AVERAGING: &nbsp;
-                    <span v-if="!detail.xaveraging">OFF</span>
+                    <span v-if="!detail.averaging">OFF</span>
                     <span v-else>ON</span>
                 </v-btn>
             </v-col>
@@ -202,7 +202,7 @@
             </v-col>
         </v-row>
         <v-row v-if="showStopAgreement">
-            <v-col v-if="!detail.xpaused" cols="12" md="12" class="d-flex flex-column justify-center ">
+            <v-col v-if="!detail.paused" cols="12" md="12" class="d-flex flex-column justify-center ">
                 <h4>You're about to stop trading, this action will be stop your trading action:</h4>
                 <ul>
                     <li>The bot will stays until all the position are closed</li>

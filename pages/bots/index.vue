@@ -43,7 +43,7 @@
                         <v-btn :disabled="!user.subscription || user.subscription == false" v-else color="primary" small @click="_addBot(exchange)">Setup Bot</v-btn>
                     </v-col>
                 </v-row>
-                <v-overlay v-if="exchange.comingsoon" :absolute="true" opacity="0.7" overlay="true">
+                <v-overlay v-if="exchange.comingsoon" z-index="1" :absolute="true" opacity="0.7" overlay="true">
                     <h3 style="letter-spacing:2px;" class="customYellow--text">Coming Soon!</h3>
                 </v-overlay>
             </v-card>

@@ -14,8 +14,39 @@
         </template>
     </v-snackbar>
 
-    <v-col cols="12" class="d-flex justify-center align-center">
-        <p class="text-center text-info primary">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
+    <v-col cols="12" class="d-flex justify-center align-center text-center">
+        <v-card class="d-flex px-5 py-3" color="primary">
+            <v-row>
+                <v-col cols="11" class="d-flex justify-center align-center white--text pa-5">
+                    <span>
+                        Please be sure to whitelist the following IP address when creating an API Key on your exchange. It is a required step: 
+                        <v-chip color="customGreen black--text" flat>{{whitelistIp}}</v-chip>
+                    </span>
+                </v-col>
+                <v-col cols="1" class="d-flex align-center justify-center">
+                    <v-tooltip v-model="copied" top>
+                        <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                            small
+                            fab
+                            v-bind="attrs"
+                            v-on="on"
+                            color="customGreen"
+                            size="16"
+                            v-clipboard:copy="whitelistIp"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                        >
+                            <v-icon color="#222222">
+                            mdi-content-copy
+                            </v-icon>
+                        </v-btn>
+                        </template>
+                        <span>{{ copied ? 'Copy' : 'Copied' }}</span>
+                    </v-tooltip>
+                </v-col>
+            </v-row>
+        </v-card>
     </v-col>
     <v-col cols="12" class="d-flex px-0 pt-0">
         <v-col v-for="(exchange, index) in exchanges" :key="index" sm="6" md="4" lg="3">
@@ -179,6 +210,10 @@ export default {
 
             // MODAL ADD EXCHANGE
             showAddExchange: false,
+
+            // COPY
+            whitelistIp:"108.61.117.32",
+            copied: false,
         }
     },
     head() {
@@ -261,6 +296,13 @@ export default {
         },
         // END OF LISTENER
         // TRIGGER
+        onCopy(e) {
+            console.log('onCopy', e.text);
+            this.copied = !this.copied
+        },
+        onError: function (e) {
+            alert('Failed to copy: ' + e.text)
+        },
         async _logger() {
             await this._fetchExchanges();
             console.log(this.clientExchanges);

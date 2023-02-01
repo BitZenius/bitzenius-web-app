@@ -2,6 +2,7 @@
 <v-app>
   <GlobalsAddOnLoader />
   <GlobalsAddOnSnackbar />
+  <GlobalsAddOnNotification />
   <v-navigation-drawer
     :style="`top:${topMargin}px`"
     v-model="drawer"
