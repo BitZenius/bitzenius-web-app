@@ -27,8 +27,9 @@
                     <v-tooltip v-model="copied" top>
                         <template v-slot:activator="{ on, attrs }">
                         <v-btn
-                            small
                             fab
+                            outlined
+                            dark
                             v-bind="attrs"
                             v-on="on"
                             color="customGreen"
@@ -37,7 +38,7 @@
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
                         >
-                            <v-icon color="#222222">
+                            <v-icon color="customGreen">
                             mdi-content-copy
                             </v-icon>
                         </v-btn>

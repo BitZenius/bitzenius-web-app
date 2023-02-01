@@ -1,49 +1,30 @@
 <template>
-    <!-- <div> -->
-        <v-overlay :value="showOverlay" z-index="5000" opacity="0.9">
-            <v-btn @click="showOverlay = false" fab x-small color="danger" style="position:absolute; top:-5%; right:0;">
-                <v-icon>mdi-close</v-icon>
-            </v-btn>
-            <v-list color="primary" elevation="10" style="border-radius:15px;">
-                <div v-for="(val,i) in 5" :key="i">
-                    <v-list-item>
-                        <v-list-item-avatar>
-                            <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
-                        </v-list-item-avatar>
-                        <v-list-item-content>
-                            <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>
-                            <v-list-item-subtitle class="customYellow--text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
-                            </v-list-item-subtitle>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                        <v-btn small color="customGreen black--text" style="text-transform: unset !important;">
-                            I've read it
-                        </v-btn>
-                        </v-list-item-action>
-                    </v-list-item>
-                    <v-divider></v-divider>
-                </div>
-            </v-list>
-        </v-overlay>
-      <!-- <v-toolbar flat color="transparent" style="position:fixed; width:300px; height:300px; top:50%; left: 50%; transform: translate(-50%, -50%); border-radius:10px;">
-
-      </v-toolbar> -->
-    <!-- </div> -->
-
-<!-- // <v-list>
-//     <v-list-item>
-//     <v-list-item-avatar>
-//         <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
-//     </v-list-item-avatar>
-//     <v-list-item-content>
-//         <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>
-//         <v-list-item-subtitle>
-//         Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
-//         </v-list-item-subtitle>
-//     </v-list-item-content>
-//     </v-list-item>
-// </v-list> -->
+    <v-overlay :value="showOverlay" z-index="5000" opacity="0.9">
+        <v-btn @click="showOverlay = false" fab x-small color="danger" style="position:absolute; top:-5%; right:0;">
+            <v-icon>mdi-close</v-icon>
+        </v-btn>
+        <v-list color="primary" elevation="10" style="border-radius:15px;">
+            <div v-for="(val,i) in 5" :key="i">
+                <v-list-item>
+                    <v-list-item-avatar>
+                        <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
+                    </v-list-item-avatar>
+                    <v-list-item-content>
+                        <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>
+                        <v-list-item-subtitle class="customYellow--text">
+                            Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
+                        </v-list-item-subtitle>
+                    </v-list-item-content>
+                    <v-list-item-action>
+                    <v-btn small color="customGreen black--text" style="text-transform: unset !important;">
+                        I've read it
+                    </v-btn>
+                    </v-list-item-action>
+                </v-list-item>
+                <v-divider></v-divider>
+            </div>
+        </v-list>
+    </v-overlay>
 </template>
 
 
