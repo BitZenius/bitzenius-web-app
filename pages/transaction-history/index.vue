@@ -1,23 +1,30 @@
 <template>
-<v-row>
-    <v-col cols="12">
-        <template>
-            <v-card class="pa-3">
-                <v-tabs v-model="currentItem">
-                    <v-tab v-for="item in tables" :key="item">
-                        <h4>{{item}}</h4>
-                    </v-tab>
-                </v-tabs>
-                <v-tabs-items v-model="currentItem">
-                    <v-tab-item v-for="item in tables" :key="item">
-                        <ProfitHistory v-if="currentItem == 0" ref="profitRef" />
-                        <TradingHistory v-if="currentItem == 1" ref="tradingRef" />
-                    </v-tab-item>
-                </v-tabs-items>
-            </v-card>
-        </template>
-    </v-col>
-</v-row>
+    <div>
+        <v-row class="mb-0 pb-0">
+            <v-col cols="12" md="4">
+                <GlobalsExchangeList/>
+            </v-col>
+        </v-row>
+        <v-row class="mt-0 pt-0">
+            <v-col cols="12">
+                <template>
+                    <v-card class="pa-3">
+                        <v-tabs v-model="currentItem">
+                            <v-tab v-for="item in tables" :key="item">
+                                <h4>{{item}}</h4>
+                            </v-tab>
+                        </v-tabs>
+                        <v-tabs-items v-model="currentItem">
+                            <v-tab-item v-for="item in tables" :key="item">
+                                <ProfitHistory v-if="currentItem == 0" ref="profitRef" />
+                                <TradingHistory v-if="currentItem == 1" ref="tradingRef" />
+                            </v-tab-item>
+                        </v-tabs-items>
+                    </v-card>
+                </template>
+            </v-col>
+        </v-row>
+    </div>
 </template>
 <script>
 import TradingHistory from './trading-history.vue'

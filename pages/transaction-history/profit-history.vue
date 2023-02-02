@@ -22,7 +22,61 @@
                 <!-- <v-btn x-small @click="logger">logger</v-btn> -->
             </v-col>
         </v-row>
-        <v-data-table :loading="isLoading" :headers="tradingHeaders" :items="profitItemsFiltered" class="elevation-2 my-2">
+        <v-dialog v-model="onDetailClicked" max-width="600" :fullscreen="$vuetify.breakpoint.mobile">
+            <template>
+                <v-card elevation="5">
+                    <v-card-title class="text-h6 lighten-2">
+                        <v-row>
+                            <v-col cols="6" class="d-flex justify-start">Detail Profit</v-col>
+                            <v-col cols="6" class="d-flex justify-end">
+                                <v-btn icon @click="onBack">
+                                    <v-icon>mdi-close</v-icon>
+                                </v-btn>
+                            </v-col>
+                        </v-row>
+                    </v-card-title>
+                    <v-card-text class="my-2">
+                        <v-data-table :loading="isLoading" :headers="tradingHeadersDetail" :items="tradingItemsDetail" class="elevation-2 my-2">
+                            <template v-slot:item.pair="{item}">
+                                <v-row>
+                                    <!-- <code>{{item.pair_from}}</code>
+                                    <code>{{item.pair_to}}</code> -->
+                                    <v-col cols="12" class="d-flex align-center justify-start">
+                                        <img style="width:28px;" :alt="item.pair" :src="getImgUrl(item.pair_from)" />
+                                        <div class="d-flex flex-column ml-3">
+                                            <div class="d-flex flex-column">
+                                                <div class="d-flex">
+                                                    <strong>{{item.pair_from}} </strong>
+                                                    <span>&nbsp;/ {{item.pair_to}}</span>
+                                                </div>
+                                                <small class="primary--text">{{item._id}}</small>
+                                            </div>
+                                        </div>
+                                    </v-col>
+                                </v-row>
+                            </template>
+                            <template v-slot:item.date="{item}">
+                                <small>                                
+                                    {{$moment(item.executed_at).format("DD/MM/YYYY HH:mm")}}
+                                </small>
+                            </template>
+                            <template v-slot:item.price="{item}">
+                                <v-chip small v-if="parseFloat(item.pnl) > 0" class="customGreen black--text" style="font-weight:bold;">
+                                    <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>                
+                                </v-chip>
+                                <v-chip small v-else class="customPink" style="font-weight:bold;">
+                                    <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>                
+                                </v-chip>
+                            </template>
+                            <template v-slot:item.qty="{item}">
+                                <span>{{item.amount_coin_filled}}</span>                
+                            </template>
+                        </v-data-table>
+                    </v-card-text>
+                </v-card>
+            </template>
+        </v-dialog>
+        <v-data-table @click:row="onRowClicked" :loading="isLoading" :headers="tradingHeaders" :items="profitItemsFiltered" class="elevation-2 my-2">
             <template v-slot:item.date="{item, index}">
                 {{$moment(new Date(item._id.year,item._id.month-1,item._id.day)).format("DD / MMM / YYYY")}}
             </template>
@@ -84,7 +138,36 @@ export default {
                     id: "side",
                     name: "Type"
                 }
-            ]
+            ],
+
+            // MODAL DETAIL
+            onDetailClicked:false,
+            tradingHeadersDetail: [{
+                    text: "Pair",
+                    align: "start",
+                    value: "pair"
+                },
+                {
+                    text: "Date",
+                    align: "start",
+                    value: "date"
+                },
+                {
+                    text: "Profit",
+                    align: "center",
+                    value: "price",
+                    cellClass: "font-weight-bold"
+
+                },
+                {
+                    text: "Qty",
+                    align: "center",
+                    value: "qty",
+                    cellClass: "font-weight-bold"
+
+                },
+            ],
+            tradingItemsDetail:[]
         }
     },
     head() {
@@ -110,6 +193,9 @@ export default {
         dateRangeText() {
             return this.dates.join(' - ')
         },
+        exchange(){
+            return this.$store.state.exchange.selectedExchange;
+        }
     },
     mounted() {
         this.$store.commit('setTitle', this.title)
@@ -122,7 +208,7 @@ export default {
         async _fetchReport(sorting) {
             this.isLoading = true;
             let tempParams = {};
-            tempParams.exchange = "Binance";
+            tempParams.exchange = this.exchange;
             tempParams.onlyUser = true;
 
             if (sorting) {
@@ -138,7 +224,7 @@ export default {
             let res = await this.$api.$get('/user/profit-report', {
                 params: tempParams
             }).then(res=>{
-                console.log('fetchReport', res);
+                this.$store.commit('setIsLoading', false);
                 if(res.success){
                     res.data.forEach((val)=>{
                         if(val.profit<0) console.log(val);
@@ -151,6 +237,7 @@ export default {
                     this.profitItems = res.data;
                     this.isLoading = false
                 }else{
+                this.$store.commit('setIsLoading', false);
                     this.$store.commit('setShowSnackbar', {
                         show: true,
                         message: "Error",
@@ -159,6 +246,7 @@ export default {
                     this.isLoading = false
                 }
             }).catch(err => {
+                his.$store.commit('setIsLoading', false);
                 this.$store.commit('setShowSnackbar', {
                     show: true,
                     message: err.message,
@@ -168,7 +256,45 @@ export default {
             })
 
         },
+
+        // FUNCTION
+        getImgUrl(val){
+            try{
+                let url = require('@/static/token_logo/'+val.toUpperCase()+'.png');
+                return '/token_logo/'+val.toUpperCase()+'.png'
+            }catch(err){
+                console.log('img not exist', val)
+                return '/token_logo/default.png'
+            }
+        },
         // TRIGGER
+        onRowClicked(row){
+            console.log('onRowClicked', row);
+            let tempArray = [];
+            // this.tradingItemsDetail = row.data;
+            row.data.forEach((val)=>{
+                console.log(val);
+                // PROFIT
+                val._profit = {};
+                let string = String(val.pnl.toFixed(4)).split(".");
+                val._profit.first = val.pnl < 0? string[0] : parseFloat(string[0]);
+                val._profit.second = parseFloat(string[1]);
+
+                // SYMBOL TO PAIR
+                val.pair_from = val.symbol.substr(0, val.symbol.length - 4)
+                val.pair_to = val.symbol.substr(-4)
+
+                tempArray.push(val);
+            })
+            this.tradingItemsDetail = tempArray;
+            this.onDetailClicked = true;
+            console.log('tradingItemsDetail', row.data);
+        },
+        onBack(){
+            this.onDetailClicked = false;
+            this._fetchReport();
+            this.$forceUpdate();
+        },
         onDateChanged(dates) {
             let sort = {};
             this._fetchReport()
@@ -177,6 +303,12 @@ export default {
             this.dates = [];
             this.menu = false;
             this._fetchReport();
+        }
+    },
+    watch:{
+        exchange(nv,ov){
+            this._fetchReport(null);
+            this.$store.commit('setIsLoading', true);
         }
     }
 }

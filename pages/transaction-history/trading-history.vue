@@ -212,6 +212,9 @@ export default {
         dateRangeText() {
             return this.dates.join(' - ')
         },
+        exchange(){
+            return this.$store.state.exchange.selectedExchange;
+        }
     },
     mounted() {
         this.$store.commit('setTitle', this.title)
@@ -231,6 +234,8 @@ export default {
         async _fetchReport(sorting) {
             this.isLoading = true;
             let tempParams = {};
+            tempParams.exchange = this.exchange;
+
             if (this.pairSelected) {
                 tempParams.symbol = this.pairSelected;
             }
@@ -239,14 +244,14 @@ export default {
             }
 
             if (this.dates.length > 0){
-                console.log(this.dates);
                 tempParams.dates = this.dates;
             }
 
             let res = await this.$api.$get('/user/trading-history', {
                 params: tempParams
             });
-
+            
+            this.$store.commit('setIsLoading', false);
             console.log('fetchReportTrading', res)
             if(res.success){
                 res.data.forEach((val)=>{
@@ -324,6 +329,12 @@ export default {
         },
         closeModal() {
             alert('closeModal')
+        }
+    },
+    watch:{
+        exchange(nv,ov){
+            this._fetchReport(null);
+            this.$store.commit('setIsLoading', true);
         }
     }
 }

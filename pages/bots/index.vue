@@ -450,7 +450,7 @@ export default {
             } else {
                 this.$store.commit('setShowSnackbar', {
                     show: true,
-                    message: "You don't have any bot setup active",
+                    message: "You don't have any active bot, please create one!",
                     color: "customPink"
                 })
             }

@@ -2,10 +2,10 @@
 <div>
     <v-row>
         <v-col cols="12" md="4">
-            <GlobalsExchangeList />
+            <GlobalsExchangeList @on-exchange-changed="onExchangeChanged"/>
         </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="exchange">
         <v-col cols="12" md="6" lg="3">
             <CardCredit :balance="balance" :loading="isLoading"/>
         </v-col>
@@ -19,22 +19,23 @@
             <CardDeals :deal="deal" :loading="isLoadingProfit" />
         </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="exchange">
         <v-col cols="12">
             <CardBalance class="px-2 py-5" />
         </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="exchange">
         <v-col cols="12" md="12">
             <v-card class="pa-2" elevation="8">
-                <v-sheet class="text-h6 font-weight-bold ma-4">
+                <v-sheet v-if="showChart && chartData.series[0].data.length>0" class="text-h6 font-weight-bold ma-4">
                     Daily Profit Revenue
                 </v-sheet>
-                <apexchart v-if="showChart" height="300" type="bar" :options="chartData.options" :series="chartData.series"></apexchart>
+                <apexchart v-if="showChart && chartData.series[0].data.length>0" height="300" type="bar" :options="chartData.options" :series="chartData.series"></apexchart>
+                <h4 class="d-flex justify-center align-center" v-else>You don't have any profit record!</h4>
             </v-card>
         </v-col>
     </v-row>
-    <v-row>
+    <v-row v-if="exchange">
         <v-col cols="12">
             <TablesActivePosition />
         </v-col>
@@ -47,7 +48,6 @@ export default {
     data() {
         return {
             // CHART
-            exchange:'Binance',
             title: 'Dashboard',
             series: [{
                 name: 'PnL',
@@ -136,6 +136,9 @@ export default {
     computed: {
         userToken(){
             return this.$store.state.token;
+        },
+        exchange(){
+            return this.$store.state.exchange.selectedExchange;
         }
     },
     methods: {
@@ -153,32 +156,45 @@ export default {
             });
             this.isLoading = false
             this.balance = res.data;
+            this.$store.commit('setIsLoading', false);
         },
         async _fetchProfit(){
             this.isLoadingProfit = true
             let res = await this.$api.$get('/user/profit',{
                 params:{
-                exchange:this.exchange,
-                onlyUser:true,
-                range:'daily',
-                side:"SELL"
+                    exchange:this.exchange,
+                    onlyUser:true,
+                    range:'daily',
+                    side:"SELL"
                 }
             });
             this.isLoadingProfit = false
             this.profit = res.data.profit;
-            console.log("PROFIT", res);
+            this.$store.commit('setIsLoading', false);
         },
         async _fetchChart() {
-            let res = await this.$api.$get('/user/chart');
-            this.chartData.options.xaxis.categories = res.categories;
-            let value = [];
-            res.series.forEach((val)=>{
-                let convert = "$"+(parseFloat(val)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                value.push(convert)
-            })
-            this.chartData.series[0].data = res.series;
-            // this.chartData.series[0].data = value;
+            let res = await this.$api.$get('/user/chart',{
+                params:{
+                    exchange:this.exchange
+                }
+            });
             this.showChart = true;
+            console.log('-fetchChart', res);
+            this.$store.commit('setIsLoading', false);
+
+            console.log('chartData', this.chartData)
+            if(res.series.length <= 0){ // IS EMPTY
+                this.chartData.options.xaxis.categories = [];
+                this.chartData.series  = [{name: 'P&L',data: []}]
+            }else{
+                this.chartData.options.xaxis.categories = res.categories;
+                let value = [];
+                res.series.forEach((val)=>{
+                    let convert = "$"+(parseFloat(val)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                    value.push(convert)
+                })
+                this.chartData.series[0].data = res.series;
+            }
         },
         async _fetchDailyDeals() {
             this.isLoadingDeals = true
@@ -189,12 +205,22 @@ export default {
             });
             this.deal = res.data ? res.data.trades : 0;
             this.isLoadingDeals = false
+            this.$store.commit('setIsLoading', false);
+        },
+
+        // TRIGGER
+        onExchangeChanged(){
+            this.$store.commit('setIsLoading', true);
+            this._fetchChart();
+            this._fetchDailyDeals();
+            this._fetchProfit();
+            this._fetchUserBalance();
         }
     },
     beforeMount() {
         this.$store.commit('setIsLoading', true);
     },
-    mounted() {
+    async mounted() {
         this.$store.commit('setTitle', this.title);
         this._fetchChart();
         this._fetchDailyDeals();
@@ -203,6 +229,15 @@ export default {
         setTimeout(() => {
             this.$store.commit('setIsLoading', false);
         }, 500)
+    },
+    watch:{
+        exchange(nv,ov){
+            this.$store.commit('exchange/setSelectedExchange',nv);
+            this._fetchChart();
+            this._fetchDailyDeals();
+            this._fetchUserBalance();
+            this._fetchProfit();
+        }
     }
 }
 </script>

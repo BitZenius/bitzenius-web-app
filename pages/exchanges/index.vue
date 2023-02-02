@@ -20,31 +20,35 @@
                 <v-col cols="11" class="d-flex justify-center align-center white--text pa-5">
                     <span>
                         Please be sure to whitelist the following IP address when creating an API Key on your exchange. It is a required step: 
-                        <v-chip color="customGreen black--text" flat>{{whitelistIp}}</v-chip>
+                        <v-chip color="customGreen black--text" flat>
+                            <span class="mr-2 font-weight-bold">
+                                {{whitelistIp}}
+                            </span>
+                            <v-tooltip v-model="copied" top>
+                                <template v-slot:activator="{ on, attrs }">
+                                    <v-btn
+                                        x-small
+                                        icon
+                                        v-bind="attrs"
+                                        v-on="on"
+                                        color="black"
+                                        size="16"
+                                        v-clipboard:copy="whitelistIp"
+                                        v-clipboard:success="onCopy"
+                                        v-clipboard:error="onError"
+                                    >
+                                        <v-icon color="black">
+                                            mdi-content-copy
+                                        </v-icon>
+                                    </v-btn>
+                                </template>
+                                <span>{{ copied ? 'Copy' : 'Copied' }}</span>
+                            </v-tooltip>
+                        </v-chip>
                     </span>
                 </v-col>
                 <v-col cols="1" class="d-flex align-center justify-center">
-                    <v-tooltip v-model="copied" top>
-                        <template v-slot:activator="{ on, attrs }">
-                        <v-btn
-                            fab
-                            outlined
-                            dark
-                            v-bind="attrs"
-                            v-on="on"
-                            color="customGreen"
-                            size="16"
-                            v-clipboard:copy="whitelistIp"
-                            v-clipboard:success="onCopy"
-                            v-clipboard:error="onError"
-                        >
-                            <v-icon color="customGreen">
-                            mdi-content-copy
-                            </v-icon>
-                        </v-btn>
-                        </template>
-                        <span>{{ copied ? 'Copy' : 'Copied' }}</span>
-                    </v-tooltip>
+
                 </v-col>
             </v-row>
         </v-card>

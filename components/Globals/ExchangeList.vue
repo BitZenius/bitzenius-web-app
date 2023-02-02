@@ -33,31 +33,27 @@ export default {
         }
     },
     methods: {
-        ...mapMutations("exchange", ["setSelectedExchange"]),
-        ...mapGetters("exchange", ["getSelectedExchange"]),
         onExchangeChange(val) {
-            console.log(val);
             this.$store.commit('exchange/setSelectedExchange',val);
-            this.$emit('onSelected', val);
+            this.$emit('on-exchange-changed', val);
         },
         logger() {
+            console.log(this.selected);
             console.log('state', this.$store.state.exchange.selectedExchange);
         },
         async fetchAvailableExchanges(){
             let res = await this.$api.$get('/user/exchange');
-            console.log("availableExchange", res);
             let tempArray = []; 
             res.data.forEach((val)=>{
                 tempArray.push(val.title);
             });
             this.exchangeItems = tempArray;
+            if(!this.selectedExchange) this.$store.commit('exchange/setSelectedExchange',tempArray[0]);
+            this.selected = this.selectedExchange;
         }
     },
     mounted() {
-        console.log('state', this.$store.state.exchange.selectedExchange);
-        console.log(this.selectedExchange);
         this.fetchAvailableExchanges();
-        this.selected = this.selectedExchange;
     },
     watch:{
         selectedExchange:{
