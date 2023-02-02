@@ -15,42 +15,43 @@
     </v-snackbar>
 
     <v-col cols="12" class="d-flex justify-center align-center text-center">
-        <v-card class="d-flex px-5 py-3" color="primary">
-            <v-row>
-                <v-col cols="11" class="d-flex justify-center align-center white--text pa-5">
-                    <span>
-                        Please be sure to whitelist the following IP address when creating an API Key on your exchange. It is a required step: 
-                        <v-chip color="customGreen black--text" flat>
-                            <span class="mr-2 font-weight-bold">
-                                {{whitelistIp}}
-                            </span>
-                            <v-tooltip v-model="copied" top>
-                                <template v-slot:activator="{ on, attrs }">
-                                    <v-btn
-                                        x-small
-                                        icon
-                                        v-bind="attrs"
-                                        v-on="on"
-                                        color="black"
-                                        size="16"
-                                        v-clipboard:copy="whitelistIp"
-                                        v-clipboard:success="onCopy"
-                                        v-clipboard:error="onError"
-                                    >
-                                        <v-icon color="black">
-                                            mdi-content-copy
-                                        </v-icon>
-                                    </v-btn>
-                                </template>
-                                <span>{{ copied ? 'Copy' : 'Copied' }}</span>
-                            </v-tooltip>
-                        </v-chip>
+        <v-card class="d-flex px-5 py-3" style="width:100%;" color="primary">
+            <v-card-title>
+                <v-icon
+                    large
+                    left
+                    dark
+                >
+                    mdi-star-circle
+                </v-icon>
+            </v-card-title>
+            <v-card-text style="text-align:left;" class="d-flex flex-column justify-center align-start pa-0">
+                <span class="white--text">Please be sure to whitelist the following IP address when creating an API Key on your exchange. It is a required step!</span>
+                <v-chip color="customGreen black--text" flat>
+                    <span class="mr-2 font-weight-bold">
+                        {{whitelistIp}}
                     </span>
-                </v-col>
-                <v-col cols="1" class="d-flex align-center justify-center">
-
-                </v-col>
-            </v-row>
+                    <v-tooltip v-model="copied" top>
+                        <template v-slot:activator="{ on, attrs }">
+                            <v-btn
+                                icon
+                                v-bind="attrs"
+                                v-on="on"
+                                color="black"
+                                size="16"
+                                v-clipboard:copy="whitelistIp"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                            >
+                                <v-icon color="black">
+                                    mdi-content-copy
+                                </v-icon>
+                            </v-btn>
+                        </template>
+                        <span>{{ copied ? 'Copy' : 'Copied' }}</span>
+                    </v-tooltip>
+                </v-chip>
+            </v-card-text>
         </v-card>
     </v-col>
     <v-col cols="12" class="d-flex px-0 pt-0">
