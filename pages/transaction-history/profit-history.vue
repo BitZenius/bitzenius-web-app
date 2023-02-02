@@ -90,6 +90,15 @@
                     <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>
                 </v-chip>
             </template>
+            <template v-slot:item.action="{item}">
+                <v-btn
+                icon
+                color="primary"
+                depressed
+                >
+                <v-icon>mdi-eye</v-icon>
+                </v-btn>
+            </template>
         </v-data-table>
     </div>
 </template>
@@ -112,8 +121,12 @@ export default {
                     align: "start",
                     value: "profit",
                     cellClass: "font-weight-bold"
-
-                }
+                },
+                {
+                    text: "",
+                    align: "center",
+                    value: "action",
+                },
             ],
             // ID, Type, Date, Profit, Price, Qty
             profitItems: [],
