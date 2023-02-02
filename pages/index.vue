@@ -24,14 +24,13 @@
             <CardBalance class="px-2 py-5" />
         </v-col>
     </v-row>
-    <v-row v-if="exchange">
+    <v-row v-if="exchange && chartData.series[0].data.length>0">
         <v-col cols="12" md="12">
             <v-card class="pa-2" elevation="8">
-                <v-sheet v-if="showChart && chartData.series[0].data.length>0" class="text-h6 font-weight-bold ma-4">
+                <v-sheet  class="text-h6 font-weight-bold ma-4">
                     Daily Profit Revenue
                 </v-sheet>
-                <apexchart v-if="showChart && chartData.series[0].data.length>0" height="300" type="bar" :options="chartData.options" :series="chartData.series"></apexchart>
-                <h4 class="d-flex justify-center align-center" v-else>You don't have any profit record!</h4>
+                <apexchart v-if="showChart" height="300" type="bar" :options="chartData.options" :series="chartData.series"></apexchart>
             </v-card>
         </v-col>
     </v-row>
@@ -173,28 +172,42 @@ export default {
             this.$store.commit('setIsLoading', false);
         },
         async _fetchChart() {
-            let res = await this.$api.$get('/user/chart',{
+            this.$api.$get('/user/chart',{
                 params:{
                     exchange:this.exchange
                 }
-            });
-            this.showChart = true;
-            console.log('-fetchChart', res);
-            this.$store.commit('setIsLoading', false);
-
-            console.log('chartData', this.chartData)
-            if(res.series.length <= 0){ // IS EMPTY
-                this.chartData.options.xaxis.categories = [];
-                this.chartData.series  = [{name: 'P&L',data: []}]
-            }else{
-                this.chartData.options.xaxis.categories = res.categories;
-                let value = [];
-                res.series.forEach((val)=>{
-                    let convert = "$"+(parseFloat(val)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
-                    value.push(convert)
+            }).then((res)=>{
+                this.showChart = true;
+                console.log('-fetchChart', res);
+                this.$store.commit('setIsLoading', false);
+                if(res.success){
+                    console.log('chartData', this.chartData)
+                    if(res.series.length <= 0){ // IS EMPTY
+                        this.chartData.options.xaxis.categories = [];
+                        this.chartData.series  = [{name: 'P&L',data: []}]
+                    }else{
+                        this.chartData.options.xaxis.categories = res.categories;
+                        let value = [];
+                        res.series.forEach((val)=>{
+                            let convert = "$"+(parseFloat(val)).toFixed(2).replace(/\d(?=(\d{3})+\.)/g, '$&,');
+                            value.push(convert)
+                        })
+                        this.chartData.series[0].data = res.series;
+                    }
+                }else{
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Unable to fetch chart data properly",
+                        color: 'customPink'
+                    })
+                }
+            }).catch((err)=>{
+                this.$store.commit('setShowSnackbar', {
+                    show: true,
+                    message: err,
+                    color: 'customPink'
                 })
-                this.chartData.series[0].data = res.series;
-            }
+            })
         },
         async _fetchDailyDeals() {
             this.isLoadingDeals = true
