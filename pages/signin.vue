@@ -102,12 +102,15 @@
                   />
                   <v-text-field
                     v-model="password"
+                    :value="password"
+                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                    :type="show1 ? 'text' : 'password'"
                     :rules="passwordRules"
-                    type="password"
                     label="Password"
                     outlined
                     required
                     class="mb-2"
+                    @click:append="show1 = !show1"
                   />
                   <v-btn
                     :loading="isLoading"
@@ -167,6 +170,7 @@
 export default {
   layout: 'default',
   data: () => ({
+    show1: false,
     valid: true,
     email: '',
     emailRules: [
