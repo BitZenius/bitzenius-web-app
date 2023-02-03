@@ -134,6 +134,10 @@
                     </v-icon>
                     {{ telegramConnected ? 'Connected' : 'Connect' }}
                   </v-btn>
+                  <a
+                    ref="telegramLink"
+                    target="_blank"
+                  />
                 </v-col>
               </v-row>
               <v-divider class="my-5" />
@@ -235,7 +239,6 @@ export default {
       country: "Lorem",
       showBotAlert: false,
       showEnableTwoFactorModal: false,
-      telegramBotUrl: 'https://t.me/',
       isLoading: false,
       progressDialog: null,
       uploadProgress: null,
@@ -268,11 +271,6 @@ export default {
       }).finally(() => {
         this.isLoading = false
       })
-    },
-    generateBotUrl() {
-      this.telegramBotUrl += process.env.BOT_ID;
-      this.telegramBotUrl += '?start=';
-      this.telegramBotUrl += this.user.uid;
     },
     uploadImage (file) {
       if (typeof(file) != 'undefined') {
@@ -340,7 +338,8 @@ export default {
     connectTelegram () {
       this.isLoading = true
       this.$api.$post('/user/profile/connect-telegram').then((res) => {
-        window.open(`https://t.me/${process.env.BOT_ID}?start=${res.token}`, '_blank')
+        this.$refs.telegramLink.href = `https://t.me/${process.env.BOT_ID}?start=${res.token}`
+        this.$refs.telegramLink.click()
       }).catch((err) => {
         console.log(err)
         this.isLoading = false
