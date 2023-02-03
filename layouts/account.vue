@@ -161,7 +161,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>
             <v-list-item-subtitle>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.<br /> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
@@ -173,7 +173,7 @@
           <v-list-item-content>
             <v-list-item-title class="font-weight-bold">You received the highest profit all time!</v-list-item-title>
             <v-list-item-subtitle>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
+              Lorem ipsum dolor sit amet consectetur adipisicing elit.<br/> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
             </v-list-item-subtitle>
           </v-list-item-content>
         </v-list-item>
