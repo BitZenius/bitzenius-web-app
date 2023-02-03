@@ -588,21 +588,46 @@ export default {
         async deleteItemConfirm() {
             this.$store.commit('setIsLoading', true);
             console.log(this.selectToDelete);
-            let res = await this.$api.$delete('/user/bot', {
-                params: {
-                    id: val.id
-                }
-            });
-            console.log(res);
-            setTimeout(() => {
-                this.$store.commit('setShowSnackbar', {
-                    show: true,
-                    message: "Bot Successfuly Deleted!",
-                    color: "success"
+            let bot = this.selectToDelete;
+
+            if(!bot){
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Unable to get any setup data!",
+                        color: "customPink"
+                    })
+                    this.$store.commit('setIsLoading', false);
                 })
+                return;
+            }
+
+            this.$api.$delete('/user/bot', {
+                params: {
+                    id: bot.data._id
+                }
+            }).then((res)=>{
+                console.log(res);
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Bot Successfuly Deleted!",
+                        color: "success"
+                    })
+                })
+            }).catch((err) => {
+                console.log(err)
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: err,
+                        color: "customPink"
+                    })
+                })
+            }).finally(() => {
+                this.dialogDelete = false;
+                this.$store.commit('setIsLoading', false);
             })
-            this.$store.commit('setIsLoading', false);
-            this.dialogDelete = false;
         },
         close() {
             this.dialog = false
