@@ -33,7 +33,7 @@
 <script>
 export default{
     data:()=>({
-        showOverlay:true,
+        showOverlay:false,
         items: [
             { header: 'Today' },
             {
@@ -68,6 +68,12 @@ export default{
         ],
     }),
     mounted(){
+
+    },
+    methods:{
+        show(){
+            this.showOverlay = true;
+        }
     }
 }
 </script>

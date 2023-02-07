@@ -462,8 +462,9 @@ export default {
             });
 
             this.socket.on('binance_ticker', (msg) => {
+                let data = JSON.parse(msg);
                 let array = JSON.parse(msg);
-                array.forEach((data)=>{
+                // array.forEach((data)=>{
                     let index = this.activePosition.findIndex(b => b.symbol == data.s);
                     if (index < 0) return;
                     this.activePosition[index].price.value = data.c;
@@ -480,7 +481,7 @@ export default {
                         let convertPercentage = percentage * 100;
                         this.activePosition[index].profit.percentage = convertPercentage.toFixed(3);
                     }
-                })
+                // })
             })
         },
         async _fetchBotsList(exchangeName) {
@@ -562,12 +563,41 @@ export default {
             console.log('addBot', val);
             this.$store.commit('exchange/setSelectedExchange', val.name);
             this.selectedExchange = val.name;
-            if (val.active) {
-                this.selectedBot = val.data
-            } else {
-                this.selectedBot = null;
-            }
-            this.showAddBot = true;
+
+            this.$api.$get('/user/exchange-exist', {
+                params: {
+                    exchange_name: this.selectedExchange
+                }
+            }).then(res=>{
+                console.log('res', res);
+                if(res.success){
+                    if (val.active) {
+                        this.selectedBot = val.data
+                    } else {
+                        this.selectedBot = null;
+                    }
+                    this.showAddBot = true;
+                }else{
+                    setTimeout(() => {
+                        this.$store.commit('setShowSnackbar', {
+                            show: true,
+                            message: res.msg,
+                            color: "customPink"
+                        })
+                    })
+                }
+            }).catch(err=>{
+                setTimeout(() => {
+                    this.$store.commit('setShowSnackbar', {
+                        show: true,
+                        message: "Couldn't find any exchange setup exist!",
+                        color: "customPink"
+                    })
+                })
+            }).finally(()=>{
+                console.log("FINALLY")
+            })
+
         },
 
         addItem() {

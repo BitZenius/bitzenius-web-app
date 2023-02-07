@@ -2,7 +2,7 @@
 <v-app>
   <GlobalsAddOnLoader />
   <GlobalsAddOnSnackbar />
-  <!-- <GlobalsAddOnNotification /> -->
+  <GlobalsAddOnNotification ref="notification"/>
   <v-navigation-drawer
     :style="`top:${topMargin}px`"
     v-model="drawer"
@@ -284,6 +284,8 @@
 }
 </style>
 <script>
+import io from 'socket.io-client'
+
 export default {
   data() {
     return {
@@ -293,7 +295,8 @@ export default {
       right: true,
       rightDrawer: false,
       bottomNav: 'home',
-      listener: null
+      listener: null,
+      showNotification:false,
     }
   },
   computed: {
@@ -302,6 +305,9 @@ export default {
     },
     user() {
       return this.$store.state.authUser
+    },
+    currentUser(){
+      return  this.$store.$fire.auth.currentUser
     },
     subscription() {
       return this.$store.state.subscription
@@ -314,8 +320,8 @@ export default {
     if (!this.$vuetify.breakpoint.mobile) {
       this.drawer = true
     }
-
-    this.listenSubscription()
+    this.listenSubscription();
+    this.streamNotification();
   },
   beforeDestroy () {
     this.listener()
@@ -353,7 +359,23 @@ export default {
       }).catch((error) => {
         console.log(error)
       })
-    }
+    },
+    async streamNotification(){
+        // const currentUser = await store.$fire.auth.currentUser
+        let token = await this.currentUser.getIdToken(); 
+        console.log('currentUser', this.currentUser.getIdToken());
+        console.log("TOKEN", this.$store.state.token);
+
+        this.socket = io(process.env.SERVER, {
+            path: "/cron-notification",
+            auth:{token}
+        });
+
+        this.socket.on('notification', (msg) => {
+          console.log('fromSocket', msg);
+          this.$refs.notification.show();
+        })
+    },
   }
 }
 </script>

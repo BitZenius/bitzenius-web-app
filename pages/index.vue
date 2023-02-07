@@ -158,13 +158,21 @@ export default {
             this.$store.commit('setIsLoading', false);
         },
         async _fetchProfit(){
+            let current = new Date();
+            let y, m, d, start, end;
+            y = current.getFullYear();
+            m = current.getMonth();
+            d = current.getDate();
+            start = this.$moment(new Date(y, m, d)).valueOf();
+            end = this.$moment(new Date(y, m, d+1)).valueOf();
             this.isLoadingProfit = true
             let res = await this.$api.$get('/user/profit',{
                 params:{
                     exchange:this.exchange,
                     onlyUser:true,
-                    range:'daily',
-                    side:"SELL"
+                    side:"SELL",
+                    start_date:start,
+                    end_date:end
                 }
             });
             this.isLoadingProfit = false

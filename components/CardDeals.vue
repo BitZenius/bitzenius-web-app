@@ -14,7 +14,7 @@
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-subtitle>
-          Deals in 24hr
+          Today's Deal
         </v-list-item-subtitle>
         <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">
           <v-skeleton-loader
