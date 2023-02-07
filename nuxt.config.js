@@ -31,7 +31,8 @@ export default {
     '~/plugins/test',
     '~/plugins/socketio',
     '~/plugins/vue2-filters',
-    '~/plugins/clipboard'
+    '~/plugins/clipboard',
+    '~/plugins/mixin'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -66,17 +67,17 @@ export default {
           appId: "1:504024137179:web:1ea51f3c23b571fbcafbfe"
           // measurementId: 'G-QF8GLLXCM6'
         },
-          services: {
-            auth: {
-              persistence: 'local',
-              initialize: {
-                onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
-                onAuthStateChangedAction: 'onAuthStateChangedAction',
-                subscribeManually: false
-              },
-              ssr: false
-              // emulatorPort: 9099,
-              // emulatorHost: 'http://localhost'
+        services: {
+          auth: {
+            persistence: 'local',
+            initialize: {
+              onAuthStateChangedMutation: 'ON_AUTH_STATE_CHANGED_MUTATION',
+              onAuthStateChangedAction: 'onAuthStateChangedAction',
+              subscribeManually: false
+            },
+            ssr: false
+            // emulatorPort: 9099,
+            // emulatorHost: 'http://localhost'
           },
           firestore: {
             enablePersistence: true
@@ -115,25 +116,26 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     treeShake: true,
     theme: {
+      options: { customProperties: true },
       dark: false,
       themes: {
         dark: {
-          customGreen:"#C3F239",
-          customPink: "#FE759F",
-          customYellow:"#FEE603",
-          primary: '#3394F8',
-          danger: '#ff002f',
-          basic:'#2B2B2B',
-          'basic-1': '#177e89',
-          'basic-2':'#2B2B2B',
-        },
-        light: {
-          customGreen:"#C3F239",
+          customGreen: "#C3F239",
           customPink: "#FE759F",
           customYellow: "#FEE603",
           primary: '#3394F8',
           danger: '#ff002f',
-          basic:'#ffffff',
+          basic: '#2B2B2B',
+          'basic-1': '#177e89',
+          'basic-2': '#2B2B2B',
+        },
+        light: {
+          customGreen: "#C3F239",
+          customPink: "#FE759F",
+          customYellow: "#FEE603",
+          primary: '#3394F8',
+          danger: '#ff002f',
+          basic: '#ffffff',
           'basic-1': '#ffffff',
           'basic-2': '#ffffff',
         }
@@ -143,7 +145,7 @@ export default {
 
   // Build Configuration: https://go.nuxtjs.dev/config-build
   build: {
-    babel:{
+    babel: {
       plugins: [
         ["@babel/plugin-proposal-class-properties", { "loose": true }],
         ["@babel/plugin-proposal-private-methods", { "loose": true }],
@@ -162,7 +164,7 @@ export default {
 
 /**
  * Color pallete:
- * 
+ *
  * #3795f3
  * #dfebf9
  * #7ed1b7

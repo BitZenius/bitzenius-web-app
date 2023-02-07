@@ -1,4 +1,7 @@
 // Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+:root {
+  --primary: #3394F8;
+}
 
 $body-font-family: 'Nunito';
 $font-size-root: 16px;
@@ -25,9 +28,9 @@ $material-dark: (
 );
 
 $material-light: (
-  app-bar: #F5F5F5,
-  navigation-drawer: #F5F5F5,
-  bottom-navigation: #F5F5F5,
-  background: #F5F5F5,
+  app-bar: #FFFFFF,
+  navigation-drawer: #FFFFFF,
+  bottom-navigation: #FFFFFF,
+  background: #FFFFFF,
   cards: #FFFFFF
 );

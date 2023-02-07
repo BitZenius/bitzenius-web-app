@@ -39,13 +39,13 @@ export const mutations = {
   setToken(state, token) {
     state.token = token;
   },
-  setUser (state, user) {
+  setUser(state, user) {
     state.authUser = {
       ...state.authUser,
       ...user
     }
   },
-  setTitle (state, title) {
+  setTitle(state, title) {
     state.title = title
   },
   setTheme(state, theme) {

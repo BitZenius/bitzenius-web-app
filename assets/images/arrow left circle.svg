@@ -1,0 +1,6 @@
+<svg id="arrow_left_circle" data-name="arrow left circle" xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 21 21">
+  <path id="Combo_shape" data-name="Combo shape" d="M10.5,21A10.5,10.5,0,1,0,0,10.5,10.5,10.5,0,0,0,10.5,21Z" fill="#3394f8" fill-rule="evenodd"/>
+  <g id="left" transform="translate(5.9 6.533)">
+    <path id="Vector_458" data-name="Vector 458" d="M0,1.439V6.494A1.357,1.357,0,0,0,2.039,7.735L6.127,5.208a1.481,1.481,0,0,0,0-2.482L2.039.2A1.357,1.357,0,0,0,0,1.439Z" transform="translate(6.8 7.933) rotate(180)" fill="#fff"/>
+  </g>
+</svg>
