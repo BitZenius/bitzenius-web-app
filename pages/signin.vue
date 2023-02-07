@@ -62,7 +62,7 @@
               class="mt-10"
             >
               <div class="text-center my-5">
-                Please input verification code
+                Please input verification code that we've sent to your {{ otpMethod }} account
               </div>
               <v-row>
                 <v-col
@@ -186,7 +186,8 @@ export default {
     showOtp: false,
     otpCode: null,
     message: null,
-    loadingText: null
+    loadingText: null,
+    otpMethod: ''
   }),
   head: {
     title: 'Login'
@@ -237,6 +238,7 @@ export default {
           this.loadingText = ''
           this.isLoading = false
           this.showOtp = true
+          this.otpMethod = result.method
         }
       }).catch((err) => {
         console.log(err)

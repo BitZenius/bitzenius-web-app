@@ -1,188 +1,381 @@
 <template>
-<div>
-    <v-dialog v-model="showEnableTwoFactorModal" max-width="600">
-        <template>
-            <BaseModal>
-                <template v-slot:title>
-                    Enable 2 Factor Authentication
-                </template>
-                <template v-slot:body>
-                    <div style="padding:12px; border-radius:15px; color:white;" class="success d-flex flex-column align-center justify-center">
-                        <h4>You're going to enable 2 factor authentication, please check your email</h4>
-                    </div>
-                </template>
-                <template v-slot:button>
-                    <v-btn @click="showEnableTwoFactorModal = false" color="info--text">Close</v-btn>
-                    <v-btn color="success">Ok</v-btn>
-                </template>
-            </BaseModal>
-        </template>
+  <div v-if="userData">
+    <v-row>
+      <v-col
+        cols="12"
+        md="4"
+      >
+        <v-card class="px-3" elevation="0">
+          <div class="text-center pa-3">
+            <v-avatar
+              size="180"
+              class="mt-5"
+            >
+              <img
+                :src="userData.photo_url"
+                :alt="userData.display_name"
+              >
+            </v-avatar>
+            <v-btn
+              depressed
+              :loading="isSelecting"
+              @click.stop="doUpload"
+              block
+              class="mt-5 text-capitalize"
+              color="primary"
+            >
+              Upload Image
+            </v-btn>
+            <v-file-input
+              ref="uploader"
+              @change="(file) => uploadImage(file)"
+              hide-input
+              class="d-none"
+            />
+          </div>
+        </v-card>
+      </v-col>
+      <v-col
+        cols="12"
+        md="8"
+      >
+        <v-card class="pa-md-6 pa-4" elevation="0">
+          <v-tabs
+            v-model="tab"
+          >
+            <v-tab class="font-weight-bold">
+              Profile
+            </v-tab>
+            <v-tab class="font-weight-bold">
+              Wallet
+            </v-tab>
+            <v-tab class="font-weight-bold">
+              Settings
+            </v-tab>
+          </v-tabs>
+          <v-divider />
+          <v-tabs-items v-model="tab">
+            <v-tab-item class="pt-8">
+              <v-row>
+                <v-col cols="12">
+                  <div class="mb-2 font-weight-bold">Display Name</div>
+                  <div class="grey--text mb-3">Change your name if needed</div>
+                  <v-text-field
+                    v-model="userData.display_name"
+                    outlined
+                    dense
+                  />
+                </v-col>
+              </v-row>
+              <v-divider class="my-5" />
+              <v-row>
+                <v-col cols="12">
+                  <div class="mb-2 font-weight-bold">Email</div>
+                  <div class="grey--text mb-3">Currently, change email address is not available</div>
+                  <v-text-field
+                    v-model="userData.email"
+                    outlined
+                    dense
+                    disabled
+                  />
+                </v-col>
+              </v-row>
+              <v-divider class="my-5" />
+              <v-row>
+                <v-col cols="12">
+                  <div class="mb-2 font-weight-bold">Password</div>
+                  <div class="grey--text mb-3">To change your password, please logout from your account and click "forgot password" to reset your password</div>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item class="pt-8">
+              <v-row>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Virtual Account</div>
+                  <div class="grey--text mb-3">Your Polygon ERC20 virtual account</div>
+                  <v-text-field
+                    v-model="userData.wallet_va"
+                    outlined
+                    dense
+                    disabled
+                  />
+                </v-col>
+              </v-row>
+              <v-divider class="my-5" />
+              <v-row>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Wallet Address</div>
+                  <div class="grey--text mb-3">Your wallet address for withdrawal destination</div>
+                  <v-text-field
+                    v-model="userData.wallet"
+                    outlined
+                    dense
+                  />
+                </v-col>
+              </v-row>
+            </v-tab-item>
+            <v-tab-item class="pt-8">
+              <v-row>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Telegram Bot</div>
+                  <div class="grey--text">Activate BitZenius Telegram Bot as your virtual assistant</div>
+                  <v-btn
+                    depressed
+                    :loading="isLoading"
+                    class="mt-3 text-capitalize"
+                    :color="telegramConnected ? 'secondary' : 'primary'"
+                    :disabled="telegramConnected"
+                    @click.stop="connectTelegram"
+                  >
+                    <v-icon
+                      left
+                    >
+                      mdi-send
+                    </v-icon>
+                    {{ telegramConnected ? 'Connected' : 'Connect' }}
+                  </v-btn>
+                  <a
+                    ref="telegramLink"
+                    target="_blank"
+                  />
+                </v-col>
+              </v-row>
+              <v-divider class="my-5" />
+              <v-row>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Two-Factor Authentication</div>
+                  <div class="grey--text">Choose your preferred 2FA for your account</div>
+                  <v-radio-group v-model="selected2Fa" class="px-3">
+                    <v-radio
+                      value="none"
+                      label="Disabled"
+                    />
+                    <v-radio
+                      value="email"
+                      label="Email"
+                    />
+                    <v-radio
+                      value="telegram"
+                      :disabled="!telegramConnected"
+                      label="Telegram"
+                    />
+                  </v-radio-group>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+          </v-tabs-items>
+          <v-row>
+            <v-col cols="12" md="6">
+              <v-btn
+                depressed
+                :loading="isLoading"
+                class="mt-5 text-capitalize"
+                color="primary"
+                @click="save"
+              >
+                Save Changes
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    
+    <v-dialog
+      v-model="progressDialog"
+      max-width="480px"
+      persistent
+    >
+      <v-card>
+        <v-card-text class="pt-5">
+          <p>Uploading progress</p>
+          <v-progress-linear
+            v-if="uploadProgress"
+            v-model="uploadProgress"
+            color="light-blue"
+            striped
+            height="25"
+          >
+            <div class="subtitle">{{ uploadProgress }}%</div>
+          </v-progress-linear>
+        </v-card-text>
+        <v-card-actions v-if="uploadProgress === 100">
+          <v-btn color="blue darken-1" text @click="closeDialog">
+            Finish
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
     </v-dialog>
-    <v-row>
-        <v-col cols="12">
-            <v-card class="d-flex flex-column px-4" elevation="8">
-                <v-row>
-                    <v-col cols="12" class="px-4 d-flex align-center pb-0">
-                        <img style="width:100px; padding-top:30px; padding-bottom:30px;" src="/settings/avatar.png" alt="" />
-                        <div class="d-flex flex-column">
-                            <div class="d-flex flex-wrap">
-                                <v-btn color="primary" class="ml-2">Upload New Photo</v-btn>
-                            </div>
-                            <div class="d-flex flex-wrap mt-2">
-                                <span class="pl-2">Allowed JPG, GIF or PNG. Max size of 800K</span>
-                            </div>
-                        </div>
-                    </v-col>
-                </v-row>
-                <v-row>
-                    <v-col cols="12" class="pt-0 mb-7">
-                        <v-divider class="pb-2" />
-                        <v-row>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field class="pa-2" v-model="first_name" label="First name" outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field class="pa-2" v-model="last_name" label="Last name" outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field class="pa-2" v-model="email" label="E-mail" outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <v-text-field class="pa-2" v-model="phone" label="Phone Number" outlined></v-text-field>
-                            </v-col>
-                            <v-col cols="6" class="pb-0">
-                                <div class="d-flex flex-wrap">
-                                    <v-btn color="primary" class="ml-2">Save Changes</v-btn>
-                                    <v-btn color="customPink white--text" class="ml-2">Reset</v-btn>
-                                </div>
-                            </v-col>
-                        </v-row>
-                    </v-col>
-                </v-row>
-            </v-card>
-        </v-col>
-    </v-row>
-    <v-row>
-        <v-col cols="12">
-            <v-card class="d-flex flex-column" elevation="8">
-                <v-row>
-                    <v-col class="d-flex flex-column justify-center" cols="8">
-                        <div class="ma-3">
-                            <v-row>
-                                <v-col cols="9" class="d-flex align-center justify-">
-                                    <v-text-field class="pa-2" v-model="usdt" label="USDT Address" outlined></v-text-field>
-                                </v-col>
-                                <v-col cols="3" class="d-flex justify-end ">
-                                    <v-btn class="mr-2 mt-2" color="primary" style="height:54px; width:100%;">
-                                        <span>USDT</span>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="12" class="d-flex justify-end px-5">
-                                    <v-btn @click="showEnableTwoFactorModal = true" color="customYellow black--text" style="height:54px; width:100%;">
-                                        <span>Enable Two-Factor Authentication</span>
-                                    </v-btn>
-                                </v-col>
-                                <v-col cols="12" class="d-flex justify-end px-5">
-                                    <a style="width:100%;" target="#" :href="telegramBotUrl">
-                                        <v-btn color="#799eab" class="white--text" style="height:54px; width:100%;">
-                                            <img class="mr-3" style="width:1.5rem;" src="/logo/telegram.png" alt="" />
-                                            <span>Connect Telegram Bot</span>
-                                        </v-btn>
-                                    </a>
-                                </v-col>
-                            </v-row>
-                        </div>
-                    </v-col>
-                    <v-col cols="4" class="d-flex justify-center">
-                        <img style="width:100px; padding-top:30px; padding-bottom:30px;" src="/settings/setting.png" alt="" />
-                    </v-col>
-                </v-row>
-            </v-card>
-        </v-col>
-    </v-row>
-</div>
+  </div>
 </template>
 
 <style scoped>
 a {
-    color: #0060B6;
-    text-decoration: none;
+  color: #0060B6;
+  text-decoration: none;
 }
 
 a:hover {
-    color: #00A0C6;
-    text-decoration: none;
-    cursor: pointer;
+  color: #00A0C6;
+  text-decoration: none;
+  cursor: pointer;
 }
 </style>
 
 <script>
 export default {
-    layout: 'account',
-    data() {
-        return {
-            title: 'Settings',
-            usdt: '0x19c4791bDEB776a376008F596F5D2564E5650379',
-            avatar: '@/static/settings/avatar.png',
-            first_name: "John",
-            last_name: "Doe",
-            email: "johndoe@bitzenius.com",
-            phone: "+6223123213",
-            address: "Lorem Ipsum Dolor Sit Amet",
-            country: "Lorem",
-            showBotAlert: false,
-            showTestingModal: false,
-            showEnableTwoFactorModal: false,
-            telegramBotUrl: 'https://t.me/'
-        }
-    },
-    head() {
-        return {
-            title: this.title
-        }
-    },
-    methods: {
-        setLoader(val) {
-            if (val) {
-                this.$store.commit('setIsLoading', val);
-                setTimeout(() => {
-                    this.$store.commit('setIsLoading', false);
-                }, 2000)
-            } else {
-                this.$store.commit('setIsLoading', val);
-            }
-        },
-        testModal() {
-            this.showTestingModal = true;
-        },
-        closeModal() {
-            alert('closed');
-            this.showTestingModal = false;
-        },
-        generateBotUrl() {
-            this.telegramBotUrl += process.env.BOT_ID;
-            this.telegramBotUrl += '?start=';
-            this.telegramBotUrl += this.user.uid;
-        }
-    },
-    computed: {
-        // this.$store.state.authUser
-        user() {
-            return this.$store.state.authUser;
-        },
-        userToken(){
-            return this.$store.state.token;
-        }
-    },
-    mounted() {
-        this.$store.commit('setIsLoading', true);
-        this.$store.commit('setTitle', this.title);
-        this.$store.commit('setIsLoading', false);
-        console.log("SERVER", process.env.SERVER);
-        console.log("BOT_ID", process.env.BOT_ID);
-        console.log("USER", this.user);
-        console.log("TOKEN", this.$store.state.token);
-        this.generateBotUrl();
+  layout: 'account',
+  data() {
+    return {
+      title: 'Settings',
+      usdt: '0x19c4791bDEB776a376008F596F5D2564E5650379',
+      avatar: '@/static/settings/avatar.png',
+      first_name: "John",
+      last_name: "Doe",
+      email: "johndoe@bitzenius.com",
+      phone: "+6223123213",
+      address: "Lorem Ipsum Dolor Sit Amet",
+      country: "Lorem",
+      showBotAlert: false,
+      showEnableTwoFactorModal: false,
+      isLoading: false,
+      progressDialog: null,
+      uploadProgress: null,
+      isSelecting: false,
+      userData: null,
+      switch1: false,
+      tab: null,
+      selected2Fa: 'none',
+      listener: new Object,
+      telegramConnected: false
     }
+  },
+  head() {
+    return {
+      title: this.title
+    }
+  },
+  methods: {
+    getProfile () {
+      this.isLoading = true
+      this.$api.$get('/user/profile').then((res) => {
+        this.userData = res.result
+
+        if (this.userData.otp && this.userData.otp.method) {
+          this.selected2Fa = this.userData.otp.method
+        }
+      }).catch((err) => {
+        console.log(err)
+        this.isLoading = false
+      }).finally(() => {
+        this.isLoading = false
+      })
+    },
+    uploadImage (file) {
+      if (typeof(file) != 'undefined') {
+        this.uploadProgress = null
+        this.progressDialog = true
+
+        const filePath = `user-avatars/${new Date().getTime()}-` + file.name
+        const storageRef = this.$fire.storage.ref().child(filePath)
+        const uploadTask = storageRef.put(file)
+        
+        uploadTask.on('state_changed', (snapshot) => {
+          const progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100
+          this.uploadProgress = Math.ceil(progress)
+          
+          switch (snapshot.state) {
+            case 'paused':
+              console.log('Upload is paused')
+              break
+            
+            case 'running':
+              console.log('Upload is running')
+              break
+          }
+        }, (error) => {
+          console.log(error)
+        }, () => {
+          uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
+            this.userData.photo_url = downloadURL
+          })
+        })
+      }
+    },
+    closeDialog () {
+      this.progressDialog = false
+      this.uploadProgress = null
+    },
+    doUpload() {
+      this.isSelecting = true
+      
+      window.addEventListener('focus', () => {
+        this.isSelecting = false
+      }, { once: true })
+
+      this.$refs.uploader.$refs.input.click()
+    },
+    save () {
+      this.isLoading = true
+      this.$api.$put('/user/profile', {
+        display_name: this.userData.display_name,
+        photo_url: this.userData.photo_url,
+        wallet: this.userData.wallet,
+        otp_method: this.selected2Fa
+      }).then((res) => {
+        this.$store.commit('setUser', {
+          displayName: this.userData.display_name,
+          photoURL: this.userData.photo_url
+        })
+      }).catch((err) => {
+        console.log(err)
+        this.isLoading = false
+      }).finally(() => {
+        this.isLoading = false
+      })
+    },
+    connectTelegram () {
+      this.isLoading = true
+      this.$api.$post('/user/profile/connect-telegram').then((res) => {
+        this.$refs.telegramLink.href = `https://t.me/${process.env.BOT_ID}?start=${res.token}`
+        this.$refs.telegramLink.click()
+      }).catch((err) => {
+        console.log(err)
+        this.isLoading = false
+      }).finally(() => {
+        this.isLoading = false
+      })
+    },
+    listenTelegram () {
+      if (this.user) {
+        this.listener = this.$fire.firestore.collection('telegrams').doc(this.user.uid).onSnapshot(async(onResult, onError) => {
+          if (onError) {
+            console.log(onError)
+          }
+
+          if (onResult.exists) {
+            const telegramData = onResult.data()
+
+            if (telegramData.chat_id) {
+              this.telegramConnected = true
+            }
+          }
+        })
+      }
+    }
+  },
+  computed: {
+    user() {
+      return this.$store.state.authUser;
+    }
+  },
+  beforeDestroy () {
+    this.listener()
+  },
+  mounted() {
+    this.getProfile()
+    this.listenTelegram()
+  }
 }
 </script>
