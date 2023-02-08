@@ -114,33 +114,8 @@ export default {
   vuetify: {
     customVariables: ['~/assets/variables.scss'],
     treeShake: true,
-    theme: {
-      options: { customProperties: true },
-      dark: false,
-      themes: {
-        dark: {
-          customGreen: "#C3F239",
-          customPink: "#FE759F",
-          customYellow: "#FEE603",
-          primary: '#3394F8',
-          danger: '#ff002f',
-          basic: '#2B2B2B',
-          'basic-1': '#177e89',
-          'basic-2': '#2B2B2B',
-        },
-        light: {
-          customGreen: "#C3F239",
-          customPink: "#FE759F",
-          customYellow: "#FEE603",
-          primary: '#3394F8',
-          danger: '#ff002f',
-          basic: '#ffffff',
-          'basic-1': '#ffffff',
-          'basic-2': '#ffffff',
-        }
-      }
-    },
-    optionsPath: './vuetify.config.js'
+    optionsPath: './vuetify.config.js',
+
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

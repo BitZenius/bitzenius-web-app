@@ -25,31 +25,40 @@
       </v-row>
       <v-row v-if="exchange">
         <v-col cols="12" md="9">
-          <v-card class="pa-2" flat style="height: 100%">
-            <v-sheet class="text-h6 font-weight-bold ma-4">
-              Statistics
-            </v-sheet>
-            <apexchart
-              v-if="
-                showChart && exchange && chartData.series[0].data.length > 0
-              "
-              height="300"
-              type="bar"
-              :options="chartData.options"
-              :series="chartData.series"
-            ></apexchart>
-            <h5 v-else class="text-center">
-              NO STATISTIC FOR THIS EXCHANGE ({{ exchange }})
-            </h5>
-          </v-card>
+          <v-row>
+            <v-col cols="12">
+              <v-card class="pa-2" flat style="height: 100%">
+                <v-sheet class="text-h6 font-weight-bold ma-4">
+                  Statistics
+                </v-sheet>
+                <apexchart
+                  v-if="
+                    showChart && exchange && chartData.series[0].data.length > 0
+                  "
+                  height="300"
+                  type="bar"
+                  :options="chartData.options"
+                  :series="chartData.series"
+                ></apexchart>
+                <h5 v-else class="text-center">
+                  NO STATISTIC FOR THIS EXCHANGE ({{ exchange }})
+                </h5>
+              </v-card>
+            </v-col>
+            <v-col cols="12">
+              <TablesActivePosition :showExchangeCards="false" />
+            </v-col>
+          </v-row>
         </v-col>
         <v-col cols="12" md="3">
-          <CardBalance class="px-2 py-5" />
-        </v-col>
-      </v-row>
-      <v-row v-if="exchange">
-        <v-col cols="9">
-          <TablesActivePosition :showExchangeCards="false" />
+          <v-row>
+            <v-col cols="12">
+              <CardBalance class="px-2 py-5" />
+            </v-col>
+            <v-col cols="12">
+              <v-card flat style="height: 500px"></v-card>
+            </v-col>
+          </v-row>
         </v-col>
       </v-row>
     </v-col>

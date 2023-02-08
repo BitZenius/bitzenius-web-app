@@ -49,8 +49,94 @@
         md="4"
         lg="3"
       >
+        <v-card
+          @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
+          style="position: relative; margin-bottom: 25px"
+          class="d-flex align-center justify-center"
+          flat
+        >
+          <v-row>
+            <v-col cols="12" class="d-flex align-center justify-start pb-0">
+              <div
+                style="width: 100%"
+                class="d-flex flex-column justify-center align-center pt-2"
+              >
+                <img
+                  style="height: 80px; padding: 10px"
+                  :src="exchange.image"
+                  alt=""
+                />
+                <h4 class="pb-5">{{ exchange.name }}</h4>
+              </div>
+            </v-col>
+            <v-col
+              cols="12"
+              class="d-flex justify-center align-center pt-0 pb-10"
+            >
+              <template v-if="exchange.active">
+                <v-btn
+                  @click="_addBot(exchange)"
+                  class="mx-2"
+                  fab
+                  dark
+                  x-small
+                  outlined
+                  color="primary"
+                >
+                  <v-icon dark> mdi-pencil </v-icon>
+                </v-btn>
+                <v-btn
+                  @click="_deleteBot(exchange)"
+                  class="mx-2"
+                  fab
+                  dark
+                  x-small
+                  outlined
+                  color="danger"
+                >
+                  <v-icon dark> mdi-delete </v-icon>
+                </v-btn></template
+              >
+
+              <v-btn
+                v-else
+                :disabled="!user.subscription || user.subscription == false"
+                color="customPink white--text"
+                small
+                rounded
+                :ripple="false"
+                @click="_addBot(exchange)"
+                >Setup Bot</v-btn
+              >
+            </v-col>
+            <v-overlay
+              z-index="1"
+              v-if="exchange.comingsoon"
+              :absolute="true"
+              opacity="0.7"
+              overlay="true"
+              style="border-radius: 10px"
+            >
+              <h3 style="letter-spacing: 2px" class="customYellow--text">
+                Coming Soon!
+              </h3>
+            </v-overlay>
+          </v-row>
+          <!-- ORNAMENTS -->
+          <v-list-item-avatar
+            v-if="exchange.selected"
+            class="exchange-checkmark"
+            size="25"
+            color="#27D79E"
+          >
+            <v-icon color="white" small> mdi-check </v-icon>
+          </v-list-item-avatar>
+          <div class="ornament o1"></div>
+          <!-- ORNAMENTS END -->
+        </v-card>
         <!-- <v-btn small @click="logger()">logger</v-btn> -->
         <v-card
+          v-if="false"
           @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
           style="position: relative; height: 110px"
           :class="{
@@ -122,16 +208,18 @@
     </v-col>
     <v-col cols="12">
       <v-card class="pa-8" flat>
-        <v-row class="mb-3">
+        <v-row class="mb-3" justify="end" align="end">
           <v-col cols="12" md="4">
             <v-text-field
-              prepend-icon="mdi-magnify"
               v-model="searchQuery"
-              label="Search By Pair"
               placeholder="Search By Pair"
-              outlined
-              dense
-            ></v-text-field>
+              rounded
+              class="custom-input"
+            >
+              <template v-slot:prepend-inner>
+                <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+              </template></v-text-field
+            >
           </v-col>
         </v-row>
         <v-data-table
@@ -147,6 +235,19 @@
           class="elevation-0"
           loading-text="Loading... Please wait"
         >
+          <template v-slot:header.pair="{ header }">
+            <strong class="black--text">{{ header.text }}</strong>
+          </template>
+          <template v-slot:header.price="{ header }">
+            <strong class="black--text">{{ header.text }}</strong>
+          </template>
+          <template v-slot:header.profit="{ header }">
+            <strong class="black--text">{{ header.text }}</strong>
+          </template>
+          <template v-slot:header.status="{ header }">
+            <strong class="black--text">{{ header.text }}</strong>
+          </template>
+
           <!-- hide-default-footer disable-pagination -->
           <template v-slot:top>
             <div>
@@ -181,43 +282,58 @@
                     </div> -->
           </template>
           <template v-slot:item.pair="{ item }">
-            <v-row>
+            <v-row class="py-2">
               <v-col cols="12" class="d-flex align-center justify-start">
-                <v-img
+                <v-list-item-avatar class="ma-0">
+                  <v-img
+                    style="width: 28px !important"
+                    @error="errorHandler"
+                    max-width="28"
+                    max-height="28"
+                    :alt="item.logo"
+                    :src="getImgUrl(item.pair_from)"
+                  ></v-img>
+                </v-list-item-avatar>
+                <!-- <v-img
                   style="width: 28px !important"
                   @error="errorHandler"
                   max-width="28"
                   :alt="item.logo"
                   :src="getImgUrl(item.pair_from)"
-                ></v-img>
+                ></v-img> -->
                 <div class="d-flex flex-column ml-3">
                   <div class="d-flex">
-                    <strong>{{ item.pair_from }} </strong>
-                    <span>&nbsp;/ {{ item.pair_to }}</span>
+                    <span class="text-subtitle-2 font-weight-bold"
+                      >{{ item.pair_from }} / {{ item.pair_to }}
+                    </span>
                   </div>
-                  <span>{{ item.quantity }}</span>
+                  <span class="text-subtitle-2">{{ item.quantity }}</span>
                 </div>
               </v-col>
             </v-row>
           </template>
           <template v-slot:item.price="{ item }">
-            <div class="d-flex flex-column align-center justify-center">
-              <strong>{{ item.price.value }}</strong>
+            <div class="d-flex flex-column align-start justify-center">
+              <span class="text-subtitle-2 font-weight-bold">{{
+                item.price.value
+              }}</span>
               <span
                 v-if="parseFloat(item.price.percentage) < 0"
-                class="danger--text"
+                class="danger--text text-subtitle-2 font-weight-bold"
                 >{{ item.price.percentage }}%</span
               >
-              <span v-else class="success--text"
+              <span
+                v-else
+                class="success--text text-subtitle-2 font-weight-bold"
                 >{{ item.price.percentage }}%</span
               >
             </div>
           </template>
           <template v-slot:item.profit="{ item }">
-            <div class="d-flex flex-column align-center justify-center">
+            <div class="d-flex flex-column align-start justify-center">
               <!-- <code>{{item.status}}</code> -->
               <strong
-                class="danger--text"
+                class="danger--text text-subtitle-2 font-weight-bold"
                 v-if="
                   item.status == 'ACTIVE' &&
                   parseFloat(item.profit.percentage) < 0
@@ -225,7 +341,7 @@
                 >{{ item.profit.percentage }}%</strong
               >
               <strong
-                class="success--text"
+                class="success--text text-subtitle-2 font-weight-bold"
                 v-if="
                   item.status == 'ACTIVE' &&
                   parseFloat(item.profit.percentage) > 0
@@ -233,7 +349,7 @@
                 >{{ item.profit.percentage }}%</strong
               >
               <strong
-                class="primary--text"
+                class="primary--text text-subtitle-2 font-weight-bold"
                 v-if="
                   item.status == 'INACTIVE' ||
                   item.status == 'WAITING_POSITION' ||
@@ -244,10 +360,12 @@
 
               <span
                 v-if="parseFloat(item.profit.value) < 0"
-                class="danger--text"
+                class="danger--text text-subtitle-2 font-weight-bold"
                 >{{ item.profit.value }} USDT</span
               >
-              <span v-else class="success--text"
+              <span
+                v-else
+                class="success--text text-subtitle-2 font-weight-bold"
                 >{{ item.profit.value }} USDT</span
               >
             </div>
@@ -255,10 +373,9 @@
           <template v-slot:item.status="{ item }">
             <v-chip
               v-if="item.status == 'WAITING_POSITION'"
-              class="black--text"
+              class="orange--text font-weight-bold"
+              color="customYellow lighten-2"
               small
-              color="customYellow black--text"
-              dark
               label
             >
               Waiting for Position
@@ -266,9 +383,8 @@
             <v-chip
               v-if="item.status == 'ACTIVE'"
               small
-              class="black--text"
-              color="customGreen"
-              dark
+              class="success--text font-weight-bold"
+              color="success lighten-4"
               label
             >
               Active
@@ -285,7 +401,7 @@
             <v-chip
               v-if="item.status == 'BLACKLISTED'"
               small
-              color="red"
+              color="danger"
               dark
               label
             >
@@ -354,24 +470,24 @@ export default {
       // END OF CARD EXCHANGE
       headers: [
         {
-          text: "Name/Qty",
+          text: "Name / Qty",
           value: "pair",
           align: "start",
         },
         {
-          text: "Price/24H Change",
+          text: "Price / 24H Change",
           value: "price",
-          align: "center",
+          align: "start",
         },
         {
-          text: "Profit/Floating",
+          text: "Profit / Floating",
           value: "profit",
-          align: "center",
+          align: "start",
         },
         {
           text: "Status",
           value: "status",
-          align: "center",
+          align: "start",
         },
       ],
 
@@ -544,6 +660,9 @@ export default {
       this._fetchBotsList(this.exchange); // Fetch Bots List
       this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
+    } else {
+      this._fetchBotsList("Binance");
+      this._fetchUserExchange(); // Fetch User Exchang
     }
   },
   unmounted() {},
@@ -865,6 +984,34 @@ export default {
   color: white;
   border-radius: 10px;
   padding: 13px 10px;
+}
+.custom-input {
+  background-color: #f4f7fd;
+}
+
+.ornament {
+  position: absolute;
+  width: 50%;
+  height: 4px;
+  border-radius: 8px;
+
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+}
+
+.exchange-checkmark {
+  position: absolute;
+  top: 2.5%;
+  right: 4%;
+}
+
+.ornament.o1 {
+  background: var(--primary);
+}
+
+.ornament.o2 {
+  background: var(--primary);
 }
 </style>
 

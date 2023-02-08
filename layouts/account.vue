@@ -55,10 +55,10 @@
         <base-menu-item-group
           :icon="true"
           :avatar="`$vuetify.icons.DailyProfitIcon`"
-          :title="`Daily Profit`"
+          :title="`Advanced Bots`"
         >
           <base-menu-item
-            :to="'/transaction-history'"
+            :to="'/grid'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
@@ -66,7 +66,7 @@
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
-            :to="'/transaction-history'"
+            :to="'/dca'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
@@ -74,7 +74,7 @@
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
-            :to="'/transaction-history'"
+            :to="'/smart-trade'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
@@ -130,15 +130,21 @@
           :title="`Settings`"
         ></base-menu-item>
       </v-list>
-    </v-navigation-drawer>
-    <v-app-bar :style="`top:${topMargin}px`" fixed flat app>
       <v-icon
-        :class="[drawer ? 'shown' : '']"
+        v-show="drawer"
         class="mr-3 primary--text menu-arrow"
-        x-large
+        large
         @click.stop="drawer = !drawer"
         >mdi-arrow-right-drop-circle</v-icon
       >
+    </v-navigation-drawer>
+    <v-app-bar
+      class="custom-app-bar"
+      :style="`top:${topMargin}px`"
+      fixed
+      flat
+      app
+    >
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" /> -->
       <v-spacer />
@@ -233,6 +239,16 @@
         </v-list>
       </v-menu>
     </v-app-bar>
+    <v-slide-x-transition>
+      <v-icon
+        v-show="!drawer"
+        class="mr-3 primary--text menu-arrow-fixed"
+        large
+        @click.stop="drawer = !drawer"
+        >mdi-arrow-right-drop-circle</v-icon
+      >
+    </v-slide-x-transition>
+
     <v-main>
       <v-container
         class="main-container"
@@ -368,15 +384,39 @@ export default {
 <style scoped>
 .main-container {
   background: #f4f7fd !important;
+  height: 100%;
 }
 .main-nav {
   overflow: unset !important;
 }
+
 .menu-arrow {
+  position: absolute;
+  top: 50%;
+  left: 100%;
   transition: all 0.4s;
+  z-index: 20;
+  transform-origin: center;
+  transform: translate(-50%, -50%) rotate(180deg);
+}
+.menu-arrow-fixed {
+  position: fixed;
+  top: 50%;
+  left: 0%;
+  transition: all 0.4s;
+  z-index: 20;
+  transform-origin: center;
+  transform: translate(-20%, -50%);
 }
 
-.menu-arrow.shown {
-  transform: rotate(180deg);
+.custom-app-bar {
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.32) 0%,
+    rgba(244, 247, 253, 1) 100%
+  ) !important;
+  opacity: 1;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
 }
 </style>
