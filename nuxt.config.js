@@ -1,5 +1,3 @@
-import colors from 'vuetify/es5/util/colors'
-
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -48,6 +46,7 @@ export default {
 
   // Modules: https://go.nuxtjs.dev/config-modules
   modules: [
+    '@nuxtjs/svg',
     // https://go.nuxtjs.dev/axios
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
@@ -140,7 +139,8 @@ export default {
           'basic-2': '#ffffff',
         }
       }
-    }
+    },
+    optionsPath: './vuetify.config.js'
   },
 
   // Build Configuration: https://go.nuxtjs.dev/config-build

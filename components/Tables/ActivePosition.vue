@@ -313,7 +313,6 @@ export default {
   },
   data() {
     return {
-      title: "Automated Bots",
       dialog: true,
       dialogDelete: false,
       // START OF CARD EXCHANGE
@@ -447,11 +446,7 @@ export default {
       },
     },
   },
-  head() {
-    return {
-      title: this.title,
-    };
-  },
+
   computed: {
     formTitle() {
       return this.id === null ? "Add New" : "Edit";
@@ -544,7 +539,6 @@ export default {
   },
   async mounted() {
     console.log("USER!!", this.user);
-    this.$store.commit("setTitle", this.title);
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
       this._fetchBotsList(this.exchange); // Fetch Bots List

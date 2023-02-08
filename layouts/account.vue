@@ -28,63 +28,67 @@
         <base-menu-item
           :to="'/'"
           :icon="true"
-          :avatar="`mdi-apps`"
+          :avatar="`$vuetify.icons.HomeIcon`"
           :title="`Dashboard`"
         ></base-menu-item>
         <base-menu-item
           :to="'/exchanges'"
           :icon="true"
-          :avatar="`mdi-briefcase-outline`"
+          :avatar="`$vuetify.icons.ExchangeIcon`"
           :title="`My Exchanges`"
         ></base-menu-item>
         <base-menu-item
           :to="'/bots'"
           :icon="true"
-          :avatar="`mdi-robot-outline`"
+          :avatar="`$vuetify.icons.BotIcon`"
           :title="`Automated Bots`"
         ></base-menu-item>
         <base-menu-item
           :to="'/transaction-history'"
           :icon="true"
-          :avatar="`mdi-table-large`"
+          :avatar="`$vuetify.icons.DailyProfitIcon`"
           :title="`Daily Profit`"
         ></base-menu-item>
 
         <v-divider class="my-2" />
 
-        <v-list-group prepend-icon="mdi-tune-vertical">
+        <base-menu-item-group
+          :icon="true"
+          :avatar="`$vuetify.icons.DailyProfitIcon`"
+          :title="`Daily Profit`"
+        >
+          <base-menu-item
+            :to="'/transaction-history'"
+            :icon="true"
+            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :disabled="true"
+            :title="`Grid`"
+            class="ml-2"
+          ></base-menu-item>
+          <base-menu-item
+            :to="'/transaction-history'"
+            :icon="true"
+            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :disabled="true"
+            :title="`DCA`"
+            class="ml-2"
+          ></base-menu-item>
+          <base-menu-item
+            :to="'/transaction-history'"
+            :icon="true"
+            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :disabled="true"
+            :title="`Smart Trade`"
+            class="ml-2"
+          ></base-menu-item>
+        </base-menu-item-group>
+
+        <v-list-group v-if="false" prepend-icon="mdi-tune-vertical">
           <template v-slot:activator>
             <v-list-item-content>
               <v-list-item-title>Advance Bots</v-list-item-title>
             </v-list-item-content>
           </template>
-          <v-list-item disabled class="ml-3">
-            <v-list-item-icon>
-              <v-icon>mdi-grid-large</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="d-flex flex-column">
-              Grid
-              <small style="color: customYellow">Coming Soon!</small>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item disabled class="ml-3">
-            <v-list-item-icon>
-              <v-icon>mdi-currency-usd</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="d-flex flex-column">
-              DCA
-              <small style="color: customYellow">Coming Soon!</small>
-            </v-list-item-title>
-          </v-list-item>
-          <v-list-item disabled class="ml-3">
-            <v-list-item-icon>
-              <v-icon>mdi-lightbulb-on-outline</v-icon>
-            </v-list-item-icon>
-            <v-list-item-title class="d-flex flex-column">
-              Smart Trade
-              <small style="color: customYellow">Coming Soon!</small>
-            </v-list-item-title>
-          </v-list-item>
         </v-list-group>
 
         <v-divider class="my-2" />
@@ -92,7 +96,7 @@
         <base-menu-item
           :to="'/subscription'"
           :icon="true"
-          :avatar="`mdi-key-outline`"
+          :avatar="`$vuetify.icons.SubscriptionIcon`"
           :title="`Subscription`"
         ></base-menu-item>
 
@@ -100,28 +104,29 @@
           :disabled="true"
           :to="'/revamp_'"
           :icon="true"
-          :avatar="`mdi-human-male-board`"
+          :avatar="`$vuetify.icons.TutorialIcon`"
           :title="`Tutorial`"
         ></base-menu-item>
 
         <base-menu-item
           :to="'/referral'"
           :icon="true"
-          :avatar="`mdi-account-star-outline`"
+          :avatar="`$vuetify.icons.ReferralIcon`"
           :title="`Referral`"
         ></base-menu-item>
 
         <base-menu-item
+          v-if="false"
           :to="'/wallet'"
           :icon="true"
-          :avatar="`mdi-wallet`"
+          :avatar="`$vuetify.icons.WalletIcon`"
           :title="`Wallet`"
         ></base-menu-item>
 
         <base-menu-item
           :to="'/settings'"
           :icon="true"
-          :avatar="`mdi-cog-outline`"
+          :avatar="`$vuetify.icons.SettingsIcon`"
           :title="`Settings`"
         ></base-menu-item>
       </v-list>
@@ -277,9 +282,10 @@
 </style>
 <script>
 import BaseMenuItem from "~/components/Base/BaseMenuItem.vue";
+import BaseMenuItemGroup from "~/components/Base/BaseMenuItemGroup.vue";
 
 export default {
-  components: { BaseMenuItem },
+  components: { BaseMenuItem, BaseMenuItemGroup },
   data() {
     return {
       clipped: false,

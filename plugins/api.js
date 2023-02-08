@@ -1,6 +1,6 @@
-
 export default function ({ $axios, store, router }, inject) {
   (async () => {
+    const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const currentUser = await store.$fire.auth.currentUser
     let api = $axios.create()
     if (currentUser) {
@@ -11,7 +11,8 @@ export default function ({ $axios, store, router }, inject) {
         headers: {
           common: {
             Accept: 'text/plain, */*',
-            authorization: `Bearer ${token}`
+            authorization: `Bearer ${token}`,
+            timezone
           }
         }
       })
