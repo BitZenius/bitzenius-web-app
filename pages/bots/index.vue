@@ -462,9 +462,9 @@ export default {
             });
 
             this.socket.on('binance_ticker', (msg) => {
-                let data = JSON.parse(msg);
+                // let data = JSON.parse(msg);
                 let array = JSON.parse(msg);
-                // array.forEach((data)=>{
+                array.forEach((data)=>{
                     let index = this.activePosition.findIndex(b => b.symbol == data.s);
                     if (index < 0) return;
                     this.activePosition[index].price.value = data.c;
@@ -481,7 +481,7 @@ export default {
                         let convertPercentage = percentage * 100;
                         this.activePosition[index].profit.percentage = convertPercentage.toFixed(3);
                     }
-                // })
+                })
             })
         },
         async _fetchBotsList(exchangeName) {
