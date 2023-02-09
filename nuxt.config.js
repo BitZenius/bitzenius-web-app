@@ -30,7 +30,8 @@ export default {
     '~/plugins/socketio',
     '~/plugins/vue2-filters',
     '~/plugins/clipboard',
-    '~/plugins/mixin'
+    '~/plugins/mixin',
+    // '~/plugins/vuetify'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

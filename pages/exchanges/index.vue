@@ -143,6 +143,7 @@
               :absolute="true"
               opacity="0.7"
               overlay="true"
+              style="border-radius: 12px"
             >
               <h3 style="letter-spacing: 2px" class="customYellow--text">
                 Coming Soon!

@@ -475,12 +475,12 @@ export default {
           align: "start",
         },
         {
-          text: "Price / 24H Change",
+          text: "Price/24H Change",
           value: "price",
           align: "start",
         },
         {
-          text: "Profit / Floating",
+          text: "Profit/Floating",
           value: "profit",
           align: "start",
         },
@@ -860,7 +860,10 @@ export default {
       } else {
         this.selectedBot = null;
       }
-      this.showAddBot = true;
+
+      this.$store.commit("bot/setSelectedBot", this.selectedBot);
+      this.$router.push("/bots/new");
+      // this.showAddBot = true;
     },
 
     addItem() {
