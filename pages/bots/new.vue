@@ -266,6 +266,7 @@
               <v-btn color="primary" @click="e1 = 4"> Continue </v-btn>
             </div> -->
           </v-stepper-content>
+
           <v-stepper-content class="py-0" step="4">
             <v-card
               min-height="200px"
@@ -275,9 +276,47 @@
               <h3 class="mb-4 text-body-1 font-weight-bold">
                 Bot Setup Summary
               </h3>
-              <v-row class="mt-1" style="width: 100%">
-                <v-col cols="12">
+              <v-row
+                class="mt-1"
+                style="width: 100%"
+                justify="center"
+                align="center"
+              >
+                <v-col cols="10">
+                  <v-row justify="start" align="center" class="ma-4">
+                    <v-col
+                      cols="4"
+                      v-for="(item, i) in summary"
+                      :key="`item-summary-${i}`"
+                    >
+                      <v-card flat rounded color="#F4F7FD">
+                        <v-list-item>
+                          <v-list-item-avatar size="40" color="#F4F7FD">
+                            <v-img
+                              max-width="25px"
+                              max-height="25px"
+                              :src="require('~/assets/images/deal.svg')"
+                              position="center"
+                            ></v-img>
+                          </v-list-item-avatar>
+
+                          <v-list-item-content>
+                            <v-list-item-title class="text-caption">
+                              {{ item.title }}
+                            </v-list-item-title>
+
+                            <v-list-item-subtitle
+                              class="text-body-2 font-weight-bold black--text"
+                            >
+                              {{ item.value }}
+                            </v-list-item-subtitle>
+                          </v-list-item-content>
+                        </v-list-item>
+                      </v-card>
+                    </v-col>
+                  </v-row>
                   <v-data-table
+                    v-if="false"
                     :headers="summaryHeaders"
                     :items="summary"
                     hide-default-header
@@ -286,29 +325,53 @@
                   >
                   </v-data-table>
                 </v-col>
+                <v-col cols="12">
+                  <v-row justify="center">
+                    <v-col cols="8">
+                      <div class="d-flex float-left my-4">
+                        <v-btn
+                          width="120"
+                          color="primary"
+                          @click="e1 = 3"
+                          rounded
+                          outlined
+                        >
+                          Back
+                        </v-btn>
+                      </div>
+
+                      <div class="d-flex float-right my-4">
+                        <v-btn
+                          width="120"
+                          rounded
+                          color="customPink"
+                          @click="_submitBotSetup(isUpdateMode)"
+                          :disabled="
+                            !user.subscription || user.subscription == false
+                          "
+                          v-if="!isUpdateMode"
+                        >
+                          Submit
+                        </v-btn>
+                        <v-btn
+                          width="120"
+                          rounded
+                          color="customPink"
+                          class="white--text"
+                          @click="_submitBotSetup(isUpdateMode)"
+                          :disabled="
+                            !user.subscription || user.subscription == false
+                          "
+                          v-else
+                        >
+                          Update
+                        </v-btn>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-col>
               </v-row>
             </v-card>
-            <div class="d-flex float-right my-4">
-              <v-btn color="blue darken-1" class="mr-2" @click="e1 = 3" text>
-                Back
-              </v-btn>
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-if="!isUpdateMode"
-                color="primary"
-                @click="_submitBotSetup(isUpdateMode)"
-              >
-                Submit
-              </v-btn>
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-else
-                color="customGreen black--text"
-                @click="_submitBotSetup(isUpdateMode)"
-              >
-                Update
-              </v-btn>
-            </div>
           </v-stepper-content>
         </v-stepper-items>
       </v-stepper>

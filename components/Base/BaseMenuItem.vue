@@ -10,11 +10,11 @@
   >
     <v-list-item-action>
       <v-list-item-avatar>
-        <v-icon v-if="icon" v-html="avatar" size="20"> </v-icon>
+        <v-icon v-if="icon" v-html="avatar" size="18"> </v-icon>
       </v-list-item-avatar>
     </v-list-item-action>
     <v-list-item-content>
-      <v-list-item-title class="black--text text-body-2">{{
+      <v-list-item-title class="black--text text-caption">{{
         title
       }}</v-list-item-title>
     </v-list-item-content>

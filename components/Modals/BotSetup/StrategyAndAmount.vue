@@ -515,6 +515,7 @@ export default {
   mounted() {
     if (this.selectedStrategy) {
       this.strategy = { ...this.selectedStrategy };
+      this.selectedStrategyName = this.strategy.style.name
     }
     this.fetchFormula();
   },
