@@ -61,7 +61,17 @@
                     outlined
                     class="mb-2"
                   ></v-text-field>
+                  <v-checkbox
+                    v-model="checkbox"
+                    :rules="[v => !!v || 'You must agree to continue!']"
+                    required
+                  >
+                    <template v-slot:label>
+                      <span>By checking the checkbox you're agree on our policy <a class="customGreen--text" href="#">read more about the ToS</a></span>
+                    </template>
+                  </v-checkbox>
                   <v-btn
+                    :disabled="!checkbox"
                     style="width: 100%"
                     color="customGreen"
                     x-large
@@ -109,6 +119,7 @@
 export default {
   layout: 'default',
   data: () => ({
+    checkbox:false,
     valid: true,
     name: '',
     nameRules: [
@@ -164,7 +175,7 @@ export default {
             this.password
           ).then((r) => {
             this.isLoading = false
-            this.$router.go({ path: '/' })
+            this.$router.go({ path: '/verification' })
           }).catch((e) => {
             alert(e)
           }).finally(() => {

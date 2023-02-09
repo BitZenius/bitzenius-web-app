@@ -225,6 +225,7 @@ export default {
         email: this.email,
         password: this.password
       }).then((result) => {
+        console.log('result login', result);
         if (result.method == 'token') {
           this.$fire.auth.signInWithCustomToken(result.token).then((r) => {
             console.log(r)
@@ -242,10 +243,14 @@ export default {
           this.otpMethod = result.method
         }
       }).catch((err) => {
-        console.log(err)
-        this.message = {
-          text: 'Invalid credentials. Please try again',
-          color: 'error'
+        console.log(err.response)
+        if(err.response.data.not_verified){
+          return this.$router.go('/verification');
+        }else{
+          this.message = {
+            text: 'Invalid credentials. Please try again',
+            color: 'error'
+          }
         }
       }).finally(() => {
         this.loadingText = ''

@@ -317,6 +317,17 @@ export default {
     }
   },
   mounted() {
+    this.$store.commit('setIsLoading', true);
+    setTimeout(()=>{
+      console.log('currentUser', this.user);
+      // IF NOT VERIFIED REDIRECT TO VERIFICATION LINK
+      if(!this.user.emailVerified){
+        return this.$router.push('/verification');
+      }else{
+        this.$store.commit('setIsLoading', false);
+      }
+    });
+
     if (!this.$vuetify.breakpoint.mobile) {
       this.drawer = true
     }
