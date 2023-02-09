@@ -67,6 +67,7 @@
                                 <v-chip small v-else class="customPink" style="font-weight:bold;">
                                     <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>                
                                 </v-chip>
+                                </br><code>{{item.pnl.toFixed(4)}}</code>
                             </template>
                             <template v-slot:item.qty="{item}">
                                 <span>{{item.amount_coin_filled}}</span>                
@@ -89,6 +90,7 @@
                     <!-- {{item.profit | currency('$', 3)}} -->
                     <span>${{item._profit.first}}<small>.{{item._profit.second}}</small></span>
                 </v-chip>
+                </br><code>{{item.profit.toFixed(4)}}</code>
             </template>
             <template v-slot:item.action="{item}">
                 <v-btn
@@ -237,6 +239,7 @@ export default {
             let res = await this.$api.$get('/user/profit-report', {
                 params: tempParams
             }).then(res=>{
+                console.log('profit-history', res);
                 this.$store.commit('setIsLoading', false);
                 if(res.success){
                     res.data.forEach((val)=>{
@@ -245,9 +248,10 @@ export default {
                         let string = String(val.profit.toFixed(4)).split(".");
                         if(val.profit<0) console.log(string);
                         val._profit.first = val.profit < 0? string[0] : parseFloat(string[0]);
-                        val._profit.second = parseFloat(string[1]);
+                        val._profit.second = string[1];
                     })
                     this.profitItems = res.data;
+                    console.log('profitItems', this.profitItems);
                     this.isLoading = false
                 }else{
                 this.$store.commit('setIsLoading', false);
@@ -291,7 +295,7 @@ export default {
                 val._profit = {};
                 let string = String(val.pnl.toFixed(4)).split(".");
                 val._profit.first = val.pnl < 0? string[0] : parseFloat(string[0]);
-                val._profit.second = parseFloat(string[1]);
+                val._profit.second = string[1];
 
                 // SYMBOL TO PAIR
                 val.pair_from = val.symbol.substr(0, val.symbol.length - 4)

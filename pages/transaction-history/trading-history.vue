@@ -64,23 +64,25 @@
                         <small>{{item.type.toUpperCase() == 'SELL' ? 'PnL' : null}}</small>
                         <v-chip small v-if="parseFloat(item.desc) > 0" class="customGreen black--text" style="font-weight:bold;">
                             <!-- {{item.desc | currency('$', 6)}} -->
-                            <span>${{item._desc.first}}<small>.{{item._desc.second}}</small></span>
+                            <span>${{item._desc.first}}<small>.{{item._desc.second}}</small></span></br>
                         </v-chip>
                         <v-chip small v-else class="customPink" style="font-weight:bold;">
                             <!-- {{item.desc}} -->
                             <span>-${{item._desc.first}}<small>.{{item._desc.second}}</small></span>
                         </v-chip>
+                        <code>{{item.desc}}</code>
                     </div>
                 </div>
             </template>
             <template v-slot:item.price="{item}">
                 <!-- {{item.price |currency('$', 6)}} -->
-                <span>${{item._price.first}}<small>.{{item._price.second}}</small></span>                
+                <span>${{item._price.first}}<small>.{{item._price.second}}</small></span></br>  
+                <code>{{item.price}}</code>
             </template>
             <template v-slot:item.qty="{item}">
                 <!-- {{item.qty}} -->
-                <span>{{item._qty.first}}<small>.{{item._qty.second}}</small></span>                
-                <!-- </br><code>{{item._qty}}</code> -->
+                <span>{{item._qty.first}}<small>.{{item._qty.second}}</small></span></br>
+                <code>{{item.qty}}</code>
             </template>
         </v-data-table>
     </div>
@@ -270,21 +272,22 @@ export default {
                     // PRICE TO SMALLER AFTER COMMA
                     val._price = {};
                     let stringPrice = String(parseFloat(val.price).toFixed(4)).split(".");
+                    // let stringPrice = String(val.price).split(".");
                     val._price.first = parseFloat(stringPrice[0]);
-                    val._price.second = parseFloat(stringPrice[1]);
+                    val._price.second = stringPrice[1];
 
                     // QTY TO SMALLER AFTER COMMA
                     val._qty = {};
                     let stringQty = String(parseFloat(val.qty).toFixed(4)).split(".");
                     val._qty.first = parseFloat(stringQty[0]);
-                    val._qty.second = parseFloat(stringQty[1]);
+                    val._qty.second = stringQty[1];
 
                     // DESC SELL TO SMALLER AFTER COMMA
                     if(val.type.toUpperCase() == 'SELL'){
                         val._desc = {};
                         let stringDesc = String(parseFloat(val.desc).toFixed(4)).split(".");
                         val._desc.first = val.desc > 0 ? parseFloat(stringDesc[0]) : Math.abs(parseFloat(stringDesc[0]));
-                        val._desc.second = parseFloat(stringDesc[1]);
+                        val._desc.second = stringDesc[1];
                     }
                 })
                 this.tradingItems = res.data;
