@@ -132,6 +132,9 @@
                     <v-chip v-if="item.status == 'INACTIVE'" small color="grey" dark label>
                         Inactive
                     </v-chip>
+                    <v-chip v-if="item.status == 'PAUSED'" small color="grey" dark label>
+                        Paused
+                    </v-chip>
                     <v-chip v-if="item.status == 'BLACKLISTED'" small color="red" dark label>
                         Blacklisted
                     </v-chip>
