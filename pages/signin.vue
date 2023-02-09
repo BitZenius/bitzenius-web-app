@@ -72,6 +72,7 @@
                     v-model="otpCode"
                     length="6"
                     light
+                    type="number"
                     :disabled="isLoading"
                     @finish="onOtpCompleted"
                   />
