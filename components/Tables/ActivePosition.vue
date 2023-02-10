@@ -294,13 +294,6 @@
                     :src="getImgUrl(item.pair_from)"
                   ></v-img>
                 </v-list-item-avatar>
-                <!-- <v-img
-                  style="width: 28px !important"
-                  @error="errorHandler"
-                  max-width="28"
-                  :alt="item.logo"
-                  :src="getImgUrl(item.pair_from)"
-                ></v-img> -->
                 <div class="d-flex flex-column ml-3">
                   <div class="d-flex">
                     <span class="text-subtitle-2 font-weight-bold"

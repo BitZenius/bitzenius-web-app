@@ -19,10 +19,23 @@
         </v-col>
       </v-row>
 
+      <!-- <v-stepper>
+        <v-stepper-header>
+          <v-stepper-icon>
+            <v-stepper-step-icon icon="mdi-account-outline">
+              Name of step
+            </v-stepper-step-icon>
+          </v-stepper-icon>
+        </v-stepper-header>
+      </v-stepper> -->
       <v-stepper flat v-model="e1" class="custom-stepper">
         <v-card flat>
-          <v-stepper-header>
-            <v-stepper-step :complete="e1 > 1" step="1">
+          <v-stepper-header flat>
+            <v-stepper-step
+              append-icon="mdi-magnify"
+              :complete="e1 > 1"
+              step="1"
+            >
               <strong class="primary--text">Step 1</strong>
               <small>
                 <b class="black--text font-weight-normal"
@@ -63,7 +76,7 @@
         </v-card>
 
         <v-stepper-items class="mt-5">
-          <v-stepper-content class="py-0" step="1">
+          <v-stepper-content class="py-0 px-0" step="1">
             <ModalsBotSetupStrategyAndAmount
               v-if="showStrategySetup"
               :selected-strategy="bot.strategy"
@@ -382,8 +395,14 @@
   <script>
 import { exec } from "apexcharts";
 import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
+import VStepperIcon from "@/components/VuetifyCustomComponents/VStepperIcon.vue";
+import VStepperStepIcon from "@/components/VuetifyCustomComponents/VStepperIcon.vue";
 
 export default {
+  components: {
+    VStepperIcon: VStepperIcon,
+    VStepperStepIcon: VStepperStepIcon,
+  },
   layout: "account",
   data() {
     return {

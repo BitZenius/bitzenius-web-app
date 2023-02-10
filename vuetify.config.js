@@ -7,8 +7,13 @@ import SettingsIcon from "~/assets/custom-icons/Settings.vue";
 import SubscriptionIcon from "~/assets/custom-icons/Subscription.vue";
 import TutorialIcon from "~/assets/custom-icons/Tutorial.vue";
 import WalletIcon from "~/assets/custom-icons/Wallet.vue";
-
+import VStepperIcon from '@/components/VuetifyCustomComponents/VStepperIcon.vue'
+import VStepperStepIcon from '@/components/VuetifyCustomComponents/VStepperIcon.vue'
 export default {
+  components: {
+    VStepperIcon,
+    VStepperStepIcon,
+  },
   icons: {
     values: {
       HomeIcon: {

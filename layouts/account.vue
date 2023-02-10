@@ -133,7 +133,6 @@
       <v-icon
         v-show="drawer"
         class="mr-3 primary--text menu-arrow"
-        large
         @click.stop="drawer = !drawer"
         >mdi-arrow-right-drop-circle</v-icon
       >
@@ -243,7 +242,6 @@
       <v-icon
         v-show="!drawer"
         class="mr-3 primary--text menu-arrow-fixed"
-        large
         @click.stop="drawer = !drawer"
         >mdi-arrow-right-drop-circle</v-icon
       >
