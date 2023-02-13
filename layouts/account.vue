@@ -2,7 +2,7 @@
   <v-app>
     <GlobalsAddOnLoader />
     <GlobalsAddOnSnackbar />
-    <!-- <GlobalsAddOnNotification /> -->
+    <GlobalsAddOnNotification ref="notification" />
     <v-navigation-drawer
       class="main-nav"
       :style="`top:${topMargin}px`"
@@ -296,6 +296,7 @@
 <script>
 import BaseMenuItem from "~/components/Base/BaseMenuItem.vue";
 import BaseMenuItemGroup from "~/components/Base/BaseMenuItemGroup.vue";
+import io from "socket.io-client";
 
 export default {
   components: { BaseMenuItem, BaseMenuItemGroup },
@@ -308,6 +309,7 @@ export default {
       rightDrawer: false,
       bottomNav: "home",
       listener: null,
+      showNotification: false,
     };
   },
   computed: {
@@ -317,6 +319,9 @@ export default {
     user() {
       return this.$store.state.authUser;
     },
+    currentUser() {
+      return this.$store.$fire.auth.currentUser;
+    },
     subscription() {
       return this.$store.state.subscription;
     },
@@ -325,16 +330,104 @@ export default {
     },
   },
   mounted() {
+    this.$store.commit("setIsLoading", true);
+
+    setTimeout(() => {
+      this.getUserIp();
+      // IF NOT VERIFIED REDIRECT TO VERIFICATION LINK
+      if (!this.user.emailVerified) {
+        return this.$router.push("/verification");
+      } else {
+        this.$store.commit("setIsLoading", false);
+      }
+    });
+
     if (!this.$vuetify.breakpoint.mobile) {
       this.drawer = true;
     }
-
     this.listenSubscription();
+    this.streamNotification();
   },
   beforeDestroy() {
     this.listener();
   },
   methods: {
+    async writeIp(userIp) {
+      console.log(navigator.userAgent);
+      this.$api
+        .$post("/user/login-histories", {
+          user_agent: navigator.userAgent.toString(),
+          ip: userIp.toString(),
+        })
+        .then((res) => {
+          console.log("Write IP on database", res);
+        })
+        .catch((err) => {
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: err.response.data.data,
+            color: "customPink",
+          });
+        });
+    },
+
+    async getUserIp() {
+      console.log("-------------------START-----------------");
+      // GET USER IPs record;
+      this.$api
+        .$get("/user/login-histories")
+        .then((res) => {
+          if (res.success) {
+            let histories = res.data; //--> IP RECORDS
+            console.log("histories", histories);
+            this.$axios
+              .get("https://api.ipify.org/?format=json")
+              .then(async (result) => {
+                let userIp = result.data.ip; //--> CURRENT USER IP
+
+                // IF HISTORIES LENGTH == 0, WRITE TO DB FIRST RECORD
+                if (histories.length == 0) {
+                  alert(
+                    "Fresh login, allowed to create your first login record!"
+                  );
+                  await this.writeIp(userIp);
+                } else {
+                  // IF HISTORIES LONGER THAN 1 THEN CHECK (IS LATEST UP EQUAL TO CURRENT)
+                  console.log(`comparing:${userIp} == ${histories[0].ip}`);
+                  if (userIp != histories[0].ip) {
+                    alert("IP doesnt match, set user status to Unverified!");
+                  } else {
+                    alert(
+                      "IP match against latest login record! good to go :)"
+                    );
+                  }
+                }
+              })
+              .catch((err) => {
+                console.log("ERROR", err);
+                this.$store.commit("setShowSnackbar", {
+                  show: true,
+                  message:
+                    "Unable to get user IP address, please disable adblock and other plugins!",
+                  color: "customPink",
+                });
+              })
+              .finally(() => {
+                console.log("-------------------END-----------------");
+              });
+          } else {
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: "Unable to load histories!",
+              color: "customPink",
+            });
+          }
+        })
+        .catch((err) => {
+          console.log("error", err);
+        })
+        .finally(() => {});
+    },
     listenSubscription() {
       if (this.user) {
         this.listener = this.$fire.firestore
@@ -371,8 +464,21 @@ export default {
           this.$router.push("/signin");
         })
         .catch((error) => {
-          console.log(error);
+          // console.log(error)
         });
+    },
+    async streamNotification() {
+      // const currentUser = await store.$fire.auth.currentUser
+      let token = await this.currentUser.getIdToken();
+      // console.log('currentUser', this.currentUser.getIdToken());
+      this.socket = io(process.env.SERVER, {
+        path: "/cron-notification",
+        auth: { token },
+      });
+
+      this.socket.on("notification", (msg) => {
+        this.$refs.notification.show();
+      });
     },
   },
 };

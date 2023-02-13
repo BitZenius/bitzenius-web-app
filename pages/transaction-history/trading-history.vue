@@ -163,7 +163,7 @@
               item.type.toUpperCase() == "BUY" ? "STEP" : null
             }}</small>
             <span class="text-subtitle-2 font-weight-bold">
-              {{ item.desc }}
+              {{ item.desc == 0 ? "Initial Order" : item.desc }}
             </span>
           </div>
           <div v-else class="d-flex flex-column">
@@ -346,6 +346,8 @@ export default {
       this._fetchReport();
     },
     async _fetchReport(sorting) {
+      console.log("moment", this.$moment);
+      // moment("10/15/2014 9:00", "M/D/YYYY H:mm").valueOf();
       this.isLoading = true;
       let tempParams = {};
       tempParams.exchange = this.exchange;
@@ -358,7 +360,17 @@ export default {
       }
 
       if (this.dates.length > 0) {
-        tempParams.dates = this.dates;
+        tempParams.dates = [];
+        this.dates.forEach((date, id) => {
+          console.log("id", id);
+          console.log("date", date);
+          if (id == 1) {
+            tempParams.dates.push(this.$moment(date).add(1, "days").valueOf());
+          } else {
+            tempParams.dates.push(this.$moment(date).valueOf());
+          }
+        });
+        console.log("tempParams.dates", tempParams.dates);
       }
 
       let res = await this.$api.$get("/user/trading-history", {
@@ -372,17 +384,15 @@ export default {
           // PRICE TO SMALLER AFTER COMMA
           val._price = {};
           let stringPrice = String(parseFloat(val.price).toFixed(4)).split(".");
+          // let stringPrice = String(val.price).split(".");
           val._price.first = parseFloat(stringPrice[0]);
-          val._price.second = parseFloat(stringPrice[1]);
+          val._price.second = stringPrice[1];
 
           // QTY TO SMALLER AFTER COMMA
           val._qty = {};
-          console.log(val.qty);
           let stringQty = String(parseFloat(val.qty).toFixed(4)).split(".");
-          console.log("stringQty", stringQty);
           val._qty.first = parseFloat(stringQty[0]);
-          val._qty.second = parseFloat(stringQty[1]);
-          console.log("_qty", val._qty);
+          val._qty.second = stringQty[1];
 
           // DESC SELL TO SMALLER AFTER COMMA
           if (val.type.toUpperCase() == "SELL") {
@@ -392,7 +402,7 @@ export default {
               val.desc > 0
                 ? parseFloat(stringDesc[0])
                 : Math.abs(parseFloat(stringDesc[0]));
-            val._desc.second = parseFloat(stringDesc[1]);
+            val._desc.second = stringDesc[1];
           }
         });
         this.tradingItems = res.data;
@@ -411,6 +421,7 @@ export default {
     },
     // TRIGGER
     onDateChanged(dates) {
+      console.log("dates", dates);
       let sort = {};
       this._fetchReport();
     },

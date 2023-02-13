@@ -101,10 +101,7 @@
                 {{ item.value.toFixed(6) }}
               </span>
               <span v-else-if="item.key == 'total_step'">
-                {{ item.value - 1 }}
-              </span>
-              <span v-else>
-                {{ item.value }}
+                {{ (parseInt(item.value) - 1) == 0 ? 'Initial Order' : item.value -1 }}
               </span>
             </template>
           </v-data-table>

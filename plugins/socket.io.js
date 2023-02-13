@@ -14,6 +14,12 @@ export default function ({ $axios, store }, inject) {
       auth: { token }
     })
 
+    const notificationSocket = io.connect(process.env.SOCKET_URL, {
+      path: '/cron-notification/',
+      auth: { token }
+    })
+
     inject('balanceSocket', balanceSocket)
+    inject('notificationSocket', notificationSocket)
   })()
 }

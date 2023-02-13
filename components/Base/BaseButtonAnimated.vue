@@ -6,6 +6,7 @@
     class="white--text text-capitalize custom-button"
     depressed
     :data-text="text"
+    :disabled="disabled"
   >
     {{ text }}
   </v-btn>
@@ -19,6 +20,12 @@ export default {
       type: String,
       default: () => {
         return "Default";
+      },
+    },
+    disabled: {
+      type: Boolean,
+      default: () => {
+        return false;
       },
     },
   },

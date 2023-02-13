@@ -32,6 +32,7 @@
                     v-model="otpCode"
                     length="6"
                     light
+                    type="number"
                     :disabled="isLoading"
                     @finish="onOtpCompleted"
                   />
@@ -239,7 +240,6 @@ export default {
       this.$refs.form.resetValidation();
     },
     signIn() {
-      const valid = this.$refs.form.validate();
       this.isLoading = true;
       this.loadingText = "Please wait...";
       this.$api
@@ -248,6 +248,7 @@ export default {
           password: this.password,
         })
         .then((result) => {
+          console.log("result login", result);
           if (result.method == "token") {
             this.$fire.auth
               .signInWithCustomToken(result.token)
@@ -270,11 +271,15 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
-          this.message = {
-            text: "Invalid credentials. Please try again",
-            color: "error",
-          };
+          console.log(err.response);
+          if (err.response.data.not_verified) {
+            return this.$router.go("/verification");
+          } else {
+            this.message = {
+              text: "Invalid credentials. Please try again",
+              color: "error",
+            };
+          }
         })
         .finally(() => {
           this.loadingText = "";
@@ -320,9 +325,8 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.otpCode = "";
           this.message = {
-            text: "Your OTP code is wrong. Please try again",
+            text: "Invalid credentials. Please try again",
             color: "error",
           };
         })
@@ -334,7 +338,6 @@ export default {
   },
 };
 </script>
-
 <style>
 .noGutters {
   height: 100vh;

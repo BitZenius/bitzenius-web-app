@@ -79,7 +79,22 @@
                       >
                     </template>
                   </v-text-field>
+                  <v-checkbox
+                    v-model="checkbox"
+                    :rules="[(v) => !!v || 'You must agree to continue!']"
+                    required
+                  >
+                    <template v-slot:label>
+                      <span
+                        >By checking the checkbox you're agree on our policy
+                        <a class="customGreen--text" href="#"
+                          >read more about the ToS</a
+                        ></span
+                      >
+                    </template>
+                  </v-checkbox>
                   <base-button-animated
+                    :disabled="!checkbox"
                     style="width: 100%"
                     color="customGreen"
                     depressed
@@ -180,6 +195,7 @@ export default {
   layout: "default",
   data: () => ({
     show1: false,
+    checkbox: false,
     valid: true,
     name: "",
     nameRules: [

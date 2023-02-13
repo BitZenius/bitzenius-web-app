@@ -193,7 +193,7 @@
     </v-col>
 
     <v-col cols="12">
-      <v-card v-if="showTabs" class="pa-3 mb-5" flat rounded>
+      <v-card v-show="showTabs" class="pa-3 mb-5" flat rounded>
         <v-tabs class="pa-2" v-model="currentItem">
           <v-tab :ripple="false" v-for="item in tables" :key="item">
             <span class="text-body-1 text-capitalize">{{ item }}</span>
@@ -411,6 +411,16 @@
                     label
                   >
                     Blacklisted
+                  </v-chip>
+
+                  <v-chip
+                    v-if="item.status == 'PAUSED'"
+                    small
+                    color="grey"
+                    dark
+                    label
+                  >
+                    Paused
                   </v-chip>
                 </template>
                 <template v-slot:no-data>

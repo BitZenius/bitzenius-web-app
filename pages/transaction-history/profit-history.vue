@@ -144,7 +144,7 @@
               </template>
               <template v-slot:item.qty="{ item }">
                 <span class="text-subtitle-2 font-weight-bold">{{
-                  item.amount_coin_filled
+                  item.amount_coin_filled.toFixed(4)
                 }}</span>
               </template>
             </v-data-table>
@@ -210,6 +210,7 @@ export default {
   layout: "trading-history",
   data() {
     return {
+      title: "Transaction Report",
       isLoading: true,
       // ID, Type, Date, Profit, Price, Qty
       tradingHeaders: [
@@ -225,7 +226,7 @@ export default {
           cellClass: "font-weight-bold",
         },
         {
-          text: "Details",
+          text: "",
           align: "center",
           value: "action",
         },
@@ -287,11 +288,11 @@ export default {
       tradingItemsDetail: [],
     };
   },
-  // head() {
-  //   return {
-  //     title: this.title,
-  //   };
-  // },
+  head() {
+    return {
+      title: this.title,
+    };
+  },
   computed: {
     profitItemsFiltered() {
       let temp = this.profitItems;
@@ -343,6 +344,7 @@ export default {
           params: tempParams,
         })
         .then((res) => {
+          console.log("profit-history", res);
           this.$store.commit("setIsLoading", false);
           if (res.success) {
             res.data.forEach((val) => {
@@ -352,9 +354,10 @@ export default {
               if (val.profit < 0) console.log(string);
               val._profit.first =
                 val.profit < 0 ? string[0] : parseFloat(string[0]);
-              val._profit.second = parseFloat(string[1]);
+              val._profit.second = string[1];
             });
             this.profitItems = res.data;
+            console.log("profitItems", this.profitItems);
             this.isLoading = false;
           } else {
             this.$store.commit("setIsLoading", false);
@@ -398,7 +401,7 @@ export default {
         val._profit = {};
         let string = String(val.pnl.toFixed(4)).split(".");
         val._profit.first = val.pnl < 0 ? string[0] : parseFloat(string[0]);
-        val._profit.second = parseFloat(string[1]);
+        val._profit.second = string[1];
 
         // SYMBOL TO PAIR
         val.pair_from = val.symbol.substr(0, val.symbol.length - 4);
@@ -433,7 +436,6 @@ export default {
   },
 };
 </script>
-
 <style>
 .custom-input {
   background-color: #f4f7fd;

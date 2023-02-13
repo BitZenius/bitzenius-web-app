@@ -22,7 +22,6 @@ export default {
     },
     methods: {
         logger() {
-            console.log(this.snackbar);
         }
     },
     computed: {
@@ -33,7 +32,6 @@ export default {
     watch: {
         snackbar: {
             handler(nv, ov) {
-                console.log(arguments);
                 this.show = nv.show;
                 this.message = nv.message;
                 this.color = nv.color;

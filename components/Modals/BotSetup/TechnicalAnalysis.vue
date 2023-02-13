@@ -170,10 +170,6 @@ export default {
       timeList: ["5m", "15m", "30m", "1h", "2h", "4h", "12h"],
       tradingVolumeList: [
         {
-          value: 1000000,
-          name: "1 mil USD",
-        },
-        {
           value: 5000000,
           name: "5 mil USD",
         },
@@ -192,6 +188,18 @@ export default {
         {
           value: 30000000,
           name: "30 mil USD",
+        },
+        {
+          value: 50000000,
+          name: "50 mil USD",
+        },
+        {
+          value: 75000000,
+          name: "75 mil USD",
+        },
+        {
+          value: 100000000,
+          name: "100 mil USD",
         },
       ],
       condition: "AND",
