@@ -1,5 +1,5 @@
 <template>
-  <v-row class="py-5">
+  <v-row class="pa-2">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h6 font-weight-bold pl-3">
@@ -7,6 +7,178 @@
         </v-col>
       </v-row>
     </v-col>
+    <v-col cols="12">
+      <v-card rounded class="card-1 pa-2" flat color="primary">
+        <v-img
+          width="860"
+          class="background-image"
+          src="/images/signin-vector.svg"
+        >
+        </v-img>
+
+        <v-row class="pa-5">
+          <v-col cols="12">
+            <img width="40" height="40" src="/token_logo/USDT.png" />
+          </v-col>
+          <v-col cols="3" class="d-flex flex-column justify-center align-start">
+            <v-card
+              flat
+              rounded
+              color="primary2"
+              class="pa-3 basic--text text-caption mb-2"
+            >
+              Please be sure to whitelist the following IP address when creating
+              an API Key on your exchange. It is a required step!
+            </v-card>
+            <v-card
+              flat
+              rounded
+              color="primary2"
+              class="pa-3 basic--text text-caption custom-card"
+            >
+              {{ whitelistIp }}
+              <v-tooltip v-model="copied" top>
+                <template v-slot:activator="{ on, attrs }">
+                  <v-btn
+                    icon
+                    v-bind="attrs"
+                    v-on="on"
+                    color="black"
+                    size="16"
+                    v-clipboard:copy="whitelistIp"
+                    v-clipboard:success="onCopy"
+                    v-clipboard:error="onError"
+                  >
+                    <v-icon small color="basic"> mdi-content-copy </v-icon>
+                  </v-btn>
+                </template>
+                {{ copied ? "Copy" : "Copied" }}
+              </v-tooltip>
+            </v-card>
+          </v-col>
+          <v-col cols="9" class="relative-container">
+            <div class="exchange-card-container">
+              <v-card
+                v-for="(exchange, index) in exchanges"
+                :key="index"
+                style="position: relative; margin-bottom: 25px"
+                :class="{
+                  'd-flex align-center justify-center exchange-active':
+                    exchange.selected,
+                  'd-flex align-center justify-center': !exchange.selected,
+                }"
+                flat
+                rounded
+              >
+                <div class="custom-avatar">
+                  <v-img contain :src="exchange.image"></v-img>
+                </div>
+                <v-row class="pa-3 pt-10">
+                  <v-col
+                    cols="12"
+                    class="d-flex justify-space-between align-center pt-10 px-5"
+                  >
+                    <v-btn
+                      @click="_addExchange(exchange)"
+                      class="mx-2"
+                      fab
+                      dark
+                      x-small
+                      outlined
+                      :disabled="
+                        !exchange.active ||
+                        !user.subscription ||
+                        user.subscription == false
+                      "
+                      color="primary"
+                    >
+                      <v-icon> mdi-cog </v-icon>
+                    </v-btn>
+                    <v-btn
+                      @click="_addExchange(exchange)"
+                      class="mx-2"
+                      fab
+                      dark
+                      x-small
+                      outlined
+                      :disabled="
+                        !exchange.active ||
+                        !user.subscription ||
+                        user.subscription == false
+                      "
+                      color="primary"
+                    >
+                      <v-icon> mdi-pencil </v-icon>
+                    </v-btn>
+                    <v-btn
+                      class="mx-2"
+                      fab
+                      dark
+                      x-small
+                      outlined
+                      :disabled="
+                        !exchange.active ||
+                        !user.subscription ||
+                        user.subscription == false
+                      "
+                      color="danger"
+                    >
+                      <v-icon> mdi-delete </v-icon>
+                    </v-btn>
+                  </v-col>
+                  <v-col cols="12">
+                    <h4 class="text-body-2 font-weight-bold mb-2">
+                      {{ exchange.name }}
+                    </h4>
+                    <v-alert dense border="left" colored-border color="success">
+                      <span
+                        class="text-caption font-weight-bold"
+                        v-if="exchange.updateAt"
+                      >
+                        Latest Update :
+                        {{
+                          $moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")
+                        }}
+                      </span>
+                      <span class="text-caption font-weight-bold" v-else>
+                        Latest Update : -
+                      </span>
+                    </v-alert>
+                  </v-col>
+
+                  <v-overlay
+                    z-index="1"
+                    v-if="exchange.comingsoon"
+                    :absolute="true"
+                    opacity="0.7"
+                    overlay="true"
+                    style="border-radius: 12px"
+                  >
+                    <h3 style="letter-spacing: 2px" class="customYellow--text">
+                      Coming Soon!
+                    </h3>
+                  </v-overlay>
+                </v-row>
+                <!-- ORNAMENTS -->
+                <div v-if="false" class="ornament o1"></div>
+                <!-- ORNAMENTS END -->
+              </v-card>
+            </div>
+          </v-col>
+          <v-col v-if="false" cols="12" class="d-flex px-0 pt-0">
+            <v-col
+              v-for="(exchange, index) in exchanges"
+              :key="index"
+              sm="6"
+              md="4"
+              lg="3"
+            >
+            </v-col>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+
     <v-dialog v-if="showAddExchange" v-model="showAddExchange" max-width="600">
       <template>
         <ModalsExchangeSetup
@@ -31,195 +203,8 @@
         </v-btn>
       </template>
     </v-snackbar>
-
-    <v-col cols="12" class="d-flex justify-center align-center text-center">
-      <v-card class="d-flex px-5 py-3" style="width: 100%" color="primary" flat>
-        <v-card-title>
-          <v-icon large left dark> mdi-star-circle </v-icon>
-        </v-card-title>
-        <v-card-text
-          style="text-align: left"
-          class="d-flex flex-column justify-center align-start pa-0"
-        >
-          <span class="white--text"
-            >Please be sure to whitelist the following IP address when creating
-            an API Key on your exchange. It is a required step!</span
-          >
-          <v-chip color="customGreen black--text" flat>
-            <span class="mr-2 font-weight-bold">
-              {{ whitelistIp }}
-            </span>
-            <v-tooltip v-model="copied" top>
-              <template v-slot:activator="{ on, attrs }">
-                <v-btn
-                  icon
-                  v-bind="attrs"
-                  v-on="on"
-                  color="black"
-                  size="16"
-                  v-clipboard:copy="whitelistIp"
-                  v-clipboard:success="onCopy"
-                  v-clipboard:error="onError"
-                >
-                  <v-icon color="black"> mdi-content-copy </v-icon>
-                </v-btn>
-              </template>
-              <span>{{ copied ? "Copy" : "Copied" }}</span>
-            </v-tooltip>
-          </v-chip>
-        </v-card-text>
-      </v-card>
-    </v-col>
-    <v-col cols="12" class="d-flex px-0 pt-0">
-      <v-col
-        v-for="(exchange, index) in exchanges"
-        :key="index"
-        sm="6"
-        md="4"
-        lg="3"
-      >
-        <v-card
-          style="position: relative; margin-bottom: 25px"
-          :class="{
-            'd-flex align-center justify-center exchange-active':
-              exchange.selected,
-            'd-flex align-center justify-center': !exchange.selected,
-          }"
-          flat
-          rounded
-        >
-          <v-row>
-            <v-col cols="12" class="d-flex align-center justify-start pb-0">
-              <div
-                style="width: 100%"
-                class="d-flex justify-center align-center"
-              >
-                <img
-                  style="height: 100px; padding: 20px"
-                  :src="exchange.image"
-                  alt=""
-                />
-              </div>
-            </v-col>
-            <v-col
-              cols="12"
-              class="d-flex flex-column justify-start align-center pt-0 pb-10"
-            >
-              <h4 class="pb-5">{{ exchange.name }}</h4>
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-if="exchange.active"
-                small
-                color="primary"
-                rounded
-                :ripple="false"
-                @click="_addExchange(exchange)"
-                >Edit Exchange</v-btn
-              >
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-else
-                color="customPink white--text"
-                small
-                rounded
-                :ripple="false"
-                @click="_addExchange(exchange)"
-                >Setup Exchange</v-btn
-              >
-              <span
-                class="text-chip mt-3 text-caption font-weight-bold"
-                v-if="exchange.updateAt"
-              >
-                Latest Update :
-                {{ $moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm") }}
-              </span>
-              <span class="text-chip mt-3 text-caption font-weight-bold" v-else>
-                Latest Update : -
-              </span>
-            </v-col>
-            <v-overlay
-              z-index="1"
-              v-if="exchange.comingsoon"
-              :absolute="true"
-              opacity="0.7"
-              overlay="true"
-              style="border-radius: 12px"
-            >
-              <h3 style="letter-spacing: 2px" class="customYellow--text">
-                Coming Soon!
-              </h3>
-            </v-overlay>
-          </v-row>
-          <!-- ORNAMENTS -->
-          <div class="ornament o1"></div>
-          <!-- ORNAMENTS END -->
-        </v-card>
-      </v-col>
-    </v-col>
   </v-row>
 </template>
-
-<style scoped>
-.exchange-selected {
-  position: absolute;
-  bottom: -20px;
-  right: 5px;
-  background: #17576a;
-  color: white;
-  padding: 0px 15px;
-  border-radius: 0px 0px 15px 15px !important;
-  font-size: 0.8rem;
-}
-
-.exchange-table-selected {
-  background: #17576a;
-  padding: 5px 25px;
-  font-weight: bold;
-  color: white;
-  float: right;
-  font-size: 0.8rem;
-  border-radius: 15px 15px 0px 0px;
-}
-
-.updated-label {
-  position: absolute;
-  font-size: 0.7rem;
-  bottom: -28px;
-  background: #17576a;
-  color: white;
-  padding: 5px 22px;
-}
-
-.text-info {
-  background: #177e89;
-  color: white;
-  border-radius: 10px;
-  padding: 13px 10px;
-}
-.text-chip {
-  padding: 8px;
-  background-color: #f4f7fd;
-  border-radius: 20px;
-}
-
-.ornament {
-  position: absolute;
-  width: 50%;
-  height: 4px;
-  border-radius: 8px;
-
-  left: 50%;
-  top: 100%;
-  transform: translate(-50%, -50%);
-}
-.ornament.o1 {
-  background: var(--primary);
-}
-
-.ornament.o2 {
-  background: var(--primary);
-}
-</style>
 
 <script>
 import Form from "./form";
@@ -474,3 +459,120 @@ export default {
   },
 };
 </script>
+
+
+<style scoped>
+.custom-card {
+  display: flex;
+  flex-wrap: wrap;
+  width: 100%;
+  justify-content: space-between;
+  align-items: center;
+}
+.exchange-selected {
+  position: absolute;
+  bottom: -20px;
+  right: 5px;
+  background: #17576a;
+  color: white;
+  padding: 0px 15px;
+  border-radius: 0px 0px 15px 15px !important;
+  font-size: 0.8rem;
+}
+
+.exchange-table-selected {
+  background: #17576a;
+  padding: 5px 25px;
+  font-weight: bold;
+  color: white;
+  float: right;
+  font-size: 0.8rem;
+  border-radius: 15px 15px 0px 0px;
+}
+
+.updated-label {
+  position: absolute;
+  font-size: 0.7rem;
+  bottom: -28px;
+  background: #17576a;
+  color: white;
+  padding: 5px 22px;
+}
+
+.text-info {
+  background: #177e89;
+  color: white;
+  border-radius: 10px;
+  padding: 13px 10px;
+}
+.text-chip {
+  padding: 8px;
+  background-color: #f4f7fd;
+  border-radius: 20px;
+}
+
+.ornament {
+  position: absolute;
+  width: 50%;
+  height: 4px;
+  border-radius: 8px;
+
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+}
+.ornament.o1 {
+  background: var(--primary);
+}
+
+.ornament.o2 {
+  background: var(--primary);
+}
+
+.card-1 {
+  position: relative;
+  width: 90%;
+  height: 314px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+
+.card-1 > .background-image {
+  transform: rotate(40deg) scaleX(-1);
+  position: absolute;
+  top: -60%;
+  left: 18%;
+}
+
+.relative-container {
+  position: relative;
+}
+
+.exchange-card-container {
+  position: absolute;
+  display: flex;
+}
+
+.exchange-card-container > .v-card {
+  width: 265px !important;
+  margin-right: 20px;
+}
+
+.custom-avatar {
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  padding: 10px;
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 100% !important;
+  top: 0%;
+  left: 0%;
+  transform: translate(50%, -50%);
+}
+</style>
+

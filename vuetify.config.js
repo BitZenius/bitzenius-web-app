@@ -67,6 +67,7 @@ export default {
         customPink: "#FE759F",
         customYellow: "#FEE603",
         primary: '#3394F8',
+        primary2: '#46A0F8',
         danger: '#FF6469',
         success: '#1AD598',
         'success-light': "#d1f7ea",
