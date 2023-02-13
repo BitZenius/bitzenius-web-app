@@ -83,15 +83,14 @@
           ></base-menu-item>
         </base-menu-item-group>
 
-        <v-list-group v-if="false" prepend-icon="mdi-tune-vertical">
-          <template v-slot:activator>
-            <v-list-item-content>
-              <v-list-item-title>Advance Bots</v-list-item-title>
-            </v-list-item-content>
-          </template>
-        </v-list-group>
-
         <v-divider class="my-2" />
+
+        <base-menu-item
+          :to="'/wallet'"
+          :icon="true"
+          :avatar="`$vuetify.icons.WalletIcon`"
+          :title="`Wallet`"
+        ></base-menu-item>
 
         <base-menu-item
           :to="'/subscription'"

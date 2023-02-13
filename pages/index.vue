@@ -46,7 +46,10 @@
               </v-card>
             </v-col>
             <v-col cols="12">
-              <TablesActivePosition :showExchangeCards="false" />
+              <TablesActivePosition
+                :showTabs="false"
+                :showExchangeCards="false"
+              />
             </v-col>
           </v-row>
         </v-col>

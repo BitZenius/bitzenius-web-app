@@ -210,7 +210,6 @@ export default {
   layout: "trading-history",
   data() {
     return {
-      title: "Transaction Report",
       isLoading: true,
       // ID, Type, Date, Profit, Price, Qty
       tradingHeaders: [
@@ -288,11 +287,11 @@ export default {
       tradingItemsDetail: [],
     };
   },
-  head() {
-    return {
-      title: this.title,
-    };
-  },
+  // head() {
+  //   return {
+  //     title: this.title,
+  //   };
+  // },
   computed: {
     profitItemsFiltered() {
       let temp = this.profitItems;

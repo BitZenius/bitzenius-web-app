@@ -38,9 +38,6 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <!-- <v-col cols="12" class="d-flex justify-center align-center">
-        <p class="text-center text-info primary">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
-    </v-col> -->
     <v-col v-if="showExchangeCards" cols="12" class="d-flex px-0 pt-10">
       <v-col
         v-for="(exchange, index) in exchanges"
@@ -194,80 +191,99 @@
         </v-card>
       </v-col>
     </v-col>
-    <v-col cols="12">
-      <v-card class="pa-8" flat>
-        <v-row class="mb-3" justify="end" align="end">
-          <v-col cols="12" md="4">
-            <v-text-field
-              v-model="searchQuery"
-              placeholder="Search By Pair"
-              rounded
-              class="custom-input"
-            >
-              <template v-slot:prepend-inner>
-                <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
-              </template></v-text-field
-            >
-          </v-col>
-        </v-row>
-        <v-data-table
-          style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
-          @click:row="_onSelectPair"
-          disable-pagination
-          :hide-default-footer="true"
-          :sort-by.sync="sortBy"
-          :sort-desc.sync="sortDesc"
-          :headers="headers"
-          :items="activePositionFiltered"
-          :loading="isLoading"
-          class="elevation-0"
-          loading-text="Loading... Please wait"
-        >
-          <template v-slot:header.pair="{ header }">
-            <strong class="black--text text-body-1 font-weight-bold">{{
-              header.text
-            }}</strong>
-          </template>
-          <template v-slot:header.price="{ header }">
-            <strong class="black--text text-body-1 font-weight-bold">{{
-              header.text
-            }}</strong>
-          </template>
-          <template v-slot:header.profit="{ header }">
-            <strong class="black--text text-body-1 font-weight-bold">{{
-              header.text
-            }}</strong>
-          </template>
-          <template v-slot:header.status="{ header }">
-            <strong class="black--text text-body-1 font-weight-bold">{{
-              header.text
-            }}</strong>
-          </template>
 
-          <!-- hide-default-footer disable-pagination -->
-          <template v-slot:top>
-            <div>
-              <v-dialog v-model="dialogDelete" max-width="400px" persistent>
-                <v-card>
-                  <v-card-title class="headline">
-                    Delete Bot Confirmation
-                  </v-card-title>
-                  <v-card-text>
-                    Are you sure you want to delete this bot setup?
-                  </v-card-text>
-                  <v-card-actions>
-                    <v-spacer />
-                    <v-btn color="blue darken-1" text @click="closeDelete">
-                      Cancel
-                    </v-btn>
-                    <v-btn color="primary" @click="deleteItemConfirm">
-                      OK
-                    </v-btn>
-                  </v-card-actions>
-                </v-card>
-              </v-dialog>
-            </div>
-            <!-- <div>
+    <v-col cols="12">
+      <v-card v-if="showTabs" class="pa-3 mb-5" flat rounded>
+        <v-tabs class="pa-2" v-model="currentItem">
+          <v-tab :ripple="false" v-for="item in tables" :key="item">
+            <span class="text-body-1 text-capitalize">{{ item }}</span>
+          </v-tab>
+        </v-tabs>
+      </v-card>
+      <v-card class="pa-3" flat rounded>
+        <v-tabs-items v-model="currentItem">
+          <v-tab-item key="Default">
+            <v-card :key="`${counter}-default`" class="pa-8" flat>
+              <v-row class="mb-3" justify="end" align="end">
+                <v-col cols="12" md="4">
+                  <v-text-field
+                    v-model="searchQuery"
+                    placeholder="Search By Pair"
+                    rounded
+                    class="custom-input"
+                  >
+                    <template v-slot:prepend-inner>
+                      <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+                    </template></v-text-field
+                  >
+                </v-col>
+              </v-row>
+              <v-data-table
+                style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
+                @click:row="_onSelectPair"
+                disable-pagination
+                :hide-default-footer="true"
+                :sort-by.sync="sortBy"
+                :sort-desc.sync="sortDesc"
+                :headers="headers"
+                :items="activePositionFiltered"
+                :loading="isLoading"
+                class="elevation-0"
+                loading-text="Loading... Please wait"
+              >
+                <template v-slot:header.pair="{ header }">
+                  <strong class="black--text text-body-1 font-weight-bold">{{
+                    header.text
+                  }}</strong>
+                </template>
+                <template v-slot:header.price="{ header }">
+                  <strong class="black--text text-body-1 font-weight-bold">{{
+                    header.text
+                  }}</strong>
+                </template>
+                <template v-slot:header.profit="{ header }">
+                  <strong class="black--text text-body-1 font-weight-bold">{{
+                    header.text
+                  }}</strong>
+                </template>
+                <template v-slot:header.status="{ header }">
+                  <strong class="black--text text-body-1 font-weight-bold">{{
+                    header.text
+                  }}</strong>
+                </template>
+
+                <!-- hide-default-footer disable-pagination -->
+                <template v-slot:top>
+                  <div>
+                    <v-dialog
+                      v-model="dialogDelete"
+                      max-width="400px"
+                      persistent
+                    >
+                      <v-card>
+                        <v-card-title class="headline">
+                          Delete Bot Confirmation
+                        </v-card-title>
+                        <v-card-text>
+                          Are you sure you want to delete this bot setup?
+                        </v-card-text>
+                        <v-card-actions>
+                          <v-spacer />
+                          <v-btn
+                            color="blue darken-1"
+                            text
+                            @click="closeDelete"
+                          >
+                            Cancel
+                          </v-btn>
+                          <v-btn color="primary" @click="deleteItemConfirm">
+                            OK
+                          </v-btn>
+                        </v-card-actions>
+                      </v-card>
+                    </v-dialog>
+                  </div>
+                  <!-- <div>
                         <v-row>
                             <v-col cols="12">
                                 <span v-if="selectedExchangeReport" class="exchange-table-selected">
@@ -276,133 +292,146 @@
                             </v-col>
                         </v-row>
                     </div> -->
-          </template>
-          <template v-slot:item.pair="{ item }">
-            <v-row class="py-2">
-              <v-col cols="12" class="d-flex align-center justify-start">
-                <v-list-item-avatar class="ma-0">
-                  <v-img
-                    style="width: 28px !important"
-                    @error="errorHandler"
-                    max-width="28"
-                    max-height="28"
-                    :alt="item.logo"
-                    :src="getImgUrl(item.pair_from)"
-                  ></v-img>
-                </v-list-item-avatar>
-                <div class="d-flex flex-column ml-3">
-                  <div class="d-flex">
-                    <span class="text-subtitle-2 font-weight-bold"
-                      >{{ item.pair_from }} / {{ item.pair_to }}
-                    </span>
+                </template>
+                <template v-slot:item.pair="{ item }">
+                  <v-row class="py-2">
+                    <v-col cols="12" class="d-flex align-center justify-start">
+                      <v-list-item-avatar class="ma-0">
+                        <v-img
+                          style="width: 28px !important"
+                          @error="errorHandler"
+                          max-width="28"
+                          max-height="28"
+                          :alt="item.logo"
+                          :src="getImgUrl(item.pair_from)"
+                        ></v-img>
+                      </v-list-item-avatar>
+                      <div class="d-flex flex-column ml-3">
+                        <div class="d-flex">
+                          <span class="text-subtitle-2 font-weight-bold"
+                            >{{ item.pair_from }} / {{ item.pair_to }}
+                          </span>
+                        </div>
+                        <span class="text-subtitle-2">{{ item.quantity }}</span>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </template>
+                <template v-slot:item.price="{ item }">
+                  <div class="d-flex flex-column align-start justify-center">
+                    <span class="text-subtitle-2 font-weight-bold">{{
+                      item.price.value
+                    }}</span>
+                    <span
+                      v-if="parseFloat(item.price.percentage) < 0"
+                      class="danger--text text-subtitle-2 font-weight-bold"
+                      >{{ item.price.percentage }}%</span
+                    >
+                    <span
+                      v-else
+                      class="success--text text-subtitle-2 font-weight-bold"
+                      >{{ item.price.percentage }}%</span
+                    >
                   </div>
-                  <span class="text-subtitle-2">{{ item.quantity }}</span>
-                </div>
-              </v-col>
-            </v-row>
-          </template>
-          <template v-slot:item.price="{ item }">
-            <div class="d-flex flex-column align-start justify-center">
-              <span class="text-subtitle-2 font-weight-bold">{{
-                item.price.value
-              }}</span>
-              <span
-                v-if="parseFloat(item.price.percentage) < 0"
-                class="danger--text text-subtitle-2 font-weight-bold"
-                >{{ item.price.percentage }}%</span
-              >
-              <span
-                v-else
-                class="success--text text-subtitle-2 font-weight-bold"
-                >{{ item.price.percentage }}%</span
-              >
-            </div>
-          </template>
-          <template v-slot:item.profit="{ item }">
-            <div class="d-flex flex-column align-start justify-center">
-              <!-- <code>{{item.status}}</code> -->
-              <strong
-                class="danger--text text-subtitle-2 font-weight-bold"
-                v-if="
-                  item.status == 'ACTIVE' &&
-                  parseFloat(item.profit.percentage) < 0
-                "
-                >{{ item.profit.percentage }}%</strong
-              >
-              <strong
-                class="success--text text-subtitle-2 font-weight-bold"
-                v-if="
-                  item.status == 'ACTIVE' &&
-                  parseFloat(item.profit.percentage) > 0
-                "
-                >{{ item.profit.percentage }}%</strong
-              >
-              <strong
-                class="primary--text text-subtitle-2 font-weight-bold"
-                v-if="
-                  item.status == 'INACTIVE' ||
-                  item.status == 'WAITING_POSITION' ||
-                  parseFloat(item.profit.percentage) == 0
-                "
-                >0%</strong
-              >
+                </template>
+                <template v-slot:item.profit="{ item }">
+                  <div class="d-flex flex-column align-start justify-center">
+                    <!-- <code>{{item.status}}</code> -->
+                    <strong
+                      class="danger--text text-subtitle-2 font-weight-bold"
+                      v-if="
+                        item.status == 'ACTIVE' &&
+                        parseFloat(item.profit.percentage) < 0
+                      "
+                      >{{ item.profit.percentage }}%</strong
+                    >
+                    <strong
+                      class="success--text text-subtitle-2 font-weight-bold"
+                      v-if="
+                        item.status == 'ACTIVE' &&
+                        parseFloat(item.profit.percentage) > 0
+                      "
+                      >{{ item.profit.percentage }}%</strong
+                    >
+                    <strong
+                      class="primary--text text-subtitle-2 font-weight-bold"
+                      v-if="
+                        item.status == 'INACTIVE' ||
+                        item.status == 'WAITING_POSITION' ||
+                        parseFloat(item.profit.percentage) == 0
+                      "
+                      >0%</strong
+                    >
 
-              <span
-                v-if="parseFloat(item.profit.value) < 0"
-                class="danger--text text-subtitle-2 font-weight-bold"
-                >{{ item.profit.value }} USDT</span
-              >
-              <span
-                v-else
-                class="success--text text-subtitle-2 font-weight-bold"
-                >{{ item.profit.value }} USDT</span
-              >
-            </div>
-          </template>
-          <template v-slot:item.status="{ item }">
-            <v-chip
-              v-if="item.status == 'WAITING_POSITION'"
-              class="orange--text font-weight-bold"
-              color="customYellow lighten-2"
-              small
-              label
-            >
-              Waiting for Position
-            </v-chip>
-            <v-chip
-              v-if="item.status == 'ACTIVE'"
-              small
-              class="success--text font-weight-bold"
-              color="success-light"
-              label
-            >
-              Active
-            </v-chip>
-            <v-chip
-              v-if="item.status == 'INACTIVE'"
-              small
-              color="grey"
-              dark
-              label
-            >
-              Inactive
-            </v-chip>
-            <v-chip
-              v-if="item.status == 'BLACKLISTED'"
-              small
-              color="danger"
-              dark
-              label
-            >
-              Blacklisted
-            </v-chip>
-          </template>
-          <template v-slot:no-data>
-            <p>No record available!</p>
-          </template>
-        </v-data-table>
+                    <span
+                      v-if="parseFloat(item.profit.value) < 0"
+                      class="danger--text text-subtitle-2 font-weight-bold"
+                      >{{ item.profit.value }} USDT</span
+                    >
+                    <span
+                      v-else
+                      class="success--text text-subtitle-2 font-weight-bold"
+                      >{{ item.profit.value }} USDT</span
+                    >
+                  </div>
+                </template>
+                <template v-slot:item.status="{ item }">
+                  <v-chip
+                    v-if="item.status == 'WAITING_POSITION'"
+                    class="orange--text font-weight-bold"
+                    color="customYellow lighten-2"
+                    small
+                    label
+                  >
+                    Waiting for Position
+                  </v-chip>
+                  <v-chip
+                    v-if="item.status == 'ACTIVE'"
+                    small
+                    class="success--text font-weight-bold"
+                    color="success-light"
+                    label
+                  >
+                    Active
+                  </v-chip>
+                  <v-chip
+                    v-if="item.status == 'INACTIVE'"
+                    small
+                    color="grey"
+                    dark
+                    label
+                  >
+                    Inactive
+                  </v-chip>
+                  <v-chip
+                    v-if="item.status == 'BLACKLISTED'"
+                    small
+                    color="danger"
+                    dark
+                    label
+                  >
+                    Blacklisted
+                  </v-chip>
+                </template>
+                <template v-slot:no-data>
+                  <p>No record available!</p>
+                </template>
+              </v-data-table>
+            </v-card>
+          </v-tab-item>
+
+          <v-tab-item key="Daily Profit">
+            <ProfitHistory :key="`${counter}-profitR`" ref="profitRef" />
+          </v-tab-item>
+
+          <v-tab-item key="All Trading History">
+            <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
+          </v-tab-item>
+        </v-tabs-items>
       </v-card>
     </v-col>
+
+    <v-col cols="12"> </v-col>
   </v-row>
 </template>
 
@@ -411,13 +440,21 @@ import io from "socket.io-client";
 import { mapActions } from "vuex";
 
 import Form from "~/pages/bots/form.vue";
+import TradingHistory from "@/pages/transaction-history/trading-history.vue";
+import ProfitHistory from "@/pages/transaction-history/profit-history.vue";
 export default {
   layout: "account",
   components: {
     Form,
+    TradingHistory,
+    ProfitHistory,
   },
   data() {
     return {
+      counter: 0,
+      currentItem: "Default",
+      tables: ["Default", "Daily Profit", "All Trading History"],
+
       dialog: true,
       dialogDelete: false,
       // START OF CARD EXCHANGE
@@ -550,6 +587,12 @@ export default {
         return true;
       },
     },
+    showTabs: {
+      type: Boolean,
+      default: () => {
+        return true;
+      },
+    },
   },
 
   computed: {
@@ -639,6 +682,7 @@ export default {
       val || this.closeDelete();
     },
     exchange(val) {
+      this.counter++;
       this._fetchBotsList(val);
     },
   },
@@ -806,6 +850,8 @@ export default {
     },
     selectExchangeCard(val, exchange, index) {
       if (exchange.comingsoon) return;
+
+      this.$store.commit("exchange/setSelectedExchange", val);
 
       this.selectedExchangeReport = val;
       for (let i = 0; i < this.exchanges.length; i++) {

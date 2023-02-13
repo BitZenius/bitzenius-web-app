@@ -1,5 +1,5 @@
 <template>
-  <v-row class="py-5">
+  <v-row class="pa-5">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">

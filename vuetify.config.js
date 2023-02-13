@@ -76,7 +76,10 @@ export default {
         'basic-1': '#ffffff',
         'basic-2': '#ffffff',
 
-        // TEX
+        // BG
+        'off-white': '#f4f7fd',
+
+        // TEXT
         'primary-text': "#ffffff"
       }
     }
