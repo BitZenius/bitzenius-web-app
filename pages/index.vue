@@ -186,10 +186,8 @@ export default {
                 }
             }).then((res)=>{
                 this.showChart = true;
-                console.log('-fetchChart', res);
                 this.$store.commit('setIsLoading', false);
                 if(res.success){
-                    console.log('chartData', this.chartData)
                     if(res.series.length <= 0){ // IS EMPTY
                         this.chartData.options.xaxis.categories = [];
                         this.chartData.series  = [{name: 'P&L',data: []}]
