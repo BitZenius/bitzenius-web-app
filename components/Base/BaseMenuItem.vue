@@ -14,7 +14,7 @@
       </v-list-item-avatar>
     </v-list-item-action>
     <v-list-item-content>
-      <v-list-item-title class="black--text text-body-1">{{
+      <v-list-item-title class="black--text text-body-2">{{
         title
       }}</v-list-item-title>
     </v-list-item-content>
@@ -26,9 +26,9 @@ export default {
   name: "BaseMenuItem",
   props: {
     to: {
-      type: String,
+      type: String | Object,
       default: () => {
-        return "/";
+        return undefined;
       },
     },
     icon: {
@@ -69,6 +69,7 @@ export default {
 .custom-menu.v-list-item {
   padding: 0px !important;
   background-color: none !important;
+  cursor: pointer;
 }
 
 .custom-menu.v-list-item > .v-list-item__action {

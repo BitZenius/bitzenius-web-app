@@ -25,6 +25,7 @@
             />
           </v-list-item-content>
         </v-list-item>
+        <menu-profile :user="user"></menu-profile>
         <base-menu-item
           :to="'/'"
           :icon="true"
@@ -54,7 +55,7 @@
 
         <base-menu-item-group
           :icon="true"
-          :avatar="`$vuetify.icons.DailyProfitIcon`"
+          :avatar="`$vuetify.icons.AdvancedBotIcon`"
           :title="`Advanced Bots`"
         >
           <base-menu-item
@@ -68,7 +69,7 @@
           <base-menu-item
             :to="'/dca'"
             :icon="true"
-            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :avatar="`$vuetify.icons.CoinIcon`"
             :disabled="true"
             :title="`DCA`"
             class="ml-2"
@@ -127,6 +128,13 @@
           :icon="true"
           :avatar="`$vuetify.icons.SettingsIcon`"
           :title="`Settings`"
+        ></base-menu-item>
+
+        <base-menu-item
+          @click.native="logout"
+          :icon="true"
+          :avatar="`$vuetify.icons.LogoutIcon`"
+          :title="`Logout`"
         ></base-menu-item>
       </v-list>
       <v-icon
@@ -297,9 +305,10 @@
 import BaseMenuItem from "~/components/Base/BaseMenuItem.vue";
 import BaseMenuItemGroup from "~/components/Base/BaseMenuItemGroup.vue";
 import io from "socket.io-client";
+import MenuProfile from "~/components/MenuProfile.vue";
 
 export default {
-  components: { BaseMenuItem, BaseMenuItemGroup },
+  components: { BaseMenuItem, BaseMenuItemGroup, MenuProfile },
   data() {
     return {
       clipped: false,

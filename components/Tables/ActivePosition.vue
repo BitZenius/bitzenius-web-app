@@ -786,28 +786,29 @@ export default {
       });
 
       this.socket.on("binance_ticker", (msg) => {
-        let array = JSON.parse(msg);
-        array.forEach((data) => {
-          let index = this.activePosition.findIndex((b) => b.symbol == data.s);
-          if (index < 0) return;
-          this.activePosition[index].price.value = data.c;
-          this.activePosition[index].price.percentage = data.P;
+        // let array = JSON.parse(msg);
+        let data = JSON.parse(msg);
+        // array.forEach((data) => {
+        let index = this.activePosition.findIndex((b) => b.symbol == data.s);
+        if (index < 0) return;
+        this.activePosition[index].price.value = data.c;
+        this.activePosition[index].price.percentage = data.P;
 
-          // PNL CALCULATION
-          if (this.activePosition[index].quantity > 0) {
-            // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
-            // data.c   = Current Price (from binance stream)
-            let average = parseFloat(this.activePosition[index].average);
-            let percentage =
-              average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-            let pnl =
-              parseFloat(this.activePosition[index].amountUsd) * percentage;
-            this.activePosition[index].profit.value = pnl.toFixed(3);
-            let convertPercentage = percentage * 100;
-            this.activePosition[index].profit.percentage =
-              convertPercentage.toFixed(3);
-          }
-        });
+        // PNL CALCULATION
+        if (this.activePosition[index].quantity > 0) {
+          // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
+          // data.c   = Current Price (from binance stream)
+          let average = parseFloat(this.activePosition[index].average);
+          let percentage =
+            average == 0 ? 0 : (parseFloat(data.c) - average) / average;
+          let pnl =
+            parseFloat(this.activePosition[index].amountUsd) * percentage;
+          this.activePosition[index].profit.value = pnl.toFixed(3);
+          let convertPercentage = percentage * 100;
+          this.activePosition[index].profit.percentage =
+            convertPercentage.toFixed(3);
+        }
+        // });
       });
     },
     async _fetchBotsList(exchangeName) {

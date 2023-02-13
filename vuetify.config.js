@@ -7,13 +7,12 @@ import SettingsIcon from "~/assets/custom-icons/Settings.vue";
 import SubscriptionIcon from "~/assets/custom-icons/Subscription.vue";
 import TutorialIcon from "~/assets/custom-icons/Tutorial.vue";
 import WalletIcon from "~/assets/custom-icons/Wallet.vue";
-import VStepperIcon from '@/components/VuetifyCustomComponents/VStepperIcon.vue'
-import VStepperStepIcon from '@/components/VuetifyCustomComponents/VStepperIcon.vue'
+import AdvancedBotIcon from "~/assets/custom-icons/AdvancedBot.vue";
+import CoinIcon from "~/assets/custom-icons/Coin.vue";
+import LogoutIcon from "~/assets/custom-icons/Logout.vue";
+
 export default {
-  components: {
-    VStepperIcon,
-    VStepperStepIcon,
-  },
+
   icons: {
     values: {
       HomeIcon: {
@@ -42,6 +41,15 @@ export default {
       },
       WalletIcon: {
         component: WalletIcon,
+      },
+      AdvancedBotIcon: {
+        component: AdvancedBotIcon
+      },
+      CoinIcon: {
+        component: CoinIcon
+      },
+      LogoutIcon: {
+        component: LogoutIcon
       },
 
     },
