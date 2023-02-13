@@ -56,7 +56,10 @@
                     </v-chip> -->
                     <div v-if="item.type == 'buy'" class="d-flex flex-column">
                         <small>{{item.type.toUpperCase() == 'BUY' ? 'Step' : null}}</small>
-                        <span style="font-weight:bold;">
+                        <span v-if="item.desc == 0" style="font-weight:bold;">
+                            Initial Order
+                        </span>
+                        <span v-else style="font-weight:bold;">
                             {{item.desc}}
                         </span>
                     </div>

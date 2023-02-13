@@ -70,7 +70,7 @@
                                 </br><code>{{item.pnl.toFixed(4)}}</code>
                             </template>
                             <template v-slot:item.qty="{item}">
-                                <span>{{item.amount_coin_filled}}</span>                
+                                <span>{{item.amount_coin_filled.toFixed(4)}}</span>                
                             </template>
                         </v-data-table>
                     </v-card-text>

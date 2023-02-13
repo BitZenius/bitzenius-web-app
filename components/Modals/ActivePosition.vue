@@ -73,7 +73,10 @@
                             {{item.value.toFixed(6)}}
                         </span>
                         <span v-else-if="item.key == 'total_step'">
-                            {{item.value - 1}}
+                            <span v-if="(parseInt(item.value) - 1) == 0">Initial Order</span>
+                            <span v-else>
+                                {{item.value - 1}}
+                            </span>
                         </span>
                         <span v-else>
                             {{item.value}}
