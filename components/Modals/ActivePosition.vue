@@ -353,7 +353,7 @@ export default {
             conditionList:[],
             conditionItems: [{
                     icon: "mdi-arrow-up-drop-circle-outline",
-                    title: "Next Step Price",
+                    title: "Next Step Drop Price",
                     key:"next_step_price",
                     value: 0
                 },

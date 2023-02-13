@@ -1,13 +1,18 @@
 <template>
-<div>
+<div class="app">
     <v-card class="verification-card d-flex align-center justify-center" color="primary">
         <v-card-text style="text-align:left;" class="d-flex flex-column justify-center align-center pa-0">
             <h3 class="white--text">
                 {{ message }}
             </h3>
-            <v-btn :loading="isLoading" depressed class="customGreen black--text text-capitalize ml-2 mt-4" @click.stop="sendEmailVerification">
-                {{ buttonText }}
-            </v-btn>
+            <div class="d-flex justify-center align-center mt-4">
+                <v-btn :loading="isLoading" depressed class="customGreen black--text text-capitalize" @click.stop="sendEmailVerification">
+                    {{ buttonText }}
+                </v-btn>
+                <v-btn @click="logout" depressed color="customPink" class="text-capitalize ml-2">
+                    Logout
+                </v-btn>
+            </div>
         </v-card-text>
     </v-card>
 </div>
@@ -49,6 +54,13 @@ export default {
         })
     },
     methods: {
+        logout(){
+            this.$fire.auth.signOut().then(() => {
+                this.$router.push('/signin')
+            }).catch((error) => {
+                // console.log(error)
+            })
+        },
         sendEmailVerification() {
             this.isLoading = true
             this.$api.$post('/user/auth/verify', {
@@ -69,16 +81,23 @@ export default {
 </script>
 
 <style>
-.noGutters {
-    height: 100%;
-}
+    .noGutters {
+        height: 100%;
+    }
 
-.verification-card {
-    position: absolute;
-    width: 50%;
-    height: 50%;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-}
+    .verification-card {
+        position: absolute;
+        width: 50%;
+        height: 50%;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+    }
+  .app {
+    background-image: url('/background.jpg');
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+  }
 </style>
