@@ -236,16 +236,24 @@
           loading-text="Loading... Please wait"
         >
           <template v-slot:header.pair="{ header }">
-            <strong class="black--text">{{ header.text }}</strong>
+            <strong class="black--text text-body-2 font-weight-bold">{{
+              header.text
+            }}</strong>
           </template>
           <template v-slot:header.price="{ header }">
-            <strong class="black--text">{{ header.text }}</strong>
+            <strong class="black--text text-body-2 font-weight-bold">{{
+              header.text
+            }}</strong>
           </template>
           <template v-slot:header.profit="{ header }">
-            <strong class="black--text">{{ header.text }}</strong>
+            <strong class="black--text text-body-2 font-weight-bold">{{
+              header.text
+            }}</strong>
           </template>
           <template v-slot:header.status="{ header }">
-            <strong class="black--text">{{ header.text }}</strong>
+            <strong class="black--text text-body-2 font-weight-bold">{{
+              header.text
+            }}</strong>
           </template>
 
           <!-- hide-default-footer disable-pagination -->
@@ -377,7 +385,7 @@
               v-if="item.status == 'ACTIVE'"
               small
               class="success--text font-weight-bold"
-              color="success lighten-4"
+              color="success-light"
               label
             >
               Active

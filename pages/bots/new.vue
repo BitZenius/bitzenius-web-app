@@ -2,7 +2,7 @@
   <v-row class="py-5">
     <v-col cols="12">
       <v-row>
-        <v-col cols="12" class="text-center text-h5 font-weight-bold pl-3">
+        <v-col cols="12" class="text-center text-h6 font-weight-bold pl-3">
           {{ title }} for {{ selectedExchange }}
         </v-col>
       </v-row>
@@ -170,15 +170,12 @@
                         </template>
                       </v-text-field>
                     </v-col>
-                    <v-col cols="8" class="d-flex align-center">
+                    <v-col cols="12" class="d-flex align-center">
                       <v-row style="width: 100%" justify="end">
-                        <v-col
-                          cols="3"
-                          v-for="(token, i) in tokenException"
-                          :key="`v-chip-${i}`"
-                          class="d-flex justify-center"
-                        >
+                        <v-col cols="12" class="d-flex flex-wrap">
                           <v-chip
+                            v-for="(token, i) in tokenException"
+                            :key="`v-chip-${i}`"
                             class="ma-2 custom-chip"
                             color="primary"
                             close
@@ -865,6 +862,7 @@ export default {
   width: 100%;
   display: flex;
   justify-content: center;
+  max-width: fit-content;
 }
 .custom-input {
   margin-top: 0px !important;

@@ -10,17 +10,19 @@
         ></v-img>
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-subtitle class="black--text">
+        <v-list-item-subtitle
+          class="black--text font-weight-bold text-body-2 mb-1"
+        >
           Crypto Assets
         </v-list-item-subtitle>
         <v-list-item-title
-          class="text-h5 font-weight-bold black--text text--lighten-2"
+          class="text-h6 font-weight-bold black--text text--lighten-2"
         >
           <v-skeleton-loader v-if="loading" loading type="heading" />
           <div v-else>
             <!-- {{balance.equivalent_usdt | currency('$', 2)}} -->
             <span v-if="convertFinished"
-              >${{ value.first }}<small>.{{ value.second }}</small></span
+              >${{ value.first }}.{{ value.second }}</span
             >
           </div>
         </v-list-item-title>

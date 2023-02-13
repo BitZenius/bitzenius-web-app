@@ -15,15 +15,14 @@
         <v-row class="pa-8 black--text main-card" justify="start">
           <v-col cols="12" style="max-width: 80%" class="mb-8">
             <div class="text-h4 font-weight-bold decorated-text">
-              Sign in to your account.
+              Email Verification.
             </div>
           </v-col>
 
           <v-col cols="12">
-            <v-form v-if="showOtp" v-model="valid" lazy-validation>
-              <div class="text-center my-5">
+            <v-form v-model="valid" lazy-validation>
+              <div class="my-5 font-weight-bold">
                 Verify your account by entering the 4 digits code we sent to
-                ****@mail.com
                 {{ otpMethod }}
               </div>
               <v-row>
@@ -36,105 +35,29 @@
                     @finish="onOtpCompleted"
                   />
                 </v-col>
-              </v-row>
-            </v-form>
-            <v-form v-else ref="form" v-model="valid" lazy-validation>
-              <v-row class="black--text">
                 <v-col cols="12">
-                  <v-text-field
-                    v-model="email"
-                    :rules="emailRules"
-                    required
-                    placeholder="Email..."
-                    hide-details=""
-                    rounded
-                    class="mb-2 custom-input py-2"
-                  >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
-                    </template>
-                  </v-text-field>
-
-                  <v-text-field
-                    v-model="password"
-                    :value="password"
-                    :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
-                    :type="show1 ? 'text' : 'password'"
-                    :rules="passwordRules"
-                    hide-details=""
-                    required
-                    @click:append="show1 = !show1"
-                    rounded
-                    class="mb-2 custom-input py-2"
-                  >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
-                    </template>
-                  </v-text-field>
-                  <p class="mt-5 mb-10">
-                    <router-link
-                      class="
-                        font-weight-bold
-                        primary--text
-                        text-decoration-none
-                      "
-                      to="/forgot-password"
-                      >Forgot your password?
-                    </router-link>
-                  </p>
                   <base-button-animated
                     :loading="isLoading"
                     :disabled="isLoading"
                     style="width: 100%"
                     color="customGreen"
                     depressed
-                    @click.native="signIn"
+                    @click.native="onOtpCompleted"
                     class="mt-5"
-                    :text="'Sign in'"
+                    :text="'Continue'"
                   ></base-button-animated>
-                  <!-- <v-btn
-                    :loading="isLoading"
-                    :disabled="isLoading"
-                    style="width: 100%"
-                    color="customGreen"
-                    x-large
-                    class="text-capitalize black--text"
-                    depressed
-                    @click.stop="signIn"
-                  >
-                    Sign in
-                  </v-btn> -->
-                </v-col>
-                <v-col cols="12">
-                  <div class="my-5 font-weight-bold">
-                    Does not have an account?
-                    <a class="primary--text" @click="$router.push('/signup')"
-                      ><b>Sign up</b></a
-                    >
-                  </div>
                 </v-col>
               </v-row>
-              <div v-show="false" class="text-center subtitle-1 my-2">OR</div>
-              <v-row v-show="false">
-                <v-col cols="12">
-                  <v-btn
-                    style="width: 100%"
-                    color="error"
-                    x-large
-                    class="text-capitalize mb-10"
-                    depressed
-                    outlined
-                    @click.stop="googleSignin"
-                  >
-                    <v-icon left> mdi-google </v-icon>
-                    Sign in with Google
-                  </v-btn>
-                </v-col>
-              </v-row>
+              <div
+                class="
+                  text-decoration-underline text-center
+                  mt-10
+                  font-weight-bold
+                "
+                style="cursor: pointer"
+              >
+                Verify later
+              </div>
             </v-form>
           </v-col>
           <v-col cols="12" v-if="message">
@@ -211,7 +134,7 @@ export default {
     otpMethod: "",
   }),
   head: {
-    title: "Verification",
+    title: "Login",
   },
   computed: {
     isLoggedIn() {
@@ -411,6 +334,11 @@ export default {
 
 .custom-input.v-input .v-input__slot {
   color: black !important;
+}
+
+.v-input__slot {
+  border-radius: 100% !important;
+  width: 56px;
 }
 
 .main-card {

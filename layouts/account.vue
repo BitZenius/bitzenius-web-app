@@ -145,7 +145,7 @@
       app
     >
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
-      <!-- <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" /> -->
+      <!-- <v-toolbar-title class="text-h6 font-weight-bold" v-text="title" /> -->
       <v-spacer />
       <ThemeToggle />
       <v-btn v-show="false" icon class="mr-2">

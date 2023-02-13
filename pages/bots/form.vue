@@ -1,53 +1,32 @@
 <template>
-  <v-dialog
-    v-model="dialog"
-    scrollable
-    persistent
-    max-width="600px"
-  >
+  <v-dialog v-model="dialog" scrollable persistent max-width="600px">
     <v-card>
-      <v-card-title class="text-h5 font-weight-bold pl-8 pt-8 pr-8">
+      <v-card-title class="text-h6 font-weight-bold pl-8 pt-8 pr-8">
         {{ formTitle }}
       </v-card-title>
       <v-card-text class="pa-5">
-        <v-form
-          ref="form"
-          v-model="valid"
-          lazy-validation
-        >
+        <v-form ref="form" v-model="valid" lazy-validation>
           <v-container>
             <v-row>
-              <v-col
-                cols="12"
-              >
+              <v-col cols="12">
                 <v-text-field
                   v-model="data.name"
                   label="Custom Name"
                   outlined
                 />
               </v-col>
-              <v-col
-                cols="12"
-              >
-              <v-select
-                v-model="data.exchange"
-                :items="exchangeItems"
-                label="Choose Exchange"
-                outlined
-              />
-              </v-col>
-              <v-col
-                cols="12"
-              >
-                <v-text-field
-                  v-model="data.api_key"
-                  label="API Key"
+              <v-col cols="12">
+                <v-select
+                  v-model="data.exchange"
+                  :items="exchangeItems"
+                  label="Choose Exchange"
                   outlined
                 />
               </v-col>
-              <v-col
-                cols="12"
-              >
+              <v-col cols="12">
+                <v-text-field v-model="data.api_key" label="API Key" outlined />
+              </v-col>
+              <v-col cols="12">
                 <v-text-field
                   v-model="data.secret_key"
                   label="Secret Key"
@@ -85,71 +64,82 @@
 
 <script>
 export default {
-  name: 'Form',
+  name: "Form",
   props: {
     id: {
       type: String,
-      default: null
+      default: null,
     },
     data: {
       type: Object,
-      default: null
+      default: null,
     },
     dialog: {
       type: Boolean,
-      default: false
-    }
+      default: false,
+    },
   },
-  data () {
+  data() {
     return {
       valid: false,
-      exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
-      isLoading: false
-    }
+      exchangeItems: ["Binance", "Tokocrypto", "MEXC", "Coinstore"],
+      isLoading: false,
+    };
   },
   computed: {
-    formTitle () {
-      return this.data.id ? 'Edit Exchange' : 'Add Exchange'
+    formTitle() {
+      return this.data.id ? "Edit Exchange" : "Add Exchange";
     },
-    user () {
-      return this.$store.state.authUser
-    }
+    user() {
+      return this.$store.state.authUser;
+    },
   },
   methods: {
-    save () {
-      this.isLoading = true
+    save() {
+      this.isLoading = true;
 
       const saveData = {
         name: this.data.name,
         exchange: this.data.exchange,
         api_key: this.data.api_key,
-        secret_key: this.data.secret_key
-      }
+        secret_key: this.data.secret_key,
+      };
 
       if (this.id) {
-        this.$fire.firestore.collection('user_bots').doc(this.id).set(saveData, { merge: true }).then(() => {
-          this.close()
-        }).catch((e) => {
-          alert(e.response.data.message)
-        }).finally(() => {
-          this.isLoading = false
-        })
+        this.$fire.firestore
+          .collection("user_bots")
+          .doc(this.id)
+          .set(saveData, { merge: true })
+          .then(() => {
+            this.close();
+          })
+          .catch((e) => {
+            alert(e.response.data.message);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
       } else {
-        saveData.user_id = this.user.uid
-        saveData.created_at = this.$moment().toISOString()
-        this.$fire.firestore.collection('user_bots').add(saveData).then(() => {
-          this.close()
-        }).catch((e) => {
-          alert(e.response.data.message)
-        }).finally(() => {
-          this.isLoading = false
-        })
+        saveData.user_id = this.user.uid;
+        saveData.created_at = this.$moment().toISOString();
+        this.$fire.firestore
+          .collection("user_bots")
+          .add(saveData)
+          .then(() => {
+            this.close();
+          })
+          .catch((e) => {
+            alert(e.response.data.message);
+          })
+          .finally(() => {
+            this.isLoading = false;
+          });
       }
     },
-    close () {
-      this.isLoading = false
-      this.$emit('update:dialog', false)
-    }
-  }
-}
+    close() {
+      this.isLoading = false;
+      this.$emit("update:dialog", false);
+    },
+  },
+};
 </script>

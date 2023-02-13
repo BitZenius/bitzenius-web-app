@@ -10,10 +10,7 @@
               </h3>
               <!-- <v-btn small @click="_logger">logger</v-btn> -->
 
-              <v-row
-                class="d-flex align-center justify-center"
-                style="width: 100%"
-              >
+              <v-row class="d-flex align-center" style="width: 100%">
                 <v-col cols="6" md="6" class="text-body-2 font-weight-bold">
                   Total USDT To Apply
                   <v-text-field
@@ -89,7 +86,48 @@
                     </template>
                   </v-text-field>
                 </v-col>
+
                 <v-col cols="6" md="6" class="text-body-2 font-weight-bold">
+                  Max Concurrent Trading Pair
+                  <v-text-field
+                    v-model="strategy.max_concurrent_trading_pair"
+                    required
+                    placeholder="Max Concurrent Trading Pair"
+                    hide-details=""
+                    rounded
+                    class="my-2 custom-input text-body-2"
+                  >
+                    <template v-slot:append>
+                      <v-tooltip bottom color="primary">
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-chip
+                            v-bind="attrs"
+                            v-on="on"
+                            class="d-flex align-center justify-center"
+                            color="primary"
+                            label
+                            rounded
+                            small
+                            text-color="white"
+                          >
+                            <v-icon left> mdi-link-box-variant-outline </v-icon>
+                            PAIR
+                          </v-chip>
+                        </template>
+                        <span
+                          >The maximum amount of USDT to be spent for the
+                          bot</span
+                        >
+                      </v-tooltip>
+                    </template>
+                  </v-text-field>
+                </v-col>
+                <v-col
+                  v-if="false"
+                  cols="6"
+                  md="6"
+                  class="text-body-2 font-weight-bold"
+                >
                   Total USDT To Apply
                   <v-text-field
                     required
@@ -117,41 +155,6 @@
                             ></v-img>
                             <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
                           </v-list-item-avatar>
-                        </template>
-                        <span
-                          >The maximum amount of USDT to be spent for the
-                          bot</span
-                        >
-                      </v-tooltip>
-                    </template>
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6" md="6" class="text-body-2 font-weight-bold">
-                  Max Concurrent Trading Pair
-                  <v-text-field
-                    v-model="strategy.max_concurrent_trading_pair"
-                    required
-                    placeholder="Max Concurrent Trading Pair"
-                    hide-details=""
-                    rounded
-                    class="my-2 custom-input text-body-2"
-                  >
-                    <template v-slot:append>
-                      <v-tooltip bottom color="primary">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-chip
-                            v-bind="attrs"
-                            v-on="on"
-                            class="d-flex align-center justify-center"
-                            color="primary"
-                            label
-                            rounded
-                            small
-                            text-color="white"
-                          >
-                            <v-icon left> mdi-link-box-variant-outline </v-icon>
-                            PAIR
-                          </v-chip>
                         </template>
                         <span
                           >The maximum amount of USDT to be spent for the
@@ -515,7 +518,7 @@ export default {
   mounted() {
     if (this.selectedStrategy) {
       this.strategy = { ...this.selectedStrategy };
-      this.selectedStrategyName = this.strategy.style.name
+      this.selectedStrategyName = this.strategy.style.name;
     }
     this.fetchFormula();
   },

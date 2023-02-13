@@ -3,7 +3,7 @@
     <v-row class="mb-0 pb-0" align="center" justify="space-between">
       <v-col cols="8">
         <v-row>
-          <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+          <v-col cols="12" md="8" class="text-h6 font-weight-bold pl-3">
             {{ title }}
           </v-col>
         </v-row>

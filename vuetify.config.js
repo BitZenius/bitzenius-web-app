@@ -68,10 +68,15 @@ export default {
         customYellow: "#FEE603",
         primary: '#3394F8',
         danger: '#FF6469',
-        success: '#27D79E',
+        success: '#1AD598',
+        'success-light': "#d1f7ea",
+
         basic: '#ffffff',
         'basic-1': '#ffffff',
         'basic-2': '#ffffff',
+
+        // TEX
+        'primary-text': "#ffffff"
       }
     }
   },

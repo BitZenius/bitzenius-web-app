@@ -2,7 +2,7 @@
   <v-row class="py-5">
     <v-col cols="12">
       <v-row>
-        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+        <v-col cols="12" md="8" class="text-h6 font-weight-bold pl-3">
           {{ title }}
         </v-col>
         <v-col cols="12" md="4">
@@ -27,7 +27,7 @@
         <v-col cols="12" md="9">
           <v-row>
             <v-col cols="12">
-              <v-card class="pa-2" flat style="height: 100%">
+              <v-card class="pa-2" flat>
                 <v-sheet class="text-h6 font-weight-bold ma-4">
                   Statistics
                 </v-sheet>
@@ -52,11 +52,11 @@
         </v-col>
         <v-col cols="12" md="3">
           <v-row>
-            <v-col cols="12">
+            <v-col cols="12" class="mb-10">
               <CardBalance class="px-2 py-5" />
             </v-col>
             <v-col cols="12">
-              <v-card flat style="height: 500px"></v-card>
+              <CardTask class="px-2 py-5" />
             </v-col>
           </v-row>
         </v-col>

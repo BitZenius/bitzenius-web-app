@@ -12,17 +12,19 @@
         <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-subtitle class="white--text">
+        <v-list-item-subtitle
+          class="white--text font-weight-bold text-body-2 mb-1"
+        >
           USDT Balance
         </v-list-item-subtitle>
         <v-list-item-title
-          class="text-h5 font-weight-bold white--text text--lighten-2"
+          class="text-h6 font-weight-bold white--text text--lighten-2"
         >
           <v-skeleton-loader v-if="loading" loading type="heading" />
           <div v-else>
             <!-- {{ balance.free_usdt | currency('$', 4) }} -->
             <span v-if="convertFinished"
-              >${{ value.first }}<small>.{{ value.second }}</small></span
+              >${{ value.first }}.{{ value.second }}</span
             >
           </div>
         </v-list-item-title>

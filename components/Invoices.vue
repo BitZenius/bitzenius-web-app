@@ -1,12 +1,12 @@
 <template>
-  <v-card
-    elevation="8"
-    class="pa-5 mt-10"
-  >
-    <v-row class="py-5">
+  <v-card elevation="8" class="pa-5 mt-10">
+    <v-row v-if="false" class="py-5">
       <v-col cols="12" class="d-flex justify-center">
-        <div class="d-flex flex-column align-center justify-center" style="max-width:80%;">
-          <h2>Invoices</h2>
+        <div
+          class="d-flex flex-column align-center justify-center"
+          style="max-width: 80%"
+        >
+          <!-- <h2>Invoices</h2> -->
           <p class="text-center mt-2">
             Track your invoices or subscription history
           </p>
@@ -24,41 +24,78 @@
       class="elevation-0"
       loading-text="Loading... Please wait"
     >
-      <template #item.type="{item}">
-        <v-chip
-          small
-          label
-        >
+      <template v-slot:header.invoice_id="{ header }">
+        <strong class="black--text text-body-2 font-weight-bold">{{
+          header.text
+        }}</strong>
+      </template>
+      <template v-slot:header.date="{ header }">
+        <strong class="black--text text-body-2 font-weight-bold">{{
+          header.text
+        }}</strong>
+      </template>
+      <template v-slot:header.description="{ header }">
+        <strong class="black--text text-body-2 font-weight-bold">{{
+          header.text
+        }}</strong>
+      </template>
+      <template v-slot:header.totals.total="{ header }">
+        <strong class="black--text text-body-2 font-weight-bold">{{
+          header.text
+        }}</strong>
+      </template>
+      <template v-slot:header.payment.paid="{ header }">
+        <strong class="black--text text-body-2 font-weight-bold">{{
+          header.text
+        }}</strong>
+      </template>
+      <template v-slot:header.active="{ header }">
+        <strong class="black--text text-body-2 font-weight-bold">{{
+          header.text
+        }}</strong>
+      </template>
+
+      <template #item.type="{ item }">
+        <v-chip small label>
           {{ item.type.toUpperCase() }}
         </v-chip>
       </template>
-      <template #item.totals.total="{item}">
-        <div class="text-right">
-          {{ item.totals.total | currency('$') }}
+
+      <template #item.date="{ item }">
+        <div class="text-subtitle-2 font-weight-bold">
+          {{ item.date }}
         </div>
       </template>
-      <template #item.payment.paid="{item}">
-        <v-chip
-          v-if="item.payment.paid"
-          small
-          color="success"
-        >
-          Paid at {{ $moment(item.payment.date).format('DD MMM YYYY HH:mm') }}
-        </v-chip>
-        <v-chip
-          v-else
-          small
-        >
-          Unpaid
-        </v-chip>
+
+      <template #item.description="{ item }">
+        <div class="text-subtitle-2 font-weight-bold">
+          {{ item.description }}
+        </div>
       </template>
-      <template #item.active="{item}">
-        <v-btn
-          icon
-          color="primary"
-          depressed
-          @click="getInvoice(item._id)"
-        >
+
+      <template #item.totals.total="{ item }">
+        <div class="text-subtitle-2 font-weight-bold">
+          {{ item.totals.total | currency("$") }}
+        </div>
+      </template>
+
+      <template #item.invoice_id="{ item }">
+        <span class="text-subtitle-2 font-weight-bold">{{
+          item.invoice_id
+        }}</span>
+      </template>
+
+      <template #item.payment.paid="{ item }">
+        <!-- <v-chip v-if="item.payment.paid" small color="success">
+          Paid at {{ $moment(item.payment.date).format("DD MMM YYYY HH:mm") }}
+        </v-chip> -->
+        <v-list-item-avatar v-if="item.payment.paid" size="25" color="#27D79E">
+          <v-icon color="white" small> mdi-check </v-icon>
+        </v-list-item-avatar>
+        <v-chip v-else small> Unpaid </v-chip>
+      </template>
+      <template #item.active="{ item }">
+        <v-btn icon color="primary" depressed @click="getInvoice(item._id)">
           <v-icon>mdi-eye</v-icon>
         </v-btn>
       </template>
@@ -70,22 +107,15 @@
       :fullscreen="$vuetify.breakpoint.mobile"
     >
       <template>
-        <v-card
-          v-if="activeInvoice"
-        >
+        <v-card v-if="activeInvoice">
           <v-card-title>
             <h2>Invoice</h2>
             <v-spacer></v-spacer>
-            <v-btn
-              icon
-              @click="closeInvoiceDialog"
-            >
+            <v-btn icon @click="closeInvoiceDialog">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text
-            class="mt-3"
-          >
+          <v-card-text class="mt-3">
             <table class="invoice">
               <tbody>
                 <tr>
@@ -94,7 +124,13 @@
                 </tr>
                 <tr>
                   <td><b>Date</b></td>
-                  <td class="text-right">{{ $moment(activeInvoice.created_at).format('DD MMM YYYY HH:mm') }}</td>
+                  <td class="text-right">
+                    {{
+                      $moment(activeInvoice.created_at).format(
+                        "DD MMM YYYY HH:mm"
+                      )
+                    }}
+                  </td>
                 </tr>
                 <tr>
                   <td><b>Status</b></td>
@@ -104,20 +140,24 @@
                       small
                       color="success"
                     >
-                      Paid at {{ $moment(activeInvoice.payment.date).format('DD MMM YYYY HH:mm') }}
+                      Paid at
+                      {{
+                        $moment(activeInvoice.payment.date).format(
+                          "DD MMM YYYY HH:mm"
+                        )
+                      }}
                     </v-chip>
-                    <v-chip
-                      v-else
-                      small
-                    >
-                      Unpaid
-                    </v-chip>
+                    <v-chip v-else small> Unpaid </v-chip>
                   </td>
                 </tr>
                 <tr v-if="activeInvoice.payment.method">
                   <td><b>Payment Method</b></td>
                   <td class="text-right">
-                    {{ activeInvoice.payment.method.replace('_', ' ').toUpperCase() }}
+                    {{
+                      activeInvoice.payment.method
+                        .replace("_", " ")
+                        .toUpperCase()
+                    }}
                   </td>
                 </tr>
               </tbody>
@@ -125,42 +165,43 @@
             <table class="invoice">
               <thead>
                 <tr>
-                  <th class="text-left">
-                    Description
-                  </th>
-                  <th class="text-right">
-                    Amount
-                  </th>
+                  <th class="text-left">Description</th>
+                  <th class="text-right">Amount</th>
                 </tr>
               </thead>
               <tbody>
                 <tr>
                   <td>{{ activeInvoice.description }}</td>
-                  <td class="text-right">{{ activeInvoice.totals.subtotal | currency('$') }}</td>
+                  <td class="text-right">
+                    {{ activeInvoice.totals.subtotal | currency("$") }}
+                  </td>
                 </tr>
               </tbody>
               <tfoot>
                 <tr>
                   <th class="text-right">Subtotal</th>
-                  <th class="text-right">{{ activeInvoice.totals.subtotal | currency('$') }}</th>
+                  <th class="text-right">
+                    {{ activeInvoice.totals.subtotal | currency("$") }}
+                  </th>
                 </tr>
                 <tr>
-                  <th class="text-right">{{ translateDiscount(activeInvoice.discount.source) }}</th>
-                  <th class="text-right">{{ activeInvoice.totals.discount * -1 | currency('$') }}</th>
+                  <th class="text-right">
+                    {{ translateDiscount(activeInvoice.discount.source) }}
+                  </th>
+                  <th class="text-right">
+                    {{ (activeInvoice.totals.discount * -1) | currency("$") }}
+                  </th>
                 </tr>
                 <tr>
                   <th class="text-right">Grand Total</th>
-                  <th class="text-right">{{ activeInvoice.totals.total | currency('$') }}</th>
+                  <th class="text-right">
+                    {{ activeInvoice.totals.total | currency("$") }}
+                  </th>
                 </tr>
               </tfoot>
             </table>
-            <div
-              v-if="!activeInvoice.payment.paid"
-            >
-              <v-radio-group
-                v-model="payment"
-                column
-              >
+            <div v-if="!activeInvoice.payment.paid">
+              <v-radio-group v-model="payment" column>
                 <v-radio
                   label="Pay using crypto currency (USDT)"
                   value="crypto"
@@ -170,14 +211,19 @@
                   :disabled="balance < activeInvoice.totals.total"
                 >
                   <template v-slot:label>
-                    <div>Pay using credit balance <strong class="success--text">{{ balance | currency('$') }}</strong></div>
+                    <div>
+                      Pay using credit balance
+                      <strong class="success--text">{{
+                        balance | currency("$")
+                      }}</strong>
+                    </div>
                   </template>
                 </v-radio>
               </v-radio-group>
-              <div
-                v-if="payment == 'crypto'"
-              >
-                To make payment to this invoice, please transfer {{ activeInvoice.totals.total | currency('$') }} of USDT to your virtual account with the following details:
+              <div v-if="payment == 'crypto'">
+                To make payment to this invoice, please transfer
+                {{ activeInvoice.totals.total | currency("$") }} of USDT to your
+                virtual account with the following details:
                 <table class="invoice">
                   <tbody>
                     <tr>
@@ -188,10 +234,7 @@
                       <td><b>Address</b></td>
                       <td>
                         {{ activeInvoice.wallet_va }}
-                        <v-tooltip
-                          v-model="copied"
-                          top
-                        >
+                        <v-tooltip v-model="copied" top>
                           <template v-slot:activator="{ on, attrs }">
                             <v-btn
                               icon
@@ -208,16 +251,14 @@
                               </v-icon>
                             </v-btn>
                           </template>
-                          <span>{{ copied ? 'Copy' : 'Copied' }}</span>
+                          <span>{{ copied ? "Copy" : "Copied" }}</span>
                         </v-tooltip>
                       </td>
                     </tr>
                   </tbody>
                 </table>
               </div>
-              <div
-                v-else
-              >
+              <div v-else>
                 <v-btn
                   depressed
                   color="success"
@@ -228,19 +269,25 @@
                 </v-btn>
               </div>
             </div>
-            <div
-              v-else
-            >
-              <v-alert
-                dense
-                text
-                type="success"
-              >
-                <p>
-                  <b>Thank you for your payment.</b><br />
-                  <span v-if="activeInvoice.discount.source == 'trial'">Your free trial subscription starting from {{  $moment(activeInvoice.created_at).format('DD MMM YYYY') }} to {{ $moment(activeInvoice.created_at).add(7, 'd').format('DD MMM YYYY') }}</span>
-                </p>
-              </v-alert>
+            <div v-else>
+              <p class="d-flex align-center">
+                <v-list-item-avatar size="25" color="#27D79E">
+                  <v-icon color="white" small> mdi-check </v-icon>
+                </v-list-item-avatar>
+                <strong class="font-weight-bold"
+                  >Thank you for your payment.</strong
+                ><br />
+                <span v-if="activeInvoice.discount.source == 'trial'"
+                  >Your free trial subscription starting from
+                  {{ $moment(activeInvoice.created_at).format("DD MMM YYYY") }}
+                  to
+                  {{
+                    $moment(activeInvoice.created_at)
+                      .add(7, "d")
+                      .format("DD MMM YYYY")
+                  }}</span
+                >
+              </p>
             </div>
           </v-card-text>
         </v-card>
@@ -248,200 +295,218 @@
     </v-dialog>
   </v-card>
 </template>
-  
-<script>
-  export default {
-    props: {
-      invoice_id: {
-        type: String,
-        default: () => {
-          return null
-        }
-      }
-    },
-    data() {
-      return {
-        isLoading: false,
-        headers: [
-          {
-            text: "Invoice ID",
-            align: "left",
-            value: "invoice_id"
-          },
-          {
-            text: "Date",
-            align: "left",
-            value: "date"
-          },
-          {
-            text: "Description",
-            align: "left",
-            value: "description"
-          },
-          {
-            text: "Amount",
-            align: "right",
-            value: "totals.total"
-          },
-          {
-            text: "Status",
-            align: "left",
-            value: "payment.paid"
-          },
-          {
-            text: "",
-            align: "left",
-            value: "active"
-          }
-        ],
-        options: {},
-        totalItems: 0,
-        rowsPerPage: 10,
-        invoices: [],
-        invoiceDialog: false,
-        activeInvoice: null,
-        copied: false,
-        payment: 'crypto',
-        balance: 0
-      }
-    },
-    computed: {
-      user() {
-        return this.$store.state.authUser
-      }
-    },
-    watch: {
-      options: {
-        handler () {
-          this.initialize()
-        },
-        deep: true
-      },
-      invoice_id: {
-        handler (val) {
-          this.getInvoice(val)
-        }
-      }
-    },
-    mounted () {
-      this.countBalance()
-      this.initialize()
-    },
-    methods: {
-      initialize () {
-        this.isLoading = true
-        const { page, itemsPerPage } = this.options
-        this.rowsPerPage = itemsPerPage
 
-        this.$api.$get('/user/subscription/invoices', {
+<script>
+export default {
+  props: {
+    invoice_id: {
+      type: String,
+      default: () => {
+        return null;
+      },
+    },
+  },
+  data() {
+    return {
+      isLoading: false,
+      headers: [
+        {
+          text: "Invoice ID",
+          align: "left",
+          value: "invoice_id",
+        },
+        {
+          text: "Date",
+          align: "left",
+          value: "date",
+        },
+        {
+          text: "Description",
+          align: "left",
+          value: "description",
+        },
+        {
+          text: "Amount",
+          align: "right",
+          value: "totals.total",
+        },
+        {
+          text: "Status",
+          align: "left",
+          value: "payment.paid",
+        },
+        {
+          text: "",
+          align: "left",
+          value: "active",
+        },
+      ],
+      options: {},
+      totalItems: 0,
+      rowsPerPage: 10,
+      invoices: [],
+      invoiceDialog: false,
+      activeInvoice: null,
+      copied: false,
+      payment: "crypto",
+      balance: 0,
+    };
+  },
+  computed: {
+    user() {
+      return this.$store.state.authUser;
+    },
+  },
+  watch: {
+    options: {
+      handler() {
+        this.initialize();
+      },
+      deep: true,
+    },
+    invoice_id: {
+      handler(val) {
+        this.getInvoice(val);
+      },
+    },
+  },
+  mounted() {
+    this.countBalance();
+    this.initialize();
+  },
+  methods: {
+    initialize() {
+      this.isLoading = true;
+      const { page, itemsPerPage } = this.options;
+      this.rowsPerPage = itemsPerPage;
+
+      this.$api
+        .$get("/user/subscription/invoices", {
           params: {
             limit: itemsPerPage,
-            page
-          }
-        }).then((res) => {
-          this.totalItems = res.result.total
-          const invoices = []
-          
+            page,
+          },
+        })
+        .then((res) => {
+          this.totalItems = res.result.total;
+          const invoices = [];
+
           res.result.data.forEach((result) => {
             invoices.push({
               ...result,
-              date: this.$moment(result.created_at).format('DD MMM YYYY HH:mm')
-            })
-          })
+              date: this.$moment(result.created_at).format("DD MMM YYYY HH:mm"),
+            });
+          });
 
-          this.invoices = invoices
-          this.isLoading = false
-        }).catch((err) => {
-          console.log(err)
-        }).finally(() => {
-          this.isLoading = false
+          this.invoices = invoices;
+          this.isLoading = false;
         })
-      },
-      getInvoice (id) {
-        this.isLoading = true
-        this.$api.$get('/user/subscription/invoices/' + id).then((res) => {
-          this.activeInvoice = res.result
-          this.showInvoiceDialog()
-        }).catch((err) => {
-          console.log(err)
-        }).finally(() => {
-          this.isLoading = false
+        .catch((err) => {
+          console.log(err);
         })
-      },
-      countBalance () {
-        this.isLoading = true
-        this.$api.$get('/user/balance/total').then((res) => {
-          this.balance = res.result
-        }).catch((err) => {
-          console.log(err)
-          this.isLoading = false
-        }).finally(() => {
-          this.isLoading = false
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    getInvoice(id) {
+      this.isLoading = true;
+      this.$api
+        .$get("/user/subscription/invoices/" + id)
+        .then((res) => {
+          this.activeInvoice = res.result;
+          this.showInvoiceDialog();
         })
-      },
-      payInvoice () {
-        this.isLoading = true
-        this.$api.$post('/user/subscription/invoices/' + this.activeInvoice._id + '/pay').then((res) => {
-          this.closeInvoiceDialog()
-          this.$store.commit('setShowSnackbar', {
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    countBalance() {
+      this.isLoading = true;
+      this.$api
+        .$get("/user/balance/total")
+        .then((res) => {
+          this.balance = res.result;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.isLoading = false;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    payInvoice() {
+      this.isLoading = true;
+      this.$api
+        .$post("/user/subscription/invoices/" + this.activeInvoice._id + "/pay")
+        .then((res) => {
+          this.closeInvoiceDialog();
+          this.$store.commit("setShowSnackbar", {
             show: true,
             message: res.message,
-            color: 'success'
-          })
-        }).catch((err) => {
-          console.log(err)
-          this.isLoading = false
-        }).finally(() => {
-          this.isLoading = false
+            color: "success",
+          });
         })
-      },
-      closeInvoiceDialog () {
-        this.invoiceDialog = false
-        this.initialize()
-      },
-      showInvoiceDialog () {
-        this.invoiceDialog = true
-      },
-      onCopy: function (e) {
-        this.copied = !this.copied
-      },
-      onError: function (e) {
-        alert('Failed to copy: ' + e.text)
-      },
-      translateDiscount (source) {
-        const sources = {
-          'promo-code': 'Promo Code Discount',
-          'trial': 'Trial Discount',
-          'referral': 'Referral Discount'
-        }
+        .catch((err) => {
+          console.log(err);
+          this.isLoading = false;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    closeInvoiceDialog() {
+      this.invoiceDialog = false;
+      this.initialize();
+    },
+    showInvoiceDialog() {
+      this.invoiceDialog = true;
+    },
+    onCopy: function (e) {
+      this.copied = !this.copied;
+    },
+    onError: function (e) {
+      alert("Failed to copy: " + e.text);
+    },
+    translateDiscount(source) {
+      const sources = {
+        "promo-code": "Promo Code Discount",
+        trial: "Trial Discount",
+        referral: "Referral Discount",
+      };
 
-        if (typeof(sources[source]) == 'undefined') {
-          return 'Discount'
-        }
-
-        return sources[source]
+      if (typeof sources[source] == "undefined") {
+        return "Discount";
       }
-    }
-  }
+
+      return sources[source];
+    },
+  },
+};
 </script>
 
 <style>
-  table.invoice {
-    width: 100%;
-    margin: 25px 0;
-  }
+table.invoice {
+  width: 100%;
+  margin: 25px 0;
+}
 
-  table.invoice , table.invoice th, table.invoice td {
-    border: 1px solid rgb(190, 190, 190);
-    border-collapse: collapse;
-  }
+table.invoice,
+table.invoice th,
+table.invoice td {
+  border: 1px solid rgb(190, 190, 190);
+  border-collapse: collapse;
+}
 
-  table.invoice th {
-    font-weight: bold;
-  }
+table.invoice th {
+  font-weight: bold;
+}
 
-  table.invoice th, table.invoice td {
-    padding: 6px 15px;
-  }
+table.invoice th,
+table.invoice td {
+  padding: 6px 15px;
+}
 </style>
-  
