@@ -145,7 +145,7 @@
       app
     >
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
-      <!-- <v-toolbar-title class="text-h6 font-weight-bold" v-text="title" /> -->
+      <!-- <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" /> -->
       <v-spacer />
       <ThemeToggle />
       <v-btn v-show="false" icon class="mr-2">
@@ -203,7 +203,7 @@
               <img :src="user.photoURL" :alt="user.displayName" />
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="text-h6 font-weight-bold">{{
+              <v-list-item-title class="text-h5 font-weight-bold">{{
                 user.displayName
               }}</v-list-item-title>
               <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
@@ -247,7 +247,7 @@
       >
     </v-slide-x-transition>
 
-    <v-main>
+    <v-main class="main-container">
       <v-container
         class="main-container"
         :style="`padding-top:${topMargin}px`"

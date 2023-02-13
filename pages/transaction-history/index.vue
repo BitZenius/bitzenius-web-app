@@ -3,7 +3,7 @@
     <v-row class="mb-0 pb-0" align="center" justify="space-between">
       <v-col cols="8">
         <v-row>
-          <v-col cols="12" md="8" class="text-h6 font-weight-bold pl-3">
+          <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
             {{ title }}
           </v-col>
         </v-row>
@@ -18,7 +18,7 @@
           <v-card class="pa-3 mb-5" flat rounded>
             <v-tabs class="pa-2" v-model="currentItem">
               <v-tab :ripple="false" v-for="item in tables" :key="item">
-                <span class="text-body-2 text-capitalize">{{ item }}</span>
+                <span class="text-body-1 text-capitalize">{{ item }}</span>
               </v-tab>
             </v-tabs>
           </v-card>

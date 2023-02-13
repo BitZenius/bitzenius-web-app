@@ -2,20 +2,21 @@
   <v-row class="pa-2">
     <v-col cols="12">
       <v-row>
-        <v-col cols="12" md="8" class="text-h6 font-weight-bold pl-3">
+        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
           {{ title }}
         </v-col>
       </v-row>
     </v-col>
     <v-col cols="12">
       <v-card rounded class="card-1 pa-2" flat color="primary">
-        <v-img
-          width="860"
-          class="background-image"
-          src="/images/signin-vector.svg"
-        >
-        </v-img>
-
+        <div class="image-container">
+          <v-img
+            width="860"
+            class="background-image"
+            src="/images/signin-vector.svg"
+          >
+          </v-img>
+        </div>
         <v-row class="pa-5">
           <v-col cols="12">
             <img width="40" height="40" src="/token_logo/USDT.png" />
@@ -25,7 +26,7 @@
               flat
               rounded
               color="primary2"
-              class="pa-3 basic--text text-caption mb-2"
+              class="pa-3 basic--text text-body-2 mb-2"
             >
               Please be sure to whitelist the following IP address when creating
               an API Key on your exchange. It is a required step!
@@ -34,7 +35,7 @@
               flat
               rounded
               color="primary2"
-              class="pa-3 basic--text text-caption custom-card"
+              class="pa-3 basic--text text-body-2 custom-card"
             >
               {{ whitelistIp }}
               <v-tooltip v-model="copied" top>
@@ -67,7 +68,6 @@
                     exchange.selected,
                   'd-flex align-center justify-center': !exchange.selected,
                 }"
-                flat
                 rounded
               >
                 <div class="custom-avatar">
@@ -82,13 +82,13 @@
                       @click="_addExchange(exchange)"
                       class="mx-2"
                       fab
-                      dark
                       x-small
                       outlined
                       :disabled="
-                        !exchange.active ||
+                        exchange.active ||
                         !user.subscription ||
-                        user.subscription == false
+                        user.subscription == false ||
+                        exchange.comingsoon
                       "
                       color="primary"
                     >
@@ -98,13 +98,13 @@
                       @click="_addExchange(exchange)"
                       class="mx-2"
                       fab
-                      dark
                       x-small
                       outlined
                       :disabled="
                         !exchange.active ||
                         !user.subscription ||
-                        user.subscription == false
+                        user.subscription == false ||
+                        exchange.comingsoon
                       "
                       color="primary"
                     >
@@ -113,13 +113,13 @@
                     <v-btn
                       class="mx-2"
                       fab
-                      dark
                       x-small
                       outlined
                       :disabled="
                         !exchange.active ||
                         !user.subscription ||
-                        user.subscription == false
+                        user.subscription == false ||
+                        exchange.comingsoon
                       "
                       color="danger"
                     >
@@ -127,10 +127,22 @@
                     </v-btn>
                   </v-col>
                   <v-col cols="12">
-                    <h4 class="text-body-2 font-weight-bold mb-2">
+                    <h4 class="text-body-1 font-weight-bold mb-2">
                       {{ exchange.name }}
                     </h4>
-                    <v-alert dense border="left" colored-border color="success">
+                    <v-alert
+                      dense
+                      border="left"
+                      colored-border
+                      :color="
+                        exchange.comingsoon
+                          ? 'white'
+                          : exchange.active
+                          ? 'primary'
+                          : 'success'
+                      "
+                      class="pr-0"
+                    >
                       <span
                         class="text-caption font-weight-bold"
                         v-if="exchange.updateAt"
@@ -140,24 +152,17 @@
                           $moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm")
                         }}
                       </span>
+                      <span
+                        class="text-caption font-weight-bold"
+                        v-else-if="exchange.comingsoon"
+                      >
+                        Coming soon
+                      </span>
                       <span class="text-caption font-weight-bold" v-else>
-                        Latest Update : -
+                        Setup exchange
                       </span>
                     </v-alert>
                   </v-col>
-
-                  <v-overlay
-                    z-index="1"
-                    v-if="exchange.comingsoon"
-                    :absolute="true"
-                    opacity="0.7"
-                    overlay="true"
-                    style="border-radius: 12px"
-                  >
-                    <h3 style="letter-spacing: 2px" class="customYellow--text">
-                      Coming Soon!
-                    </h3>
-                  </v-overlay>
                 </v-row>
                 <!-- ORNAMENTS -->
                 <div v-if="false" class="ornament o1"></div>
@@ -532,13 +537,22 @@ export default {
 .card-1 {
   position: relative;
   width: 90%;
-  height: 314px;
+
   display: flex;
   flex-direction: column;
   justify-content: flex-end;
 }
 
-.card-1 > .background-image {
+.image-container {
+  width: 100%;
+  height: 314px;
+  overflow: hidden;
+  position: absolute;
+  top: 0%;
+  left: 0%;
+}
+
+.card-1 > .image-container > .background-image {
   transform: rotate(40deg) scaleX(-1);
   position: absolute;
   top: -60%;
@@ -552,20 +566,24 @@ export default {
 .exchange-card-container {
   position: absolute;
   display: flex;
+  flex-wrap: wrap;
+  row-gap: 20px;
+  column-gap: 10px;
+  width: 120%;
 }
 
 .exchange-card-container > .v-card {
-  width: 265px !important;
-  margin-right: 20px;
+  width: 210px !important;
 }
 
 .custom-avatar {
+  box-shadow: 0px 20px 25px #3394f81a;
   position: absolute;
   display: flex;
   flex-wrap: wrap;
   align-content: center;
   justify-content: center;
-  padding: 10px;
+  padding: 15px;
   width: 80px;
   height: 80px;
   background: white;

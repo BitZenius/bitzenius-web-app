@@ -14,13 +14,13 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-subtitle
-                class="white--text font-weight-bold text-body-2 mb-1"
+                class="white--text font-weight-bold text-body-1 mb-1"
               >
                 Credit Balance
               </v-list-item-subtitle>
               <v-list-item-title>
                 <span
-                  class="text-h6 font-weight-black white--text text--lighten-2"
+                  class="text-h5 font-weight-black white--text text--lighten-2"
                 >
                   <v-skeleton-loader v-if="isLoading" loading type="heading" />
                   <div v-else>{{ balance | currency("$", 2) }}</div>
@@ -62,7 +62,7 @@
           >
             <template>
               <v-card flat>
-                <v-card-title class="text-h6">
+                <v-card-title class="text-h5">
                   Deposit
                   <v-spacer></v-spacer>
                   <v-btn icon @click="depositDialog = false">
@@ -131,7 +131,7 @@
           >
             <template>
               <v-card class="pa-3">
-                <v-card-title class="text-h6 lighten-2">
+                <v-card-title class="text-h5 lighten-2">
                   Whithdraw
                   <v-spacer></v-spacer>
                   <v-btn icon @click="withdrawDialog = false">

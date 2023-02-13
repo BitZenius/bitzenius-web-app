@@ -5,7 +5,7 @@
         <v-row align="center" justify="center">
           <v-col cols="8">
             <div class="d-flex flex-column align-start">
-              <h3 class="mb-4 text-body-1 font-weight-bold">
+              <h3 class="mb-4 text-h6 font-weight-bold">
                 Choose First Analysis
               </h3>
               <!-- <v-btn small @click="logger">logger</v-btn> -->
@@ -17,7 +17,7 @@
                     item-text="name"
                     :items="analysisList"
                     placeholder="Choose Analysis"
-                    class="custom-input text-body-2"
+                    class="custom-input text-body-1"
                     rounded
                   >
                   </v-select>
@@ -27,12 +27,12 @@
                     v-model="technical.first_analysis.time"
                     :items="timeList"
                     placeholder="Timeframe"
-                    class="custom-input text-body-2"
+                    class="custom-input text-body-1"
                     rounded
                   ></v-select>
                 </v-col>
               </v-row>
-              <h3 class="my-4 text-body-1 font-weight-bold">Condition</h3>
+              <h3 class="my-4 text-h6 font-weight-bold">Condition</h3>
               <v-row style="width: 100%">
                 <v-col class="d-flex justify-center" cols="12">
                   <v-btn
@@ -59,7 +59,7 @@
                   </v-btn>
                 </v-col>
               </v-row>
-              <h3 class="my-4 text-body-1 font-weight-bold">
+              <h3 class="my-4 text-h6 font-weight-bold">
                 Choose Second Analysis
               </h3>
               <v-row style="width: 100%">
@@ -70,7 +70,7 @@
                     item-text="name"
                     :items="analysisList"
                     placeholder="Choose Analysis"
-                    class="custom-input text-body-2"
+                    class="custom-input text-body-1"
                     rounded
                   ></v-select>
                 </v-col>
@@ -79,14 +79,14 @@
                     v-model="technical.second_analysis.time"
                     :items="timeList"
                     placeholder="Timeframe"
-                    class="custom-input text-body-2"
+                    class="custom-input text-body-1"
                     rounded
                   ></v-select>
                 </v-col>
               </v-row>
 
               <h3
-                class="my-4 text-body-1 font-weight-bold"
+                class="my-4 text-h6 font-weight-bold"
                 v-if="technical.minimum_trading_volume != -1"
               >
                 Minimum trading volume in 24h
@@ -102,7 +102,7 @@
                     item-text="name"
                     :items="tradingVolumeList"
                     placeholder="Trading Volume"
-                    class="custom-input text-body-2"
+                    class="custom-input text-body-1"
                     rounded
                   ></v-select>
                 </v-col>

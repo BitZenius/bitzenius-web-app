@@ -1,7 +1,7 @@
 <template>
   <v-dialog v-model="dialog" scrollable persistent max-width="600px">
     <v-card>
-      <v-card-title class="text-h6 font-weight-bold pl-8 pt-8 pr-8">
+      <v-card-title class="text-h5 font-weight-bold pl-8 pt-8 pr-8">
         {{ formTitle }}
       </v-card-title>
       <v-card-text class="pa-5">

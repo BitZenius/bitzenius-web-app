@@ -14,7 +14,7 @@
       </v-list-item-avatar>
     </v-list-item-action>
     <v-list-item-content>
-      <v-list-item-title class="black--text text-body-2">{{
+      <v-list-item-title class="black--text text-body-1">{{
         title
       }}</v-list-item-title>
     </v-list-item-content>

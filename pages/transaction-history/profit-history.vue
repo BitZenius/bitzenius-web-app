@@ -48,7 +48,7 @@
     >
       <template>
         <v-card elevation="5">
-          <v-card-title class="text-h6 lighten-2">
+          <v-card-title class="text-h5 lighten-2">
             <v-row>
               <v-col cols="6" class="d-flex justify-start">Profit Detail</v-col>
               <v-col cols="6" class="d-flex justify-end">
@@ -66,22 +66,22 @@
               class="elevation-2 my-2"
             >
               <template v-slot:header.pair="{ header }">
-                <strong class="black--text text-body-2 font-weight-bold">{{
+                <strong class="black--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.date="{ header }">
-                <strong class="black--text text-body-2 font-weight-bold">{{
+                <strong class="black--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.price="{ header }">
-                <strong class="black--text text-body-2 font-weight-bold">{{
+                <strong class="black--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.qty="{ header }">
-                <strong class="black--text text-body-2 font-weight-bold">{{
+                <strong class="black--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
@@ -107,7 +107,7 @@
                           {{ item.pair_from }} /
                           {{ item.pair_to }}
                         </span>
-                        <small class="text-caption">{{ item._id }}</small>
+                        <small class="text-body-2">{{ item._id }}</small>
                       </div>
                     </div>
                   </v-col>
@@ -160,17 +160,17 @@
       class="elevation-2 my-2"
     >
       <template v-slot:header.date="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.profit="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.action="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>

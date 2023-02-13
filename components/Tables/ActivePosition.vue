@@ -41,7 +41,7 @@
     <!-- <v-col cols="12" class="d-flex justify-center align-center">
         <p class="text-center text-info primary">Lorem ipsum dolor, sit amet consectetur adipisicing elit. At repellendus dicta ipsam ratione necessitatibus, in dolore modi ut eveniet consectetur similique cumque, quo impedit earum quae, molestias optio doloremque autem!</p>
     </v-col> -->
-    <v-col v-if="showExchangeCards" cols="12" class="d-flex px-0 pt-0">
+    <v-col v-if="showExchangeCards" cols="12" class="d-flex px-0 pt-10">
       <v-col
         v-for="(exchange, index) in exchanges"
         :key="index"
@@ -52,33 +52,28 @@
         <v-card
           @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
           style="position: relative; margin-bottom: 25px"
-          class="d-flex align-center justify-center"
+          class="d-flex align-center justify-center exchange-card"
           flat
         >
-          <v-row>
-            <v-col cols="12" class="d-flex align-center justify-start pb-0">
-              <div
-                style="width: 100%"
-                class="d-flex flex-column justify-center align-center pt-2"
-              >
-                <img
-                  style="height: 80px; padding: 10px"
-                  :src="exchange.image"
-                  alt=""
-                />
-                <h4 class="pb-5">{{ exchange.name }}</h4>
-              </div>
-            </v-col>
+          <v-row justify="center" align="center" class="pa-5">
             <v-col
-              cols="12"
-              class="d-flex justify-center align-center pt-0 pb-10"
+              cols="5"
+              class="d-flex justify-center"
+              style="position: relative"
             >
+              <div class="custom-avatar">
+                <v-img contain :src="exchange.image"></v-img>
+              </div>
+              <h4 class="text-body-1 font-weight-bold mt-5">
+                {{ exchange.name }}
+              </h4>
+            </v-col>
+            <v-col cols="7" class="d-flex justify-center align-center">
               <template v-if="exchange.active">
                 <v-btn
                   @click="_addBot(exchange)"
                   class="mx-2"
                   fab
-                  dark
                   x-small
                   outlined
                   color="primary"
@@ -89,7 +84,6 @@
                   @click="_deleteBot(exchange)"
                   class="mx-2"
                   fab
-                  dark
                   x-small
                   outlined
                   color="danger"
@@ -100,27 +94,21 @@
 
               <v-btn
                 v-else
-                :disabled="!user.subscription || user.subscription == false"
-                color="customPink white--text"
-                small
-                rounded
-                :ripple="false"
+                :disabled="
+                  !user.subscription ||
+                  user.subscription == false ||
+                  exchange.comingsoon
+                "
                 @click="_addBot(exchange)"
-                >Setup Bot</v-btn
+                class="mx-2"
+                fab
+                x-small
+                outlined
+                color="primary"
               >
+                <v-icon dark> mdi-cog </v-icon>
+              </v-btn>
             </v-col>
-            <v-overlay
-              z-index="1"
-              v-if="exchange.comingsoon"
-              :absolute="true"
-              opacity="0.7"
-              overlay="true"
-              style="border-radius: 10px"
-            >
-              <h3 style="letter-spacing: 2px" class="customYellow--text">
-                Coming Soon!
-              </h3>
-            </v-overlay>
           </v-row>
           <!-- ORNAMENTS -->
           <v-list-item-avatar
@@ -236,22 +224,22 @@
           loading-text="Loading... Please wait"
         >
           <template v-slot:header.pair="{ header }">
-            <strong class="black--text text-body-2 font-weight-bold">{{
+            <strong class="black--text text-body-1 font-weight-bold">{{
               header.text
             }}</strong>
           </template>
           <template v-slot:header.price="{ header }">
-            <strong class="black--text text-body-2 font-weight-bold">{{
+            <strong class="black--text text-body-1 font-weight-bold">{{
               header.text
             }}</strong>
           </template>
           <template v-slot:header.profit="{ header }">
-            <strong class="black--text text-body-2 font-weight-bold">{{
+            <strong class="black--text text-body-1 font-weight-bold">{{
               header.text
             }}</strong>
           </template>
           <template v-slot:header.status="{ header }">
-            <strong class="black--text text-body-2 font-weight-bold">{{
+            <strong class="black--text text-body-1 font-weight-bold">{{
               header.text
             }}</strong>
           </template>
@@ -995,7 +983,7 @@ export default {
 
 .ornament {
   position: absolute;
-  width: 50%;
+  width: 80%;
   height: 4px;
   border-radius: 8px;
 
@@ -1016,6 +1004,27 @@ export default {
 
 .ornament.o2 {
   background: var(--primary);
+}
+
+.exchange-card {
+  height: 100px;
+}
+
+.custom-avatar {
+  box-shadow: 0px 20px 25px #3394f81a;
+  position: absolute;
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  padding: 15px;
+  width: 80px;
+  height: 80px;
+  background: white;
+  border-radius: 100% !important;
+  top: 0%;
+  left: 0%;
+  transform: translate(25%, -75%);
 }
 </style>
 

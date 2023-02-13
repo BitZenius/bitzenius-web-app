@@ -3,7 +3,7 @@
     <v-list flat class="pa-0">
       <v-list-item>
         <v-list-item-content>
-          <v-list-item-title class="font-weight-bold text-caption">{{
+          <v-list-item-title class="font-weight-bold text-body-2">{{
             title
           }}</v-list-item-title>
         </v-list-item-content>

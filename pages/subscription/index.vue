@@ -2,7 +2,7 @@
   <v-row class="pa-5">
     <v-col cols="12">
       <v-row>
-        <v-col cols="12" md="8" class="text-h6 font-weight-bold pl-3">
+        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
           {{ title }}
         </v-col>
       </v-row>
@@ -45,14 +45,14 @@
                                 <span class="text-h2 font-weight-black"
                                   ><span class="text-h5">$</span
                                   >{{ mainPlan.price
-                                  }}<span class="text-h6"
+                                  }}<span class="text-h5"
                                     >/{{
                                       mainPlan.cicle == 1 ? "month" : "year"
                                     }}</span
                                   ></span
                                 ><br />
-                                <span class="text-h6">+</span><br />
-                                <span class="text-h6 font-weight-bold">15%</span
+                                <span class="text-h5">+</span><br />
+                                <span class="text-h5 font-weight-bold">15%</span
                                 ><br />
                                 <span class="caption">profit share</span>
                               </div>
@@ -222,8 +222,8 @@
                                   text-h3
                                   font-weight-black
                                 "
-                                ><span class="text-h6">$</span>{{ i.price
-                                }}<span class="text-h6"
+                                ><span class="text-h5">$</span>{{ i.price
+                                }}<span class="text-h5"
                                   >/{{ monthly ? "month" : "year" }}</span
                                 ></span
                               >

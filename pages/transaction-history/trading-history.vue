@@ -61,32 +61,32 @@
       class="elevation-2 my-2"
     >
       <template v-slot:header.pair="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.type="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.date="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.desc="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.price="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.qty="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
@@ -121,7 +121,7 @@
                 <span class="text-subtitle-2 font-weight-bold">
                   {{ item.pair }}
                 </span>
-                <small class="text-caption">{{ item.id }}</small>
+                <small class="text-body-2">{{ item.id }}</small>
               </div>
             </div>
           </v-col>
@@ -159,7 +159,7 @@
           <!-- <v-chip small v-if="item.type == 'buy'" color="info">
                     </v-chip> -->
           <div v-if="item.type == 'buy'" class="d-flex flex-column">
-            <small class="text-caption font-weight-bold">{{
+            <small class="text-body-2 font-weight-bold">{{
               item.type.toUpperCase() == "BUY" ? "STEP" : null
             }}</small>
             <span class="text-subtitle-2 font-weight-bold">
@@ -167,7 +167,7 @@
             </span>
           </div>
           <div v-else class="d-flex flex-column">
-            <small class="text-caption font-weight-bold">{{
+            <small class="text-body-2 font-weight-bold">{{
               item.type.toUpperCase() == "SELL" ? "PnL" : null
             }}</small>
             <v-chip

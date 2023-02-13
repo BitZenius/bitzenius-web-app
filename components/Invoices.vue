@@ -25,32 +25,32 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:header.invoice_id="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.date="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.description="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.totals.total="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.payment.paid="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.active="{ header }">
-        <strong class="black--text text-body-2 font-weight-bold">{{
+        <strong class="black--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>

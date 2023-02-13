@@ -2,7 +2,7 @@
   <v-row class="py-5">
     <v-col cols="12">
       <v-row>
-        <v-col cols="12" class="text-center text-h6 font-weight-bold pl-3">
+        <v-col cols="12" class="text-center text-h5 font-weight-bold pl-3">
           {{ title }} for {{ selectedExchange }}
         </v-col>
       </v-row>
@@ -144,9 +144,7 @@
               flat
               class="d-flex flex-column align-start pa-5 mt-2"
             >
-              <h3 class="mb-4 text-body-1 font-weight-bold">
-                Token Exceptions
-              </h3>
+              <h3 class="mb-4 text-h6 font-weight-bold">Token Exceptions</h3>
               <v-row>
                 <v-col cols="12"
                   ><v-row align="center">
@@ -159,7 +157,7 @@
                           d-flex
                           align-center
                           custom-input
-                          text-body-2
+                          text-body-1
                         "
                         clearable
                         rounded
@@ -283,9 +281,7 @@
               flat
               class="d-flex flex-column align-start pa-5 mt-2"
             >
-              <h3 class="mb-4 text-body-1 font-weight-bold">
-                Bot Setup Summary
-              </h3>
+              <h3 class="mb-4 text-h6 font-weight-bold">Bot Setup Summary</h3>
               <v-row
                 class="mt-1"
                 style="width: 100%"
@@ -311,12 +307,12 @@
                           </v-list-item-avatar>
 
                           <v-list-item-content>
-                            <v-list-item-title class="text-caption">
+                            <v-list-item-title class="text-body-2">
                               {{ item.title }}
                             </v-list-item-title>
 
                             <v-list-item-subtitle
-                              class="text-body-2 font-weight-bold black--text"
+                              class="text-body-1 font-weight-bold black--text"
                             >
                               {{ item.value }}
                             </v-list-item-subtitle>

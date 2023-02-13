@@ -5,13 +5,11 @@
         <v-row align="center" justify="center">
           <v-col :cols="strategy.style.name !== null ? 12 : 8">
             <div class="d-flex flex-column align-start">
-              <h3 class="mb-4 text-body-1 font-weight-bold">
-                Choose the Amount
-              </h3>
+              <h3 class="mb-4 text-h6 font-weight-bold">Choose the Amount</h3>
               <!-- <v-btn small @click="_logger">logger</v-btn> -->
 
               <v-row class="d-flex align-center" style="width: 100%">
-                <v-col cols="6" md="6" class="text-body-2 font-weight-bold">
+                <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
                   Total USDT To Apply
                   <v-text-field
                     v-model="strategy.usdt_to_apply"
@@ -19,7 +17,7 @@
                     placeholder="Total USDT To Apply"
                     hide-details=""
                     rounded
-                    class="my-2 custom-input text-body-2"
+                    class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -49,7 +47,7 @@
                     </template>
                   </v-text-field>
                 </v-col>
-                <v-col cols="6" md="6" class="text-body-2 font-weight-bold">
+                <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
                   USDT Per Order
                   <v-text-field
                     ref="usdt_per_order"
@@ -59,7 +57,7 @@
                     placeholder="USDT Per Order"
                     hide-details=""
                     rounded
-                    class="my-2 custom-input text-body-2"
+                    class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -87,7 +85,7 @@
                   </v-text-field>
                 </v-col>
 
-                <v-col cols="6" md="6" class="text-body-2 font-weight-bold">
+                <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
                   Max Concurrent Trading Pair
                   <v-text-field
                     v-model="strategy.max_concurrent_trading_pair"
@@ -95,7 +93,7 @@
                     placeholder="Max Concurrent Trading Pair"
                     hide-details=""
                     rounded
-                    class="my-2 custom-input text-body-2"
+                    class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -126,7 +124,7 @@
                   v-if="false"
                   cols="6"
                   md="6"
-                  class="text-body-2 font-weight-bold"
+                  class="text-body-1 font-weight-bold"
                 >
                   Total USDT To Apply
                   <v-text-field
@@ -134,7 +132,7 @@
                     placeholder="Total USDT To Apply"
                     hide-details=""
                     rounded
-                    class="my-2 custom-input text-body-2"
+                    class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -166,9 +164,7 @@
                 </v-col>
               </v-row>
 
-              <h3 class="my-4 text-body-1 font-weight-bold">
-                Choose the Strategy
-              </h3>
+              <h3 class="my-4 text-h6 font-weight-bold">Choose the Strategy</h3>
               <v-row
                 class="d-flex align-center justify-center pt-0 mt-0"
                 style="width: 100%"
@@ -187,7 +183,7 @@
                       >
                         <v-radio :value="item.name">
                           <template v-slot:label>
-                            <strong class="text-caption font-weight-bold">{{
+                            <strong class="text-body-2 font-weight-bold">{{
                               item.name
                             }}</strong>
                           </template>
@@ -220,27 +216,27 @@
             <thead>
               <tr>
                 <th>
-                  <strong class="text-body-2 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold black--text"
                     >Step</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-2 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold black--text"
                     >Drop Rate</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-2 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold black--text"
                     >Buy Multiplier</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-2 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold black--text"
                     >Take Profit</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-2 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold black--text"
                     >Type</strong
                   >
                 </th>
@@ -252,8 +248,8 @@
                 v-for="(child, y, key) in strategy.style.steps"
                 :key="child.key"
               >
-                <td class="text-body-2">{{ y + 1 }}</td>
-                <td class="text-body-2">
+                <td class="text-body-1">{{ y + 1 }}</td>
+                <td class="text-body-1">
                   <div class="d-flex align-center">
                     <span>{{ child.drop_rate }}</span>
                     <v-icon x-small slot="append" color="primary">
@@ -261,7 +257,7 @@
                     </v-icon>
                   </div>
                 </td>
-                <td class="text-body-2">
+                <td class="text-body-1">
                   <div class="d-flex align-center">
                     <span>{{ child.multiplier }}</span>
                     <v-icon x-small slot="append" color="primary">
@@ -269,7 +265,7 @@
                     </v-icon>
                   </div>
                 </td>
-                <td class="text-body-2">
+                <td class="text-body-1">
                   <div class="d-flex align-center">
                     <span>{{ child.take_profit }}</span>
                     <v-icon x-small slot="append" color="primary">
@@ -277,7 +273,7 @@
                     </v-icon>
                   </div>
                 </td>
-                <td class="text-body-2">
+                <td class="text-body-1">
                   <span>{{ child.type }}</span>
                 </td>
               </tr>
@@ -311,7 +307,7 @@
                 </td>
                 <td>
                   <v-text-field
-                    class="text-body-2"
+                    class="text-body-1"
                     v-model="customDrop"
                     placeholder="1.2"
                   >
@@ -322,7 +318,7 @@
                 </td>
                 <td>
                   <v-text-field
-                    class="text-body-2"
+                    class="text-body-1"
                     v-model="customBuy"
                     placeholder="2"
                   >
@@ -333,7 +329,7 @@
                 </td>
                 <td>
                   <v-text-field
-                    class="text-body-2"
+                    class="text-body-1"
                     v-model="customProfit"
                     placeholder="1.1"
                   >

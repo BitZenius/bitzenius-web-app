@@ -6,7 +6,7 @@
           <img width="40" height="40" src="/token_logo/USDT.png" />
         </div>
       </v-col>
-      <v-col cols="7" class="pt-5 black--text font-weight-bold text-body-2">
+      <v-col cols="7" class="pt-5 black--text font-weight-bold text-body-1">
         Task Overview
       </v-col>
       <v-col v-for="i in 5" :key="`task-${i}`" cols="12" class="mt-2">
