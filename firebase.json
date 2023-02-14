@@ -1,13 +1,22 @@
 {
-    "hosting": [
-        {
-            "site": "bitzenius-dev",
-            "public": "dist",
-            "ignore": [
-                "firebase.json",
-                "**/.*",
-                "**/node_modules/**"
-            ]
-        }
-    ]
+  "hosting": [
+    {
+      "site": "bitzenius-dev",
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    },
+    {
+      "site": "bitzenius-staging-a9d27",
+      "public": "dist",
+      "ignore": [
+        "firebase.json",
+        "**/.*",
+        "**/node_modules/**"
+      ]
+    }
+  ]
 }

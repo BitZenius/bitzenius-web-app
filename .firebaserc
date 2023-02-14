@@ -7,6 +7,9 @@
       "hosting": {
         "bitzenius-dev": [
           "bitzenius-dev"
+        ],
+        "bitzenius-staging-a9d27": [
+          "bitzenius-staging-a9d27"
         ]
       }
     }
