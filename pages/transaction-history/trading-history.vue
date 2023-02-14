@@ -80,7 +80,7 @@
             <template v-slot:item.price="{item}">
                 <!-- {{item.price |currency('$', 6)}} -->
                 <span>${{item._price.first}}<small>.{{item._price.second}}</small></span></br>  
-                <code>{{item.price}}</code>
+                <code>{{item.average_fill_price}}</code>
             </template>
             <template v-slot:item.qty="{item}">
                 <!-- {{item.qty}} -->

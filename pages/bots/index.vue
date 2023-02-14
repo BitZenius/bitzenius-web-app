@@ -456,7 +456,6 @@ export default {
             this.socket.onmessage = function(event) {
                 let data = JSON.parse(event.data);
                 let index = activePosition.findIndex(b => b.symbol == data.s);
-                console.log(data);
                 if (index < 0) return;
                 activePosition[index].price.value = data.c;
                 activePosition[index].price.percentage = data.P;

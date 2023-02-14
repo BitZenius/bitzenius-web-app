@@ -78,10 +78,13 @@
                                 {{item.value - 1}}
                             </span>
                         </span>
+                        <span v-else-if="item.key == 'total_quantity'">
+                            <span>{{item.value.toFixed(4)}}</span>
+                        </span>
                         <span v-else>
                             {{item.value}}
                         </span>
-                    </template>              
+                    </template>          
                 </v-data-table>
 
                 <!-- START OF FORMULA -->
@@ -334,10 +337,6 @@ export default {
                     key:"total_quantity",
                     value: 0
                 },
-                {
-                    title: "Change",
-                    value: 0
-                },
             ],
 
             // TABLE CONDITION
@@ -376,12 +375,6 @@ export default {
                     icon: "mdi-percent-outline",
                     title: "Take Profit Ratio",
                     key:"take_profit_ratio",
-                    value: 0
-                },
-                {
-                    icon: "mdi-wallet-outline",
-                    title: "Buy Amount",
-                    key:"total_buy_amount",
                     value: 0
                 },
                 {
