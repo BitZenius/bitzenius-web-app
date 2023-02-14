@@ -1,0 +1,7 @@
+<svg id="withdraw" xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
+  <g id="withdraw-2" data-name="withdraw">
+    <path id="Subtract" d="M4,0H16a4,4,0,0,1,0,8V4H4V8A4,4,0,0,1,4,0Z" fill="#fe759f"/>
+    <path id="Vector" d="M12,12V0H0V12a2,2,0,0,0,2,2h8A2,2,0,0,0,12,12Z" transform="translate(4 4)" fill="#fe759f" opacity="0.4"/>
+    <path id="Vector_Stroke_" data-name="Vector (Stroke)" d="M3.5,2.146l.72.72A.75.75,0,0,0,5.28,1.805L3.987.513a1.75,1.75,0,0,0-2.475,0L.22,1.805A.75.75,0,0,0,1.28,2.866L2,2.146V6.336a.75.75,0,0,0,1.5,0Z" transform="translate(12.75 14.336) rotate(180)" fill="#fe759f"/>
+  </g>
+</svg>
