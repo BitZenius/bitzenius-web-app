@@ -237,8 +237,6 @@ export default {
             this._fetchReport();
         },
         async _fetchReport(sorting) {
-            console.log('moment', this.$moment);
-            // moment("10/15/2014 9:00", "M/D/YYYY H:mm").valueOf();
             this.isLoading = true;
             let tempParams = {};
             tempParams.exchange = this.exchange;
@@ -274,7 +272,7 @@ export default {
                 res.data.forEach((val)=>{
                     // PRICE TO SMALLER AFTER COMMA
                     val._price = {};
-                    let stringPrice = String(parseFloat(val.price).toFixed(4)).split(".");
+                    let stringPrice = String(parseFloat(val.average_fill_price).toFixed(4)).split(".");
                     // let stringPrice = String(val.price).split(".");
                     val._price.first = parseFloat(stringPrice[0]);
                     val._price.second = stringPrice[1];
