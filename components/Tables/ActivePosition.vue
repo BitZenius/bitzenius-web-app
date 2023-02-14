@@ -202,7 +202,7 @@
       </v-card>
       <v-card class="pa-3" flat rounded>
         <v-tabs-items v-model="currentItem">
-          <v-tab-item key="Default">
+          <v-tab-item key="Active Positions">
             <v-card :key="`${counter}-default`" class="pa-8" flat>
               <v-row class="mb-3" justify="end" align="end">
                 <v-col cols="12" md="4">
@@ -462,8 +462,8 @@ export default {
   data() {
     return {
       counter: 0,
-      currentItem: "Default",
-      tables: ["Default", "Daily Profit", "All Trading History"],
+      currentItem: "Active Positions",
+      tables: ["Active Positions", "Daily Profit", "All Trading History"],
 
       dialog: true,
       dialogDelete: false,

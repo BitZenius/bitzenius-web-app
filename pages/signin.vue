@@ -9,6 +9,7 @@
       />
       <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
     </v-overlay>
+
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
       <v-col cols="12" md="5">
@@ -175,8 +176,10 @@
     <v-img class="ornament-1" src="/images/signin-vector.svg"></v-img>
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
+      width="650"
       class="ornament-3"
-      src="https://placeholder.com/assets/images/150x150-2-500x500.png"
+      :src="require('assets/images/bitzy trading.png')"
+      contain
     ></v-img>
     <div class="text-subtitle white--text footer">
       ©2023 - BitZenius. All rights reserved.

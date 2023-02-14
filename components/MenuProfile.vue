@@ -21,7 +21,7 @@
       </v-list-item-subttitle>
     </v-list-item-content>
 
-    <v-chip class="custom-chip" small color="primary">
+    <v-chip class="custom-chip-2" small color="primary">
       {{ user.subscription ? "Active" : user.trial ? "Trial" : "Inactive" }}
     </v-chip>
   </v-list-item>
@@ -68,7 +68,7 @@ export default {
   transition: all 0.2s;
 }
 
-.custom-chip {
+.custom-chip-2 {
   position: absolute;
   right: 0%;
   top: -5%;

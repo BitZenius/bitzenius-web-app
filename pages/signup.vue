@@ -181,7 +181,8 @@
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
       class="ornament-3"
-      src="https://placeholder.com/assets/images/150x150-2-500x500.png"
+      :src="require('assets/images/bitzy trading.png')"
+      contain
     ></v-img>
     <div class="text-subtitle white--text footer">
       ©2023 - BitZenius. All rights reserved.

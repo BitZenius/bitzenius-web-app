@@ -22,6 +22,7 @@
     "vue-apexcharts": "^1.6.2",
     "vue-clipboard2": "^0.3.3",
     "vue-infinite-loading": "^2.4.5",
+    "vue-lottie": "^0.2.1",
     "vue2-filters": "^0.14.0",
     "vuetify": "^2.5.5",
     "ws": "^8.12.0"

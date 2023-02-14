@@ -18,6 +18,19 @@
           </v-img>
 
           <v-row class="pa-5 pb-10" align="end">
+            <v-col cols="12" class="d-flex align-end justify-start">
+              <div class="lottie-container">
+                <template>
+                  <!-- width and height are optional -->
+                  <lottie
+                    :width="256"
+                    :height="256"
+                    :options="lottieOptions"
+                    v-on:animCreated="handleAnimation"
+                  />
+                </template>
+              </div>
+            </v-col>
             <v-col cols="12">
               <div v-if="subscription == null || subscription.id == 0">
                 <v-card elevation="8" class="pa-8">
@@ -479,9 +492,17 @@
   </v-row>
 </template>
 
+
+
 <script>
+import lottie from "vue-lottie/src/lottie.vue";
+import * as animationData from "~/assets/lottie/dashboard/Subs me Bot.json";
+
 export default {
   layout: "account",
+  components: {
+    lottie,
+  },
   data() {
     return {
       title: "Subscription",
@@ -499,6 +520,10 @@ export default {
       orderDialog: false,
       promoCode: "",
       promoCodeData: null,
+
+      // LOTTIE
+      anim: null, // for saving the reference to the animation
+      lottieOptions: { animationData: animationData.default },
     };
   },
   head() {
@@ -524,6 +549,9 @@ export default {
     this.initialize();
   },
   methods: {
+    handleAnimation: function (anim) {
+      this.anim = anim;
+    },
     initialize() {
       this.isLoading = true;
       this.$api
@@ -745,5 +773,8 @@ table.invoice td {
   position: absolute;
   top: 75%;
   left: 25%;
+}
+.lottie-container {
+  transform: translate(-10%, 15%);
 }
 </style>

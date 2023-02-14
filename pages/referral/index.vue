@@ -25,8 +25,19 @@
             class="pa-2"
             style="position: relative"
           >
+            <div class="lottie-container">
+              <template>
+                <!-- width and height are optional -->
+                <lottie
+                  :width="300"
+                  :height="300"
+                  :options="lottieOptions"
+                  v-on:animCreated="handleAnimation"
+                />
+              </template>
+            </div>
             <v-list>
-              <v-list-item class="mb-10">
+              <v-list-item class="mb-10 pb-10">
                 <v-list-item-content>
                   <v-list-item-title class="text-body-1 font-weight-bold"
                     >Your Referral Code</v-list-item-title
@@ -52,7 +63,7 @@
                   </v-list-item-subtitle>
                 </v-list-item-content>
               </v-list-item>
-              <v-list-item>
+              <v-list-item class="mt-10">
                 <v-list-item-content>
                   <v-list-item-title class="text-body-1 font-weight-bold"
                     >Referral Link</v-list-item-title
@@ -376,8 +387,14 @@
 </template>
 
 <script>
+import lottie from "vue-lottie/src/lottie.vue";
+import * as animationData from "~/assets/lottie/dashboard/Referral.json";
+
 export default {
   layout: "account",
+  components: {
+    lottie,
+  },
   data() {
     return {
       title: "Referral",
@@ -420,6 +437,10 @@ export default {
       transactions: [],
       copied: false,
       copied2: false,
+
+      // LOTTIE
+      anim: null, // for saving the reference to the animation
+      lottieOptions: { animationData: animationData.default },
     };
   },
   head() {
@@ -442,6 +463,9 @@ export default {
     this.getRewards();
   },
   methods: {
+    handleAnimation: function (anim) {
+      this.anim = anim;
+    },
     getProfile() {
       this.isLoading = true;
       this.$api
@@ -530,3 +554,12 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.lottie-container {
+  position: absolute;
+  top: 0%;
+  right: 0%;
+  transform: translate(10%, -30%);
+}
+</style>

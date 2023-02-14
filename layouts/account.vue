@@ -11,7 +11,7 @@
       app
     >
       <v-list nav v-if="user" rounded class="px-5">
-        <v-list-item class="ml-1 mb-8" two-line>
+        <v-list-item class="ml-1 mb-2" two-line>
           <v-list-item-content>
             <v-img
               :src="

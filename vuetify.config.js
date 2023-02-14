@@ -11,6 +11,11 @@ import AdvancedBotIcon from "~/assets/custom-icons/AdvancedBot.vue";
 import CoinIcon from "~/assets/custom-icons/Coin.vue";
 import LogoutIcon from "~/assets/custom-icons/Logout.vue";
 
+import ChartArrowUpIcon from "~/assets/custom-icons/ChartArrowUp.vue";
+import CopyCheckIcon from "~/assets/custom-icons/CopyCheck.vue";
+import DocumentTextIcon from "~/assets/custom-icons/DocumentText.vue";
+import ProfitBarChartIcon from "~/assets/custom-icons/ProfitBarChart.vue";
+
 export default {
 
   icons: {
@@ -51,6 +56,18 @@ export default {
       LogoutIcon: {
         component: LogoutIcon
       },
+      ChartArrowUpIcon: {
+        component: ChartArrowUpIcon,
+      },
+      CopyCheckIcon: {
+        component: CopyCheckIcon,
+      },
+      DocumentTextIcon: {
+        component: DocumentTextIcon,
+      },
+      ProfitBarChartIcon: {
+        component: ProfitBarChartIcon
+      }
 
     },
   },

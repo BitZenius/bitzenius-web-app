@@ -8,7 +8,7 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-row v-if="false">
+      <!-- <v-row v-if="false">
         <v-col cols="6" class="d-flex justify-start"
           >Add Bot {{ exchange }}</v-col
         >
@@ -17,370 +17,440 @@
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
-      </v-row>
+      </v-row> -->
 
-      <!-- <v-stepper>
-        <v-stepper-header>
-          <v-stepper-icon>
-            <v-stepper-step-icon icon="mdi-account-outline">
-              Name of step
-            </v-stepper-step-icon>
-          </v-stepper-icon>
-        </v-stepper-header>
-      </v-stepper> -->
-      <v-stepper flat v-model="e1" class="custom-stepper">
-        <v-card flat>
-          <v-stepper-header flat>
-            <v-stepper-step
-              append-icon="mdi-magnify"
-              :complete="e1 > 1"
-              step="1"
-            >
-              <strong class="primary--text">Step 1</strong>
-              <small>
-                <b class="black--text font-weight-normal"
-                  >Choose amount and strategy</b
-                >
-              </small>
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step :complete="e1 > 1" step="2">
-              <strong class="primary--text">Step 2</strong>
-              <small>
-                <b class="black--text font-weight-normal">Choose analysis</b>
-              </small></v-stepper-step
-            >
-
-            <v-divider></v-divider>
-
-            <v-stepper-step :complete="e1 > 2" step="3">
-              <strong class="primary--text">Step 3</strong>
-              <small>
-                <b class="black--text font-weight-normal"
-                  >Choose exceptions</b
-                ></small
+      <v-row
+        no-gutters
+        align="center"
+        justify="center"
+        style="min-height: 600px"
+      >
+        <v-col cols="1" class="d-flex align-center justify-end">
+          <!-- CUSTOM STEPPER -->
+          <v-card flat rounded class="custom-stepper-container">
+            <v-list dense>
+              <v-list-item
+                class="custom-stepper mb-2"
+                :ripple="false"
+                @click="e1 = 1"
               >
-            </v-stepper-step>
-
-            <v-divider></v-divider>
-
-            <v-stepper-step :complete="e1 > 3" step="4">
-              <strong class="primary--text">Step 4</strong>
-              <small>
-                <b class="black--text font-weight-normal">Summary</b></small
-              >
-            </v-stepper-step>
-          </v-stepper-header>
-        </v-card>
-
-        <v-stepper-items class="mt-5">
-          <v-stepper-content class="py-0 px-0" step="1">
-            <ModalsBotSetupStrategyAndAmount
-              v-if="showStrategySetup"
-              :selected-strategy="bot.strategy"
-              ref="strategyRef"
-              @onSelected="onStrategySelected"
-            >
-              <div class="d-flex float-right my-4">
-                <v-btn
-                  width="120"
-                  rounded
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 >= 1 ? 100 : 0"
                   color="primary"
-                  @click="_continue(2)"
+                  class="d-flex align-center justify-center"
                 >
-                  Continue
-                </v-btn>
-              </div>
-            </ModalsBotSetupStrategyAndAmount>
-            <!-- <div class="d-flex float-left">
-                          <v-btn class="danger white--text" @click="_deleteBot( bot.id)">
-                              Delete Bot
-                          </v-btn>
-                      </div> -->
-          </v-stepper-content>
-
-          <v-stepper-content class="py-0" step="2">
-            <v-card flat min-height="200px" class="py-8 mt-2">
-              <ModalsBotSetupTechnicalAnalysis
-                v-if="showTechnicalAnalysis"
-                :selected-technical="bot.analysis"
-                ref="analysisRef"
-                @onAnalysisSelected="onAnalysisSelected"
+                  <v-list-item-avatar size="50" class="ma-0">
+                    <v-icon
+                      size="20"
+                      :color="e1 >= 1 ? 'primary' : ''"
+                      v-html="`$vuetify.icon.ProfitBarChartIcon`"
+                    ></v-icon>
+                  </v-list-item-avatar>
+                </v-progress-circular>
+              </v-list-item>
+              <v-list-item
+                class="custom-stepper mb-2"
+                :ripple="false"
+                @click="e1 = 2"
               >
-                <v-row>
-                  <v-col cols="12">
-                    <div class="d-flex float-left my-4">
-                      <v-btn
-                        width="120"
-                        color="primary"
-                        @click="e1 = 1"
-                        rounded
-                        outlined
-                      >
-                        Back
-                      </v-btn>
-                    </div>
-                    <div class="d-flex float-right my-4">
-                      <v-btn
-                        width="120"
-                        rounded
-                        color="primary"
-                        @click="_continue(3)"
-                      >
-                        Continue
-                      </v-btn>
-                    </div>
-                  </v-col>
-                </v-row>
-              </ModalsBotSetupTechnicalAnalysis>
-            </v-card>
-          </v-stepper-content>
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 >= 2 ? 100 : 0"
+                  color="primary"
+                  class="d-flex align-center justify-center"
+                >
+                  <v-list-item-avatar size="50" class="ma-0">
+                    <v-icon
+                      size="20"
+                      :color="e1 >= 2 ? 'primary' : ''"
+                      v-html="`$vuetify.icon.ChartArrowUpIcon`"
+                    ></v-icon>
+                  </v-list-item-avatar>
+                </v-progress-circular>
+              </v-list-item>
 
-          <v-stepper-content class="py-0" step="3">
-            <v-card
-              min-height="200px"
-              flat
-              class="d-flex flex-column align-start pa-5 mt-2"
-            >
-              <h3 class="mb-4 text-h6 font-weight-bold">Token Exceptions</h3>
-              <v-row>
-                <v-col cols="12"
-                  ><v-row align="center">
-                    <v-col cols="4" class="d-flex align-center">
-                      <v-text-field
-                        v-model="searchTerm"
-                        placeholder="Search tokens..."
-                        class="
-                          my-2
-                          d-flex
-                          align-center
-                          custom-input
-                          text-body-1
-                        "
-                        clearable
-                        rounded
-                        @input="searchTokens"
-                      >
-                        <template v-slot:prepend-inner>
-                          <v-icon class="mr-4">mdi-magnify</v-icon>
-                        </template>
-                      </v-text-field>
-                    </v-col>
-                    <v-col cols="12" class="d-flex align-center">
-                      <v-row style="width: 100%" justify="end">
-                        <v-col cols="12" class="d-flex flex-wrap">
-                          <v-chip
-                            v-for="(token, i) in tokenException"
-                            :key="`v-chip-${i}`"
-                            class="ma-2 custom-chip"
+              <v-list-item
+                class="custom-stepper mb-2"
+                :ripple="false"
+                @click="e1 = 3"
+              >
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 >= 3 ? 100 : 0"
+                  color="primary"
+                  class="d-flex align-center justify-center"
+                >
+                  <v-list-item-avatar size="50" class="ma-0">
+                    <v-icon
+                      size="20"
+                      :color="e1 >= 3 ? 'primary' : ''"
+                      v-html="`$vuetify.icon.CopyCheckIcon`"
+                    ></v-icon>
+                  </v-list-item-avatar>
+                </v-progress-circular>
+              </v-list-item>
+              <v-list-item
+                class="custom-stepper mb-2"
+                :ripple="false"
+                @click="e1 = 4"
+              >
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 >= 4 ? 100 : 0"
+                  color="primary"
+                  class="d-flex align-center justify-center"
+                >
+                  <v-list-item-avatar size="50" class="ma-0">
+                    <v-icon
+                      size="20"
+                      :color="e1 >= 4 ? 'primary' : ''"
+                      v-html="`$vuetify.icon.DocumentTextIcon`"
+                    ></v-icon>
+                  </v-list-item-avatar>
+                </v-progress-circular>
+              </v-list-item>
+            </v-list>
+          </v-card>
+
+          <!-- CUSTOM STEPPER ENDS -->
+        </v-col>
+        <v-col cols="11">
+          <v-stepper flat v-model="e1" :ripple="false">
+            <v-stepper-items style="width: 100%">
+              <v-stepper-content class="py-0 px-0" step="1">
+                <ModalsBotSetupStrategyAndAmount
+                  v-if="showStrategySetup"
+                  :selected-strategy="bot.strategy"
+                  ref="strategyRef"
+                  @onSelected="onStrategySelected"
+                >
+                  <div class="d-flex float-right my-4">
+                    <v-btn
+                      width="120"
+                      rounded
+                      color="primary"
+                      @click="_continue(2)"
+                    >
+                      Continue
+                    </v-btn>
+                  </div>
+                </ModalsBotSetupStrategyAndAmount>
+                <!-- <div class="d-flex float-left">
+                              <v-btn class="danger white--text" @click="_deleteBot( bot.id)">
+                                  Delete Bot
+                              </v-btn>
+                          </div> -->
+              </v-stepper-content>
+
+              <v-stepper-content class="py-0" step="2">
+                <v-card flat min-height="200px">
+                  <ModalsBotSetupTechnicalAnalysis
+                    v-if="showTechnicalAnalysis"
+                    :selected-technical="bot.analysis"
+                    ref="analysisRef"
+                    @onAnalysisSelected="onAnalysisSelected"
+                  >
+                    <v-row>
+                      <v-col cols="12">
+                        <div class="d-flex float-left my-4">
+                          <v-btn
+                            width="120"
                             color="primary"
-                            close
-                            small
-                            text-color="white"
-                            @click:close="toggleTokenException(token)"
+                            @click="e1 = 1"
+                            rounded
+                            outlined
                           >
+                            Back
+                          </v-btn>
+                        </div>
+                        <div class="d-flex float-right my-4">
+                          <v-btn
+                            width="120"
+                            rounded
+                            color="primary"
+                            @click="_continue(3)"
+                          >
+                            Continue
+                          </v-btn>
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </ModalsBotSetupTechnicalAnalysis>
+                </v-card>
+              </v-stepper-content>
+
+              <v-stepper-content class="py-0" step="3">
+                <v-card
+                  min-height="200px"
+                  flat
+                  class="d-flex flex-column align-start pa-5 mt-2"
+                >
+                  <h3 class="mb-4 text-h6 font-weight-bold">
+                    Token Exceptions
+                  </h3>
+                  <v-row>
+                    <v-col cols="12"
+                      ><v-row align="center">
+                        <v-col cols="4" class="d-flex align-center">
+                          <v-text-field
+                            v-model="searchTerm"
+                            placeholder="Search tokens..."
+                            class="
+                              my-2
+                              d-flex
+                              align-center
+                              custom-input
+                              text-body-1
+                            "
+                            clearable
+                            rounded
+                            @input="searchTokens"
+                          >
+                            <template v-slot:prepend-inner>
+                              <v-icon class="mr-4">mdi-magnify</v-icon>
+                            </template>
+                          </v-text-field>
+                        </v-col>
+                        <v-col cols="12" class="d-flex align-center">
+                          <v-row style="width: 100%" justify="end">
+                            <v-col cols="12" class="d-flex flex-wrap">
+                              <v-chip
+                                v-for="(token, i) in tokenException"
+                                :key="`v-chip-${i}`"
+                                class="ma-2 custom-chip"
+                                color="primary"
+                                close
+                                small
+                                text-color="white"
+                                @click:close="toggleTokenException(token)"
+                              >
+                                {{ token }}
+                              </v-chip>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+                      </v-row></v-col
+                    >
+                    <v-col cols="12">
+                      <v-row class="chip-container">
+                        <v-col
+                          cols="2"
+                          v-for="(token, i) in tokens"
+                          :key="`v-chip-${i}`"
+                          class="d-flex justify-center"
+                        >
+                          <v-chip
+                            class="ma-2 custom-chip"
+                            color="#f4f7fd"
+                            text-color="black"
+                            small
+                            @click.native="toggleTokenException(token)"
+                          >
+                            <v-avatar
+                              v-if="tokenException.includes(token)"
+                              left
+                            >
+                              <v-icon class="customGreen2--text"
+                                >mdi-checkbox-marked-circle</v-icon
+                              >
+                            </v-avatar>
                             {{ token }}
                           </v-chip>
                         </v-col>
+                      </v-row></v-col
+                    >
+                    <v-col cols="12">
+                      <v-row justify="center">
+                        <v-col cols="8">
+                          <div class="d-flex float-left my-4">
+                            <v-btn
+                              width="120"
+                              color="primary"
+                              @click="e1 = 2"
+                              rounded
+                              outlined
+                            >
+                              Back
+                            </v-btn>
+                          </div>
+                          <div class="d-flex float-right my-4">
+                            <v-btn
+                              width="120"
+                              rounded
+                              color="primary"
+                              @click="e1 = 4"
+                            >
+                              Continue
+                            </v-btn>
+                          </div>
+                        </v-col>
                       </v-row>
                     </v-col>
-                  </v-row></v-col
-                >
-                <v-col cols="12">
-                  <v-row class="chip-container">
-                    <v-col
-                      cols="2"
-                      v-for="(token, i) in tokens"
-                      :key="`v-chip-${i}`"
-                      class="d-flex justify-center"
-                    >
-                      <v-chip
-                        class="ma-2 custom-chip"
-                        color="#f4f7fd"
-                        text-color="black"
-                        small
-                        @click.native="toggleTokenException(token)"
-                      >
-                        <v-avatar v-if="tokenException.includes(token)" left>
-                          <v-icon class="customGreen2--text"
-                            >mdi-checkbox-marked-circle</v-icon
-                          >
-                        </v-avatar>
-                        {{ token }}
-                      </v-chip>
-                    </v-col>
-                  </v-row></v-col
-                >
-                <v-col cols="12">
-                  <v-row justify="center">
-                    <v-col cols="8">
-                      <div class="d-flex float-left my-4">
-                        <v-btn
-                          width="120"
-                          color="primary"
-                          @click="e1 = 2"
-                          rounded
-                          outlined
-                        >
-                          Back
-                        </v-btn>
-                      </div>
-                      <div class="d-flex float-right my-4">
-                        <v-btn
-                          width="120"
-                          rounded
-                          color="primary"
-                          @click="e1 = 4"
-                        >
-                          Continue
-                        </v-btn>
-                      </div>
-                    </v-col>
                   </v-row>
-                </v-col>
-              </v-row>
 
-              <v-select
-                v-if="tokens.length > 0 && false"
-                dense
-                class="mt-3 px-3"
-                v-model="tokenException"
-                :items="tokens"
-                chips
-                label="Token Exceptions"
-                multiple
-                outlined
-              >
-                <template v-slot:prepend-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-text-field
-                        v-model="searchTerm"
-                        placeholder="Search"
-                        @input="searchTokens"
-                      ></v-text-field>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-select>
-            </v-card>
-
-            <!-- <div class="d-flex float-right my-4">
-              <v-btn color="blue darken-1" class="mr-2" @click="e1 = 2" text>
-                Back
-              </v-btn>
-              <v-btn color="primary" @click="e1 = 4"> Continue </v-btn>
-            </div> -->
-          </v-stepper-content>
-
-          <v-stepper-content class="py-0" step="4">
-            <v-card
-              min-height="200px"
-              flat
-              class="d-flex flex-column align-start pa-5 mt-2"
-            >
-              <h3 class="mb-4 text-h6 font-weight-bold">Bot Setup Summary</h3>
-              <v-row
-                class="mt-1"
-                style="width: 100%"
-                justify="center"
-                align="center"
-              >
-                <v-col cols="10">
-                  <v-row justify="start" align="center" class="ma-4">
-                    <v-col
-                      cols="4"
-                      v-for="(item, i) in summary"
-                      :key="`item-summary-${i}`"
-                    >
-                      <v-card flat rounded color="#F4F7FD">
-                        <v-list-item>
-                          <v-list-item-avatar size="40" color="#F4F7FD">
-                            <v-img
-                              max-width="25px"
-                              max-height="25px"
-                              :src="require('~/assets/images/deal.svg')"
-                              position="center"
-                            ></v-img>
-                          </v-list-item-avatar>
-
-                          <v-list-item-content>
-                            <v-list-item-title class="text-body-2">
-                              {{ item.title }}
-                            </v-list-item-title>
-
-                            <v-list-item-subtitle
-                              class="text-body-1 font-weight-bold black--text"
-                            >
-                              {{ item.value }}
-                            </v-list-item-subtitle>
-                          </v-list-item-content>
-                        </v-list-item>
-                      </v-card>
-                    </v-col>
-                  </v-row>
-                  <v-data-table
-                    v-if="false"
-                    :headers="summaryHeaders"
-                    :items="summary"
-                    hide-default-header
-                    hide-default-footer
-                    class="elevation-1"
+                  <v-select
+                    v-if="tokens.length > 0 && false"
+                    dense
+                    class="mt-3 px-3"
+                    v-model="tokenException"
+                    :items="tokens"
+                    chips
+                    label="Token Exceptions"
+                    multiple
+                    outlined
                   >
-                  </v-data-table>
-                </v-col>
-                <v-col cols="12">
-                  <v-row justify="center">
-                    <v-col cols="8">
-                      <div class="d-flex float-left my-4">
-                        <v-btn
-                          width="120"
-                          color="primary"
-                          @click="e1 = 3"
-                          rounded
-                          outlined
-                        >
-                          Back
-                        </v-btn>
-                      </div>
+                    <template v-slot:prepend-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-text-field
+                            v-model="searchTerm"
+                            placeholder="Search"
+                            @input="searchTokens"
+                          ></v-text-field>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-select>
+                </v-card>
 
-                      <div class="d-flex float-right my-4">
-                        <v-btn
-                          width="120"
-                          rounded
-                          color="customPink"
-                          @click="_submitBotSetup(isUpdateMode)"
-                          :disabled="
-                            !user.subscription || user.subscription == false
-                          "
-                          v-if="!isUpdateMode"
+                <!-- <div class="d-flex float-right my-4">
+                  <v-btn color="blue darken-1" class="mr-2" @click="e1 = 2" text>
+                    Back
+                  </v-btn>
+                  <v-btn color="primary" @click="e1 = 4"> Continue </v-btn>
+                </div> -->
+              </v-stepper-content>
+
+              <v-stepper-content class="py-0" step="4">
+                <v-card
+                  min-height="200px"
+                  flat
+                  class="d-flex flex-column align-start pa-5 mt-2"
+                >
+                  <h3 class="mb-4 text-h6 font-weight-bold">
+                    Bot Setup Summary
+                  </h3>
+                  <v-row
+                    class="mt-1"
+                    style="width: 100%"
+                    justify="center"
+                    align="center"
+                  >
+                    <v-col cols="10">
+                      <v-row justify="start" align="center" class="ma-4">
+                        <v-col
+                          cols="4"
+                          v-for="(item, i) in summary"
+                          :key="`item-summary-${i}`"
                         >
-                          Submit
-                        </v-btn>
-                        <v-btn
-                          width="120"
-                          rounded
-                          color="customPink"
-                          class="white--text"
-                          @click="_submitBotSetup(isUpdateMode)"
-                          :disabled="
-                            !user.subscription || user.subscription == false
-                          "
-                          v-else
-                        >
-                          Update
-                        </v-btn>
-                      </div>
+                          <v-card flat rounded color="#F4F7FD">
+                            <v-list-item>
+                              <v-list-item-avatar size="50" color="#F4F7FD">
+                                <!-- <v-img
+                                  max-width="25px"
+                                  max-height="25px"
+                                  :src="require('~/assets/images/deal.svg')"
+                                  position="center"
+                                ></v-img> -->
+                                <v-icon
+                                  size="25"
+                                  small
+                                  color="primary"
+                                  :v-html="_determineIcon(item.title)"
+                                >
+                                </v-icon>
+                              </v-list-item-avatar>
+
+                              <v-list-item-content>
+                                <v-list-item-title class="text-body-2">
+                                  {{ item.title }}
+                                </v-list-item-title>
+
+                                <v-list-item-subtitle
+                                  class="
+                                    text-body-1
+                                    font-weight-bold
+                                    black--text
+                                  "
+                                >
+                                  {{ item.value }}
+                                </v-list-item-subtitle>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-card>
+                        </v-col>
+                      </v-row>
+                      <v-data-table
+                        v-if="false"
+                        :headers="summaryHeaders"
+                        :items="summary"
+                        hide-default-header
+                        hide-default-footer
+                        class="elevation-1"
+                      >
+                      </v-data-table>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-row justify="center">
+                        <v-col cols="8">
+                          <div class="d-flex float-left my-4">
+                            <v-btn
+                              width="120"
+                              color="primary"
+                              @click="e1 = 3"
+                              rounded
+                              outlined
+                            >
+                              Back
+                            </v-btn>
+                          </div>
+
+                          <div class="d-flex float-right my-4">
+                            <v-btn
+                              width="120"
+                              rounded
+                              color="customPink"
+                              @click="_submitBotSetup(isUpdateMode)"
+                              :disabled="
+                                !user.subscription || user.subscription == false
+                              "
+                              v-if="!isUpdateMode"
+                            >
+                              Submit
+                            </v-btn>
+                            <v-btn
+                              width="120"
+                              rounded
+                              color="customPink"
+                              class="white--text"
+                              @click="_submitBotSetup(isUpdateMode)"
+                              :disabled="
+                                !user.subscription || user.subscription == false
+                              "
+                              v-else
+                            >
+                              Update
+                            </v-btn>
+                          </div>
+                        </v-col>
+                      </v-row>
                     </v-col>
                   </v-row>
-                </v-col>
-              </v-row>
-            </v-card>
-          </v-stepper-content>
-        </v-stepper-items>
-      </v-stepper>
+                </v-card>
+              </v-stepper-content>
+            </v-stepper-items>
+          </v-stepper>
+        </v-col>
+      </v-row>
     </v-col>
   </v-row>
 </template>
@@ -390,6 +460,7 @@ import { exec } from "apexcharts";
 import { mapGetters, mapMutations, mapActions, mapState } from "vuex";
 import VStepperIcon from "@/components/VuetifyCustomComponents/VStepperIcon.vue";
 import VStepperStepIcon from "@/components/VuetifyCustomComponents/VStepperIcon.vue";
+import { match } from "assert";
 
 export default {
   components: {
@@ -773,6 +844,18 @@ export default {
         this.tokenException.push(val);
       }
     },
+    _determineIcon(text) {
+      return "$vuetify.icon.ProfitBarChartIcon";
+      switch (text) {
+        case "Exchange":
+          return "";
+          break;
+
+        default:
+          return;
+          break;
+      }
+    },
   },
   async mounted() {
     // PARAM FROM STORE
@@ -869,5 +952,20 @@ export default {
   width: 100%;
   max-height: 300px;
   overflow-y: auto;
+}
+.custom-stepper {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  padding-left: 5px !important;
+  justify-content: flex-start;
+  border-radius: 25px 0% 0% 25px;
+}
+.custom-stepper-container {
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 25px;
 }
 </style>
