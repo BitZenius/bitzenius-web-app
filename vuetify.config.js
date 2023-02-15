@@ -100,6 +100,7 @@ export default {
         basic: '#ffffff',
         'basic-1': '#ffffff',
         'basic-2': '#ffffff',
+        'black': '#000000',
 
         // BG
         'off-white': '#f4f7fd',

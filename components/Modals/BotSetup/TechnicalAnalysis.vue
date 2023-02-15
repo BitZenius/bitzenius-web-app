@@ -1,124 +1,131 @@
 <template>
-  <v-row align="start" justify="start">
-    <v-col cols="12">
-      <v-card flat rounded class="pa-5 mt-2">
-        <v-row align="center" justify="center">
-          <v-col cols="8">
-            <div class="d-flex flex-column align-start">
-              <h3 class="mb-4 text-h6 font-weight-bold">
-                Choose First Analysis
-              </h3>
-              <!-- <v-btn small @click="logger">logger</v-btn> -->
-              <v-row style="width: 100%">
-                <v-col cols="6">
-                  <v-select
-                    v-model="technical.first_analysis.analysis"
-                    item-value="id"
-                    item-text="name"
-                    :items="analysisList"
-                    placeholder="Choose Analysis"
-                    class="custom-input text-body-1"
-                    rounded
-                  >
-                  </v-select>
-                </v-col>
-                <v-col cols="6" class="mx-0">
-                  <v-select
-                    v-model="technical.first_analysis.time"
-                    :items="timeList"
-                    placeholder="Timeframe"
-                    class="custom-input text-body-1"
-                    rounded
-                  ></v-select>
-                </v-col>
-              </v-row>
-              <h3 class="my-4 text-h6 font-weight-bold">Condition</h3>
-              <v-row style="width: 100%">
-                <v-col class="d-flex justify-center" cols="12">
-                  <v-btn
-                    @click.native="technical.condition = 'AND'"
-                    style="width: 45%"
-                    class="mx-2"
-                    rounded
-                    depressed
-                    :color="
-                      technical.condition == 'AND' ? 'primary' : '#F4F7FD'
-                    "
-                  >
-                    AND
-                  </v-btn>
-                  <v-btn
-                    @click.native="technical.condition = 'OR'"
-                    style="width: 45%"
-                    class="mx-2"
-                    rounded
-                    depressed
-                    :color="technical.condition == 'OR' ? 'primary' : '#F4F7FD'"
-                  >
-                    OR
-                  </v-btn>
-                </v-col>
-              </v-row>
-              <h3 class="my-4 text-h6 font-weight-bold">
-                Choose Second Analysis
-              </h3>
-              <v-row style="width: 100%">
-                <v-col cols="6">
-                  <v-select
-                    v-model="technical.second_analysis.analysis"
-                    item-value="id"
-                    item-text="name"
-                    :items="analysisList"
-                    placeholder="Choose Analysis"
-                    class="custom-input text-body-1"
-                    rounded
-                  ></v-select>
-                </v-col>
-                <v-col cols="6" class="mx-0">
-                  <v-select
-                    v-model="technical.second_analysis.time"
-                    :items="timeList"
-                    placeholder="Timeframe"
-                    class="custom-input text-body-1"
-                    rounded
-                  ></v-select>
-                </v-col>
-              </v-row>
+  <v-card flat rounded>
+    <v-row align="center" justify="center">
+      <v-col :cols="wide ? 12 : 8" :class="wide ? '' : 'pa-5 mt-2'">
+        <div class="d-flex flex-column align-start">
+          <h3 v-if="!wide" class="mb-4 text-h6 font-weight-bold">
+            Choose First Analysis
+          </h3>
+          <strong v-else class="text-body-1 font-weight-bold black--text my-3">
+            Choose First Analysis
+          </strong>
+          <!-- <v-btn small @click="logger">logger</v-btn> -->
+          <v-row style="width: 100%">
+            <v-col cols="6">
+              <v-select
+                v-model="technical.first_analysis.analysis"
+                item-value="id"
+                item-text="name"
+                :items="analysisList"
+                placeholder="Choose Analysis"
+                class="custom-input text-body-1"
+                rounded
+              >
+              </v-select>
+            </v-col>
+            <v-col cols="6" class="mx-0">
+              <v-select
+                v-model="technical.first_analysis.time"
+                :items="timeList"
+                placeholder="Timeframe"
+                class="custom-input text-body-1"
+                rounded
+              ></v-select>
+            </v-col>
+          </v-row>
+          <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">Condition</h3>
+          <strong v-else class="text-body-1 font-weight-bold black--text my-3">
+            Condition
+          </strong>
+          <v-row style="width: 100%">
+            <v-col class="d-flex justify-center" cols="12">
+              <v-btn
+                @click.native="technical.condition = 'AND'"
+                style="width: 45%"
+                class="mx-2"
+                rounded
+                depressed
+                :color="technical.condition == 'AND' ? 'primary' : '#F4F7FD'"
+              >
+                AND
+              </v-btn>
+              <v-btn
+                @click.native="technical.condition = 'OR'"
+                style="width: 45%"
+                class="mx-2"
+                rounded
+                depressed
+                :color="technical.condition == 'OR' ? 'primary' : '#F4F7FD'"
+              >
+                OR
+              </v-btn>
+            </v-col>
+          </v-row>
+          <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
+            Choose Second Analysis
+          </h3>
+          <strong v-else class="text-body-1 font-weight-bold black--text my-3">
+            Choose Second Analysis
+          </strong>
+          <v-row style="width: 100%">
+            <v-col cols="6">
+              <v-select
+                v-model="technical.second_analysis.analysis"
+                item-value="id"
+                item-text="name"
+                :items="analysisList"
+                placeholder="Choose Analysis"
+                class="custom-input text-body-1"
+                rounded
+              ></v-select>
+            </v-col>
+            <v-col cols="6" class="mx-0">
+              <v-select
+                v-model="technical.second_analysis.time"
+                :items="timeList"
+                placeholder="Timeframe"
+                class="custom-input text-body-1"
+                rounded
+              ></v-select>
+            </v-col>
+          </v-row>
 
-              <h3
-                class="my-4 text-h6 font-weight-bold"
-                v-if="technical.minimum_trading_volume != -1"
-              >
-                Minimum trading volume in 24h
-              </h3>
-              <v-row
-                style="width: 100%"
-                v-if="technical.minimum_trading_volume != -1"
-              >
-                <v-col class="d-flex justify-center" cols="12">
-                  <v-select
-                    v-model="technical.minimum_trading_volume"
-                    item-value="value"
-                    item-text="name"
-                    :items="tradingVolumeList"
-                    placeholder="Trading Volume"
-                    class="custom-input text-body-1"
-                    rounded
-                  ></v-select>
-                </v-col>
-              </v-row>
-            </div>
-            <slot></slot>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-col>
-  </v-row>
+          <template v-if="technical.minimum_trading_volume != -1">
+            <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
+              Minimum trading volume in 24h
+            </h3>
+            <strong
+              v-else
+              class="text-body-1 font-weight-bold black--text my-3"
+            >
+              Condition
+            </strong>
+            <v-row style="width: 100%">
+              <v-col class="d-flex justify-center" cols="12">
+                <v-select
+                  v-model="technical.minimum_trading_volume"
+                  item-value="value"
+                  item-text="name"
+                  :items="tradingVolumeList"
+                  placeholder="Trading Volume"
+                  class="custom-input text-body-1"
+                  rounded
+                ></v-select>
+              </v-col> </v-row
+          ></template>
+        </div>
+        <slot></slot>
+      </v-col>
+    </v-row>
+  </v-card>
 </template>
 
 <script>
 export default {
-  props: ["selectedTechnical"],
+  props: {
+    selectedTechnical: null,
+    wide: false,
+  },
   data() {
     return {
       technical: {

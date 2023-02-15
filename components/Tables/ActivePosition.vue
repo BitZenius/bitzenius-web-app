@@ -9,20 +9,25 @@
         />
       </template>
     </v-dialog>
-    <v-dialog
+    <ModalsActivePosition
+      v-if="showActivePosition"
+      :persistent="true"
+      :detail="botsDetail"
+      :pair="selectedPair"
+      :parentModel="showActivePosition"
+      @close-modal="closeModal"
+      @close="showActivePosition = false"
+    />
+    <!-- <v-dialog
       persistent
       v-if="showActivePosition"
       v-model="showActivePosition"
       max-width="600"
     >
       <template>
-        <ModalsActivePosition
-          :detail="botsDetail"
-          :pair="selectedPair"
-          @close-modal="closeModal"
-        />
+
       </template>
-    </v-dialog>
+    </v-dialog> -->
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -773,27 +778,29 @@ export default {
       }
     },
     streamBinance(activePosition) {
-      console.log(activePosition)
+      console.log(activePosition);
       this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
-      this.socket.onmessage = function(event) {
-          let data = JSON.parse(event.data);
-          let index = activePosition.findIndex(b => b.symbol == data.s);
-          if (index < 0) return;
-          activePosition[index].price.value = data.c;
-          activePosition[index].price.percentage = data.P;
+      this.socket.onmessage = function (event) {
+        let data = JSON.parse(event.data);
+        let index = activePosition.findIndex((b) => b.symbol == data.s);
+        if (index < 0) return;
+        activePosition[index].price.value = data.c;
+        activePosition[index].price.percentage = data.P;
 
-          // PNL CALCULATION
-          if(activePosition[index].quantity > 0){
-              // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
-              // data.c   = Current Price (from binance stream)
-              let average = parseFloat(activePosition[index].average);
-              let percentage = average == 0 ? 0 : (((parseFloat(data.c) - average) / average));
-              let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
-              activePosition[index].profit.value = pnl.toFixed(3);
-              let convertPercentage = percentage * 100;
-              activePosition[index].profit.percentage = convertPercentage.toFixed(3);
-          }
-      }
+        // PNL CALCULATION
+        if (activePosition[index].quantity > 0) {
+          // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
+          // data.c   = Current Price (from binance stream)
+          let average = parseFloat(activePosition[index].average);
+          let percentage =
+            average == 0 ? 0 : (parseFloat(data.c) - average) / average;
+          let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
+          activePosition[index].profit.value = pnl.toFixed(3);
+          let convertPercentage = percentage * 100;
+          activePosition[index].profit.percentage =
+            convertPercentage.toFixed(3);
+        }
+      };
     },
     async _fetchBotsList(exchangeName) {
       this.isLoading = true;

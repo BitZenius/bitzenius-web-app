@@ -1,16 +1,7 @@
-<template>
-  <v-dialog
-    v-model="showDialog"
-    max-width="900"
-    :fullscreen="$vuetify.breakpoint.mobile"
-  >
-  </v-dialog>
-</template>
-
-<script>
 export default {
   props: {
     parentModel: false,
+    persistent: false,
   },
   data() {
     return {
@@ -18,7 +9,7 @@ export default {
       styleElement: null,
     };
   },
-  mounted() {},
+  mounted() { },
   methods: {
     // CSS HIJACK
     applyStyle(styleDef) {
@@ -64,21 +55,4 @@ export default {
       },
     },
   },
-};
-</script>
-
-<style scoped>
-.custom-card {
-  position: relative;
-  background-color: var(--primary);
 }
-.no-padding {
-  padding: 0px !important;
-}
-
-.text-chip {
-  padding: 20px;
-  background-color: #f4f7fd;
-  border-radius: 20px;
-}
-</style>

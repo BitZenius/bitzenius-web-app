@@ -1,362 +1,409 @@
 <template>
-  <v-card elevation="8">
-    <v-card-title class="text-h5 lighten-2">
-      <v-row>
-        <v-col cols="6">Transaction</v-col>
-        <v-col cols="6" class="d-flex justify-end">
-          <v-btn icon @click="closeModal">
-            <v-icon>mdi-close</v-icon>
-          </v-btn>
-        </v-col>
-      </v-row>
-    </v-card-title>
-    <v-card-text class="my-3">
-      <v-row class="mx-2">
-        <v-scroll-y-transition>
-          <v-col
-            style="border-radius: 15px; background: #3394f8"
-            class="d-flex align-center justify-center flex-column"
-            cols="12"
-          >
-            <img
-              style="width: 60px"
-              :alt="pair.logo"
-              :src="'/token_logo/' + pair.pair_from.toUpperCase() + '.png'"
-            />
-            <h4 class="mt-2 white--text">
-              {{ pair.pair_from }} / {{ pair.pair_to }}
-            </h4>
-            <v-row class="mt-2">
+  <v-dialog
+    :persistent="persistent"
+    v-model="showDialog"
+    max-width="500"
+    :fullscreen="$vuetify.breakpoint.mobile"
+  >
+    <v-card flat rounded>
+      <v-card-title class="text-h6 font-weight-bold primary basic--text">
+        <v-row>
+          <v-col cols="6">Transaction</v-col>
+          <v-col cols="6" class="d-flex justify-end">
+            <v-btn color="basic" icon @click="closeModal">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-col>
+        </v-row>
+      </v-card-title>
+      <v-card-text class="my-3">
+        <v-row>
+          <v-col cols="12">
+            <v-list-item>
+              <v-list-item-avatar>
+                <img
+                  style="width: 60px"
+                  :alt="pair.logo"
+                  :src="'/token_logo/' + pair.pair_from.toUpperCase() + '.png'"
+                />
+              </v-list-item-avatar>
+              <v-list-item-content>
+                <v-list-item-title>
+                  <h4>{{ pair.pair_from }} / {{ pair.pair_to }}</h4>
+                </v-list-item-title>
+              </v-list-item-content>
+            </v-list-item>
+          </v-col>
+          <v-col cols="12">
+            <v-tabs v-model="tab" color="primary" height="40px" class="px-2">
+              <v-tab
+                :ripple="false"
+                v-for="item in availableOptions"
+                :key="item.text"
+              >
+                <!-- <v-icon small class="mr-1">
+                  {{ item.icon }}
+                </v-icon> -->
+                <span class="text-capitalize font-weight-bold">
+                  {{ item.text.toLowerCase() }}
+                </span>
+              </v-tab>
+            </v-tabs>
+          </v-col>
+          <v-col cols="12">
+            <v-row v-show="tab == 0">
+              <v-col
+                v-for="(item, i) in detailItems"
+                :key="`detailItems-${i}`"
+                cols="6"
+              >
+                <v-list-item>
+                  <v-list-item-avatar size="20">
+                    <span
+                      style="width: 10px; height: 10px; border-radius: 5px"
+                      :class="[item.value > 0 ? 'success' : 'grey']"
+                    ></span>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-2">
+                      {{ item.title }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <strong class="text-body-1 font-weight-bold black--text">
+                        {{ item.value }}
+                      </strong>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
+
+            <v-row v-show="tab == 1">
+              <v-col
+                v-for="(item, i) in conditionItems"
+                :key="`conditionItems-${i}`"
+                cols="6"
+              >
+                <v-list-item>
+                  <v-list-item-avatar size="20">
+                    <span
+                      style="width: 10px; height: 10px; border-radius: 5px"
+                      :class="[
+                        item.value > 0 || item.value !== '0%'
+                          ? 'success'
+                          : 'grey',
+                      ]"
+                    ></span>
+                  </v-list-item-avatar>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-2">
+                      {{ item.title }}
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <strong
+                        class="text-body-1 font-weight-bold black--text"
+                        v-if="
+                          item.key == 'take_profit_price' ||
+                          item.key == 'next_step_price'
+                        "
+                      >
+                        {{ item.value | currency("$", 6) }}
+                      </strong>
+                      <strong
+                        v-else
+                        class="text-body-1 font-weight-bold black--text"
+                      >
+                        {{ item.value }}
+                      </strong>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
+
+            <v-row v-show="tab == 2">
               <v-col cols="12">
-                <v-tabs
-                  v-model="tab"
-                  background-color="customGreen"
-                  color="black"
-                  grow
-                  height="40px"
-                  slider-size="3"
-                  slider-color="basil"
-                >
-                  <v-tab v-for="item in availableOptions" :key="item.text">
-                    <v-icon small class="mr-1">
-                      {{ item.icon }}
-                    </v-icon>
-                    <span>
-                      {{ item.text.toLowerCase() }}
-                    </span>
-                  </v-tab>
-                </v-tabs>
+                <ModalsBotSetupTechnicalAnalysis
+                  :wide="true"
+                  v-if="analysis.condition"
+                  :selected-technical="analysis"
+                  ref="analysisRef"
+                  @onAnalysisSelected="onAnalysisSelected"
+                />
               </v-col>
             </v-row>
           </v-col>
-        </v-scroll-y-transition>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-data-table
-            v-show="tab == 1"
-            :headers="tableTitle"
-            :items="conditionItems"
-            hide-default-header
-            hide-default-footer
-            class="elevation-2 ma-2"
-          >
-            <template v-slot:item.title="{ item }">
-              <v-icon>
-                {{ item.icon }}
-              </v-icon>
-              <span>{{ item.title }}</span>
-            </template>
-            <template v-slot:item.value="{ item }">
-              <span
-                v-if="
-                  item.key == 'take_profit_price' ||
-                  item.key == 'next_step_price'
-                "
-              >
-                {{ item.value | currency("$", 6) }}
-              </span>
-              <span v-else>
-                {{ item.value }}
-              </span>
-            </template>
-          </v-data-table>
-
-          <v-data-table
-            v-show="tab == 0"
-            :headers="tableDetailTitle"
-            :items="detailItems"
-            hide-default-header
-            hide-default-footer
-            class="elevation-2 ma-2"
-          >
-            <template v-slot:item.title="{ item }">
-              <span>{{ item.title }}</span>
-            </template>
-            <template v-slot:item.value="{ item }">
-              <span v-if="item.key == 'average'">
-                {{ item.value | currency("$", 6) }}
-              </span>
-              <span v-else-if="item.key == 'total_amount'">
-                {{ item.value.toFixed(6) }}
-              </span>
-              <span v-else-if="item.key == 'total_step'">
-                {{ (parseInt(item.value) - 1) == 0 ? 'Initial Order' : item.value -1 }}
-              </span>
-            </template>
-          </v-data-table>
-
-          <!-- START OF FORMULA -->
-          <div v-show="tab == 2" class="pt-0">
-            <v-card elevation="3" class="ma-3 pa-3">
-              <ModalsBotSetupTechnicalAnalysis
-                v-if="analysis.condition"
-                :selected-technical="analysis"
-                ref="analysisRef"
-                @onAnalysisSelected="onAnalysisSelected"
-              />
-            </v-card>
-            <v-row>
-              <v-col cols="12" class="d-flex justify-center">
-                <v-btn
-                  color="customGreen black--text"
-                  @click="showAveragingFormula = !showAveragingFormula"
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-data-table
+              v-show="tab == 10"
+              :headers="tableTitle"
+              :items="conditionItems"
+              hide-default-header
+              hide-default-footer
+              class="elevation-2 ma-2"
+            >
+              <template v-slot:item.title="{ item }">
+                <v-icon>
+                  {{ item.icon }}
+                </v-icon>
+                <span>{{ item.title }}</span>
+              </template>
+              <template v-slot:item.value="{ item }">
+                <span
+                  v-if="
+                    item.key == 'take_profit_price' ||
+                    item.key == 'next_step_price'
+                  "
                 >
-                  <v-icon small class="mr-1"> mdi-cog </v-icon>
-                  Averaging Configuration
-                </v-btn>
-              </v-col>
-            </v-row>
-            <v-card elevation="3" class="ma-3" v-show="showAveragingFormula">
-              <v-simple-table dense>
-                <template>
-                  <thead>
-                    <tr>
-                      <th>Step</th>
-                      <th>Drop Rate</th>
-                      <th>Buy Multiplier</th>
-                      <th>Take Profit</th>
-                      <th>Type</th>
-                    </tr>
-                  </thead>
-                  <tbody>
-                    <tr
-                      v-if="steps[0]"
-                      class="text-center"
-                      v-for="(child, y, key) in steps"
-                      :key="child.key"
-                    >
-                      <td>{{ y + 1 }}</td>
-                      <td>
-                        <span>{{ child.drop_rate }}</span>
-                        <v-icon small slot="append" color="primary">
-                          mdi-percent
-                        </v-icon>
-                      </td>
-                      <td>
-                        <span>{{ child.multiplier }}</span>
-                        <v-icon small slot="append" color="primary">
-                          mdi-close
-                        </v-icon>
-                      </td>
-                      <td>
-                        <span>{{ child.take_profit }}</span>
-                        <v-icon small slot="append" color="primary">
-                          mdi-percent
-                        </v-icon>
-                      </td>
-                      <td>
-                        <span>{{ child.type }}</span>
-                      </td>
-                    </tr>
-                    <tr v-if="steps.length > 0">
-                      <td style="text-align: center" colspan="5">
-                        <v-btn
-                          x-small
-                          @click="resetRowCustom"
-                          class="danger--text"
-                          >RESET CUSTOM STRATEGY</v-btn
-                        >
-                      </td>
-                    </tr>
-                    <tr>
-                      <td>
-                        <v-btn
-                          class="customGreen"
-                          small
-                          @click="
-                            addRowCustom(
-                              customDrop,
-                              customBuy,
-                              customProfit,
-                              customType
-                            )
-                          "
-                          >+</v-btn
-                        >
-                      </td>
-                      <td>
-                        <v-text-field v-model="customDrop" placeholder="1.2">
+                  {{ item.value | currency("$", 6) }}
+                </span>
+                <span v-else>
+                  {{ item.value }}
+                </span>
+              </template>
+            </v-data-table>
+
+            <!-- START OF FORMULA -->
+            <div v-show="tab == 2" class="pt-0">
+              <v-row>
+                <v-col cols="12" class="d-flex justify-center">
+                  <v-btn
+                    color="primary"
+                    @click="showAveragingFormula = !showAveragingFormula"
+                  >
+                    <v-icon small class="mr-1"> mdi-cog </v-icon>
+                    Averaging Configuration
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-card flat rounded class="ma-3" v-show="showAveragingFormula">
+                <v-simple-table dense>
+                  <template>
+                    <thead>
+                      <tr>
+                        <th>Step</th>
+                        <th>Drop Rate</th>
+                        <th>Buy Multiplier</th>
+                        <th>Take Profit</th>
+                        <th>Type</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                      <tr
+                        v-if="steps[0]"
+                        class="text-center"
+                        v-for="(child, y, key) in steps"
+                        :key="child.key"
+                      >
+                        <td>{{ y + 1 }}</td>
+                        <td>
+                          <span>{{ child.drop_rate }}</span>
                           <v-icon small slot="append" color="primary">
                             mdi-percent
                           </v-icon>
-                        </v-text-field>
-                      </td>
-                      <td>
-                        <v-text-field v-model="customBuy" placeholder="2">
+                        </td>
+                        <td>
+                          <span>{{ child.multiplier }}</span>
                           <v-icon small slot="append" color="primary">
                             mdi-close
                           </v-icon>
-                        </v-text-field>
-                      </td>
-                      <td>
-                        <v-text-field v-model="customProfit" placeholder="1.1">
+                        </td>
+                        <td>
+                          <span>{{ child.take_profit }}</span>
                           <v-icon small slot="append" color="primary">
                             mdi-percent
                           </v-icon>
-                        </v-text-field>
-                      </td>
-                      <td>
-                        <v-select
-                          :items="types"
-                          v-model="customType"
-                          label="Type"
-                        ></v-select>
-                      </td>
-                    </tr>
-                  </tbody>
-                </template>
-              </v-simple-table>
-            </v-card>
-          </div>
-          <!-- END OF FORMULA -->
-        </v-col>
-      </v-row>
-      <v-row v-if="tab != 2">
-        <v-col cols="12" md="4">
-          <v-btn
-            color="customYellow white--text"
-            style="width: 100%"
-            @click="
-              showStopAgreement = !showStopAgreement;
-              showSellAgreement = false;
-              showAveragingAgreement = false;
-            "
+                        </td>
+                        <td>
+                          <span>{{ child.type }}</span>
+                        </td>
+                      </tr>
+                      <tr v-if="steps.length > 0">
+                        <td style="text-align: center" colspan="5">
+                          <v-btn
+                            x-small
+                            @click="resetRowCustom"
+                            class="danger--text"
+                            >RESET CUSTOM STRATEGY</v-btn
+                          >
+                        </td>
+                      </tr>
+                      <tr>
+                        <td>
+                          <v-btn
+                            class="customGreen"
+                            small
+                            @click="
+                              addRowCustom(
+                                customDrop,
+                                customBuy,
+                                customProfit,
+                                customType
+                              )
+                            "
+                            >+</v-btn
+                          >
+                        </td>
+                        <td>
+                          <v-text-field v-model="customDrop" placeholder="1.2">
+                            <v-icon small slot="append" color="primary">
+                              mdi-percent
+                            </v-icon>
+                          </v-text-field>
+                        </td>
+                        <td>
+                          <v-text-field v-model="customBuy" placeholder="2">
+                            <v-icon small slot="append" color="primary">
+                              mdi-close
+                            </v-icon>
+                          </v-text-field>
+                        </td>
+                        <td>
+                          <v-text-field
+                            v-model="customProfit"
+                            placeholder="1.1"
+                          >
+                            <v-icon small slot="append" color="primary">
+                              mdi-percent
+                            </v-icon>
+                          </v-text-field>
+                        </td>
+                        <td>
+                          <v-select
+                            :items="types"
+                            v-model="customType"
+                            label="Type"
+                          ></v-select>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </template>
+                </v-simple-table>
+              </v-card>
+            </div>
+            <!-- END OF FORMULA -->
+          </v-col>
+        </v-row>
+        <v-row v-if="tab != 2">
+          <v-col cols="12" md="4">
+            <v-btn
+              color="customPink basic--text"
+              block
+              @click="
+                showStopAgreement = !showStopAgreement;
+                showSellAgreement = false;
+                showAveragingAgreement = false;
+              "
+            >
+              {{ !detail.paused ? "STOP TRADING" : "START TRADING" }}
+            </v-btn>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn
+              :disabled="detail.positions.length <= 0"
+              color="danger basic--text"
+              block
+              @click="
+                showSellAgreement = !showSellAgreement;
+                showStopAgreement = false;
+                showAveragingAgreement = false;
+              "
+            >
+              FORCE SELL
+            </v-btn>
+          </v-col>
+          <v-col cols="12" md="4">
+            <v-btn
+              :disabled="detail.positions.length <= 0"
+              color="primary"
+              block
+              @click="
+                showAveragingAgreement = !showAveragingAgreement;
+                showSellAgreement = false;
+                showStopAgreement = false;
+              "
+            >
+              AVERAGING: &nbsp;
+              <span v-if="!detail.averaging">OFF</span>
+              <span v-else>ON</span>
+            </v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-else>
+          <v-col cols="12">
+            <v-btn @click="_save" color="primary" style="width: 100%"
+              >SAVE</v-btn
+            >
+          </v-col>
+        </v-row>
+        <v-row v-if="showStopAgreement">
+          <v-col
+            v-if="!detail.paused"
+            cols="12"
+            md="12"
+            class="d-flex flex-column justify-center"
           >
-            <span class="danger--text" v-if="!detail.paused">STOP TRADING</span>
-            <span class="primary--text" v-else>START TRADING</span>
-          </v-btn>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-btn
-            :disabled="detail.positions.length <= 0"
-            color="customPink white--text"
-            style="width: 100%"
-            @click="
-              showSellAgreement = !showSellAgreement;
-              showStopAgreement = false;
-              showAveragingAgreement = false;
-            "
+            <h4>
+              You're about to stop trading, this action will be stop your
+              trading action:
+            </h4>
+            <ul>
+              <li>The bot will stays until all the position are closed</li>
+              <li>
+                After the positions is empty, the bot won't start any trade
+              </li>
+            </ul>
+            <v-btn @click="_stopTrading" class="primary">I agree</v-btn>
+          </v-col>
+          <v-col
+            v-else
+            cols="12"
+            md="12"
+            class="d-flex flex-column justify-center"
           >
-            FORCE SELL
-          </v-btn>
-        </v-col>
-        <v-col cols="12" md="4">
-          <v-btn
-            :disabled="detail.positions.length <= 0"
-            color="primary white--text"
-            style="width: 100%"
-            @click="
-              showAveragingAgreement = !showAveragingAgreement;
-              showSellAgreement = false;
-              showStopAgreement = false;
-            "
-          >
-            AVERAGING: &nbsp;
-            <span v-if="!detail.averaging">OFF</span>
-            <span v-else>ON</span>
-          </v-btn>
-        </v-col>
-      </v-row>
-      <v-row v-else>
-        <v-col cols="12">
-          <v-btn
-            @click="_save"
-            color="customGreen black--text"
-            style="width: 100%"
-            >SAVE</v-btn
-          >
-        </v-col>
-      </v-row>
-      <v-row v-if="showStopAgreement">
-        <v-col
-          v-if="!detail.paused"
-          cols="12"
-          md="12"
-          class="d-flex flex-column justify-center"
-        >
-          <h4>
-            You're about to stop trading, this action will be stop your trading
-            action:
-          </h4>
-          <ul>
-            <li>The bot will stays until all the position are closed</li>
-            <li>After the positions is empty, the bot won't start any trade</li>
-          </ul>
-          <v-btn @click="_stopTrading" class="customGreen black--text"
-            >I agree</v-btn
-          >
-        </v-col>
-        <v-col
-          v-else
-          cols="12"
-          md="12"
-          class="d-flex flex-column justify-center"
-        >
-          <h4>
-            You're about to start trading, this action will be start your
-            trading action:
-          </h4>
-          <ul>
-            <li>The position will start from steps 1</li>
-          </ul>
-          <v-btn @click="_startTrading" class="customGreen black--text"
-            >I agree</v-btn
-          >
-        </v-col>
-      </v-row>
-      <v-row v-if="showSellAgreement">
-        <v-col cols="12" md="12" class="d-flex flex-column justify-center">
-          <h4>You're about to force sell this pair:</h4>
-          <ul>
-            <li>
-              All the position will be closed immediately after you click the
-              execute button
-            </li>
-            <li>There's no refund possibility, all risk is on you</li>
-          </ul>
-          <v-btn @click="_forceSell" class="customGreen black--text"
-            >I agree</v-btn
-          >
-        </v-col>
-      </v-row>
-      <v-row v-if="showAveragingAgreement">
-        <v-col cols="12" md="12" class="d-flex flex-column justify-center">
-          <h4>You're about to set the averaging to ON/OFF</h4>
-          <ul>
-            <li>Lorem ipsum dolor sit amet</li>
-          </ul>
-          <v-btn @click="_averaging" class="customGreen black--text"
-            >I agree</v-btn
-          >
-        </v-col>
-      </v-row>
-    </v-card-text>
-  </v-card>
+            <h4>
+              You're about to start trading, this action will be start your
+              trading action:
+            </h4>
+            <ul>
+              <li>The position will start from steps 1</li>
+            </ul>
+            <v-btn @click="_startTrading" class="primary">I agree</v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-if="showSellAgreement">
+          <v-col cols="12" md="12" class="d-flex flex-column justify-center">
+            <h4>You're about to force sell this pair:</h4>
+            <ul>
+              <li>
+                All the position will be closed immediately after you click the
+                execute button
+              </li>
+              <li>There's no refund possibility, all risk is on you</li>
+            </ul>
+            <v-btn @click="_forceSell" class="primary">I agree</v-btn>
+          </v-col>
+        </v-row>
+        <v-row v-if="showAveragingAgreement">
+          <v-col cols="12" md="12" class="d-flex flex-column justify-center">
+            <h4>You're about to set the averaging to ON/OFF</h4>
+            <ul>
+              <li>Lorem ipsum dolor sit amet</li>
+            </ul>
+            <v-btn @click="_averaging" class="primary">I agree</v-btn>
+          </v-col>
+        </v-row>
+      </v-card-text>
+    </v-card>
+  </v-dialog>
 </template>
 
 <script>
+import baseModal from "~/mixins/base-modal";
 export default {
+  mixins: [baseModal],
   props: {
     pair: {
       type: Object,
