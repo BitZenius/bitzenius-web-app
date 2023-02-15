@@ -10,7 +10,7 @@
       flat
       app
     >
-      <v-list nav v-if="user" rounded class="px-5">
+      <v-list nav v-if="user" rounded class="px-5 no-scrollbar">
         <v-list-item class="ml-1 mb-2" two-line>
           <v-list-item-content>
             <v-img
@@ -198,52 +198,6 @@
           </v-list-item>
         </v-list>
       </v-menu>
-      <v-menu offset-y>
-        <template #activator="{ on, attrs }">
-          <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
-            <v-icon>mdi-account-outline</v-icon>
-          </v-btn>
-        </template>
-        <v-list v-if="user">
-          <v-list-item>
-            <v-list-item-avatar>
-              <img :src="user.photoURL" :alt="user.displayName" />
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title class="text-h5 font-weight-bold">{{
-                user.displayName
-              }}</v-list-item-title>
-              <v-list-item-subtitle>{{ user.email }}</v-list-item-subtitle>
-              <v-list-item-subtitle>
-                <v-chip v-if="user.subscription" class="success mt-2" small>
-                  ACTIVE
-                </v-chip>
-                <v-chip v-else class="mt-2" small> INACTIVE </v-chip>
-                <v-chip v-if="user.trial" class="warning mt-2" small>
-                  TRIAL
-                </v-chip>
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item>
-          <v-divider class="my-2" />
-          <v-list-item to="/profile" exact>
-            <v-list-item-action>
-              <v-icon>mdi-account-outline</v-icon>
-            </v-list-item-action>
-            <v-list-item-content>
-              <v-list-item-title>Profile</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-          <v-list-item to="/active-positions" exact>
-            <v-list-item-action>
-              <v-icon>mdi-power</v-icon>
-            </v-list-item-action>
-            <v-list-item-content @click="logout">
-              <v-list-item-title>Logout</v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-list>
-      </v-menu>
     </v-app-bar>
     <v-slide-x-transition>
       <v-icon
@@ -289,9 +243,20 @@
       </v-btn>
     </v-bottom-navigation>
     <v-footer v-else>
-      <v-col class="text-right text--disabled" cols="12">
-        &copy;{{ new Date().getFullYear() }} - BitZenius
-      </v-col>
+      <v-row justify="space-between">
+        <v-col cols="2"></v-col>
+        <v-col
+          class="text-left text--disabled d-flex align-center pl-5"
+          cols="4"
+        >
+          &copy;{{ new Date().getFullYear() }} - BitZenius
+        </v-col>
+        <v-col class="d-flex align-center justify-end" cols="6">
+          Download our app
+          <v-btn color="black" class="white--text mx-2"> App Store </v-btn>
+          <v-btn color="black" class="white--text "> Google Play </v-btn>
+        </v-col>
+      </v-row>
     </v-footer>
     <EmailVerification />
   </v-app>

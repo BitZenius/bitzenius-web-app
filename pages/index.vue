@@ -45,7 +45,7 @@
                 </h5>
               </v-card>
             </v-col>
-            <v-col cols="12">
+            <v-col cols="12" v-if="false">
               <TablesActivePosition
                 :showTabs="false"
                 :showExchangeCards="false"

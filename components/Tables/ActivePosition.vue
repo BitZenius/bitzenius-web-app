@@ -710,7 +710,7 @@ export default {
   },
   unmounted() {},
   beforeDestroy() {
-    this.socket.disconnect();
+    this.socket.close();
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
     // });
@@ -779,42 +779,37 @@ export default {
         });
       }
     },
-    streamBinance() {
-      this.socket = io(process.env.SERVER, {
-        path: "/binance-proxy",
-        query: {},
-      });
-
-      this.socket.on("binance_ticker", (msg) => {
-        // let array = JSON.parse(msg);
-        let data = JSON.parse(msg);
-        // array.forEach((data) => {
-        let index = this.activePosition.findIndex((b) => b.symbol == data.s);
+    streamBinance(activePosition) {
+      console.log(activePosition);
+      this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
+      console.log("SOCKET", this.socket);
+      this.socket.onmessage = function (event) {
+        console.log("SOCKET EVENT MESSAGE", event);
+        let data = JSON.parse(event.data);
+        let index = activePosition.findIndex((b) => b.symbol == data.s);
         if (index < 0) return;
-        this.activePosition[index].price.value = data.c;
-        this.activePosition[index].price.percentage = data.P;
+        // activePosition[index].price.value = data.c;
+        activePosition[index].price.value = 200;
+        activePosition[index].price.percentage = data.P;
 
         // PNL CALCULATION
-        if (this.activePosition[index].quantity > 0) {
+        if (activePosition[index].quantity > 0) {
           // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
           // data.c   = Current Price (from binance stream)
-          let average = parseFloat(this.activePosition[index].average);
+          let average = parseFloat(activePosition[index].average);
           let percentage =
             average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-          let pnl =
-            parseFloat(this.activePosition[index].amountUsd) * percentage;
-          this.activePosition[index].profit.value = pnl.toFixed(3);
+          let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
+          activePosition[index].profit.value = pnl.toFixed(3);
           let convertPercentage = percentage * 100;
-          this.activePosition[index].profit.percentage =
+          activePosition[index].profit.percentage =
             convertPercentage.toFixed(3);
         }
-        // });
-      });
+      };
     },
     async _fetchBotsList(exchangeName) {
       this.isLoading = true;
-      if (this.socket) this.socket.disconnect();
-      await this.streamBinance();
+      if (this.socket) this.socket.close();
 
       this.$api
         .$get("/user/bot-user", {
@@ -830,11 +825,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
-      // let res = await this.$api.$get("/user/bot-user", {
-      //   params: {
-      //     exchange: exchangeName,
-      //   },
-      // });
+      await this.streamBinance(this.activePosition);
     },
     async _fetchPosition(sorting) {
       let exchange = this.selectedExchangeReport;
