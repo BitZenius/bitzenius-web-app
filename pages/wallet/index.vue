@@ -12,7 +12,7 @@
         <v-col cols="4">
           <CardBalanceWallet class="mb-6" />
         </v-col>
-        <v-col cols="8">
+        <v-col cols="6">
           <CardActionWallet></CardActionWallet>
         </v-col>
         <v-col cols="12">

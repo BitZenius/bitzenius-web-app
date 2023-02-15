@@ -1,36 +1,32 @@
 <template>
-  <v-card flat class="no-padding">
-    <v-row no-gutters>
-      <v-col cols="12" class="pa-0">
-        <v-card class="pa-2 custom-card" flat>
-          <v-list-item two-line>
-            <v-list-item-avatar size="40" color="#F4F7FD">
-              <v-img
-                max-width="25px"
-                max-height="25px"
-                :src="require('~/assets/images/wallet-icon.svg')"
-                position="center"
-              ></v-img>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-subtitle
-                class="white--text font-weight-bold text-body-1 mb-1"
-              >
-                Credit Balance
-              </v-list-item-subtitle>
-              <v-list-item-title>
-                <span
-                  class="text-h5 font-weight-black white--text text--lighten-2"
-                >
-                  <v-skeleton-loader v-if="isLoading" loading type="heading" />
-                  <div v-else>{{ balance | currency("$", 2) }}</div>
-                </span>
-              </v-list-item-title>
-            </v-list-item-content>
-          </v-list-item>
-        </v-card>
-      </v-col>
-    </v-row>
+  <v-card
+    flat
+    class="no-padding pa-2 custom-card d-flex align-center"
+    style="height: 100%"
+  >
+    <v-list-item two-line>
+      <v-list-item-avatar size="40" color="#F4F7FD">
+        <v-img
+          max-width="25px"
+          max-height="25px"
+          :src="require('~/assets/images/wallet-icon.svg')"
+          position="center"
+        ></v-img>
+      </v-list-item-avatar>
+      <v-list-item-content>
+        <v-list-item-subtitle
+          class="white--text font-weight-bold text-body-1 mb-1"
+        >
+          Credit Balance
+        </v-list-item-subtitle>
+        <v-list-item-title>
+          <span class="text-h5 font-weight-black white--text text--lighten-2">
+            <v-skeleton-loader v-if="isLoading" loading type="heading" />
+            <div v-else>{{ balance | currency("$", 2) }}</div>
+          </span>
+        </v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
   </v-card>
 </template>
 
@@ -136,6 +132,7 @@ export default {
   background-image: url("/images/signin-vector.svg");
   background-size: contain;
   background-position: 120% 20px;
+  height: 100%;
 }
 
 .no-padding {

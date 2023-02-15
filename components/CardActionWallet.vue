@@ -4,13 +4,14 @@
       <v-col cols="12" class="pa-0">
         <v-card flat rounded>
           <v-row align="center" justify="center">
-            <v-col cols="12" class="d-flex justify-center">
+            <v-col cols="4" class="d-flex flex-column justify-center">
               <v-btn
                 @click.native="actionMode = 'Deposit'"
                 style="width: 45%"
-                class="mx-2"
+                class="my-2"
                 rounded
                 depressed
+                block
                 :color="actionMode == 'Deposit' ? 'primary' : '#F4F7FD'"
               >
                 Deposit
@@ -18,37 +19,58 @@
               <v-btn
                 @click.native="actionMode = 'Withdraw'"
                 style="width: 45%"
-                class="mx-2"
+                class="my-2"
                 rounded
                 depressed
+                block
                 :color="actionMode == 'Withdraw' ? 'primary' : '#F4F7FD'"
               >
                 Withdraw
               </v-btn>
             </v-col>
-            <v-col cols="12" class="d-flex justify-center align-center">
-              <v-btn
-                v-if="actionMode == 'Deposit'"
-                class="text-capitalize"
-                rounded
-                color="primary"
-                style="width: 95%"
-                depressed
-                @click="showDeposit"
-              >
-                Deposit
-              </v-btn>
-              <v-btn
-                v-else
-                rounded
-                class="text-capitalize"
-                color="primary"
-                style="width: 95%"
-                depressed
-                @click="showWithdraw"
-              >
-                Withdraw
-              </v-btn>
+            <v-col cols="8">
+              <v-row align="center" justify="start">
+                <v-col cols="12" v-if="actionMode == 'Deposit'">
+                  <v-btn
+                    class="text-capitalize"
+                    rounded
+                    color="primary"
+                    style="width: 95%"
+                    depressed
+                    @click="showDeposit"
+                    block
+                  >
+                    Deposit
+                  </v-btn></v-col
+                >
+                <v-col v-else cols="12">
+                  <div class="mb-2 font-weight-bold">
+                    Total USDT To Withdraw
+                  </div>
+
+                  <v-text-field
+                    v-model="withdrawAmount"
+                    required
+                    placeholder="Total USDT To Apply"
+                    hide-details=""
+                    rounded
+                    class="my-2 custom-input text-body-1"
+                  >
+                  </v-text-field>
+
+                  <v-btn
+                    rounded
+                    class="text-capitalize"
+                    color="primary"
+                    style="width: 95%"
+                    depressed
+                    @click="showWithdraw"
+                    block
+                  >
+                    Withdraw
+                  </v-btn>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
         </v-card>
@@ -168,6 +190,7 @@ export default {
       balance: 0,
       depositDialog: false,
       withdrawDialog: false,
+      withdrawAmount: 0,
       copied: false,
       styleElement: null,
       isLoading: false,
@@ -266,5 +289,10 @@ export default {
   padding: 20px;
   background-color: #f4f7fd;
   border-radius: 20px;
+}
+.custom-input {
+  margin-top: 0px !important;
+  background-color: #f4f7fd !important;
+  padding: 0px !important;
 }
 </style>

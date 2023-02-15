@@ -98,44 +98,58 @@
           </v-card>
         </v-col>
         <v-col cols="6">
-          <v-list three-line>
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-icon small color="basic" class="primary">
-                  mdi-account-group-outline
-                </v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>Total Referral</v-list-item-title>
-                <v-list-item-subtitle
-                  >Total referred peoples</v-list-item-subtitle
-                >
-                <strong>
-                  {{ totalReferredUsers }}
-                </strong>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+          <v-card flat rounded style="position: relative">
+            <v-list two-line>
+              <v-list-item>
+                <v-list-item-avatar>
+                  <v-icon color="primary" size="18"
+                    >$vuetify.icons.ReferralIcon
+                  </v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title class="text-body-1 font-weight-bold"
+                    >Total Referrals</v-list-item-title
+                  >
+                  <v-list-item-subtitle
+                    >Total referred peoples</v-list-item-subtitle
+                  >
+                  <strong class="text-h5 font-weight-bold">
+                    {{ totalReferredUsers }}
+                  </strong>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <!-- ORNAMENTS -->
+            <div class="ornament-1"></div>
+            <!-- ORNAMENTS END -->
+          </v-card>
         </v-col>
         <v-col cols="6">
-          <v-list three-line>
-            <v-list-item>
-              <v-list-item-avatar>
-                <v-icon small color="basic" class="primary">
-                  mdi-currency-usd
-                </v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>Total Earned</v-list-item-title>
-                <v-list-item-subtitle
-                  >Total earned rewards</v-list-item-subtitle
-                >
-                <strong>
-                  {{ totalRewards | currency("$") }}
-                </strong>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+          <v-card flat rounded style="position: relative">
+            <v-list two-line>
+              <v-list-item>
+                <v-list-item-avatar>
+                  <v-icon color="primary" size="18"
+                    >$vuetify.icons.ReferralIcon
+                  </v-icon>
+                </v-list-item-avatar>
+                <v-list-item-content>
+                  <v-list-item-title class="text-body-1 font-weight-bold"
+                    >Total Earned</v-list-item-title
+                  >
+                  <v-list-item-subtitle class="text-body-2"
+                    >Total earned rewards</v-list-item-subtitle
+                  >
+                  <strong class="text-h5 font-weight-bold">
+                    {{ totalRewards | currency("$") }}
+                  </strong>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <!-- ORNAMENTS -->
+            <div class="ornament-1"></div>
+            <!-- ORNAMENTS END -->
+          </v-card>
         </v-col>
       </v-row>
     </v-col>
@@ -153,7 +167,7 @@
                 <v-list-item-title class="text-h5 font-weight-bold"
                   >My Rewards History</v-list-item-title
                 >
-                <v-list-item-subtitle>
+                <v-list-item-subtitle class="text-body-2">
                   Track your earned rewards of all your referral
                 </v-list-item-subtitle>
               </v-list-item-content>
@@ -561,5 +575,16 @@ export default {
   top: 0%;
   right: 0%;
   transform: translate(10%, -30%);
+}
+.ornament-1 {
+  position: absolute;
+  width: 50%;
+  height: 4px;
+  border-radius: 8px;
+  background: var(--primary);
+
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
 }
 </style>
