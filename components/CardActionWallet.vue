@@ -2,9 +2,9 @@
   <v-card flat class="pa-3" rounded>
     <v-row no-gutters>
       <v-col cols="12" class="pa-0">
-        <v-card class="py-10" flat rounded>
+        <v-card flat rounded>
           <v-row align="center" justify="center">
-            <v-col cols="12" md="12" class="d-flex justify-center">
+            <v-col cols="12" class="d-flex justify-center">
               <v-btn
                 @click.native="actionMode = 'Deposit'"
                 style="width: 45%"
@@ -26,7 +26,6 @@
                 Withdraw
               </v-btn>
             </v-col>
-            <v-col cols="12"> </v-col>
             <v-col cols="12" class="d-flex justify-center align-center">
               <v-btn
                 v-if="actionMode == 'Deposit'"

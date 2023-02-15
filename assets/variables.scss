@@ -61,3 +61,7 @@ $material-light: (
 .v-data-table>.v-data-table__wrapper>table>tbody>tr>td {
   border: none !important;
 }
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
