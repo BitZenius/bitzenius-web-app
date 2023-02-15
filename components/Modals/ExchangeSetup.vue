@@ -1,65 +1,80 @@
 <template>
-  <v-card elevation="8">
-    <v-card-title class="text-h5 lighten-2">
-      <span>{{ data ? "Edit" : "Add" }}</span>
-      <strong>&nbsp;{{ exchange }}&nbsp;</strong> As Your Exchange
+  <v-card flat rounded>
+    <v-card-title class="text-h5 lighten-2 pt-8" style="position: relative">
+      <v-btn icon @click="closeModal" class="close-button">
+        <v-icon>mdi-close</v-icon>
+      </v-btn>
+      <v-row>
+        <v-col cols="12">
+          <v-img width="60" class="mb-2" contain :src="exchange.image"></v-img>
+          <span class="text-body-1 font-weight-bold"
+            >{{ data ? "Edit" : "Add" }} {{ exchange.name }} As Your Exchange
+          </span>
+        </v-col>
+      </v-row>
     </v-card-title>
     <v-card-text class="mt-3 pb-0">
-      <v-card elevation="0" class="mb-12 d-flex flex-column align-center">
+      <v-card flat rounded class="mb-12 d-flex flex-column align-center">
         <!-- <h3>Please fill up the form below</h3> -->
-        <v-row class="d-flex align-center justify-center" style="width: 100%">
+        <!-- <v-row
+          class="d-flex align-center justify-center"
+          style="width: 100%;"
+        >
           <v-col cols="12" md="12">
+            <div class="mb-2 font-weight-bold">Total USDT To Withdraw</div>
             <v-text-field
               readonly
               dense
-              class="mt-2"
-              v-model="exchange"
-              label="Title"
-              outlined
+              v-model="exchange.name"
+              rounded
+              class="my-2 custom-input text-body-1"
             ></v-text-field>
           </v-col>
-        </v-row>
+        </v-row> -->
         <v-row class="d-flex align-center justify-center" style="width: 100%">
           <v-col cols="12" md="12">
+            <div class="mb-2 font-weight-bold">API Key</div>
             <v-text-field
               dense
-              class="mt-2"
               v-model="api_key"
-              label="Api Key"
-              outlined
+              rounded
+              class="my-2 custom-input text-body-1"
+              placeholder="API Key"
             ></v-text-field>
           </v-col>
         </v-row>
         <v-row class="d-flex align-center justify-center" style="width: 100%">
           <v-col cols="12" md="12">
+            <div class="mb-2 font-weight-bold">Secret Key</div>
             <v-text-field
               dense
-              class="mt-2"
+              rounded
+              class="my-2 custom-input text-body-1"
               v-model="secret_key"
-              label="Secret Key"
-              outlined
+              placeholder="Secret Key"
             ></v-text-field>
           </v-col>
         </v-row>
       </v-card>
     </v-card-text>
-    <v-card-actions class="d-flex justify-end pt-0">
-      <v-btn color="blue darken-1" class="mr-2" text @click="closeModal">
-        Cancel
-      </v-btn>
+    <v-card-actions class="d-flex justify-center py-5 mb-3">
       <v-btn
         v-if="!data"
         :disabled="!user.subscription || user.subscription == false"
         color="primary"
         @click="_save"
+        block
+        rounded
       >
         Save
       </v-btn>
       <v-btn
         v-else
         :disabled="!user.subscription || user.subscription == false"
-        color="customGreen black--text"
+        color="primary"
         @click="_updateData"
+        block
+        rounded
       >
         Update
       </v-btn>
@@ -72,7 +87,7 @@ export default {
   props: ["exchange", "data"],
   data() {
     return {
-      name: this.exchange,
+      name: this.exchange.name,
       api_key: null,
       secret_key: null,
       // exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
@@ -89,7 +104,7 @@ export default {
       this.$emit("close-modal", false);
     },
     _logger() {
-      console.log(this.exchange);
+      console.log(this.exchange.name);
     },
     async _save() {
       if (!this.user.subscription) {
@@ -103,10 +118,10 @@ export default {
       this.$store.commit("setIsLoading", true);
       let paramTemp = {};
       paramTemp.title = this.name;
-      paramTemp.exchange_name = this.exchange;
+      paramTemp.exchange_name = this.exchange.name;
       paramTemp.api_key = this.api_key;
       paramTemp.secret_key = this.secret_key;
-      if (!this.exchange || !this.api_key || !this.secret_key) {
+      if (!this.exchange.name || !this.api_key || !this.secret_key) {
         this.$store.commit("setShowSnackbar", {
           show: true,
           message: "Please fill all requirements needed!",
@@ -161,8 +176,8 @@ export default {
       let paramTemp = {};
       paramTemp.api_key = this.api_key;
       paramTemp.secret_key = this.secret_key;
-      paramTemp.exchange_name = this.exchange;
-      if (!this.exchange || !this.api_key || !this.secret_key) {
+      paramTemp.exchange_name = this.exchange.name;
+      if (!this.exchange.name || !this.api_key || !this.secret_key) {
         this.$store.commit("setShowSnackbar", {
           show: true,
           message: "Please fill all requirements needed!",
@@ -228,5 +243,10 @@ export default {
   text-align: center;
   padding-top: 5px;
   padding-bottom: 5px;
+}
+.close-button {
+  position: absolute;
+  right: 3%;
+  top: 5%;
 }
 </style>

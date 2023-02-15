@@ -1,7 +1,6 @@
 <template>
   <v-row class="py-5">
     <v-btn @click="test = true">CLICK ME</v-btn>
-    <BaseModal :parentModel="test" @close="test = false"></BaseModal>
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">

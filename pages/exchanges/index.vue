@@ -184,15 +184,19 @@
       </v-card>
     </v-col>
 
-    <v-dialog v-if="showAddExchange" v-model="showAddExchange" max-width="600">
-      <template>
-        <ModalsExchangeSetup
-          :data="data"
-          :exchange="selectedExchange"
-          @close-modal="closeModal"
-        />
-      </template>
-    </v-dialog>
+    <BaseModal
+      v-if="showAddExchange"
+      @close="showAddExchange = false"
+      :parentModel="showAddExchange"
+      :maxWidth="450"
+    >
+      <ModalsExchangeSetup
+        :data="data"
+        :exchange="selectedExchange"
+        @close-modal="closeModal"
+      />
+    </BaseModal>
+
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -412,7 +416,7 @@ export default {
     },
     _addExchange(exchange) {
       this.data = null;
-      this.selectedExchange = exchange.name;
+      this.selectedExchange = exchange;
       this.showAddExchange = true;
       if (exchange.active) {
         this.data = exchange;

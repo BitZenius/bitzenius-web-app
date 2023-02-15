@@ -1,9 +1,10 @@
 <template>
   <v-dialog
     v-model="showDialog"
-    max-width="900"
+    :max-width="maxWidth"
     :fullscreen="$vuetify.breakpoint.mobile"
   >
+    <slot></slot>
   </v-dialog>
 </template>
 
@@ -11,6 +12,7 @@
 export default {
   props: {
     parentModel: false,
+    maxWidth: "600",
   },
   data() {
     return {
