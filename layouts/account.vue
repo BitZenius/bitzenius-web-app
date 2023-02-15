@@ -367,15 +367,17 @@ export default {
 
             // IF HISTORIES LENGTH == 0, WRITE TO DB FIRST RECORD
             if(histories.length == 0){
-              alert('Fresh login, allowed to create your first login record!');
+              console.log('Fresh login, allowed to create your first login record!');
               await this.writeIp(userIp);
             }else{
             // IF HISTORIES LONGER THAN 1 THEN CHECK (IS LATEST UP EQUAL TO CURRENT)
               console.log(`comparing:${userIp} == ${histories[0].ip}`)
               if(userIp != histories[0].ip){
-                alert('IP doesnt match, set user status to Unverified!');
+                // LOGIC IF NOT ALLOWED
+                
+                console.log('IP doesnt match, set user status to Unverified!');
               }else{
-                alert('IP match against latest login record! good to go :)')
+                console.log('IP match against latest login record! good to go :)')
               }
             }
           }).catch((err)=>{
