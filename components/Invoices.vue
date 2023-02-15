@@ -89,7 +89,11 @@
         <!-- <v-chip v-if="item.payment.paid" small color="success">
           Paid at {{ $moment(item.payment.date).format("DD MMM YYYY HH:mm") }}
         </v-chip> -->
-        <v-list-item-avatar v-if="item.payment.paid" size="25" color="#27D79E">
+        <v-list-item-avatar
+          v-if="item.payment.paid"
+          size="25"
+          color="customGreen"
+        >
           <v-icon color="white" small> mdi-check </v-icon>
         </v-list-item-avatar>
         <v-chip v-else small> Unpaid </v-chip>

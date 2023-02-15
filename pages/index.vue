@@ -1,6 +1,30 @@
 <template>
   <v-row class="py-5">
-    <v-btn @click="test = true">CLICK ME</v-btn>
+    <!-- TEST -->
+    <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
+    <v-btn class="mr-2 mb-2" @click="test2 = true"
+      >CREATE BOT FINISH MODAL</v-btn
+    >
+    <v-btn class="mr-2 mb-2" @click="test3 = true"
+      >START YOUR FIRST BOT MODAL</v-btn
+    >
+    <v-btn class="mr-2 mb-2" @click="test4 = true"
+      >VERIFY YOUR EMAIL ADDRESS MODAL</v-btn
+    >
+    <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
+    <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn>
+    <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
+
+    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="650">
+      <ModalsFreeTrial @close-modal="test1 = false"></ModalsFreeTrial>
+    </BaseModal>
+
+    <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="450">
+      <ModalsBotSetupFinished
+        @close-modal="test2 = false"
+      ></ModalsBotSetupFinished>
+    </BaseModal>
+    <!-- TEST -->
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -46,7 +70,7 @@
                 </h5>
               </v-card>
             </v-col>
-            <v-col cols="12" v-if="false">
+            <v-col cols="12" v-show="false">
               <TablesActivePosition
                 :showTabs="false"
                 :showExchangeCards="false"
@@ -73,7 +97,13 @@ export default {
   layout: "account",
   data() {
     return {
-      test: true,
+      test1: false,
+      test2: false,
+      test3: false,
+      test4: false,
+      test5: false,
+      test6: false,
+      test7: false,
       // CHART
       title: "Dashboard",
       series: [

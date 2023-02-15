@@ -44,12 +44,12 @@
           :avatar="`$vuetify.icons.BotIcon`"
           :title="`Automated Bots`"
         ></base-menu-item>
-        <base-menu-item
+        <!-- <base-menu-item
           :to="'/transaction-history'"
           :icon="true"
           :avatar="`$vuetify.icons.DailyProfitIcon`"
           :title="`Daily Profit`"
-        ></base-menu-item>
+        ></base-menu-item> -->
 
         <v-divider class="my-2" />
 

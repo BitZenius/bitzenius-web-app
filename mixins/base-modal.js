@@ -19,6 +19,8 @@ export default {
       styleElement.innerHTML = styleDef;
       return styleElement;
     },
+
+
   },
   computed: {
     style() {
