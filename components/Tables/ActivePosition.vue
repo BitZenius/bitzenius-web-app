@@ -710,7 +710,7 @@ export default {
   },
   unmounted() {},
   beforeDestroy() {
-    this.socket.disconnect();
+    this.socket.close();
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
     // });
@@ -742,13 +742,6 @@ export default {
       this.$socket.removeAllListeners("position");
     },
     //FETCH API
-    async _listenPosition() {
-      this.isLoading = true;
-      this.socket.on("positions", (data) => {
-        this.activePosition = data.data;
-        this.availablePair = data.pairs;
-      });
-    },
     async _fetchUserExchange() {
       let res = await this.$api.$get("/user/bot", {});
       console.log("fetchUSerExchange", res);
@@ -779,42 +772,32 @@ export default {
         });
       }
     },
-    streamBinance() {
-      this.socket = io(process.env.SERVER, {
-        path: "/binance-proxy",
-        query: {},
-      });
+    streamBinance(activePosition) {
+      console.log(activePosition)
+      this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
+      this.socket.onmessage = function(event) {
+          let data = JSON.parse(event.data);
+          let index = activePosition.findIndex(b => b.symbol == data.s);
+          if (index < 0) return;
+          activePosition[index].price.value = data.c;
+          activePosition[index].price.percentage = data.P;
 
-      this.socket.on("binance_ticker", (msg) => {
-        // let array = JSON.parse(msg);
-        let data = JSON.parse(msg);
-        // array.forEach((data) => {
-        let index = this.activePosition.findIndex((b) => b.symbol == data.s);
-        if (index < 0) return;
-        this.activePosition[index].price.value = data.c;
-        this.activePosition[index].price.percentage = data.P;
-
-        // PNL CALCULATION
-        if (this.activePosition[index].quantity > 0) {
-          // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
-          // data.c   = Current Price (from binance stream)
-          let average = parseFloat(this.activePosition[index].average);
-          let percentage =
-            average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-          let pnl =
-            parseFloat(this.activePosition[index].amountUsd) * percentage;
-          this.activePosition[index].profit.value = pnl.toFixed(3);
-          let convertPercentage = percentage * 100;
-          this.activePosition[index].profit.percentage =
-            convertPercentage.toFixed(3);
-        }
-        // });
-      });
+          // PNL CALCULATION
+          if(activePosition[index].quantity > 0){
+              // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
+              // data.c   = Current Price (from binance stream)
+              let average = parseFloat(activePosition[index].average);
+              let percentage = average == 0 ? 0 : (((parseFloat(data.c) - average) / average));
+              let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
+              activePosition[index].profit.value = pnl.toFixed(3);
+              let convertPercentage = percentage * 100;
+              activePosition[index].profit.percentage = convertPercentage.toFixed(3);
+          }
+      }
     },
     async _fetchBotsList(exchangeName) {
       this.isLoading = true;
       if (this.socket) this.socket.disconnect();
-      await this.streamBinance();
 
       this.$api
         .$get("/user/bot-user", {
@@ -822,19 +805,15 @@ export default {
             exchange: exchangeName,
           },
         })
-        .then((res) => {
+        .then(async (res) => {
           this.activePosition = res.data;
           this.availablePair = res.pairs;
+          await this.streamBinance(this.activePosition);
         })
         .catch((err) => {})
         .finally(() => {
           this.isLoading = false;
         });
-      // let res = await this.$api.$get("/user/bot-user", {
-      //   params: {
-      //     exchange: exchangeName,
-      //   },
-      // });
     },
     async _fetchPosition(sorting) {
       let exchange = this.selectedExchangeReport;
