@@ -3,7 +3,12 @@
     <v-row>
       <v-col cols="5" style="position: relative">
         <div class="custom-avatar">
-          <img width="40" height="40" src="/token_logo/USDT.png" />
+          <lottie
+            :width="50"
+            :height="50"
+            :options="lottieOptions"
+            v-on:animCreated="handleAnimation"
+          />
         </div>
       </v-col>
       <v-col cols="7" class="pt-5 black--text font-weight-bold text-body-1">
@@ -20,9 +25,24 @@
 </template>
 
 <script>
+import lottie from "vue-lottie/src/lottie.vue";
+import * as animationData from "~/assets/lottie/dashboard/new user task.json";
+
 export default {
+  components: {
+    lottie,
+  },
   data() {
-    return {};
+    return {
+      // LOTTIE
+      anim: null, // for saving the reference to the animation
+      lottieOptions: { animationData: animationData.default },
+    };
+  },
+  methods: {
+    handleAnimation: function (anim) {
+      this.anim = anim;
+    },
   },
 };
 </script>

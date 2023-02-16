@@ -12,7 +12,7 @@
 export default {
   props: {
     parentModel: false,
-    maxWidth: "600",
+    maxWidth: String,
   },
   data() {
     return {

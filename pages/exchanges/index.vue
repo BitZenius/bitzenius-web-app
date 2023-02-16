@@ -18,8 +18,15 @@
           </v-img>
         </div>
         <v-row class="pa-5">
-          <v-col cols="12">
-            <img width="40" height="40" src="/token_logo/USDT.png" />
+          <v-col cols="12" class="d-flex">
+            <div class="lottie-container">
+              <lottie
+                :width="50"
+                :height="50"
+                :options="lottieOptions"
+                v-on:animCreated="handleAnimation"
+              />
+            </div>
           </v-col>
           <v-col cols="3" class="d-flex flex-column justify-center align-start">
             <v-card
@@ -217,10 +224,14 @@
 
 <script>
 import Form from "./form";
+import lottie from "vue-lottie/src/lottie.vue";
+import * as animationData from "~/assets/lottie/dashboard/Whitelist icon.json";
+
 export default {
   layout: "account",
   components: {
     Form,
+    lottie,
   },
   filters: {
     moment(val) {
@@ -318,6 +329,10 @@ export default {
       // COPY
       whitelistIp: "108.61.117.32",
       copied: false,
+
+      // LOTTIE
+      anim: null, // for saving the reference to the animation
+      lottieOptions: { animationData: animationData.default },
     };
   },
   head() {
@@ -362,6 +377,9 @@ export default {
   },
   beforeDestroy() {},
   methods: {
+    handleAnimation: function (anim) {
+      this.anim = anim;
+    },
     // FETCH API
     async _fetchExchanges() {
       console.log("FETCHING DATA EXCHANGES");

@@ -9,13 +9,13 @@
     </v-col>
     <v-col cols="12">
       <v-row>
-        <v-col cols="4">
+        <v-col cols="3">
           <CardBalanceWallet class="mb-6" />
+          <!-- <CardActionWallet></CardActionWallet> -->
         </v-col>
-        <v-col cols="6">
-          <CardActionWallet></CardActionWallet>
-        </v-col>
-        <v-col cols="12">
+        <!-- <v-col cols="6">
+        </v-col> -->
+        <v-col cols="9">
           <v-card flat rounded class="pa-3">
             <h3 class="text-body-h6 font-weight-bold mb-2">
               Transaction History
@@ -131,7 +131,7 @@ export default {
   data() {
     return {
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in",
-      title: "Wallet",
+      title: "Wallet Overview",
       isLoading: false,
       availablePair: ["FTM/USDT", "BTC/USDT", "XRP/USDT"],
       availableSorting: ["Date", "Type"],

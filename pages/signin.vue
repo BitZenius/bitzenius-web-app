@@ -53,9 +53,7 @@
                     class="mb-2 custom-input py-2"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
+                      <v-icon class="mr-4">$vuetify.icons.MailIcon</v-icon>
                     </template>
                   </v-text-field>
 
@@ -72,9 +70,7 @@
                     class="mb-2 custom-input py-2"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
+                      <v-icon class="mr-4">$vuetify.icons.LockIcon</v-icon>
                     </template>
                   </v-text-field>
                   <p class="mt-5 mb-10">
@@ -181,7 +177,14 @@
       :src="require('assets/images/bitzy trading.png')"
       contain
     ></v-img>
-    <div class="text-subtitle white--text footer">
+    <div class="text-subtitle white--text footer d-flex flex-column">
+      <div>
+        Download our app
+        <div class="my-5">
+          <v-btn color="black" class="white--text"> App Store </v-btn>
+          <v-btn color="black" class="white--text"> Google Play </v-btn>
+        </div>
+      </div>
       ©2023 - BitZenius. All rights reserved.
     </div>
     <!-- ORNAMENTS END -->
@@ -215,7 +218,7 @@ export default {
     otpMethod: "",
   }),
   head: {
-    title: "Verification",
+    title: "Sign In",
   },
   computed: {
     isLoggedIn() {

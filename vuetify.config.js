@@ -16,6 +16,10 @@ import CopyCheckIcon from "~/assets/custom-icons/CopyCheck.vue";
 import DocumentTextIcon from "~/assets/custom-icons/DocumentText.vue";
 import ProfitBarChartIcon from "~/assets/custom-icons/ProfitBarChart.vue";
 
+import MailIcon from "~/assets/custom-icons/Mail.vue";
+import LockIcon from "~/assets/custom-icons/Lock.vue";
+import UserIcon from "~/assets/custom-icons/User.vue";
+
 export default {
 
   icons: {
@@ -67,7 +71,18 @@ export default {
       },
       ProfitBarChartIcon: {
         component: ProfitBarChartIcon
-      }
+      },
+      MailIcon: {
+        component: MailIcon
+      },
+      LockIcon: {
+        component: LockIcon
+      },
+      UserIcon: {
+        component: UserIcon
+      },
+
+
 
     },
   },
