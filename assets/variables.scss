@@ -2,7 +2,11 @@
 :root {
   --primary: #3394F8;
   --primary-grey: #F4F7FD;
+  --text: #000000;
 }
+
+
+
 
 /* width */
 ::-webkit-scrollbar {
@@ -68,6 +72,5 @@ $material-light: (
 
 .custom-input {
   margin-top: 0px !important;
-  background-color: #f4f7fd !important;
   padding: 0px !important;
 }

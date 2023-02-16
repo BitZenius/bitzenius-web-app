@@ -63,7 +63,7 @@
               class="d-flex justify-center"
               style="position: relative"
             >
-              <div class="custom-avatar">
+              <div class="custom-avatar off-white-3">
                 <v-img contain :src="exchange.image"></v-img>
               </div>
               <h4 class="text-body-1 font-weight-bold mt-5">
@@ -215,7 +215,7 @@
                     v-model="searchQuery"
                     placeholder="Search By Pair"
                     rounded
-                    class="custom-input"
+                    class="custom-input off-white"
                   >
                     <template v-slot:prepend-inner>
                       <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
@@ -1021,7 +1021,6 @@ export default {
   padding: 13px 10px;
 }
 .custom-input {
-  background-color: #f4f7fd;
 }
 
 .ornament {
@@ -1063,7 +1062,6 @@ export default {
   padding: 15px;
   width: 80px;
   height: 80px;
-  background: white;
   border-radius: 100% !important;
   top: 0%;
   left: 0%;

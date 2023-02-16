@@ -9,7 +9,6 @@
       v-model="drawer"
       flat
       app
-      color="off-white-3"
     >
       <v-list nav v-if="user" rounded class="px-5 no-scrollbar">
         <v-list-item class="ml-1 mb-2" two-line>
@@ -252,7 +251,7 @@
         <v-icon>mdi-table-large</v-icon>
       </v-btn>
     </v-bottom-navigation>
-    <v-footer v-else>
+    <v-footer v-else fixed>
       <v-row justify="space-between">
         <v-col cols="2"></v-col>
         <v-col
@@ -263,8 +262,12 @@
         </v-col>
         <v-col class="d-flex align-center justify-end" cols="6">
           Download our app
-          <v-btn color="black" class="white--text mx-2"> App Store </v-btn>
-          <v-btn color="black" class="white--text"> Google Play </v-btn>
+          <v-btn plain :ripple="false" class="white--text mx-3 pa-0">
+            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
+          </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
+          </v-btn>
         </v-col>
       </v-row>
     </v-footer>

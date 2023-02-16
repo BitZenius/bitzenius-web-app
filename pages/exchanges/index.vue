@@ -33,7 +33,7 @@
               flat
               rounded
               color="primary2"
-              class="pa-3 basic--text text-body-2 mb-2"
+              class="pa-3 primary-text--text text-body-2 mb-2"
             >
               Please be sure to whitelist the following IP address when creating
               an API Key on your exchange. It is a required step!
@@ -42,7 +42,7 @@
               flat
               rounded
               color="primary2"
-              class="pa-3 basic--text text-body-2 custom-card"
+              class="pa-3 primary-text--text text-body-2 custom-card"
             >
               {{ whitelistIp }}
               <v-tooltip v-model="copied" top>
@@ -57,7 +57,9 @@
                     v-clipboard:success="onCopy"
                     v-clipboard:error="onError"
                   >
-                    <v-icon small color="basic"> mdi-content-copy </v-icon>
+                    <v-icon small color="primary-text">
+                      mdi-content-copy
+                    </v-icon>
                   </v-btn>
                 </template>
                 {{ copied ? "Copy" : "Copied" }}
@@ -77,7 +79,7 @@
                 }"
                 rounded
               >
-                <div class="custom-avatar">
+                <div class="custom-avatar off-white-3">
                   <v-img contain :src="exchange.image"></v-img>
                 </div>
                 <v-row class="pa-3 pt-10">

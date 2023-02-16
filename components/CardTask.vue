@@ -2,7 +2,7 @@
   <v-card class="pa-2" flat>
     <v-row>
       <v-col cols="5" style="position: relative">
-        <div class="custom-avatar">
+        <div class="custom-avatar off-white-2">
           <lottie
             :width="50"
             :height="50"
@@ -64,7 +64,6 @@ export default {
   justify-content: center;
   width: 80px;
   height: 80px;
-  background: white;
   border-radius: 100%;
   border: 4px solid var(--primary);
   top: -50%;

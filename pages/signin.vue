@@ -1,5 +1,5 @@
 <template>
-  <div class="app">
+  <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
     <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
       <v-progress-circular
         indeterminate
@@ -53,7 +53,9 @@
                     class="mb-2 custom-input py-2"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4">$vuetify.icons.MailIcon</v-icon>
+                      <v-icon class="mr-4 black--text"
+                        >$vuetify.icons.MailIcon</v-icon
+                      >
                     </template>
                   </v-text-field>
 
@@ -70,7 +72,9 @@
                     class="mb-2 custom-input py-2"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4">$vuetify.icons.LockIcon</v-icon>
+                      <v-icon class="mr-4 black--text"
+                        >$vuetify.icons.LockIcon</v-icon
+                      >
                     </template>
                   </v-text-field>
                   <p class="mt-5 mb-10">
@@ -181,8 +185,12 @@
       <div>
         Download our app
         <div class="my-5">
-          <v-btn color="black" class="white--text"> App Store </v-btn>
-          <v-btn color="black" class="white--text"> Google Play </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
+          </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
+          </v-btn>
         </div>
       </div>
       ©2023 - BitZenius. All rights reserved.
@@ -368,6 +376,17 @@ export default {
   position: relative;
   overflow-y: hidden;
 }
+
+.app.dark {
+  background: linear-gradient(90deg, #1d1f2b 45%, #212434 45%);
+  height: 100%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  overflow-y: hidden;
+}
+
 .decorated-text {
   position: relative;
 }
@@ -415,15 +434,15 @@ export default {
   top: 5%;
 }
 .custom-input {
-  background-color: #f4f7fd;
 }
 
 .custom-input.v-input .v-input__slot {
-  color: black !important;
 }
 
 .main-card {
   margin-left: 20px;
   max-width: 90%;
 }
+
+
 </style>

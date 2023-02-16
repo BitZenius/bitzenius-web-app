@@ -185,8 +185,12 @@
       <div>
         Download our app
         <div class="my-5">
-          <v-btn color="black" class="white--text"> App Store </v-btn>
-          <v-btn color="black" class="white--text"> Google Play </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
+          </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
+          </v-btn>
         </div>
       </div>
       ©2023 - BitZenius. All rights reserved.
@@ -357,7 +361,6 @@ export default {
   top: 5%;
 }
 .custom-input {
-  background-color: #f4f7fd;
 }
 
 .custom-input.v-input .v-input__slot {

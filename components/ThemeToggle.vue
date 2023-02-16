@@ -41,18 +41,30 @@ export default {
         this.toggleDarkMode();
       }
     }
+
+    console.log(this.darkMode, this.$vuetify.theme.dark);
   },
   methods: {
-    toggleDarkMode() {
+    toggleDarkMode(force = "") {
       if (process.browser) {
-        if (this.darkMode === true) {
+        if (force == "DARK") {
           this.$vuetify.theme.dark = true;
           this.$store.commit("setTheme", "dark");
           localStorage.setItem("darkmode", true);
-        } else if (this.darkMode === false) {
+        } else if (force == "LIGHT") {
           this.$vuetify.theme.dark = false;
           this.$store.commit("setTheme", "light");
           localStorage.setItem("darkmode", false);
+        } else {
+          if (this.darkMode === true) {
+            this.$vuetify.theme.dark = true;
+            this.$store.commit("setTheme", "dark");
+            localStorage.setItem("darkmode", true);
+          } else if (this.darkMode === false) {
+            this.$vuetify.theme.dark = false;
+            this.$store.commit("setTheme", "light");
+            localStorage.setItem("darkmode", false);
+          }
         }
       }
     },

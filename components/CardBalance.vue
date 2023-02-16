@@ -106,7 +106,7 @@
                           </v-tooltip>
                         </p>
                       </div>
-                      <div class="text-chip font-weight-bold">
+                      <div class="text-chip font-weight-bold off-white">
                         To make deposit <b>USDT</b> to your account, please
                         transfer amount to your
                         <b>Virtual Account Wallet</b> with the following

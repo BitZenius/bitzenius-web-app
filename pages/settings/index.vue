@@ -672,7 +672,6 @@ export default {
 }
 .custom-input {
   margin-top: 0px !important;
-  background-color: #f4f7fd !important;
   padding: 0px !important;
 }
 .chip-container {
@@ -699,7 +698,6 @@ export default {
   border-radius: 10px 0px 0px 10px;
 }
 .custom-input {
-  background-color: #f4f7fd;
 }
 
 .custom-input.v-input .v-input__slot {

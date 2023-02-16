@@ -292,7 +292,6 @@ export default {
 }
 .custom-input {
   margin-top: 0px !important;
-  background-color: #f4f7fd !important;
   padding: 0px !important;
 }
 </style>

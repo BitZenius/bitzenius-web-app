@@ -1,0 +1,27 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 0s ease-in-out 50000s;
+  -webkit-text-fill-color: black !important;
+}
+
+.v-card.theme--light {
+  box-shadow: 0px 20px 25px #3394F80D !important;
+}
+
+.v-card.theme--dark {
+  box-shadow: unset !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 0s ease-in-out 50000s;
+    -webkit-text-fill-color: gray !important;
+  }
+}

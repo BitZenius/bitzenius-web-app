@@ -88,7 +88,7 @@ export default {
   },
   theme: {
     options: { customProperties: true },
-    dark: false,
+    // dark: true,
     themes: {
       dark: {
         customGreen: "#C3F239",
