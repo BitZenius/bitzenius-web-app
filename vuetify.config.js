@@ -96,10 +96,23 @@ export default {
         customPink: "#FE759F",
         customYellow: "#FEE603",
         primary: '#3394F8',
-        danger: '#ff002f',
-        basic: '#2B2B2B',
-        'basic-1': '#177e89',
-        'basic-2': '#2B2B2B',
+        primary2: '#46A0F8',
+        danger: '#FF6469',
+        success: '#1AD598',
+        'success-light': "#d1f7ea",
+
+        basic: '#000000',
+        'basic-1': '#000000',
+        'basic-2': '#000000',
+        'black': '#ffffff',
+
+        // BG
+        'off-white': '#1D1F2B',
+        'off-white-2': '#282B3D',
+        'off-white-3': '#212434',
+
+        // TEXT
+        'primary-text': "#ffffff"
       },
       light: {
         customGreen: "#C3F239",
@@ -119,6 +132,8 @@ export default {
 
         // BG
         'off-white': '#f4f7fd',
+        'off-white-2': '#f4f7fd',
+        'off-white-3': '#ffffff',
 
         // TEXT
         'primary-text': "#ffffff"

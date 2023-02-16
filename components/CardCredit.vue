@@ -1,7 +1,7 @@
 <template>
   <v-card class="pa-2 custom-card" flat>
     <v-list-item two-line>
-      <v-list-item-avatar size="40" color="white">
+      <v-list-item-avatar size="40" color="#F4F7FD">
         <v-img
           max-width="25px"
           max-height="25px"

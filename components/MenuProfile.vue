@@ -1,5 +1,11 @@
 <template>
-  <v-list-item color="primary" exact dense class="custom-menu-2 mb-2" two-line>
+  <v-list-item
+    color="off-white"
+    exact
+    dense
+    class="custom-menu-2 mb-2"
+    two-line
+  >
     <v-progress-circular
       :rotate="270"
       :value="20"
@@ -59,7 +65,6 @@ export default {
 <style>
 .custom-menu-2.v-list-item {
   padding: 0px !important;
-  background-color: #f4f7fd !important;
   border-radius: 15px !important;
   position: relative;
 }

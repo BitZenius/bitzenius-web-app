@@ -804,7 +804,7 @@ export default {
     },
     async _fetchBotsList(exchangeName) {
       this.isLoading = true;
-      if (this.socket) this.socket.disconnect();
+      if (this.socket) this.socket?.close();
 
       this.$api
         .$get("/user/bot-user", {

@@ -4,7 +4,7 @@
       <v-col cols="12" class="pa-0">
         <v-card class="pa-2 custom-card" flat>
           <v-list-item two-line>
-            <v-list-item-avatar size="40" color="#F4F7FD">
+            <v-list-item-avatar size="40" color="off-white-2">
               <v-img
                 max-width="25px"
                 max-height="25px"

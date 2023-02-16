@@ -9,6 +9,7 @@
       v-model="drawer"
       flat
       app
+      color="off-white-3"
     >
       <v-list nav v-if="user" rounded class="px-5 no-scrollbar">
         <v-list-item class="ml-1 mb-2" two-line>
@@ -151,7 +152,7 @@
       >
     </v-navigation-drawer>
     <v-app-bar
-      class="custom-app-bar"
+      :class="$vuetify.theme.dark ? 'custom-app-bar-dark' : 'custom-app-bar'"
       :style="`top:${topMargin}px`"
       fixed
       flat
@@ -213,13 +214,17 @@
       >
     </v-slide-x-transition>
 
-    <v-main class="main-container">
+    <v-main class="main-container off-white">
       <v-container
-        class="main-container"
+        class="main-container off-white"
         :style="`padding-top:${topMargin}px`"
         fluid
       >
         <nuxt :class="$vuetify.breakpoint.mobile ? 'pb-5' : 'px-3'" />
+
+        <!-- ORNAMENTS -->
+        <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
+        <!-- ORNAMENTS END -->
       </v-container>
     </v-main>
     <v-bottom-navigation
@@ -465,7 +470,6 @@ export default {
 
 <style scoped>
 .main-container {
-  background: #f4f7fd !important;
   height: 100%;
   min-height: 120vh;
 }
@@ -492,6 +496,13 @@ export default {
   transform: translate(-20%, -50%);
 }
 
+.custom-app-bar-dark {
+  background: linear-gradient(180deg, #212434 0%, #212434 100%) !important;
+  opacity: 1;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
 .custom-app-bar {
   background: linear-gradient(
     180deg,
@@ -501,5 +512,13 @@ export default {
   opacity: 1;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+}
+
+.ornament-2 {
+  position: absolute;
+  width: 12%;
+  right: 0%;
+  bottom: 0%;
+  display: none;
 }
 </style>
