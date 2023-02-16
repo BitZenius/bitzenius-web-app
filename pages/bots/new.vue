@@ -470,6 +470,7 @@ export default {
   layout: "account",
   data() {
     return {
+      title: 'Create new bots',
       // STORE PARAM
       botProp: {},
       exchange: "",
@@ -572,10 +573,12 @@ export default {
     },
     selectedBot() {
       return this.$store.state.bot.selectedBot;
-    },
-    title() {
-      return `Create new bots`;
-    },
+    }
+  },
+  head() {
+    return {
+      title: this.title
+    }
   },
   methods: {
     ...mapMutations("exchange", ["setSelectedExchange"]),

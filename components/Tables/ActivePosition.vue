@@ -715,7 +715,7 @@ export default {
   },
   unmounted() {},
   beforeDestroy() {
-    this.socket.close();
+    this.socket?.close();
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
     // });
