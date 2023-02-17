@@ -20,6 +20,10 @@ import MailIcon from "~/assets/custom-icons/Mail.vue";
 import LockIcon from "~/assets/custom-icons/Lock.vue";
 import UserIcon from "~/assets/custom-icons/User.vue";
 
+import CopyIcon from "~/assets/custom-icons/Copy.vue";
+import EarningsIcon from "~/assets/custom-icons/Earnings.vue";
+import GiftIcon from "~/assets/custom-icons/Gift.vue";
+
 export default {
 
   icons: {
@@ -81,14 +85,24 @@ export default {
       UserIcon: {
         component: UserIcon
       },
+      CopyIcon: {
+        component: CopyIcon
+      },
+      EarningsIcon: {
+        component: EarningsIcon
+      },
+      GiftIcon: {
+        component: GiftIcon
+      },
 
 
 
     },
   },
+
   theme: {
     options: { customProperties: true },
-    // dark: true,
+    dark: true,
     themes: {
       dark: {
         customGreen: "#C3F239",
@@ -104,7 +118,7 @@ export default {
         basic: '#000000',
         'basic-1': '#000000',
         'basic-2': '#000000',
-        'black': '#ffffff',
+        'basic-text': '#ffffff',
 
         // BG
         'off-white': '#1D1F2B',
@@ -128,7 +142,7 @@ export default {
         basic: '#ffffff',
         'basic-1': '#ffffff',
         'basic-2': '#ffffff',
-        'black': '#000000',
+        'basic-text': '#000000',
 
         // BG
         'off-white': '#f4f7fd',
@@ -140,4 +154,5 @@ export default {
       }
     }
   },
+
 }

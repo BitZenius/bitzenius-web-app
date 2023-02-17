@@ -30,7 +30,7 @@
           <v-card flat rounded class="custom-stepper-container">
             <v-list dense>
               <v-list-item
-                class="custom-stepper mb-2"
+                class="custom-stepper off-white-2 mb-2"
                 :ripple="false"
                 @click="e1 = 1"
               >
@@ -42,13 +42,14 @@
                   color="primary"
                   class="d-flex align-center justify-center"
                 >
-                  <v-list-item-avatar size="50" class="ma-0">
-                    <v-icon
-                      size="20"
-                      :color="e1 >= 1 ? 'primary' : ''"
-                      v-html="`$vuetify.icon.ProfitBarChartIcon`"
-                    ></v-icon>
-                  </v-list-item-avatar>
+                  <!-- <v-list-item-avatar size="50" class="ma-0"
+                    > -->
+                  <v-icon
+                    size="20"
+                    :color="e1 >= 1 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.ProfitBarChartIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
                 </v-progress-circular>
               </v-list-item>
               <v-list-item
@@ -64,13 +65,13 @@
                   color="primary"
                   class="d-flex align-center justify-center"
                 >
-                  <v-list-item-avatar size="50" class="ma-0">
-                    <v-icon
-                      size="20"
-                      :color="e1 >= 2 ? 'primary' : ''"
-                      v-html="`$vuetify.icon.ChartArrowUpIcon`"
-                    ></v-icon>
-                  </v-list-item-avatar>
+                  <!-- <v-list-item-avatar size="50" class="ma-0"> -->
+                  <v-icon
+                    size="20"
+                    :color="e1 >= 2 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.ChartArrowUpIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
                 </v-progress-circular>
               </v-list-item>
 
@@ -87,13 +88,13 @@
                   color="primary"
                   class="d-flex align-center justify-center"
                 >
-                  <v-list-item-avatar size="50" class="ma-0">
-                    <v-icon
-                      size="20"
-                      :color="e1 >= 3 ? 'primary' : ''"
-                      v-html="`$vuetify.icon.CopyCheckIcon`"
-                    ></v-icon>
-                  </v-list-item-avatar>
+                  <!-- <v-list-item-avatar size="50" class="ma-0"> -->
+                  <v-icon
+                    size="20"
+                    :color="e1 >= 3 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.CopyCheckIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
                 </v-progress-circular>
               </v-list-item>
               <v-list-item
@@ -109,13 +110,13 @@
                   color="primary"
                   class="d-flex align-center justify-center"
                 >
-                  <v-list-item-avatar size="50" class="ma-0">
-                    <v-icon
-                      size="20"
-                      :color="e1 >= 4 ? 'primary' : ''"
-                      v-html="`$vuetify.icon.DocumentTextIcon`"
-                    ></v-icon>
-                  </v-list-item-avatar>
+                  <!-- <v-list-item-avatar size="50" class="ma-0"> -->
+                  <v-icon
+                    size="20"
+                    :color="e1 >= 4 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.DocumentTextIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
                 </v-progress-circular>
               </v-list-item>
             </v-list>
@@ -125,7 +126,7 @@
         </v-col>
         <v-col cols="11">
           <v-stepper flat v-model="e1" :ripple="false">
-            <v-stepper-items style="width: 100%">
+            <v-stepper-items class="off-white-3" style="width: 100%">
               <v-stepper-content class="py-0 px-0" step="1">
                 <ModalsBotSetupStrategyAndAmount
                   v-if="showStrategySetup"
@@ -211,7 +212,6 @@
                               custom-input
                               text-body-1
                             "
-                            clearable
                             rounded
                             @input="searchTokens"
                           >
@@ -250,8 +250,8 @@
                         >
                           <v-chip
                             class="ma-2 custom-chip"
-                            color="#f4f7fd"
-                            text-color="black"
+                            color="off-white "
+                            text-color="basic-text--text"
                             small
                             @click.native="toggleTokenException(token)"
                           >
@@ -352,23 +352,19 @@
                           v-for="(item, i) in summary"
                           :key="`item-summary-${i}`"
                         >
-                          <v-card flat rounded color="#F4F7FD">
+                          <v-card flat rounded color="off-white">
                             <v-list-item>
-                              <v-list-item-avatar size="50" color="#F4F7FD">
-                                <!-- <v-img
+                              <!-- <v-list-item-avatar size="50" color="off-white"> -->
+                              <!-- <v-img
                                   max-width="25px"
                                   max-height="25px"
                                   :src="require('~/assets/images/deal.svg')"
                                   position="center"
                                 ></v-img> -->
-                                <v-icon
-                                  size="25"
-                                  small
-                                  color="primary"
-                                  :v-html="_determineIcon(item.title)"
-                                >
-                                </v-icon>
-                              </v-list-item-avatar>
+                              <v-icon size="20" class="mr-4" color="primary">
+                                {{ _determineIcon(item.title) }}
+                              </v-icon>
+                              <!-- </v-list-item-avatar> -->
 
                               <v-list-item-content>
                                 <v-list-item-title class="text-body-2">
@@ -379,7 +375,7 @@
                                   class="
                                     text-body-1
                                     font-weight-bold
-                                    black--text
+                                    basic-text--text
                                   "
                                 >
                                   {{ item.value }}
@@ -848,15 +844,21 @@ export default {
       }
     },
     _determineIcon(text) {
-      return "$vuetify.icon.ProfitBarChartIcon";
+      console.log("DETERMINE ICON : ", text);
       switch (text) {
         case "Exchange":
-          return "";
-          break;
+          return "$vuetify.icon.ExchangeIcon";
+        case "Strategy":
+          return "$vuetify.icon.ProfitBarChartIcon";
+        case "Total USDT":
+          return "$vuetify.icon.ProfitBarChartIcon";
+        case "Technical Analysis":
+          return "$vuetify.icon.ChartArrowUpIcon";
+        case "Minimum Trading Volume":
+          return "$vuetify.icon.ProfitBarChartIcon";
 
         default:
-          return;
-          break;
+          return "$vuetify.icon.ProfitBarChartIcon";
       }
     },
   },
@@ -935,9 +937,6 @@ export default {
   padding-bottom: 5px;
 }
 
-.custom-stepper {
-  background: #f4f7fd !important;
-}
 .custom-chip {
   cursor: pointer;
 

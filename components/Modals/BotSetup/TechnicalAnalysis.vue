@@ -6,7 +6,10 @@
           <h3 v-if="!wide" class="mb-4 text-h6 font-weight-bold">
             Choose First Analysis
           </h3>
-          <strong v-else class="text-body-1 font-weight-bold black--text my-3">
+          <strong
+            v-else
+            class="text-body-1 font-weight-bold basic-text--text my-3"
+          >
             Choose First Analysis
           </strong>
           <!-- <v-btn small @click="logger">logger</v-btn> -->
@@ -34,7 +37,10 @@
             </v-col>
           </v-row>
           <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">Condition</h3>
-          <strong v-else class="text-body-1 font-weight-bold black--text my-3">
+          <strong
+            v-else
+            class="text-body-1 font-weight-bold basic-text--text my-3"
+          >
             Condition
           </strong>
           <v-row style="width: 100%">
@@ -45,7 +51,7 @@
                 class="mx-2"
                 rounded
                 depressed
-                :color="technical.condition == 'AND' ? 'primary' : '#F4F7FD'"
+                :color="technical.condition == 'AND' ? 'primary' : 'off-white'"
               >
                 AND
               </v-btn>
@@ -55,7 +61,7 @@
                 class="mx-2"
                 rounded
                 depressed
-                :color="technical.condition == 'OR' ? 'primary' : '#F4F7FD'"
+                :color="technical.condition == 'OR' ? 'primary' : 'off-white'"
               >
                 OR
               </v-btn>
@@ -64,7 +70,10 @@
           <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
             Choose Second Analysis
           </h3>
-          <strong v-else class="text-body-1 font-weight-bold black--text my-3">
+          <strong
+            v-else
+            class="text-body-1 font-weight-bold basic-text--text my-3"
+          >
             Choose Second Analysis
           </strong>
           <v-row style="width: 100%">
@@ -96,7 +105,7 @@
             </h3>
             <strong
               v-else
-              class="text-body-1 font-weight-bold black--text my-3"
+              class="text-body-1 font-weight-bold basic-text--text my-3"
             >
               Condition
             </strong>

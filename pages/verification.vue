@@ -15,7 +15,7 @@
           <v-btn
             :loading="isLoading"
             depressed
-            class="customGreen black--text text-capitalize"
+            class="customGreen basic-text--text text-capitalize"
             @click.stop="sendEmailVerification"
           >
             {{ buttonText }}

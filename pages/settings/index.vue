@@ -14,31 +14,49 @@
           <v-card flat class="custom-stepper-container" style="height: 100%">
             <v-list dense>
               <v-list-item
-                class="custom-stepper mb-2"
+                :class="
+                  e1 == 1
+                    ? 'custom-stepper mb-2 off-white-3'
+                    : 'custom-stepper mb-2 off-white-2'
+                "
                 :ripple="false"
                 @click="e1 = 1"
               >
                 <v-list-item-content>
-                  <v-list-item-title>Basic</v-list-item-title>
+                  <v-list-item-titl class="pl-2 text-body-1 font-weight-bold"
+                    >Basic</v-list-item-titl
+                  >
                 </v-list-item-content>
               </v-list-item>
               <v-list-item
-                class="custom-stepper mb-2"
+                :class="
+                  e1 == 2
+                    ? 'custom-stepper mb-2 off-white-3'
+                    : 'custom-stepper mb-2 off-white-2'
+                "
                 :ripple="false"
                 @click="e1 = 2"
               >
                 <v-list-item-content>
-                  <v-list-item-title>Wallet</v-list-item-title>
+                  <v-list-item-title class="pl-2 text-body-1 font-weight-bold"
+                    >Wallet</v-list-item-title
+                  >
                 </v-list-item-content>
               </v-list-item>
 
               <v-list-item
-                class="custom-stepper mb-2"
+                :class="
+                  e1 == 3
+                    ? 'custom-stepper mb-2 off-white-3'
+                    : 'custom-stepper mb-2 off-white-2'
+                "
                 :ripple="false"
                 @click="e1 = 3"
               >
                 <v-list-item-content>
-                  <v-list-item-title>Account</v-list-item-title>
+                  <v-list-item-title class="pl-2 text-body-1 font-weight-bold"
+                    >Account</v-list-item-title
+                  >
                 </v-list-item-content>
               </v-list-item>
             </v-list>
@@ -47,9 +65,15 @@
           <!-- CUSTOM STEPPER ENDS -->
         </v-col>
         <v-col cols="9">
-          <v-stepper flat v-model="e1" :ripple="false" style="height: 100%">
-            <v-stepper-items style="width: 100%">
-              <v-stepper-content class="pa-5" step="1">
+          <v-stepper
+            class="off-white-3"
+            flat
+            v-model="e1"
+            :ripple="false"
+            style="height: 100%"
+          >
+            <v-stepper-items class="off-white-3" style="width: 100%">
+              <v-stepper-content class="pa-5 off-white-3" step="1">
                 <v-row>
                   <v-col cols="12">
                     <v-alert
@@ -131,7 +155,7 @@
                 </v-row>
               </v-stepper-content>
 
-              <v-stepper-content class="pa-5" step="2">
+              <v-stepper-content class="pa-5 off-white-3" step="2">
                 <v-row>
                   <v-col cols="12">
                     <v-alert
@@ -170,7 +194,7 @@
                 </v-row>
               </v-stepper-content>
 
-              <v-stepper-content class="pa-5" step="3">
+              <v-stepper-content class="pa-5 off-white-3" step="3">
                 <v-row>
                   <v-col cols="12">
                     <v-alert
@@ -659,9 +683,6 @@ export default {
   padding-bottom: 5px;
 }
 
-.custom-stepper {
-  background: #f4f7fd !important;
-}
 .custom-chip {
   cursor: pointer;
 

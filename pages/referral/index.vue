@@ -84,7 +84,7 @@
                             v-clipboard:error="onError"
                           >
                             <v-icon color="primary" class="ml-2">
-                              mdi-content-copy
+                              $vuetify.icons.CopyIcon
                             </v-icon>
                           </v-btn>
                         </template>
@@ -101,11 +101,9 @@
           <v-card flat rounded style="position: relative">
             <v-list two-line>
               <v-list-item>
-                <v-list-item-avatar>
-                  <v-icon color="primary" size="18"
-                    >$vuetify.icons.ReferralIcon
-                  </v-icon>
-                </v-list-item-avatar>
+                <v-icon color="primary" class="mr-5" size="18"
+                  >$vuetify.icons.ReferralIcon
+                </v-icon>
                 <v-list-item-content>
                   <v-list-item-title class="text-body-1 font-weight-bold"
                     >Total Referrals</v-list-item-title
@@ -128,11 +126,9 @@
           <v-card flat rounded style="position: relative">
             <v-list two-line>
               <v-list-item>
-                <v-list-item-avatar>
-                  <v-icon color="primary" size="18"
-                    >$vuetify.icons.ReferralIcon
-                  </v-icon>
-                </v-list-item-avatar>
+                <v-icon color="primary" class="mr-5" size="18"
+                  >$vuetify.icons.EarningsIcon
+                </v-icon>
                 <v-list-item-content>
                   <v-list-item-title class="text-body-1 font-weight-bold"
                     >Total Earned</v-list-item-title
@@ -158,11 +154,11 @@
         <v-col cols="7">
           <v-list flat color="rgba(0,0,0,0)" two-line>
             <v-list-item>
-              <v-list-item-avatar>
-                <v-icon small color="basic" class="primary">
-                  mdi-currency-usd
-                </v-icon>
-              </v-list-item-avatar>
+              <!-- <v-list-item-avatar> -->
+              <v-icon size="30" class="primary--text mr-3">
+                $vuetify.icons.GiftIcon
+              </v-icon>
+              <!-- </v-list-item-avatar> -->
               <v-list-item-content>
                 <v-list-item-title class="text-h5 font-weight-bold"
                   >My Rewards History</v-list-item-title
@@ -230,169 +226,6 @@
                 </div>
               </template>
             </v-data-table>
-          </v-col>
-        </v-row>
-      </v-card>
-    </v-col>
-    <v-col v-if="false" cols="12">
-      <v-card class="pa-3">
-        <v-row>
-          <v-col cols="12" md="6">
-            <v-img src="/referral/illustration-john.png" alt="" class="mt-5" />
-          </v-col>
-          <v-col md="6" cols="12">
-            <div class="ma-3">
-              <v-row>
-                <v-col cols="12">
-                  <v-card
-                    v-if="!isLoaded"
-                    elevation="0"
-                    class="pa-2"
-                    color="primary"
-                    dark
-                  >
-                    <div class="pa-3">
-                      <v-skeleton-loader loading type="heading" />
-                      <v-skeleton-loader loading type="heading" class="mt-2" />
-                      <v-skeleton-loader loading type="heading" class="mt-5" />
-                      <v-skeleton-loader loading type="heading" class="mt-2" />
-                    </div>
-                  </v-card>
-                  <v-card
-                    v-else-if="referralCode"
-                    elevation="0"
-                    class="pa-2"
-                    color="primary"
-                    dark
-                  >
-                    <v-list color="primary">
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title
-                            >Your Referral Code</v-list-item-title
-                          >
-                          <v-list-item-subtitle
-                            ><h1>{{ referralCode }}</h1></v-list-item-subtitle
-                          >
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          <v-tooltip v-model="copied" top>
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-btn
-                                icon
-                                v-bind="attrs"
-                                v-on="on"
-                                color="primary"
-                                size="16"
-                                v-clipboard:copy="referralCode"
-                                v-clipboard:success="onCopy"
-                                v-clipboard:error="onError"
-                              >
-                                <v-icon color="white">
-                                  mdi-content-copy
-                                </v-icon>
-                              </v-btn>
-                            </template>
-                            <span>{{ copied ? "Copy" : "Copied" }}</span>
-                          </v-tooltip>
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>Referral Link</v-list-item-title>
-                          <v-list-item-subtitle>{{
-                            referralLink
-                          }}</v-list-item-subtitle>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          <v-tooltip v-model="copied2" top>
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-btn
-                                icon
-                                v-bind="attrs"
-                                v-on="on"
-                                color="primary"
-                                size="16"
-                                v-clipboard:copy="referralLink"
-                                v-clipboard:success="onCopy2"
-                                v-clipboard:error="onError"
-                              >
-                                <v-icon color="white">
-                                  mdi-content-copy
-                                </v-icon>
-                              </v-btn>
-                            </template>
-                            <span>{{ copied2 ? "Copy" : "Copied" }}</span>
-                          </v-tooltip>
-                        </v-list-item-action>
-                      </v-list-item>
-                    </v-list>
-                  </v-card>
-                  <v-alert
-                    v-else
-                    color="yellow lighten-4"
-                    light
-                    icon="mdi-alert-outline"
-                  >
-                    <v-row align="center" no-gutters>
-                      <v-col cols="12" md="8">
-                        You're not eligible for the referral program. Please
-                        upgrade your plan.
-                      </v-col>
-                      <v-col cols="12" md="4" class="text-right">
-                        <v-btn
-                          color="primary"
-                          depressed
-                          class="text-capitalize"
-                          to="/subscription"
-                        >
-                          Upgrade Now
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-alert>
-                </v-col>
-              </v-row>
-              <v-row>
-                <v-col cols="12">
-                  <v-list two-line>
-                    <v-list-item>
-                      <v-list-item-avatar>
-                        <v-icon color="white" class="primary">
-                          mdi-account-group-outline
-                        </v-icon>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-title>Total Referral</v-list-item-title>
-                        <v-list-item-subtitle
-                          >Total referred peoples</v-list-item-subtitle
-                        >
-                      </v-list-item-content>
-                      <v-list-item-action>
-                        {{ totalReferredUsers }}
-                      </v-list-item-action>
-                    </v-list-item>
-                    <v-divider />
-                    <v-list-item>
-                      <v-list-item-avatar>
-                        <v-icon color="white" class="primary">
-                          mdi-currency-usd
-                        </v-icon>
-                      </v-list-item-avatar>
-                      <v-list-item-content>
-                        <v-list-item-title>Total Earned</v-list-item-title>
-                        <v-list-item-subtitle
-                          >Total earned rewards</v-list-item-subtitle
-                        >
-                      </v-list-item-content>
-                      <v-list-item-action>
-                        {{ totalRewards | currency("$") }}
-                      </v-list-item-action>
-                    </v-list-item>
-                  </v-list>
-                </v-col>
-              </v-row>
-            </div>
           </v-col>
         </v-row>
       </v-card>

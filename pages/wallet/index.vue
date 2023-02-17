@@ -32,27 +32,27 @@
               loading-text="Loading... Please wait"
             >
               <template v-slot:header.date="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.type="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.description="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.amount="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.status="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>

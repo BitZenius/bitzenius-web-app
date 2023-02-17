@@ -11,12 +11,12 @@
       </v-list-item-avatar>
       <v-list-item-content>
         <v-list-item-subtitle
-          class="black--text font-weight-bold text-body-1 mb-1"
+          class="basic-text--text font-weight-bold text-body-1 mb-1"
         >
           Crypto Assets
         </v-list-item-subtitle>
         <v-list-item-title
-          class="text-h5 font-weight-bold black--text text--lighten-2"
+          class="text-h5 font-weight-bold basic-text--text text--lighten-2"
         >
           <v-skeleton-loader v-if="loading" loading type="heading" />
           <div v-else>

@@ -136,7 +136,7 @@
               <v-btn
                 :disabled="!user.subscription || user.subscription == false"
                 v-else
-                color="customGreen black--text"
+                color="customGreen basic-text--text"
                 @click="_submitBotSetup(isUpdateMode)"
               >
                 Update

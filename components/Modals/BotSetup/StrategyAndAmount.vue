@@ -216,27 +216,27 @@
             <thead>
               <tr>
                 <th>
-                  <strong class="text-body-1 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold basic-text--text"
                     >Step</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-1 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold basic-text--text"
                     >Drop Rate</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-1 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold basic-text--text"
                     >Buy Multiplier</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-1 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold basic-text--text"
                     >Take Profit</strong
                   >
                 </th>
                 <th>
-                  <strong class="text-body-1 font-weight-bold black--text"
+                  <strong class="text-body-1 font-weight-bold basic-text--text"
                     >Type</strong
                   >
                 </th>
@@ -292,7 +292,7 @@
               <tr v-if="selectedStrategyName == 'Custom'">
                 <td v-if="selectedStrategyName == 'Custom'">
                   <v-btn
-                    class="customGreen black--text"
+                    class="customGreen basic-text--text"
                     small
                     @click="
                       addRowCustom(

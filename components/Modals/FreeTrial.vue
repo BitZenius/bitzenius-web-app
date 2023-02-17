@@ -27,7 +27,7 @@
           <h4 class="primary--text text-h5 font-weight-bold mb-3">
             START YOUR FREE TRIAL
           </h4>
-          <p class="font-weight-bold black--text text-body-1">
+          <p class="font-weight-bold basic-text--text text-body-1">
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
           </p>
           <v-list>

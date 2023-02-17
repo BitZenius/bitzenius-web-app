@@ -66,22 +66,22 @@
               class="elevation-2 my-2"
             >
               <template v-slot:header.pair="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.date="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.price="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
               <template v-slot:header.qty="{ header }">
-                <strong class="black--text text-body-1 font-weight-bold">{{
+                <strong class="basic-text--text text-body-1 font-weight-bold">{{
                   header.text
                 }}</strong>
               </template>
@@ -160,17 +160,17 @@
       class="elevation-2 my-2"
     >
       <template v-slot:header.date="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.profit="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.action="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>

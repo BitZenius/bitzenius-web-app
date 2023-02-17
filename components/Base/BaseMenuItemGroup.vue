@@ -14,7 +14,7 @@
     </template>
     <template v-slot:activator>
       <v-list-item-content>
-        <v-list-item-title class="black--text text-body-2">
+        <v-list-item-title class="basic-text--text text-body-2">
           {{ cardtitle }}</v-list-item-title
         >
       </v-list-item-content>

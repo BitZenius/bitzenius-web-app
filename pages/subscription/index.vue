@@ -9,7 +9,7 @@
     </v-col>
     <v-col cols="12">
       <div class="relative-container">
-        <v-card class="card-1 pa-2" flat color="primary">
+        <v-card class="card-1 overflow-y-hidden pa-2" flat color="primary">
           <v-img
             width="860"
             class="background-image"
@@ -17,20 +17,8 @@
           >
           </v-img>
 
-          <v-row class="pa-5 pb-10" align="end">
-            <v-col cols="12" class="d-flex align-end justify-start">
-              <div class="lottie-container">
-                <template>
-                  <!-- width and height are optional -->
-                  <lottie
-                    :width="256"
-                    :height="256"
-                    :options="lottieOptions"
-                    v-on:animCreated="handleAnimation"
-                  />
-                </template>
-              </div>
-            </v-col>
+          <v-row class="pa-5 py-10" align="end">
+            <v-col cols="12" class="d-flex align-end justify-start"> </v-col>
             <v-col cols="12">
               <div v-if="subscription == null || subscription.id == 0">
                 <v-card elevation="8" class="pa-8">
@@ -364,22 +352,36 @@
               </div>
             </v-col>
           </v-row>
-          <!-- ORNAMENT -->
-          <v-img
-            width="90"
-            class="ornament-1"
-            :src="require('@/assets/images/ornament-green-arrow.svg')"
-          >
-          </v-img>
-          <v-img
-            width="60"
-            class="ornament-2"
-            :src="require('@/assets/images/ornament-thunder.svg')"
-          >
-          </v-img>
-          <!-- ORNAMENT ENDS -->
         </v-card>
+
         <Invoices class="card-2 pa-2" :invoice_id.sync="invoiceId" />
+
+        <!-- ORNAMENT -->
+        <v-img
+          width="90"
+          class="ornament-1"
+          :src="require('@/assets/images/ornament-green-arrow.svg')"
+        >
+        </v-img>
+        <v-img
+          width="60"
+          class="ornament-2"
+          :src="require('@/assets/images/ornament-thunder.svg')"
+        >
+        </v-img>
+
+        <div class="lottie-container">
+          <template>
+            <!-- width and height are optional -->
+            <lottie
+              :width="256"
+              :height="256"
+              :options="lottieOptions"
+              v-on:animCreated="handleAnimation"
+            />
+          </template>
+        </div>
+        <!-- ORNAMENT ENDS -->
       </div>
     </v-col>
     <v-col v-if="false" cols="12"> </v-col>
@@ -763,18 +765,20 @@ table.invoice td {
   left: 18%;
 }
 
-.card-1 > .ornament-1 {
+.relative-container > .ornament-1 {
   position: absolute;
-  top: -15%;
-  left: 35%;
-}
-
-.card-1 > .ornament-2 {
-  position: absolute;
-  top: 75%;
+  top: 0%;
   left: 25%;
 }
+
+.relative-container > .ornament-2 {
+  position: absolute;
+  top: 82%;
+  left: 20%;
+}
 .lottie-container {
-  transform: translate(-10%, 15%);
+  position: absolute;
+  top: -5%;
+  left: 0%;
 }
 </style>

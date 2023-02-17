@@ -11,7 +11,10 @@
           />
         </div>
       </v-col>
-      <v-col cols="7" class="pt-5 black--text font-weight-bold text-body-1">
+      <v-col
+        cols="7"
+        class="pt-5 basic-text--text font-weight-bold text-body-1"
+      >
         Task Overview
       </v-col>
       <v-col v-for="i in 5" :key="`task-${i}`" cols="12" class="mt-2">

@@ -69,7 +69,9 @@
                       {{ item.title }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                      <strong class="text-body-1 font-weight-bold black--text">
+                      <strong
+                        class="text-body-1 font-weight-bold basic-text--text"
+                      >
                         {{ item.value }}
                       </strong>
                     </v-list-item-subtitle>
@@ -101,7 +103,7 @@
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       <strong
-                        class="text-body-1 font-weight-bold black--text"
+                        class="text-body-1 font-weight-bold basic-text--text"
                         v-if="
                           item.key == 'take_profit_price' ||
                           item.key == 'next_step_price'
@@ -111,7 +113,7 @@
                       </strong>
                       <strong
                         v-else
-                        class="text-body-1 font-weight-bold black--text"
+                        class="text-body-1 font-weight-bold basic-text--text"
                       >
                         {{ item.value }}
                       </strong>

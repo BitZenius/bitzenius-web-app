@@ -24,7 +24,7 @@
           </template>
 
           <p
-            class="font-weight-bold black--text text-h6 text-center mt-5"
+            class="font-weight-bold basic-text--text text-h6 text-center mt-5"
             style="width: 50%"
           >
             New bots for Binance has been created

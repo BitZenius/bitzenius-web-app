@@ -25,32 +25,32 @@
       loading-text="Loading... Please wait"
     >
       <template v-slot:header.invoice_id="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.date="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.description="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.totals.total="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.payment.paid="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
       <template v-slot:header.active="{ header }">
-        <strong class="black--text text-body-1 font-weight-bold">{{
+        <strong class="basic-text--text text-body-1 font-weight-bold">{{
           header.text
         }}</strong>
       </template>
@@ -132,7 +132,7 @@
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title
-                      class="text-body-2 font-weight-bold black--text"
+                      class="text-body-2 font-weight-bold basic-text--text"
                     >
                       Invoice ID
                     </v-list-item-title>
@@ -148,7 +148,7 @@
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title
-                      class="text-body-2 font-weight-bold black--text"
+                      class="text-body-2 font-weight-bold basic-text--text"
                     >
                       Date
                     </v-list-item-title>
@@ -168,7 +168,7 @@
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title
-                      class="text-body-2 font-weight-bold black--text"
+                      class="text-body-2 font-weight-bold basic-text--text"
                     >
                       Status
                     </v-list-item-title>
@@ -194,7 +194,7 @@
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title
-                      class="text-body-2 font-weight-bold black--text"
+                      class="text-body-2 font-weight-bold basic-text--text"
                     >
                       Payment Method
                     </v-list-item-title>
@@ -211,12 +211,14 @@
               <v-col cols="12">
                 <v-row justify="space-between">
                   <v-col cols="6">
-                    <strong class="text-body-1 font-weight-bold black--text"
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
                       >Description</strong
                     >
                   </v-col>
                   <v-col cols="6" class="text-right">
-                    <strong class="text-body-1 font-weight-bold black--text"
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
                       >Amount</strong
                     >
                   </v-col>
@@ -226,20 +228,22 @@
                   class="off-white rounded-row mb-2"
                 >
                   <v-col cols="6">
-                    <strong class="text-body-1 font-weight-bold black--text">{{
-                      activeInvoice.description
-                    }}</strong>
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >{{ activeInvoice.description }}</strong
+                    >
                   </v-col>
                   <v-col
                     cols="6"
-                    class="text-right font-weight-bold black--text"
+                    class="text-right font-weight-bold basic-text--text"
                   >
                     {{ activeInvoice.totals.subtotal | currency("$") }}
                   </v-col>
                 </v-row>
                 <v-row justify="space-between" class="off-white rounded-row">
                   <v-col cols="6">
-                    <strong class="text-body-1 font-weight-bold black--text"
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
                       >Subtotal</strong
                     >
                   </v-col>
@@ -247,21 +251,25 @@
                     {{ activeInvoice.totals.subtotal | currency("$") }}
                   </v-col>
                   <v-col cols="6">
-                    <strong class="text-body-1 font-weight-bold black--text">{{
-                      translateDiscount(activeInvoice.discount.source)
-                    }}</strong>
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >{{
+                        translateDiscount(activeInvoice.discount.source)
+                      }}</strong
+                    >
                   </v-col>
                   <v-col cols="6" class="text-right">
                     {{ (activeInvoice.totals.discount * -1) | currency("$") }}
                   </v-col>
                   <v-col cols="6">
-                    <strong class="text-body-1 font-weight-bold black--text"
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
                       >Grand Total</strong
                     >
                   </v-col>
                   <v-col
                     cols="6"
-                    class="text-right font-weight-bold black--text"
+                    class="text-right font-weight-bold basic-text--text"
                   >
                     {{ activeInvoice.totals.total | currency("$") }}
                   </v-col>

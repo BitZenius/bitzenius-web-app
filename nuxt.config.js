@@ -40,7 +40,6 @@ export default {
     '~/plugins/vue2-filters',
     '~/plugins/clipboard',
     '~/plugins/mixin',
-    // '~/plugins/vuetify'
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,
@@ -125,6 +124,61 @@ export default {
     customVariables: ['~/assets/variables.scss'],
     treeShake: true,
     optionsPath: './vuetify.config.js',
+    theme: {
+      options: { customProperties: true },
+      dark: true,
+      themes: {
+        dark: {
+          customGreen: "#C3F239",
+          customGreen2: "#27d79e",
+          customPink: "#FE759F",
+          customYellow: "#FEE603",
+          primary: '#3394F8',
+          primary2: '#46A0F8',
+          danger: '#FF6469',
+          success: '#1AD598',
+          'success-light': "#d1f7ea",
+
+          basic: '#000000',
+          'basic-1': '#000000',
+          'basic-2': '#000000',
+          'basic-text': '#ffffff',
+
+          // BG
+          'off-white': '#1D1F2B',
+          'off-white-2': '#282B3D',
+          'off-white-3': '#212434',
+
+          // TEXT
+          'primary-text': "#ffffff"
+        },
+        light: {
+          customGreen: "#C3F239",
+          customGreen2: "#27d79e",
+          customPink: "#FE759F",
+          customYellow: "#FEE603",
+          primary: '#3394F8',
+          primary2: '#46A0F8',
+          danger: '#FF6469',
+          success: '#1AD598',
+          'success-light': "#d1f7ea",
+
+          basic: '#ffffff',
+          'basic-1': '#ffffff',
+          'basic-2': '#ffffff',
+          'basic-text': '#000000',
+
+          // BG
+          'off-white': '#f4f7fd',
+          'off-white-2': '#f4f7fd',
+          'off-white-3': '#ffffff',
+
+          // TEXT
+          'primary-text': "#ffffff"
+        }
+      }
+    },
+
 
   },
 

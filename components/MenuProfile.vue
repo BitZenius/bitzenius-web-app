@@ -22,10 +22,10 @@
     </v-progress-circular>
 
     <v-list-item-content>
-      <v-list-item-title class="black--text text-body-1 font-weight-bold">
+      <v-list-item-title class="basic-text--text text-body-1 font-weight-bold">
         {{ userData.displayName }}
       </v-list-item-title>
-      <v-list-item-subttitle class="black--text text-body-2">
+      <v-list-item-subttitle class="basic-text--text text-body-2">
         <strong class="primary--text font-weight-bold">{{ 64 }}%</strong>
         Profile completion
       </v-list-item-subttitle>

@@ -24,13 +24,13 @@
           </template>
 
           <p
-            class="font-weight-bold black--text text-h6 text-center mt-5"
+            class="font-weight-bold basic-text--text text-h6 text-center mt-5"
             style="width: 50%"
           >
             Start your first bot
           </p>
 
-          <p class="font-weight-bold black--text text-h6 text-center mt-5">
+          <p class="font-weight-bold basic-text--text text-h6 text-center mt-5">
             Lorem ipsum dolor sit amet, consetetur sadipscing elitr, sed diam
             nonumy eirmod tempor invidunt ut labore et dolore magna aliquyam
             erat, sed diam voluptua.

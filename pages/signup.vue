@@ -1,44 +1,42 @@
 <template>
-  <div class="app">
+  <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
       <v-col cols="12" md="5">
-        <v-row class="pa-8 black--text main-card" justify="start">
-          <v-col cols="12" style="max-width: 80%" class="mb-8">
+        <v-row class="pa-8 basic-text--text main-card" justify="start">
+          <v-col cols="12" style="max-width: 80%" class="mb-4">
             <div class="text-h4 font-weight-bold decorated-text">
               Create new account.
             </div>
           </v-col>
 
           <v-col cols="12">
-            <v-form ref="form" v-model="valid" lazy-validation>
+            <v-form ref="form" lazy-validation>
               <v-row>
                 <v-col cols="12">
                   <v-text-field
                     v-model="name"
                     :rules="nameRules"
+                    validate-on-blur
                     placeholder="Full name"
-                    hide-details
                     rounded
                     class="mb-2 custom-input py-2"
                     color="black"
+                    dense
+                    prepend-inner-icon="$vuetify.icons.UserIcon"
                   >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4">$vuetify.icons.UserIcon</v-icon>
-                    </template>
                   </v-text-field>
                   <v-text-field
                     v-model="email"
                     :rules="emailRules"
+                    validate-on-blur
                     placeholder="Email"
-                    hide-details
                     rounded
                     class="mb-2 custom-input py-2"
                     color="black"
+                    dense
+                    prepend-inner-icon="$vuetify.icons.MailIcon"
                   >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4">$vuetify.icons.MailIcon</v-icon>
-                    </template>
                   </v-text-field>
                   <v-text-field
                     v-model="password"
@@ -49,27 +47,51 @@
                     required
                     @click:append="show1 = !show1"
                     placeholder="Password"
-                    hide-details
+                    validate-on-blur
                     rounded
                     class="mb-2 custom-input py-2"
                     color="black"
+                    dense
+                    prepend-inner-icon="$vuetify.icons.LockIcon"
                   >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4">$vuetify.icons.LockIcon</v-icon>
-                    </template>
                   </v-text-field>
                   <v-text-field
                     v-model="referral"
                     required
                     placeholder="Referral code"
-                    hide-details
+                    rounded
+                    class="mb-2 custom-input py-2"
+                    color="black"
+                    dense
+                    prepend-inner-icon="$vuetify.icons.ReferralIcon"
+                  >
+                  </v-text-field>
+
+                  <span class="px-4 mt-3"
+                    >How did you hear about BitZenius?</span
+                  >
+                  <v-select
+                    v-model="hearAboutModel"
+                    :items="hearAboutItems"
+                    @change="onHearAboutSelected(hearAboutModel)"
+                    placeholder="Select one..."
+                    item-text="name"
+                    item-value="value"
+                    required
+                    solo
+                    flat
+                    rounded
+                  >
+                  </v-select>
+                  <v-text-field
+                    v-if="showHearAboutText"
+                    v-model="hearAbout"
+                    required
+                    placeholder="Ex: From a TV show"
                     rounded
                     class="mb-2 custom-input py-2"
                     color="black"
                   >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4">$vuetify.icons.ReferralIcon</v-icon>
-                    </template>
                   </v-text-field>
                   <v-row justify="center">
                     <v-col cols="11">
@@ -147,7 +169,7 @@
               </v-row>
             </v-alert>
           </v-col>
-          <v-col cols="12">
+          <v-col cols="12" v-if="false">
             <div class="font-weight-bold">
               By registering, you agree to the
               <a class="primary--text" @click="$router.push('/signin')"
@@ -226,6 +248,19 @@ export default {
     referral: "",
     isLoading: false,
     message: null,
+    showHearAboutText: false,
+    hearAbout: null,
+    hearAboutModel: null,
+    hearAboutItems: [
+      { name: "Google Ads", value: "google_ads" },
+      { name: "Google Search", value: "google_search" },
+      { name: "Article", value: "article" },
+      { name: "Instagram", value: "instagram" },
+      { name: "Twitter", value: "twitter" },
+      { name: "Youtube", value: "youtube" },
+      { name: "Friends", value: "friends" },
+      { name: "Others", value: "others" },
+    ],
   }),
   head: {
     title: "Signup",
@@ -234,6 +269,34 @@ export default {
     this.referral = this.$route.query.referral;
   },
   methods: {
+    onHearAboutSelected(value) {
+      switch (value) {
+        case "others":
+          this.hearAbout = "";
+          this.showHearAboutText = true;
+          break;
+        default:
+          this.hearAbout = value;
+          this.showHearAboutText = false;
+          break;
+      }
+    },
+    findHearAboutDesc(value) {
+      var findValue = this.hearAboutItems.find((e) => e.value === value);
+      var res = "";
+
+      if (!findValue) {
+        return null;
+      }
+
+      if (findValue.name == "Others") {
+        res = this.hearAbout;
+      } else {
+        res = findValue.name;
+      }
+
+      return res;
+    },
     validate() {
       this.$refs.form.validate();
 
@@ -249,15 +312,19 @@ export default {
     },
     signUp() {
       const valid = this.$refs.form.validate();
-      alert(valid);
-
       if (valid) {
+        var hearAboutDict = {
+          value: this.hearAboutModel,
+          description: this.findHearAboutDesc(this.hearAboutModel),
+        };
+
         this.$api
           .$post("/user/auth/signup", {
             name: this.name,
             email: this.email,
             password: this.password,
             referral: this.referral,
+            hearAbout: hearAboutDict,
           })
           .then((result) => {
             this.isLoading = true;
@@ -314,13 +381,24 @@ export default {
   position: relative;
   overflow-y: hidden;
 }
+
+.app.dark {
+  background: linear-gradient(90deg, #1d1f2b 45%, #212434 45%);
+  height: 100%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  overflow-y: hidden;
+}
+
 .decorated-text {
   position: relative;
 }
 .decorated-text::after {
   content: "";
   min-height: 8px;
-  min-width: 60px;
+  width: 60px;
   position: absolute;
   background: #c3f239;
   color: #c3f239;
@@ -360,15 +438,14 @@ export default {
   left: 2%;
   top: 5%;
 }
-.custom-input {
-}
 
-.custom-input.v-input .v-input__slot {
-  color: black !important;
+.custom-input > .v-input__control > .v-input__slot > .v-input__prepend-inner {
+  margin-right: 10px !important;
 }
-
 .main-card {
   margin-left: 20px;
   max-width: 90%;
 }
 </style>
+
+

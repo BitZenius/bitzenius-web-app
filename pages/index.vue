@@ -77,7 +77,6 @@
                 <h5 v-else class="text-center">
                   NO STATISTIC FOR THIS EXCHANGE ({{ exchange }})
                 </h5>
-
               </v-card>
             </v-col>
             <v-col cols="12" v-show="false">
@@ -114,6 +113,7 @@ export default {
       test5: false,
       test6: false,
       test7: false,
+      testText: false,
       // CHART
       title: "Dashboard",
       series: [
@@ -198,8 +198,6 @@ export default {
       isLoading: false,
       isLoadingProfit: false,
       isLoadingDeals: false,
-
-
     };
   },
   head() {

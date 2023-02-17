@@ -237,24 +237,28 @@
                 loading-text="Loading... Please wait"
               >
                 <template v-slot:header.pair="{ header }">
-                  <strong class="black--text text-body-1 font-weight-bold">{{
-                    header.text
-                  }}</strong>
+                  <strong
+                    class="basic-text--text text-body-1 font-weight-bold"
+                    >{{ header.text }}</strong
+                  >
                 </template>
                 <template v-slot:header.price="{ header }">
-                  <strong class="black--text text-body-1 font-weight-bold">{{
-                    header.text
-                  }}</strong>
+                  <strong
+                    class="basic-text--text text-body-1 font-weight-bold"
+                    >{{ header.text }}</strong
+                  >
                 </template>
                 <template v-slot:header.profit="{ header }">
-                  <strong class="black--text text-body-1 font-weight-bold">{{
-                    header.text
-                  }}</strong>
+                  <strong
+                    class="basic-text--text text-body-1 font-weight-bold"
+                    >{{ header.text }}</strong
+                  >
                 </template>
                 <template v-slot:header.status="{ header }">
-                  <strong class="black--text text-body-1 font-weight-bold">{{
-                    header.text
-                  }}</strong>
+                  <strong
+                    class="basic-text--text text-body-1 font-weight-bold"
+                    >{{ header.text }}</strong
+                  >
                 </template>
 
                 <!-- hide-default-footer disable-pagination -->

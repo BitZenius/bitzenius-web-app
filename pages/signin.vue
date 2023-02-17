@@ -13,7 +13,7 @@
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
       <v-col cols="12" md="5">
-        <v-row class="pa-8 black--text main-card" justify="start">
+        <v-row class="pa-8 basic-text--text main-card" justify="start">
           <v-col cols="12" style="max-width: 80%" class="mb-8">
             <div class="text-h4 font-weight-bold decorated-text">
               Sign in to your account.
@@ -41,22 +41,18 @@
               </v-row>
             </v-form>
             <v-form v-else ref="form" v-model="valid" lazy-validation>
-              <v-row class="black--text">
+              <v-row class="basic-text--text">
                 <v-col cols="12">
                   <v-text-field
                     v-model="email"
                     :rules="emailRules"
                     required
                     placeholder="Email..."
-                    hide-details=""
+                    dense
                     rounded
                     class="mb-2 custom-input py-2"
+                    prepend-inner-icon="$vuetify.icons.MailIcon"
                   >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >$vuetify.icons.MailIcon</v-icon
-                      >
-                    </template>
                   </v-text-field>
 
                   <v-text-field
@@ -65,17 +61,13 @@
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     :rules="passwordRules"
-                    hide-details=""
+                    dense
                     required
                     @click:append="show1 = !show1"
                     rounded
                     class="mb-2 custom-input py-2"
+                    prepend-inner-icon="$vuetify.icons.LockIcon"
                   >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >$vuetify.icons.LockIcon</v-icon
-                      >
-                    </template>
                   </v-text-field>
                   <p class="mt-5 mb-10">
                     <router-link
@@ -104,7 +96,7 @@
                     style="width: 100%"
                     color="customGreen"
                     x-large
-                    class="text-capitalize black--text"
+                    class="text-capitalize basic-text--text"
                     depressed
                     @click.stop="signIn"
                   >
@@ -433,16 +425,11 @@ export default {
   left: 2%;
   top: 5%;
 }
-.custom-input {
+.custom-input > .v-input__control > .v-input__slot > .v-input__prepend-inner {
+  margin-right: 10px !important;
 }
-
-.custom-input.v-input .v-input__slot {
-}
-
 .main-card {
   margin-left: 20px;
   max-width: 90%;
 }
-
-
 </style>

@@ -23,7 +23,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title
-                class="text-body-2 font-weight-bold black--text"
+                class="text-body-2 font-weight-bold basic-text--text"
               >
                 Invoice ID
               </v-list-item-title>
@@ -39,7 +39,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title
-                class="text-body-2 font-weight-bold black--text"
+                class="text-body-2 font-weight-bold basic-text--text"
               >
                 Date
               </v-list-item-title>
@@ -59,7 +59,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title
-                class="text-body-2 font-weight-bold black--text"
+                class="text-body-2 font-weight-bold basic-text--text"
               >
                 Status
               </v-list-item-title>
@@ -81,7 +81,7 @@
           <v-list-item two-line>
             <v-list-item-content>
               <v-list-item-title
-                class="text-body-2 font-weight-bold black--text"
+                class="text-body-2 font-weight-bold basic-text--text"
               >
                 Payment Method
               </v-list-item-title>
