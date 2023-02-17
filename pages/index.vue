@@ -62,7 +62,7 @@
             <v-col cols="12">
               <v-card class="pa-2" flat>
                 <v-row>
-                  <v-col cols="3" class="d-flex justify-center align-center">
+                  <v-col cols="3" class="d-flex justify-start align-center">
                     <v-btn-toggle rounded v-model="style" color="primary" group>
                       <v-btn value="daily" @click="onStyleSelected(style)">
                         Daily
