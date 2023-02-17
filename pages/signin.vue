@@ -139,7 +139,7 @@
               :color="message.color"
             >
               <v-row>
-                <v-col class="grow">
+                <v-col class="grow d-flex justify-center align-center white--text">
                   {{ message.text }}
                 </v-col>
                 <v-col class="shrink">
@@ -282,7 +282,7 @@ export default {
             return this.$router.go("/verification");
           } else {
             this.message = {
-              text: "Invalid credentials. Please try again",
+              text: err.response.data ? err.response.data : "Invalid credentials. Please try again",
               color: "error",
             };
           }
@@ -330,7 +330,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
           this.message = {
             text: "Invalid credentials. Please try again",
             color: "error",

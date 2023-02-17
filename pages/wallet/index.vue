@@ -1,5 +1,111 @@
 <template>
   <v-row class="pa-5">
+    <v-dialog
+      v-model="showDetailDialog"
+      width="auto"
+    >
+      <template v-slot:activator="{ props }">
+        <v-btn
+          color="primary"
+          v-bind="props"
+        >
+          Open Dialog
+        </v-btn>
+      </template>
+
+      <v-card>
+        <v-data-table
+            :loading="isLoading"
+            :headers="tradingHeadersDetail"
+            :items="tradingItemsDetail"
+            class="elevation-2 my-2"
+          >
+            <template v-slot:header.pair="{ header }">
+              <strong class="black--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+            <template v-slot:header.date="{ header }">
+              <strong class="black--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+            <template v-slot:header.price="{ header }">
+              <strong class="black--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+            <template v-slot:header.qty="{ header }">
+              <strong class="black--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+
+            <template v-slot:item.pair="{ item }">
+              <v-row>
+                <!-- <code>{{item.pair_from}}</code>
+                                  <code>{{item.pair_to}}</code> -->
+                <v-col cols="12" class="d-flex align-center justify-start">
+                  <v-list-item-avatar class="ma-0">
+                    <v-img
+                      style="width: 28px !important"
+                      max-width="28"
+                      max-height="28"
+                      :alt="item.pair"
+                      :src="getImgUrl(item.pair_from)"
+                    ></v-img>
+                  </v-list-item-avatar>
+
+                  <div class="d-flex flex-column ml-3">
+                    <div class="d-flex flex-column">
+                      <span class="text-subtitle-2 font-weight-bold">
+                        {{ item.pair_from }} /
+                        {{ item.pair_to }}
+                      </span>
+                      <small class="text-body-2">{{ item._id }}</small>
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+            </template>
+            <template v-slot:item.date="{ item }">
+              <span class="text-subtitle-2 font-weight-bold">
+                {{ $moment(item.executed_at).format("DD/MM/YYYY HH:mm") }}
+              </span>
+            </template>
+            <template v-slot:item.price="{ item }">
+              <v-chip
+                v-if="parseFloat(item.pnl) > 0"
+                small
+                class="success--text font-weight-bold"
+                color="success lighten-4"
+                label
+              >
+                <span
+                  >${{ item._profit.first }}.{{ item._profit.second }}</span
+                >
+              </v-chip>
+              <v-chip
+                v-else
+                small
+                class="font-weight-bold"
+                color="danger"
+                label
+              >
+                <span
+                  >${{ item._profit.first }}.{{ item._profit.second }}</span
+                >
+              </v-chip>
+            </template>
+            <template v-slot:item.qty="{ item }">
+              <span class="text-subtitle-2 font-weight-bold">{{
+                item.amount_coin_filled.toFixed(4)
+              }}</span>
+            </template>
+          </v-data-table>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -30,6 +136,7 @@
               disable-sort
               class="text-body-2"
               loading-text="Loading... Please wait"
+              @click:row="onDetailClicked"
             >
               <template v-slot:header.date="{ header }">
                 <strong class="basic-text--text text-body-1 font-weight-bold">{{
@@ -130,6 +237,34 @@ export default {
   layout: "account",
   data() {
     return {
+      // Detail Dialog
+      showDetailDialog:false,
+      tradingHeadersDetail: [
+        {
+          text: "Pair",
+          align: "start",
+          value: "pair",
+        },
+        {
+          text: "Date",
+          align: "start",
+          value: "date",
+        },
+        {
+          text: "Profit",
+          align: "center",
+          value: "price",
+          cellClass: "font-weight-bold",
+        },
+        {
+          text: "Qty",
+          align: "center",
+          value: "qty",
+          cellClass: "font-weight-bold",
+        },
+      ],
+      tradingItemsDetail:[],
+      // End Of Detail Dialog
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in",
       title: "Wallet Overview",
       isLoading: false,
@@ -249,6 +384,7 @@ export default {
               description: result.description,
               amount: result.debt || result.credit,
               debt: result.debt,
+              reference:result.reference,
               credit: result.credit,
               type: result.type.replace("_", " "),
               status: result.status,
@@ -265,6 +401,52 @@ export default {
         .finally(() => {
           this.isLoading = false;
         });
+    },
+    // Function
+    getImgUrl(val) {
+      try {
+        let url = require("@/static/token_logo/" + val.toUpperCase() + ".png");
+        return "/token_logo/" + val.toUpperCase() + ".png";
+      } catch (err) {
+        console.log("img not exist", val);
+        return "/token_logo/default.png";
+      }
+    },
+
+    // Trigger
+    async onDetailClicked(val){
+      try{
+        let res = await this.$api.$get('/user/balance/detail',{
+          params:{
+            order_id:val.reference.id
+          }
+        });
+
+        let tempArray = [];
+        // this.tradingItemsDetail = row.data;
+        res.data.forEach((val) => {
+          // PROFIT
+          val._profit = {};
+          let string = String(val.pnl.toFixed(4)).split(".");
+          val._profit.first = val.pnl < 0 ? string[0] : parseFloat(string[0]);
+          val._profit.second = string[1];
+
+          // SYMBOL TO PAIR
+          val.pair_from = val.symbol.substr(0, val.symbol.length - 4);
+          val.pair_to = val.symbol.substr(-4);
+
+          tempArray.push(val);
+        });
+        this.tradingItemsDetail = tempArray;
+        this.showDetailDialog = true;
+      }catch(error){
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: error.message,
+          color: "danger",
+        });
+      }
+
     },
     closeModal() {
       alert("closeModal");

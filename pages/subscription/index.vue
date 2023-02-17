@@ -547,6 +547,7 @@ export default {
     },
   },
   mounted() {
+    this._fetchUserSubscription();
     this.$store.commit("setTitle", this.title);
     this.initialize();
   },
@@ -554,6 +555,33 @@ export default {
     handleAnimation: function (anim) {
       this.anim = anim;
     },
+    // FETCHING API
+    async _fetchUserSubscription(){
+      console.log(this.user);
+      try{
+        let res = await this.$api.$get('/user/subscription/user-trial',{
+          params:{
+            uid:this.user.uid
+            // uid:'xxx'
+          }
+        })
+        if(res.data){
+          console.log(res);
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: "User has subscription, check console",
+            color: "success",
+          });
+        }
+      }catch(error){
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "User doesn't have subscription",
+          color: "danger",
+        });
+      }
+  },
+    // END OF FETCHING API
     initialize() {
       this.isLoading = true;
       this.$api

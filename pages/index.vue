@@ -61,9 +61,34 @@
           <v-row>
             <v-col cols="12">
               <v-card class="pa-2" flat>
-                <v-sheet class="text-h5 font-weight-bold ma-4">
-                  Statistics
-                </v-sheet>
+                <v-row>
+                  <v-col cols="3" class="d-flex justify-center align-center">
+                    <v-btn-toggle rounded v-model="style" color="primary" group>
+                      <v-btn value="daily" @click="onStyleSelected(style)">
+                        Daily
+                      </v-btn>
+                      <v-btn value="monthly" @click="onStyleSelected(style)">
+                        Monthly
+                      </v-btn>
+                    </v-btn-toggle>
+                  </v-col>
+                  <v-col cols="3" class="d-flex justify-center align-center">
+                    <v-select
+                      variant="underlined"
+                      v-model="styleValue"
+                      item-value="value"
+                      item-text="name"
+                      :items="style=='daily' ? styleDailyList : styleMonthlyList"
+                      :placeholder="style=='daily' ? 'Select Month' : 'Select Year'"
+                      rounded
+                    ></v-select>
+                  </v-col>
+                  <v-col cols="6" class="d-flex justify-end">
+                    <v-sheet class="text-h5 font-weight-bold ma-4">
+                      Statistic
+                    </v-sheet>
+                  </v-col>
+                </v-row>
                 <apexchart
                   v-if="
                     showChart && exchange && chartData.series[0].data.length > 0
@@ -106,6 +131,30 @@ export default {
   layout: "account",
   data() {
     return {
+      style: 'daily',
+      styleValue:null,
+      startDate:null,
+      endDate:null,
+      styleDailyList:[
+        {value:0, name:"January"},
+        {value:1, name:"February"},
+        {value:2, name:"March"},
+        {value:3, name:"April"},
+        {value:4, name:"May"},
+        {value:5, name:"June"},
+        {value:6, name:"July"},
+        {value:7, name:"August"},
+        {value:8, name:"September"},
+        {value:9, name:"October"},
+        {value:10, name:"November"},
+        {value:11, name:"December"},
+      ],
+      styleMonthlyList:[
+        {value:2023, name:"2023"},
+        {value:2024, name:"2024"},
+        {value:2025, name:"2025"},
+        {value:2026, name:"2026"},
+      ],
       test1: false,
       test2: false,
       test3: false,
@@ -253,15 +302,23 @@ export default {
       this.$store.commit("setIsLoading", false);
     },
     async _fetchChart() {
+      console.log('fetchChart');
+      console.log(this.startDate);
+      console.log(this.endDate);
+      this.showChart = false;
       this.$api
         .$get("/user/chart", {
           params: {
             exchange: this.exchange,
+            startdate:this.startDate,
+            enddate:this.endDate,
+            style:this.style
           },
         })
         .then((res) => {
           this.showChart = true;
           this.$store.commit("setIsLoading", false);
+          console.log('resChart', res);
           if (res.success) {
             if (res.series.length <= 0) {
               // IS EMPTY
@@ -280,6 +337,7 @@ export default {
               });
               this.chartData.series[0].data = res.series;
             }
+            this.$forceUpdate();
           } else {
             this.$store.commit("setShowSnackbar", {
               show: true,
@@ -309,6 +367,9 @@ export default {
     },
 
     // TRIGGER
+    onStyleSelected(style){
+      this.style = style;
+    },
     onExchangeChanged() {
       this.$store.commit("setIsLoading", true);
       this._fetchChart();
@@ -316,12 +377,23 @@ export default {
       this._fetchProfit();
       this._fetchUserBalance();
     },
+
+    setDefaultChart(){
+      let current, y, m, d, start_date, end_date
+      current = new Date();
+      y = current.getFullYear();
+      m = current.getMonth();
+      d = current.getDate();
+      this.style = 'daily';
+      this.styleValue = m;
+    }
   },
   beforeMount() {
     this.$store.commit("setIsLoading", true);
   },
   async mounted() {
     this.$store.commit("setTitle", this.title);
+    this.setDefaultChart();
     this._fetchChart();
     this._fetchDailyDeals();
     this._fetchUserBalance();
@@ -338,6 +410,22 @@ export default {
       this._fetchUserBalance();
       this._fetchProfit();
     },
+    styleValue(nv, ov){
+      let current, y, m, d
+      current = new Date();
+      y = current.getFullYear();
+      m = current.getMonth();
+      d = current.getDate();
+
+      if(this.style == 'daily'){
+        this.startDate = this.$moment(new Date(y, this.styleValue, 1)).valueOf();
+        this.endDate = this.$moment(new Date(y, this.styleValue+1, 1)).valueOf();
+      }else{
+        this.startDate = this.$moment(new Date(this.styleValue, 0, 1)).valueOf();
+        this.endDate = this.$moment(new Date(this.styleValue + 1, 0, 1)).valueOf();
+      }
+      this._fetchChart();
+    }
   },
 };
 </script>
