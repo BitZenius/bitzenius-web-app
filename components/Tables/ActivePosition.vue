@@ -397,8 +397,8 @@
                   <v-chip
                     v-if="item.status == 'ACTIVE'"
                     small
-                    class="success--text font-weight-bold"
-                    color="success-light"
+                    class="white--text font-weight-bold"
+                    color="success"
                     label
                   >
                     Active

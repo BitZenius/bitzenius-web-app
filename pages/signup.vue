@@ -200,7 +200,7 @@
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
       class="ornament-3"
-      :src="require('assets/images/bitzy trading.png')"
+      :src="require('assets/images/bitzy loginpage.png')"
       contain
     ></v-img>
     <div class="text-subtitle white--text footer d-flex flex-column">
@@ -421,11 +421,11 @@ export default {
 }
 .ornament-3 {
   position: absolute;
-  width: 20%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
-  top: 50%;
-  left: 40%;
+  top: 45%;
+  left: 32%;
   transform: translate(-50%, -50%);
 }
 .footer {

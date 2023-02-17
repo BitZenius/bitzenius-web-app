@@ -139,7 +139,9 @@
               :color="message.color"
             >
               <v-row>
-                <v-col class="grow d-flex justify-center align-center white--text">
+                <v-col
+                  class="grow d-flex justify-center align-center white--text"
+                >
                   {{ message.text }}
                 </v-col>
                 <v-col class="shrink">
@@ -168,9 +170,8 @@
     <v-img class="ornament-1" src="/images/signin-vector.svg"></v-img>
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
-      width="650"
       class="ornament-3"
-      :src="require('assets/images/bitzy trading.png')"
+      :src="require('assets/images/bitzy loginpage.png')"
       contain
     ></v-img>
     <div class="text-subtitle white--text footer d-flex flex-column">
@@ -282,7 +283,9 @@ export default {
             return this.$router.go("/verification");
           } else {
             this.message = {
-              text: err.response.data ? err.response.data : "Invalid credentials. Please try again",
+              text: err.response.data
+                ? err.response.data
+                : "Invalid credentials. Please try again",
               color: "error",
             };
           }
@@ -408,11 +411,11 @@ export default {
 }
 .ornament-3 {
   position: absolute;
-  width: 20%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
-  top: 50%;
-  left: 40%;
+  top: 45%;
+  left: 32%;
   transform: translate(-50%, -50%);
 }
 .footer {
