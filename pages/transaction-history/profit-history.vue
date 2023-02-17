@@ -438,6 +438,5 @@ export default {
 </script>
 <style>
 .custom-input {
-  background-color: #f4f7fd;
 }
 </style>

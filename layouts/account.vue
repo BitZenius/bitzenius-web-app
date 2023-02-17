@@ -25,30 +25,30 @@
             />
           </v-list-item-content>
         </v-list-item>
-        <menu-profile :user="user"></menu-profile>
+        <menu-profile :userData="user"></menu-profile>
         <base-menu-item
           :to="'/'"
           :icon="true"
           :avatar="`$vuetify.icons.HomeIcon`"
-          :title="`Dashboard`"
+          :cardtitle="`Dashboard`"
         ></base-menu-item>
         <base-menu-item
           :to="'/exchanges'"
           :icon="true"
           :avatar="`$vuetify.icons.ExchangeIcon`"
-          :title="`My Exchanges`"
+          :cardtitle="`My Exchanges`"
         ></base-menu-item>
         <base-menu-item
           :to="'/bots'"
           :icon="true"
           :avatar="`$vuetify.icons.BotIcon`"
-          :title="`Automated Bots`"
+          :cardtitle="`Automated Bots`"
         ></base-menu-item>
         <!-- <base-menu-item
           :to="'/transaction-history'"
           :icon="true"
           :avatar="`$vuetify.icons.DailyProfitIcon`"
-          :title="`Daily Profit`"
+          :cardtitle="`Daily Profit`"
         ></base-menu-item> -->
 
         <v-divider class="my-2" />
@@ -56,14 +56,14 @@
         <base-menu-item-group
           :icon="true"
           :avatar="`$vuetify.icons.AdvancedBotIcon`"
-          :title="`Advanced Bots`"
+          :cardtitle="`Advanced Bots`"
         >
           <base-menu-item
             :to="'/grid'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
-            :title="`Grid`"
+            :cardtitle="`Grid`"
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
@@ -71,7 +71,7 @@
             :icon="true"
             :avatar="`$vuetify.icons.CoinIcon`"
             :disabled="true"
-            :title="`DCA`"
+            :cardtitle="`DCA`"
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
@@ -79,7 +79,7 @@
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
-            :title="`Smart Trade`"
+            :cardtitle="`Smart Trade`"
             class="ml-2"
           ></base-menu-item>
         </base-menu-item-group>
@@ -90,14 +90,14 @@
           :to="'/wallet'"
           :icon="true"
           :avatar="`$vuetify.icons.WalletIcon`"
-          :title="`Wallet`"
+          :cardtitle="`Wallet`"
         ></base-menu-item>
 
         <base-menu-item
           :to="'/subscription'"
           :icon="true"
           :avatar="`$vuetify.icons.SubscriptionIcon`"
-          :title="`Subscription`"
+          :cardtitle="`Subscription`"
         ></base-menu-item>
 
         <base-menu-item
@@ -105,14 +105,14 @@
           :to="'/revamp_'"
           :icon="true"
           :avatar="`$vuetify.icons.TutorialIcon`"
-          :title="`Tutorial`"
+          :cardtitle="`Tutorial`"
         ></base-menu-item>
 
         <base-menu-item
           :to="'/referral'"
           :icon="true"
           :avatar="`$vuetify.icons.ReferralIcon`"
-          :title="`Referral`"
+          :cardtitle="`Referral`"
         ></base-menu-item>
 
         <base-menu-item
@@ -120,23 +120,29 @@
           :to="'/wallet'"
           :icon="true"
           :avatar="`$vuetify.icons.WalletIcon`"
-          :title="`Wallet`"
+          :cardtitle="`Wallet`"
         ></base-menu-item>
 
         <base-menu-item
           :to="'/settings'"
           :icon="true"
           :avatar="`$vuetify.icons.SettingsIcon`"
-          :title="`Settings`"
+          :cardtitle="`Settings`"
         ></base-menu-item>
 
         <base-menu-item
           @click.native="logout"
           :icon="true"
           :avatar="`$vuetify.icons.LogoutIcon`"
-          :title="`Logout`"
+          :cardtitle="`Logout`"
         ></base-menu-item>
       </v-list>
+
+      <v-row justify="center" class="my-0 py-0">
+        <v-col cols="12" class="d-flex justify-center my-0 py-0">
+          <ThemeToggle></ThemeToggle>
+        </v-col>
+      </v-row>
       <v-icon
         v-show="drawer"
         class="mr-3 primary--text menu-arrow"
@@ -145,7 +151,7 @@
       >
     </v-navigation-drawer>
     <v-app-bar
-      class="custom-app-bar"
+      :class="$vuetify.theme.dark ? 'custom-app-bar-dark' : 'custom-app-bar'"
       :style="`top:${topMargin}px`"
       fixed
       flat
@@ -154,7 +160,6 @@
       <!-- <v-app-bar-nav-icon @click.stop="drawer = !drawer" /> -->
       <!-- <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" /> -->
       <v-spacer />
-      <ThemeToggle />
       <v-btn v-show="false" icon class="mr-2">
         <v-icon>mdi-translate</v-icon>
       </v-btn>
@@ -208,13 +213,17 @@
       >
     </v-slide-x-transition>
 
-    <v-main class="main-container">
+    <v-main class="main-container off-white">
       <v-container
-        class="main-container"
+        class="main-container off-white"
         :style="`padding-top:${topMargin}px`"
         fluid
       >
         <nuxt :class="$vuetify.breakpoint.mobile ? 'pb-5' : 'px-3'" />
+
+        <!-- ORNAMENTS -->
+        <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
+        <!-- ORNAMENTS END -->
       </v-container>
     </v-main>
     <v-bottom-navigation
@@ -242,7 +251,7 @@
         <v-icon>mdi-table-large</v-icon>
       </v-btn>
     </v-bottom-navigation>
-    <v-footer v-else>
+    <v-footer v-else fixed>
       <v-row justify="space-between">
         <v-col cols="2"></v-col>
         <v-col
@@ -253,8 +262,12 @@
         </v-col>
         <v-col class="d-flex align-center justify-end" cols="6">
           Download our app
-          <v-btn color="black" class="white--text mx-2"> App Store </v-btn>
-          <v-btn color="black" class="white--text "> Google Play </v-btn>
+          <v-btn plain :ripple="false" class="white--text mx-3 pa-0">
+            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
+          </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
+          </v-btn>
         </v-col>
       </v-row>
     </v-footer>
@@ -460,8 +473,8 @@ export default {
 
 <style scoped>
 .main-container {
-  background: #f4f7fd !important;
   height: 100%;
+  min-height: 120vh;
 }
 .main-nav {
   overflow: unset !important;
@@ -486,6 +499,13 @@ export default {
   transform: translate(-20%, -50%);
 }
 
+.custom-app-bar-dark {
+  background: linear-gradient(180deg, #212434 0%, #212434 100%) !important;
+  opacity: 1;
+  backdrop-filter: blur(30px);
+  -webkit-backdrop-filter: blur(30px);
+}
+
 .custom-app-bar {
   background: linear-gradient(
     180deg,
@@ -495,5 +515,13 @@ export default {
   opacity: 1;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+}
+
+.ornament-2 {
+  position: absolute;
+  width: 12%;
+  right: 0%;
+  bottom: 0%;
+  display: none;
 }
 </style>

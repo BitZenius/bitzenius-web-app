@@ -8,21 +8,29 @@
     <v-btn class="mr-2 mb-2" @click="test3 = true"
       >START YOUR FIRST BOT MODAL</v-btn
     >
-    <v-btn class="mr-2 mb-2" @click="test4 = true"
+    <!-- <v-btn class="mr-2 mb-2" @click="test4 = true"
       >VERIFY YOUR EMAIL ADDRESS MODAL</v-btn
     >
     <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
-    <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn>
+    <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn> -->
     <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
 
-    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="650">
+    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
       <ModalsFreeTrial @close-modal="test1 = false"></ModalsFreeTrial>
     </BaseModal>
 
-    <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="450">
+    <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="'450'">
       <ModalsBotSetupFinished
         @close-modal="test2 = false"
       ></ModalsBotSetupFinished>
+    </BaseModal>
+
+    <BaseModal @close="test3 = false" :parentModel="test3" :maxWidth="'450'">
+      <ModalsBotSetupNew @close-modal="test3 = false"></ModalsBotSetupNew>
+    </BaseModal>
+
+    <BaseModal @close="test7 = false" :parentModel="test7" :maxWidth="'450'">
+      <ModalsSuccess @close-modal="test7 = false"></ModalsSuccess>
     </BaseModal>
     <!-- TEST -->
     <v-col cols="12">
@@ -61,13 +69,15 @@
                     showChart && exchange && chartData.series[0].data.length > 0
                   "
                   height="300"
-                  type="bar"
+                  type="area"
                   :options="chartData.options"
                   :series="chartData.series"
                 ></apexchart>
+
                 <h5 v-else class="text-center">
                   NO STATISTIC FOR THIS EXCHANGE ({{ exchange }})
                 </h5>
+
               </v-card>
             </v-col>
             <v-col cols="12" v-show="false">
@@ -142,10 +152,10 @@ export default {
       ],
       chartData: {
         options: {
-          colors: ["#F44336", "#E91E63", "#9C27B0"],
+          // colors: ["#F44336", "#E91E63", "#9C27B0"],
           chart: {
-            id: "vuechart-example",
-            background: "0",
+            height: 280,
+            type: "area",
           },
           dataLabels: {
             enabled: true,
@@ -171,10 +181,10 @@ export default {
           xaxis: {
             categories: [],
           },
-          theme: {
-            mode: this.$store.getters.theme,
-          },
-          colors: this.$store.getters.theme == "dark" ? "#3394F8" : "#3394F8",
+          // theme: {
+          //   mode: this.$store.getters.theme,
+          // },
+          // colors: this.$store.getters.theme == "dark" ? "#3394F8" : "#3394F8",
         },
         series: [
           {
@@ -188,6 +198,8 @@ export default {
       isLoading: false,
       isLoadingProfit: false,
       isLoadingDeals: false,
+
+
     };
   },
   head() {

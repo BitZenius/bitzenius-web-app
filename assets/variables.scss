@@ -2,7 +2,11 @@
 :root {
   --primary: #3394F8;
   --primary-grey: #F4F7FD;
+  --text: #000000;
 }
+
+
+
 
 /* width */
 ::-webkit-scrollbar {
@@ -43,11 +47,11 @@ $shadow-key-penumbra-opacity: rgba(#222222, 0.07);
 $shadow-key-ambient-opacity: rgba(#222222, 0.06);
 $navigation-drawer-border-width: 0;
 $material-dark: (
-  app-bar: #222222,
-  navigation-drawer: #222222,
-  bottom-navigation: #222222,
+  app-bar: #212434,
+  navigation-drawer: #212434,
+  bottom-navigation: #212434,
   background: #222222,
-  cards: #2B2B2B
+  cards: #212434
 );
 
 $material-light: (
@@ -68,6 +72,5 @@ $material-light: (
 
 .custom-input {
   margin-top: 0px !important;
-  background-color: #f4f7fd !important;
   padding: 0px !important;
 }

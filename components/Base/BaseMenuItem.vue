@@ -15,7 +15,7 @@
     </v-list-item-action>
     <v-list-item-content>
       <v-list-item-title class="black--text text-body-2">{{
-        title
+        cardtitle
       }}</v-list-item-title>
     </v-list-item-content>
   </v-list-item>
@@ -43,7 +43,7 @@ export default {
         return "mdi-apps";
       },
     },
-    title: {
+    cardtitle: {
       type: String,
       default: () => {
         return "Dashboard";

@@ -24,9 +24,7 @@
                     color="black"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
+                      <v-icon class="mr-4">$vuetify.icons.UserIcon</v-icon>
                     </template>
                   </v-text-field>
                   <v-text-field
@@ -39,9 +37,7 @@
                     color="black"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
+                      <v-icon class="mr-4">$vuetify.icons.MailIcon</v-icon>
                     </template>
                   </v-text-field>
                   <v-text-field
@@ -59,9 +55,7 @@
                     color="black"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
+                      <v-icon class="mr-4">$vuetify.icons.LockIcon</v-icon>
                     </template>
                   </v-text-field>
                   <v-text-field
@@ -74,25 +68,28 @@
                     color="black"
                   >
                     <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 black--text"
-                        >mdi-arrow-up-circle</v-icon
-                      >
+                      <v-icon class="mr-4">$vuetify.icons.ReferralIcon</v-icon>
                     </template>
                   </v-text-field>
-                  <v-checkbox
-                    v-model="checkbox"
-                    :rules="[(v) => !!v || 'You must agree to continue!']"
-                    required
-                  >
-                    <template v-slot:label>
-                      <span
-                        >By checking the checkbox you're agree on our policy
-                        <a class="customGreen--text" href="#"
-                          >read more about the ToS</a
-                        ></span
+                  <v-row justify="center">
+                    <v-col cols="11">
+                      <v-checkbox
+                        v-model="checkbox"
+                        :rules="[(v) => !!v || 'You must agree to continue!']"
+                        required
                       >
-                    </template>
-                  </v-checkbox>
+                        <template v-slot:label>
+                          <span class="text-body-1"
+                            >By checking the checkbox you're agree on our policy
+                            <a class="customGreen--text" href="#"
+                              >read more about the ToS</a
+                            ></span
+                          >
+                        </template>
+                      </v-checkbox>
+                    </v-col>
+                  </v-row>
+
                   <base-button-animated
                     :disabled="!checkbox"
                     style="width: 100%"
@@ -184,7 +181,18 @@
       :src="require('assets/images/bitzy trading.png')"
       contain
     ></v-img>
-    <div class="text-subtitle white--text footer">
+    <div class="text-subtitle white--text footer d-flex flex-column">
+      <div>
+        Download our app
+        <div class="my-5">
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
+          </v-btn>
+          <v-btn plain :ripple="false" class="white--text pa-0">
+            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
+          </v-btn>
+        </div>
+      </div>
       ©2023 - BitZenius. All rights reserved.
     </div>
     <!-- ORNAMENTS END -->
@@ -353,7 +361,6 @@ export default {
   top: 5%;
 }
 .custom-input {
-  background-color: #f4f7fd;
 }
 
 .custom-input.v-input .v-input__slot {

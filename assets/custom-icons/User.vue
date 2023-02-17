@@ -1,0 +1,27 @@
+<template>
+  <svg
+    id="user"
+    xmlns="http://www.w3.org/2000/svg"
+    width="24"
+    height="24"
+    viewBox="0 0 24 24"
+  >
+    <g id="user-2" data-name="user" transform="translate(5 3)">
+      <path
+        id="Ellipse_110"
+        data-name="Ellipse 110"
+        d="M8,4A4,4,0,1,1,4,0,4,4,0,0,1,8,4Z"
+        transform="translate(3)"
+        fill="currentColor"
+      />
+      <path
+        id="Ellipse_255"
+        data-name="Ellipse 255"
+        d="M14,4c0,2.209-3.134,4-7,4S0,6.209,0,4,3.134,0,7,0,14,1.791,14,4Z"
+        transform="translate(0 10)"
+        fill="currentColor"
+        opacity="0.4"
+      />
+    </g>
+  </svg>
+</template>

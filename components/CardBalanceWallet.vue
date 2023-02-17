@@ -1,32 +1,233 @@
 <template>
-  <v-card
-    flat
-    class="no-padding pa-2 custom-card d-flex align-center"
-    style="height: 100%"
-  >
-    <v-list-item two-line>
-      <v-list-item-avatar size="40" color="#F4F7FD">
-        <v-img
-          max-width="25px"
-          max-height="25px"
-          :src="require('~/assets/images/wallet-icon.svg')"
-          position="center"
-        ></v-img>
-      </v-list-item-avatar>
-      <v-list-item-content>
-        <v-list-item-subtitle
-          class="white--text font-weight-bold text-body-1 mb-1"
-        >
-          Credit Balance
-        </v-list-item-subtitle>
-        <v-list-item-title>
-          <span class="text-h5 font-weight-black white--text text--lighten-2">
-            <v-skeleton-loader v-if="isLoading" loading type="heading" />
-            <div v-else>{{ balance | currency("$", 2) }}</div>
-          </span>
-        </v-list-item-title>
-      </v-list-item-content>
-    </v-list-item>
+  <v-card flat class="no-padding">
+    <v-row no-gutters>
+      <v-col cols="12" class="pa-0">
+        <v-card class="pa-2 custom-card" flat>
+          <v-list-item two-line>
+            <v-list-item-avatar size="40" color="off-white-2">
+              <v-img
+                max-width="25px"
+                max-height="25px"
+                :src="require('~/assets/images/wallet-icon.svg')"
+                position="center"
+              ></v-img>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-subtitle
+                class="white--text font-weight-bold text-body-1 mb-1"
+              >
+                Credit Balance
+              </v-list-item-subtitle>
+              <v-list-item-title>
+                <span
+                  class="text-h5 font-weight-black white--text text--lighten-2"
+                >
+                  <v-skeleton-loader v-if="isLoading" loading type="heading" />
+                  <div v-else>{{ balance | currency("$", 2) }}</div>
+                </span>
+              </v-list-item-title>
+            </v-list-item-content>
+          </v-list-item>
+        </v-card>
+      </v-col>
+      <v-col cols="12">
+        <v-card flat rounded class="pa-4">
+          <v-row align="center" justify="center">
+            <v-col cols="12" class="d-flex justify-center">
+              <v-btn
+                @click.native="actionMode = 'Deposit'"
+                class="my-2"
+                rounded
+                depressed
+                :color="actionMode == 'Deposit' ? 'primary--text' : '#F4F7FD'"
+              >
+                Deposit
+              </v-btn>
+              <v-btn
+                @click.native="actionMode = 'Withdraw'"
+                class="my-2"
+                rounded
+                depressed
+                :color="actionMode == 'Withdraw' ? 'primary--text' : '#F4F7FD'"
+              >
+                Withdraw
+              </v-btn>
+            </v-col>
+            <v-col cols="12">
+              <v-row align="center" justify="start">
+                <v-col cols="12" v-if="actionMode == 'Deposit'">
+                  <v-btn
+                    class="text-capitalize"
+                    rounded
+                    color="primary"
+                    style="width: 95%"
+                    depressed
+                    @click="showDeposit"
+                    block
+                  >
+                    Deposit
+                  </v-btn></v-col
+                >
+                <v-col v-else cols="12">
+                  <div class="mb-2 font-weight-bold">Amount</div>
+
+                  <v-text-field
+                    v-model="withdrawAmount"
+                    required
+                    placeholder="Amount"
+                    hide-details=""
+                    rounded
+                    class="my-2 custom-input text-body-1"
+                  >
+                  </v-text-field>
+
+                  <v-btn
+                    rounded
+                    class="text-capitalize"
+                    color="primary"
+                    style="width: 95%"
+                    depressed
+                    @click="showWithdraw"
+                    block
+                  >
+                    Withdraw
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+        <v-card v-if="false" class="py-10" flat>
+          <v-row align="center" justify="center">
+            <v-col cols="12" md="12" class="d-flex justify-center">
+              <v-btn
+                class="mx-1 text-capitalize d-flex"
+                rounded
+                color="primary"
+                depressed
+                @click="showDeposit"
+              >
+                Deposit
+              </v-btn>
+              <v-btn
+                rounded
+                class="text-capitalize"
+                color="primary"
+                depressed
+                disabled
+                @click="showWithdraw"
+              >
+                Withdraw
+              </v-btn>
+            </v-col>
+          </v-row>
+          <v-dialog
+            v-model="depositDialog"
+            max-width="900"
+            :fullscreen="$vuetify.breakpoint.mobile"
+          >
+            <template>
+              <v-card flat>
+                <v-card-title class="text-h5">
+                  Deposit
+                  <v-spacer></v-spacer>
+                  <v-btn icon @click="depositDialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-card-text v-if="userData" class="mt-3">
+                  <v-row justify="center " align="center">
+                    <v-col cols="12" md="4">
+                      <v-img
+                        position="center"
+                        contain
+                        :src="require('~/assets/qrcodeplaceholder.jpg')"
+                      ></v-img>
+                    </v-col>
+                    <v-col cols="12" md="8">
+                      <div class="mb-5">
+                        <p class="font-weight-bold">
+                          Network<br /><strong>POLYGON (ERC20)</strong>
+                        </p>
+                        <p class="font-weight-bold">
+                          Address<br /><strong>{{ userData.wallet_va }}</strong>
+                          <v-tooltip color="primary" v-model="copied" top>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn
+                                icon
+                                v-bind="attrs"
+                                v-on="on"
+                                color="primary"
+                                size="16"
+                                v-clipboard:copy="userData.wallet_va"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                              >
+                                <v-icon color="grey lighten-1">
+                                  mdi-content-copy
+                                </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>{{ copied ? "Copy" : "Copied" }}</span>
+                          </v-tooltip>
+                        </p>
+                      </div>
+                      <div class="text-chip font-weight-bold">
+                        To make deposit <b>USDT</b> to your account, please
+                        transfer amount to your
+                        <b>Virtual Account Wallet</b> with the following
+                        information. Minimum transfer amount is <b>$10</b> and
+                        <b>$1</b> of admin fee will be applied. For example, if
+                        you transfer $100, so $99 will be added to your balance.
+                      </div>
+                    </v-col>
+                  </v-row>
+                </v-card-text>
+                <v-card-text v-else class="mt-3">
+                  You don't have an Virtual Account Wallet. Please contact our
+                  customer service for further information.
+                </v-card-text>
+              </v-card>
+            </template>
+          </v-dialog>
+          <v-dialog
+            v-model="withdrawDialog"
+            max-width="600"
+            :fullscreen="$vuetify.breakpoint.mobile"
+          >
+            <template>
+              <v-card class="pa-3">
+                <v-card-title class="text-h5 lighten-2">
+                  Whithdraw
+                  <v-spacer></v-spacer>
+                  <v-btn icon @click="withdrawDialog = false">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-card-title>
+                <v-card-text v-if="userData" class="mt-3">
+                  To make deposit <b>USDT</b> to your account, please transfer
+                  amount to your <b>Virtual Account Wallet</b> with the
+                  following information. Minimum transfer amount is
+                  <b>$10</b> and <b>$1</b> of admin fee will be applied. For
+                  example, if you transfer $100, so $99 will be added to your
+                  balance.
+                  <div class="mt-5">
+                    <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
+                    <p>
+                      Address<br /><strong>{{ userData.wallet_va }}</strong>
+                    </p>
+                  </div>
+                </v-card-text>
+                <v-card-text v-else class="mt-3">
+                  You don't have an Virtual Account Wallet. Please contact our
+                  customer service for further information.
+                </v-card-text>
+              </v-card>
+            </template>
+          </v-dialog>
+        </v-card>
+      </v-col>
+    </v-row>
   </v-card>
 </template>
 
@@ -41,6 +242,7 @@ export default {
       copied: false,
       styleElement: null,
       isLoading: false,
+      actionMode: "Deposit",
     };
   },
   mounted() {

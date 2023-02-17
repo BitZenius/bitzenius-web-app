@@ -16,6 +16,10 @@ import CopyCheckIcon from "~/assets/custom-icons/CopyCheck.vue";
 import DocumentTextIcon from "~/assets/custom-icons/DocumentText.vue";
 import ProfitBarChartIcon from "~/assets/custom-icons/ProfitBarChart.vue";
 
+import MailIcon from "~/assets/custom-icons/Mail.vue";
+import LockIcon from "~/assets/custom-icons/Lock.vue";
+import UserIcon from "~/assets/custom-icons/User.vue";
+
 export default {
 
   icons: {
@@ -67,13 +71,24 @@ export default {
       },
       ProfitBarChartIcon: {
         component: ProfitBarChartIcon
-      }
+      },
+      MailIcon: {
+        component: MailIcon
+      },
+      LockIcon: {
+        component: LockIcon
+      },
+      UserIcon: {
+        component: UserIcon
+      },
+
+
 
     },
   },
   theme: {
     options: { customProperties: true },
-    dark: false,
+    // dark: true,
     themes: {
       dark: {
         customGreen: "#C3F239",
@@ -81,10 +96,23 @@ export default {
         customPink: "#FE759F",
         customYellow: "#FEE603",
         primary: '#3394F8',
-        danger: '#ff002f',
-        basic: '#2B2B2B',
-        'basic-1': '#177e89',
-        'basic-2': '#2B2B2B',
+        primary2: '#46A0F8',
+        danger: '#FF6469',
+        success: '#1AD598',
+        'success-light': "#d1f7ea",
+
+        basic: '#000000',
+        'basic-1': '#000000',
+        'basic-2': '#000000',
+        'black': '#ffffff',
+
+        // BG
+        'off-white': '#1D1F2B',
+        'off-white-2': '#282B3D',
+        'off-white-3': '#212434',
+
+        // TEXT
+        'primary-text': "#ffffff"
       },
       light: {
         customGreen: "#C3F239",
@@ -104,6 +132,8 @@ export default {
 
         // BG
         'off-white': '#f4f7fd',
+        'off-white-2': '#f4f7fd',
+        'off-white-3': '#ffffff',
 
         // TEXT
         'primary-text': "#ffffff"
