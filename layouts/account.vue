@@ -320,7 +320,7 @@ export default {
     this.$store.commit("setIsLoading", true);
 
     setTimeout(() => {
-      this.getUserIp();
+      // this.getUserIp();
       // IF NOT VERIFIED REDIRECT TO VERIFICATION LINK
       if (!this.user.emailVerified) {
         return this.$router.push("/verification");
