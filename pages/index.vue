@@ -1,37 +1,39 @@
 <template>
   <v-row class="py-5">
     <!-- TEST -->
-    <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
-    <v-btn class="mr-2 mb-2" @click="test2 = true"
-      >CREATE BOT FINISH MODAL</v-btn
-    >
-    <v-btn class="mr-2 mb-2" @click="test3 = true"
-      >START YOUR FIRST BOT MODAL</v-btn
-    >
-    <!-- <v-btn class="mr-2 mb-2" @click="test4 = true"
+    <template v-if="false">
+      <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
+      <v-btn class="mr-2 mb-2" @click="test2 = true"
+        >CREATE BOT FINISH MODAL</v-btn
+      >
+      <v-btn class="mr-2 mb-2" @click="test3 = true"
+        >START YOUR FIRST BOT MODAL</v-btn
+      >
+      <!-- <v-btn class="mr-2 mb-2" @click="test4 = true"
       >VERIFY YOUR EMAIL ADDRESS MODAL</v-btn
     >
     <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
     <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn> -->
-    <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
+      <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
 
-    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
-      <ModalsFreeTrial @close-modal="test1 = false"></ModalsFreeTrial>
-    </BaseModal>
+      <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
+        <ModalsFreeTrial @close-modal="test1 = false"></ModalsFreeTrial>
+      </BaseModal>
 
-    <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="'450'">
-      <ModalsBotSetupFinished
-        @close-modal="test2 = false"
-      ></ModalsBotSetupFinished>
-    </BaseModal>
+      <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="'450'">
+        <ModalsBotSetupFinished
+          @close-modal="test2 = false"
+        ></ModalsBotSetupFinished>
+      </BaseModal>
 
-    <BaseModal @close="test3 = false" :parentModel="test3" :maxWidth="'450'">
-      <ModalsBotSetupNew @close-modal="test3 = false"></ModalsBotSetupNew>
-    </BaseModal>
+      <BaseModal @close="test3 = false" :parentModel="test3" :maxWidth="'450'">
+        <ModalsBotSetupNew @close-modal="test3 = false"></ModalsBotSetupNew>
+      </BaseModal>
 
-    <BaseModal @close="test7 = false" :parentModel="test7" :maxWidth="'450'">
-      <ModalsSuccess @close-modal="test7 = false"></ModalsSuccess>
-    </BaseModal>
+      <BaseModal @close="test7 = false" :parentModel="test7" :maxWidth="'450'">
+        <ModalsSuccess @close-modal="test7 = false"></ModalsSuccess>
+      </BaseModal>
+    </template>
     <!-- TEST -->
     <v-col cols="12">
       <v-row>
@@ -78,8 +80,12 @@
                       v-model="styleValue"
                       item-value="value"
                       item-text="name"
-                      :items="style=='daily' ? styleDailyList : styleMonthlyList"
-                      :placeholder="style=='daily' ? 'Select Month' : 'Select Year'"
+                      :items="
+                        style == 'daily' ? styleDailyList : styleMonthlyList
+                      "
+                      :placeholder="
+                        style == 'daily' ? 'Select Month' : 'Select Year'
+                      "
                       rounded
                     ></v-select>
                   </v-col>
@@ -131,29 +137,29 @@ export default {
   layout: "account",
   data() {
     return {
-      style: 'daily',
-      styleValue:null,
-      startDate:null,
-      endDate:null,
-      styleDailyList:[
-        {value:0, name:"January"},
-        {value:1, name:"February"},
-        {value:2, name:"March"},
-        {value:3, name:"April"},
-        {value:4, name:"May"},
-        {value:5, name:"June"},
-        {value:6, name:"July"},
-        {value:7, name:"August"},
-        {value:8, name:"September"},
-        {value:9, name:"October"},
-        {value:10, name:"November"},
-        {value:11, name:"December"},
+      style: "daily",
+      styleValue: null,
+      startDate: null,
+      endDate: null,
+      styleDailyList: [
+        { value: 0, name: "January" },
+        { value: 1, name: "February" },
+        { value: 2, name: "March" },
+        { value: 3, name: "April" },
+        { value: 4, name: "May" },
+        { value: 5, name: "June" },
+        { value: 6, name: "July" },
+        { value: 7, name: "August" },
+        { value: 8, name: "September" },
+        { value: 9, name: "October" },
+        { value: 10, name: "November" },
+        { value: 11, name: "December" },
       ],
-      styleMonthlyList:[
-        {value:2023, name:"2023"},
-        {value:2024, name:"2024"},
-        {value:2025, name:"2025"},
-        {value:2026, name:"2026"},
+      styleMonthlyList: [
+        { value: 2023, name: "2023" },
+        { value: 2024, name: "2024" },
+        { value: 2025, name: "2025" },
+        { value: 2026, name: "2026" },
       ],
       test1: false,
       test2: false,
@@ -302,7 +308,7 @@ export default {
       this.$store.commit("setIsLoading", false);
     },
     async _fetchChart() {
-      console.log('fetchChart');
+      console.log("fetchChart");
       console.log(this.startDate);
       console.log(this.endDate);
       this.showChart = false;
@@ -310,15 +316,15 @@ export default {
         .$get("/user/chart", {
           params: {
             exchange: this.exchange,
-            startdate:this.startDate,
-            enddate:this.endDate,
-            style:this.style
+            startdate: this.startDate,
+            enddate: this.endDate,
+            style: this.style,
           },
         })
         .then((res) => {
           this.showChart = true;
           this.$store.commit("setIsLoading", false);
-          console.log('resChart', res);
+          console.log("resChart", res);
           if (res.success) {
             if (res.series.length <= 0) {
               // IS EMPTY
@@ -367,7 +373,7 @@ export default {
     },
 
     // TRIGGER
-    onStyleSelected(style){
+    onStyleSelected(style) {
       this.style = style;
     },
     onExchangeChanged() {
@@ -378,15 +384,15 @@ export default {
       this._fetchUserBalance();
     },
 
-    setDefaultChart(){
-      let current, y, m, d, start_date, end_date
+    setDefaultChart() {
+      let current, y, m, d, start_date, end_date;
       current = new Date();
       y = current.getFullYear();
       m = current.getMonth();
       d = current.getDate();
-      this.style = 'daily';
+      this.style = "daily";
       this.styleValue = m;
-    }
+    },
   },
   beforeMount() {
     this.$store.commit("setIsLoading", true);
@@ -410,22 +416,30 @@ export default {
       this._fetchUserBalance();
       this._fetchProfit();
     },
-    styleValue(nv, ov){
-      let current, y, m, d
+    styleValue(nv, ov) {
+      let current, y, m, d;
       current = new Date();
       y = current.getFullYear();
       m = current.getMonth();
       d = current.getDate();
 
-      if(this.style == 'daily'){
-        this.startDate = this.$moment(new Date(y, this.styleValue, 1)).valueOf();
-        this.endDate = this.$moment(new Date(y, this.styleValue+1, 1)).valueOf();
-      }else{
-        this.startDate = this.$moment(new Date(this.styleValue, 0, 1)).valueOf();
-        this.endDate = this.$moment(new Date(this.styleValue + 1, 0, 1)).valueOf();
+      if (this.style == "daily") {
+        this.startDate = this.$moment(
+          new Date(y, this.styleValue, 1)
+        ).valueOf();
+        this.endDate = this.$moment(
+          new Date(y, this.styleValue + 1, 1)
+        ).valueOf();
+      } else {
+        this.startDate = this.$moment(
+          new Date(this.styleValue, 0, 1)
+        ).valueOf();
+        this.endDate = this.$moment(
+          new Date(this.styleValue + 1, 0, 1)
+        ).valueOf();
       }
       this._fetchChart();
-    }
+    },
   },
 };
 </script>

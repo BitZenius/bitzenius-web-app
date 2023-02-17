@@ -207,7 +207,7 @@
       </v-card>
       <v-card class="pa-3" flat rounded>
         <v-tabs-items v-model="currentItem">
-          <v-tab-item key="Active Positions">
+          <v-tab-item key="Active Positions" >
             <v-card :key="`${counter}-default`" class="pa-8" flat>
               <v-row class="mb-3" justify="end" align="end">
                 <v-col cols="12" md="4">
@@ -439,11 +439,11 @@
             </v-card>
           </v-tab-item>
 
-          <v-tab-item key="Daily Profit">
+          <v-tab-item key="Daily Profit" >
             <ProfitHistory :key="`${counter}-profitR`" ref="profitRef" />
           </v-tab-item>
 
-          <v-tab-item key="All Trading History">
+          <v-tab-item key="All Trading History" >
             <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
           </v-tab-item>
         </v-tabs-items>

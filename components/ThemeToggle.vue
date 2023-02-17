@@ -42,16 +42,18 @@ export default {
       }
     }
 
-    console.log(this.darkMode, this.$vuetify.theme.dark);
+    this.toggleDarkMode("DARK");
   },
   methods: {
     toggleDarkMode(force = "") {
       if (process.browser) {
         if (force == "DARK") {
+          this.darkMode = true;
           this.$vuetify.theme.dark = true;
           this.$store.commit("setTheme", "dark");
           localStorage.setItem("darkmode", true);
         } else if (force == "LIGHT") {
+          this.darkMode = false;
           this.$vuetify.theme.dark = false;
           this.$store.commit("setTheme", "light");
           localStorage.setItem("darkmode", false);

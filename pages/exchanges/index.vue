@@ -28,7 +28,7 @@
               />
             </div>
           </v-col>
-          <v-col cols="3" class="d-flex flex-column justify-center align-start">
+          <v-col cols="3" class="d-flex flex-column justify-start align-start">
             <v-card
               flat
               rounded
@@ -569,7 +569,7 @@ export default {
 
 .image-container {
   width: 100%;
-  height: 314px;
+  height: 100%;
   overflow: hidden;
   position: absolute;
   top: 0%;
