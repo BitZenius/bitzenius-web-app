@@ -4,7 +4,7 @@ export default function ({ $axios, store, router }, inject) {
     const currentUser = await store.$fire.auth.currentUser
     let api = $axios.create()
     if (currentUser) {
-      const token = await store.$fire.auth.currentUser.getIdToken();
+      const token = await store.$fire.auth.currentUser.getIdToken(true);
       console.log('token', token);
       store.commit('setToken', token);
       api = $axios.create({

@@ -468,8 +468,8 @@ export default {
     },
     async streamNotification() {
       // const currentUser = await store.$fire.auth.currentUser
-      let token = await this.currentUser.getIdToken();
-      // console.log('currentUser', this.currentUser.getIdToken());
+      let token = await this.currentUser.getIdToken(true);
+      // console.log('currentUser', this.currentUser.getIdToken(true));
       this.socket = io(process.env.SERVER, {
         path: "/cron-notification",
         auth: { token },
