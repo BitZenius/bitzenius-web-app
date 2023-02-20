@@ -5,7 +5,7 @@ export default function ({ $axios, store }, inject) {
     const currentUser = await store.$fire.auth.currentUser
     
     if (currentUser) {
-      const token = await store.$fire.auth.currentUser.getIdToken(true)
+      const token = await store.$fire.auth.currentUser.getIdToken()
       console.log('token', token);
     }
 
