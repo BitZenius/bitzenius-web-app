@@ -25,12 +25,16 @@
         justify="center"
         style="min-height: 600px"
       >
-        <v-col cols="1" class="d-flex align-center justify-end">
+        <v-col cols="2" class="d-flex align-center justify-end">
           <!-- CUSTOM STEPPER -->
           <v-card flat rounded class="custom-stepper-container">
-            <v-list dense>
+            <v-list dense rounded>
               <v-list-item
-                class="custom-stepper off-white-2 mb-2"
+                :class="
+                  e1 == 1
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
                 :ripple="false"
                 @click="e1 = 1"
               >
@@ -53,7 +57,11 @@
                 </v-progress-circular>
               </v-list-item>
               <v-list-item
-                class="custom-stepper mb-2"
+                :class="
+                  e1 == 2
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
                 :ripple="false"
                 @click="e1 = 2"
               >
@@ -76,7 +84,11 @@
               </v-list-item>
 
               <v-list-item
-                class="custom-stepper mb-2"
+                :class="
+                  e1 == 3
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
                 :ripple="false"
                 @click="e1 = 3"
               >
@@ -98,7 +110,11 @@
                 </v-progress-circular>
               </v-list-item>
               <v-list-item
-                class="custom-stepper mb-2"
+                :class="
+                  e1 == 4
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
                 :ripple="false"
                 @click="e1 = 4"
               >
@@ -124,7 +140,7 @@
 
           <!-- CUSTOM STEPPER ENDS -->
         </v-col>
-        <v-col cols="11">
+        <v-col cols="10">
           <v-stepper flat v-model="e1" :ripple="false">
             <v-stepper-items class="off-white-3" style="width: 100%">
               <v-stepper-content class="py-0 px-0" step="1">
@@ -961,12 +977,13 @@ export default {
   padding-left: 5px !important;
   justify-content: flex-start;
   border-radius: 25px 0% 0% 25px;
+  width: 150px;
 }
 .custom-stepper-container {
   display: flex;
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
-  padding: 25px;
+  padding: 50px 0px 50px 50px;
 }
 </style>

@@ -1,20 +1,23 @@
 <template>
   <v-theme-provider root>
-    <div class="d-flex">
+    <div class="d-flex align-center">
+      <v-switch
+        inset
+        color="primary"
+        hide-details=""
+        v-model="darkMode"
+      ></v-switch>
       <v-icon v-show="$vuetify.theme.dark == false" color="warning" class="mr-3"
         >mdi-white-balance-sunny</v-icon
       >
       <v-icon v-show="$vuetify.theme.dark == true" color="info" class="mr-3"
         >mdi-moon-waning-crescent</v-icon
       >
-      <v-switch inset color="primary" v-model="darkMode"></v-switch>
     </div>
-    <!-- <v-btn
-      icon
-      class="mr-2"
-      @click="(darkMode = !darkMode)"
-    >
-      <v-icon>mdi-{{ darkMode ? 'white-balance-sunny' : 'weather-night' }}</v-icon>
+    <!-- <v-btn icon class="mr-2" @click="darkMode = !darkMode">
+      <v-icon
+        >mdi-{{ darkMode ? "white-balance-sunny" : "weather-night" }}</v-icon
+      >
     </v-btn> -->
   </v-theme-provider>
 </template>
