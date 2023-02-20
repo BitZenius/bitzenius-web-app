@@ -8,11 +8,12 @@
               <h3 class="mb-4 text-h6 font-weight-bold">Choose the Amount</h3>
               <!-- <v-btn small @click="_logger">logger</v-btn> -->
 
-              <v-row class="d-flex align-center" style="width: 100%">
+              <v-row class="d-flex align-end" style="width: 100%">
                 <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
                   Total USDT To Apply
                   <v-text-field
                     v-model="strategy.usdt_to_apply"
+                    @blur="onUsdtToApplyChanged(strategy.usdt_to_apply)"
                     required
                     placeholder="Total USDT To Apply"
                     hide-details=""
@@ -120,6 +121,14 @@
                     </template>
                   </v-text-field>
                 </v-col>
+
+                <v-col
+                  cols="6"
+                  v-if="recommendedMaxTradingPair[1] !== ''"
+                  style="height: 100%"
+                >
+                  <i class="text-body-1">*{{ recommendedMaxTradingPair[1] }}</i>
+                </v-col>
                 <v-col
                   v-if="false"
                   cols="6"
@@ -194,7 +203,30 @@
                 </v-col>
               </v-row>
             </div>
-            <slot> </slot>
+            <v-row>
+              <v-col cols="6">
+                <!-- <v-tooltip top color="primary">
+                  <template v-slot:activator="{ on, attrs }">
+
+                  </template>
+                  <span
+                    >Please select strategy, Total USDT to apply, and USDT per
+                    order to use this feature</span
+                  >
+                </v-tooltip> -->
+                <v-btn
+                  :disabled="selectedStrategyName == null"
+                  color="primary"
+                  rounded
+                  @click="recommendSettings"
+                >
+                  Use Recommended Settings</v-btn
+                >
+              </v-col>
+              <v-col cols="6" class="d-flex justify-end">
+                <slot> </slot>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -403,6 +435,9 @@ export default {
         key: "E",
       },
       types: ["DCA", "GRID"],
+
+      // RECOMMENDED
+      recommendedMaxTradingPair: [0, ""],
     };
   },
   methods: {
@@ -430,6 +465,11 @@ export default {
           this.$refs.usdt_per_order.focus();
         });
       }
+
+      this.resetRecommendedSettings()
+    },
+    onUsdtToApplyChanged(value) {
+      this.resetRecommendedSettings()
     },
     addRowCustom(drop, multiplier, profit, type) {
       // if GRID selected, don't allow to select DCA;
@@ -510,6 +550,66 @@ export default {
 
       // await this.fetchFormula
     },
+
+    // RECOMMENDED SETTINGS
+    resetRecommendedSettings() {
+      this.recommendedMaxTradingPair = [0, ""];
+    },
+    recommendSettings() {
+      if (!this.selectedStrategyName) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Please select strategy",
+          color: "customPink",
+        });
+        return false;
+      } else if (this.strategy.usdt_per_order < 16) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "USDT Per Order Cannot Be Under 15!",
+          color: "customPink",
+        });
+        return false;
+      }
+
+      this.recommendedMaxTradingPair = this.recommendMaxTradingPairs(
+        this.strategy.style.steps,
+        this.strategy.usdt_to_apply,
+        this.strategy.usdt_per_order
+      );
+      this.strategy.max_concurrent_trading_pair = Math.floor(
+        this.recommendedMaxTradingPair[0]
+      );
+    },
+
+    /**
+     *
+     * @param {*} array Array of steps
+     * @param {*} usdt_to_apply
+     * @param {*} usdt_per_order
+     * @returns Array[recommended value, text: recommended value ex: between x - x]
+     * Calculate recommended max trading pairs by user's total usdt to apply and usdt per order
+     */
+    recommendMaxTradingPairs(array, usdt_to_apply, usdt_per_order) {
+      console.log(array);
+      var total_usdt_per_pair = 0;
+
+      if (array.length < 1) {
+        return [0, ""];
+      }
+
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        total_usdt_per_pair += usdt_per_order * element.multiplier;
+      }
+
+      var recommended_pair = usdt_to_apply / total_usdt_per_pair;
+      var recommended_pair_text = `Recommended max trading pairs: ${Math.floor(
+        recommended_pair
+      )} - ${Math.ceil(recommended_pair)}`;
+
+      return [recommended_pair, recommended_pair_text];
+    },
   },
   mounted() {
     if (this.selectedStrategy) {
@@ -521,7 +621,6 @@ export default {
   watch: {
     strategy: {
       handler(nv, ov) {
-        console.log("nv.usdt_per_order", nv.usdt_per_order);
         nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
         nv.usdt_per_order = nv.usdt_per_order
           ? parseFloat(nv.usdt_per_order)
@@ -529,12 +628,14 @@ export default {
         nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair
           ? parseFloat(nv.max_concurrent_trading_pair)
           : 1;
+
         this.$emit("onSelected", nv);
       },
       deep: true,
     },
     selectedStrategyName: {
       handler(nv, ov) {
+        this.recommendedMaxTradingPair = [0, ""];
         this.selectStyleByName(nv);
       },
     },

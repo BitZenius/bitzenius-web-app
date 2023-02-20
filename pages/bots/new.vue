@@ -150,16 +150,14 @@
                   ref="strategyRef"
                   @onSelected="onStrategySelected"
                 >
-                  <div class="d-flex float-right my-4">
-                    <v-btn
-                      width="120"
-                      rounded
-                      color="primary"
-                      @click="_continue(2)"
-                    >
-                      Continue
-                    </v-btn>
-                  </div>
+                  <v-btn
+                    width="120"
+                    rounded
+                    color="primary"
+                    @click="_continue(2)"
+                  >
+                    Continue
+                  </v-btn>
                 </ModalsBotSetupStrategyAndAmount>
                 <!-- <div class="d-flex float-left">
                               <v-btn class="danger white--text" @click="_deleteBot( bot.id)">
@@ -348,7 +346,7 @@
 
               <v-stepper-content class="py-0" step="4">
                 <v-card
-                  min-height="200px"
+                  min-height="500px"
                   flat
                   class="d-flex flex-column align-start pa-5 mt-2"
                 >
@@ -978,6 +976,7 @@ export default {
   justify-content: flex-start;
   border-radius: 25px 0% 0% 25px;
   width: 150px;
+  margin-bottom: 20px !important;
 }
 .custom-stepper-container {
   display: flex;
