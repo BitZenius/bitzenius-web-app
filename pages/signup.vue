@@ -2,7 +2,7 @@
   <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="5" style="z-index: 2">
         <v-row class="pa-8 basic-text--text main-card" justify="start">
           <v-col cols="12" style="max-width: 80%" class="mb-4">
             <div class="text-h4 font-weight-bold decorated-text">
@@ -427,6 +427,7 @@ export default {
   top: 45%;
   left: 32%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 .footer {
   position: absolute;
