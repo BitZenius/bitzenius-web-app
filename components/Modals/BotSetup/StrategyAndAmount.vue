@@ -18,6 +18,7 @@
                     placeholder="Total USDT To Apply"
                     hide-details=""
                     rounded
+                    type="number"
                     class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
@@ -58,6 +59,8 @@
                     placeholder="USDT Per Order"
                     hide-details=""
                     rounded
+                    type="number"
+
                     class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
@@ -95,6 +98,8 @@
                     hide-details=""
                     rounded
                     class="my-2 custom-input text-body-1"
+                    type="number"
+
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -466,10 +471,10 @@ export default {
         });
       }
 
-      this.resetRecommendedSettings()
+      this.resetRecommendedSettings();
     },
     onUsdtToApplyChanged(value) {
-      this.resetRecommendedSettings()
+      this.resetRecommendedSettings();
     },
     addRowCustom(drop, multiplier, profit, type) {
       // if GRID selected, don't allow to select DCA;
@@ -563,7 +568,7 @@ export default {
           color: "customPink",
         });
         return false;
-      } else if (this.strategy.usdt_per_order < 16) {
+      } else if (this.strategy.usdt_per_order < 15) {
         this.$store.commit("setShowSnackbar", {
           show: true,
           message: "USDT Per Order Cannot Be Under 15!",

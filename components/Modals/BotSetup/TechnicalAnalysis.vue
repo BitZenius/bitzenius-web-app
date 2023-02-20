@@ -147,7 +147,7 @@ export default {
           analysis: null,
           time: null,
         },
-        minimum_trading_volume: null,
+        minimum_trading_volume: 15000000,
       },
       analysisList: [
         {

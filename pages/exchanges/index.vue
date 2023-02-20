@@ -258,13 +258,13 @@ export default {
           image: "/exchange_logo/binance.png",
           comingsoon: false,
         },
-        {
-          name: "Bybit",
-          selected: false,
-          active: false,
-          image: "/exchange_logo/bybit.png",
-          comingsoon: false,
-        },
+        // {
+        //   name: "Bybit",
+        //   selected: false,
+        //   active: false,
+        //   image: "/exchange_logo/bybit.png",
+        //   comingsoon: false,
+        // },
         {
           name: "Kucoin",
           selected: false,
@@ -272,13 +272,13 @@ export default {
           image: "/exchange_logo/kucoin.png",
           comingsoon: true,
         },
-        {
-          name: "Tokocrypto",
-          selected: false,
-          active: false,
-          image: "/exchange_logo/tokocrypto.png",
-          comingsoon: true,
-        },
+        // {
+        //   name: "Tokocrypto",
+        //   selected: false,
+        //   active: false,
+        //   image: "/exchange_logo/tokocrypto.png",
+        //   comingsoon: true,
+        // },
       ],
       // END OF CARD EXCHANGE
 
