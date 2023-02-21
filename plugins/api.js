@@ -3,10 +3,10 @@ export default function ({ $axios, store, router }, inject) {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const currentUser = await store.$fire.auth.currentUser
     let api = $axios.create()
+
     if (currentUser) {
       const token = await store.$fire.auth.currentUser.getIdToken();
-      console.log('token', token);
-      store.commit('setToken', token);
+      store.commit('setToken', token)
       api = $axios.create({
         headers: {
           common: {
@@ -19,17 +19,29 @@ export default function ({ $axios, store, router }, inject) {
     }
 
     api.setBaseURL(process.env.API_URL)
-    // do from error response
-    // error.code == 'auth/id-token-revoked'
     api.onError((error) => {
-      if (error.response.status === 401) {
-        if (store.getters.isLoggedIn) {
-          // user should re-login
-          store.$fire.auth.signOut().then(() => {
-            store.$router.push('/signin')
-          }).catch((err) => {
-            console.log(err)
-          })
+      const config = error.response.config
+      const data = error.response.data
+      
+      if (store.getters.isLoggedIn && config && data.status === 401 && data.code) {
+        switch(data.code) {
+          case 'auth/id-token-expired':
+            store.$fire.auth.currentUser.getIdToken(true).then((newToken) => {
+              config.headers.authorization = `Bearer ${newToken}`
+              store.commit('setToken', newToken)
+              $axios.request(config)
+            }).catch((err) => {
+              console.log(err)
+            })
+          break
+
+          default:
+            store.$fire.auth.signOut().then(() => {
+              store.$router.push('/signin')
+            }).catch((err) => {
+              console.log(err)
+            })
+          break
         }
       }
     })
