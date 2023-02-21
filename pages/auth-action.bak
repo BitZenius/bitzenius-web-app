@@ -1,79 +1,8 @@
 <template>
-  <div class="app off-white" v-if="config">
-    <v-card
-      class="verification-card d-flex justify-center"
-      color="off-white-3"
-    >
-      <v-card-text
-        style="text-align: left"
-        class="d-flex flex-column justify-center align-center pa-0"
-      >
-        <lottie
-          :width="200"
-          :height="200"
-          :options="lottieOptions"
-          v-on:animCreated="handleAnimation"
-        />
-        <v-form class="mt-10" ref="form">
-          <div class="text-center mb-5">
-            <h1 class="primary-text--text">{{ title }}</h1>
-          </div>
-          <v-row v-if="config.mode == 'resetPassword'">
-            <v-col cols="12">
-              <v-text-field
-                v-model="password"
-                :rules="passwordRules"
-                label="Password"
-                outlined
-                class="mb-2"
-                type="password"
-              ></v-text-field>
-              <v-text-field
-                v-model="confirmPassword"
-                :rules="confirmPasswordRules"
-                label="Re-type Password"
-                outlined
-                class="mb-2"
-                type="password"
-              ></v-text-field>
-              <v-btn
-                :loading="isLoading"
-                style="width: 100%"
-                color="customGreen"
-                x-large
-                class="text-capitalize basic-text--text"
-                depressed
-                @click.stop="handleResetPassword"
-              >
-                Change Password
-              </v-btn>
-            </v-col>
-          </v-row>
-          <!-- <v-row v-else-if="config.mode == 'verifyEmail'">
-            <v-col cols="12">
-              <v-btn
-                :loading="isLoading"
-                :disabled="isLoading"
-                style="width: 100%"
-                color="customGreen"
-                x-large
-                class="text-capitalize basic-text--text"
-                depressed
-                @click.stop="handleVerifyEmail"
-              >
-                Verify Now
-              </v-btn>
-            </v-col>
-          </v-row> -->
-          <v-row v-if="message">
-            <v-col cols="12" class="text-center">
-              <p class="mt-5">{{ message }}</p>
-            </v-col>
-          </v-row>
-        </v-form>
-      </v-card-text>
-    </v-card>
-      <!-- <v-col cols="12" md="4">
+  <div class="app" v-if="config">
+    <v-row no-gutters class="noGutters">
+      <v-col cols="12" md="8" class="d-none d-sm-flex"> </v-col>
+      <v-col cols="12" md="4">
         <div class="cardColor" elevation="8">
           <div class="pa-md-12 pa-8">
             <v-img
@@ -86,17 +15,70 @@
               contain
               position="center"
             />
-            
+            <v-form class="mt-10" ref="form">
+              <div class="text-center mb-5">{{ title }}</div>
+              <v-row v-if="config.mode == 'resetPassword'">
+                <v-col cols="12">
+                  <v-text-field
+                    v-model="password"
+                    :rules="passwordRules"
+                    label="Password"
+                    outlined
+                    class="mb-2"
+                    type="password"
+                  ></v-text-field>
+                  <v-text-field
+                    v-model="confirmPassword"
+                    :rules="confirmPasswordRules"
+                    label="Re-type Password"
+                    outlined
+                    class="mb-2"
+                    type="password"
+                  ></v-text-field>
+                  <v-btn
+                    :loading="isLoading"
+                    style="width: 100%"
+                    color="customGreen"
+                    x-large
+                    class="text-capitalize basic-text--text"
+                    depressed
+                    @click.stop="handleResetPassword"
+                  >
+                    Change Password
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row v-else-if="config.mode == 'verifyEmail'">
+                <v-col cols="12">
+                  <v-btn
+                    :loading="isLoading"
+                    :disabled="isLoading"
+                    style="width: 100%"
+                    color="customGreen"
+                    x-large
+                    class="text-capitalize basic-text--text"
+                    depressed
+                    @click.stop="handleVerifyEmail"
+                  >
+                    Verify Now
+                  </v-btn>
+                </v-col>
+              </v-row>
+              <v-row v-if="message">
+                <v-col cols="12" class="text-center">
+                  <p class="mt-5">{{ message }}</p>
+                </v-col>
+              </v-row>
+            </v-form>
           </div>
           <MiniFooter />
         </div>
-      </v-col> -->
+      </v-col>
+    </v-row>
   </div>
 </template>
 
 <script>
-import lottie from "vue-lottie/src/lottie.vue";
-import * as animationData from "~/assets/lottie/dashboard/email-verifying.json";
 import { initializeApp, getApps, getApp } from "firebase/app";
 import {
   getAuth,
@@ -107,9 +89,6 @@ import {
 
 export default {
   layout: "default",
-  components: {
-    lottie,
-  },
   data: () => ({
     config: null,
     auth: null,
@@ -125,9 +104,6 @@ export default {
     ],
     confirmPassword: "",
     message: null,
-    // LOTTIE
-    anim: null, // for saving the reference to the animation
-    lottieOptions: { animationData: animationData.default },
   }),
   head: {
     title: "Auth Action",
@@ -167,8 +143,7 @@ export default {
 
     switch (config.mode) {
       case "verifyEmail":
-        this.title = "Verifying your email..";
-        this.handleVerifyEmail();
+        this.title = "Verify your email";
         break;
       case "resetPassword":
         this.title = "Reset your password";
@@ -183,10 +158,6 @@ export default {
     }
   },
   methods: {
-  // TRIGGER
-    handleAnimation: function (anim) {
-      this.anim = anim;
-    },
     handleVerifyEmail() {
       this.isLoading = true;
       applyActionCode(this.auth, this.config.oobCode)
@@ -262,17 +233,8 @@ export default {
   height: 100%;
 }
 
-.verification-card {
-  position: absolute;
-  width: 50%;
-  height: 50%;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-}
-
 .app {
-  /* background-image: url("/background.jpg"); */
+  background-image: url("/background.jpg");
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;

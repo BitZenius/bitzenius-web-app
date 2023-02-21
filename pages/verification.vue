@@ -1,13 +1,19 @@
 <template>
-  <div class="app">
+  <div class="app off-white">
     <v-card
-      class="verification-card d-flex align-center justify-center"
-      color="primary"
+      class="verification-card d-flex justify-center"
+      color="off-white-3"
     >
       <v-card-text
         style="text-align: left"
-        class="d-flex flex-column justify-center align-center pa-0"
+        class="d-flex flex-column align-center pa-0"
       >
+        <lottie
+          :width="200"
+          :height="200"
+          :options="lottieOptions"
+          v-on:animCreated="handleAnimation"
+        />
         <h3 class="white--text">
           {{ message }}
         </h3>
@@ -15,7 +21,7 @@
           <v-btn
             :loading="isLoading"
             depressed
-            class="customGreen basic-text--text text-capitalize"
+            class="primary basic-text--text text-capitalize"
             @click.stop="sendEmailVerification"
           >
             {{ buttonText }}
@@ -35,13 +41,22 @@
 </template>
 
 <script>
+import lottie from "vue-lottie/src/lottie.vue";
+import * as animationData from "~/assets/lottie/dashboard/email-sent.json";
+
 export default {
   layout: "default",
+  components: {
+    lottie,
+  },
   data: () => ({
     isLoading: false,
     emailSent: false,
-    message: "Please check your email to verify your account!",
-    buttonText: "Send Verification",
+    message: "A verification link has been sent to your inbox. Please ensure to check your spam folder as well",
+    buttonText: "Resend Email",
+    // LOTTIE
+    anim: null, // for saving the reference to the animation
+    lottieOptions: { animationData: animationData.default },
   }),
   head: {
     title: "Verification",
@@ -66,6 +81,9 @@ export default {
     setTimeout(() => {
       if (this.user.emailVerified) {
         return this.$router.push("/");
+      }else{
+        alert('notVerified')
+        this.sendEmailVerification();
       }
     });
   },
@@ -80,6 +98,10 @@ export default {
           // console.log(error)
         });
     },
+    // TRIGGER
+    handleAnimation: function (anim) {
+      this.anim = anim;
+    },
     sendEmailVerification() {
       this.isLoading = true;
       this.$api
@@ -90,7 +112,7 @@ export default {
           console.log(result);
           this.emailSent = true;
           this.message = `We have sent a verification email to ${this.user.email}`;
-          this.buttonText = "Resend";
+          this.buttonText = "Resend Email";
         })
         .catch((err) => {
           console.log(err);
@@ -117,7 +139,6 @@ export default {
   transform: translate(-50%, -50%);
 }
 .app {
-  background-image: url("/background.jpg");
   height: 100%;
   background-position: center;
   background-repeat: no-repeat;

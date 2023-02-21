@@ -154,9 +154,12 @@
     </v-dialog>
     <v-data-table
       @click:row="onRowClicked"
-      :loading="isLoading"
+      :loading="isLoadingMain"
       :headers="tradingHeaders"
       :items="profitItemsFiltered"
+      :options.sync="options"
+      :server-items-length="totalItems"
+      :items-per-page="rowsPerPage"
       class="elevation-2 my-2"
     >
       <template v-slot:header.date="{ header }">
@@ -212,7 +215,11 @@ export default {
     return {
       title: "Transaction Report",
       isLoading: true,
+      isLoadingMain:true,
       // ID, Type, Date, Profit, Price, Qty
+      options: {},
+      totalItems: 0,
+      rowsPerPage: 10,
       tradingHeaders: [
         {
           text: "Date",
@@ -324,41 +331,43 @@ export default {
       this._fetchReport(null);
     },
     async _fetchReport(sorting) {
-      this.isLoading = true;
+      console.log('options', this.options);
+      const { page, itemsPerPage } = this.options;
+      this.isLoadingMain = true;
+
       let tempParams = {};
       tempParams.exchange = this.exchange;
       tempParams.onlyUser = true;
+      tempParams.limit = itemsPerPage == -1 ? this.totalItems : itemsPerPage,
+      tempParams.page = page;
 
       if (sorting) {
         tempParams.sorting = sorting;
       }
 
       if (this.dates.length > 0) {
-        console.log(this.dates);
         tempParams.dates = this.dates;
       }
 
-      console.log("paramsFetcHReport", tempParams);
       let res = await this.$api
         .$get("/user/profit-report", {
           params: tempParams,
         })
         .then((res) => {
-          console.log("profit-history", res);
+          console.log('res on profit report', res);
           this.$store.commit("setIsLoading", false);
           if (res.success) {
+            this.totalItems = res.count;
             res.data.forEach((val) => {
-              if (val.profit < 0) console.log(val);
               val._profit = {};
               let string = String(val.profit.toFixed(4)).split(".");
-              if (val.profit < 0) console.log(string);
               val._profit.first =
                 val.profit < 0 ? string[0] : parseFloat(string[0]);
               val._profit.second = string[1];
             });
             this.profitItems = res.data;
-            console.log("profitItems", this.profitItems);
-            this.isLoading = false;
+            console.log('profitItems', this.profitItems);
+            this.isLoadingMain = false;
           } else {
             this.$store.commit("setIsLoading", false);
             this.$store.commit("setShowSnackbar", {
@@ -366,17 +375,18 @@ export default {
               message: "Error",
               color: "customPink",
             });
-            this.isLoading = false;
+            this.isLoadingMain = false;
           }
         })
         .catch((err) => {
+          console.log('err',err)
           his.$store.commit("setIsLoading", false);
           this.$store.commit("setShowSnackbar", {
             show: true,
             message: err.message,
             color: "customPink",
           });
-          this.isLoading = false;
+          this.isLoadingMain = false;
         });
     },
 
@@ -386,17 +396,15 @@ export default {
         let url = require("@/static/token_logo/" + val.toUpperCase() + ".png");
         return "/token_logo/" + val.toUpperCase() + ".png";
       } catch (err) {
-        console.log("img not exist", val);
+        // console.log("img not exist", val);
         return "/token_logo/default.png";
       }
     },
     // TRIGGER
     onRowClicked(row) {
-      console.log("onRowClicked", row);
       let tempArray = [];
       // this.tradingItemsDetail = row.data;
       row.data.forEach((val) => {
-        console.log(val);
         // PROFIT
         val._profit = {};
         let string = String(val.pnl.toFixed(4)).split(".");
@@ -411,7 +419,6 @@ export default {
       });
       this.tradingItemsDetail = tempArray;
       this.onDetailClicked = true;
-      console.log("tradingItemsDetail", row.data);
     },
     onBack() {
       this.onDetailClicked = false;
@@ -432,6 +439,12 @@ export default {
     exchange(nv, ov) {
       this._fetchReport(null);
       this.$store.commit("setIsLoading", true);
+    },
+    options: {
+      handler() {
+        this._fetchReport();
+      },
+      deep: true,
     },
   },
 };

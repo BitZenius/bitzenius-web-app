@@ -58,6 +58,9 @@
       :loading="isLoading"
       :headers="tradingHeaders"
       :items="tradingItemsFiltered"
+      :options.sync="options"
+      :server-items-length="totalItems"
+      :items-per-page="rowsPerPage"
       class="elevation-2 my-2"
     >
       <template v-slot:header.pair="{ header }">
@@ -213,6 +216,9 @@ export default {
       title: "Transaction Report",
       isLoading: true,
       // ID, Type, Date, Profit, Price, Qty
+      options: {},
+      totalItems: 0,
+      rowsPerPage: 10,
       tradingHeaders: [
         {
           text: "Pair",
@@ -346,11 +352,12 @@ export default {
       this._fetchReport();
     },
     async _fetchReport(sorting) {
-      console.log("moment", this.$moment);
-      // moment("10/15/2014 9:00", "M/D/YYYY H:mm").valueOf();
+      const { page, itemsPerPage } = this.options;
       this.isLoading = true;
       let tempParams = {};
       tempParams.exchange = this.exchange;
+      tempParams.limit = itemsPerPage == -1 ? this.totalItems : itemsPerPage,
+      tempParams.page = page;
 
       if (this.pairSelected) {
         tempParams.symbol = this.pairSelected;
@@ -380,6 +387,7 @@ export default {
       this.$store.commit("setIsLoading", false);
       console.log("fetchReportTrading", res);
       if (res.success) {
+          this.totalItems = res.count;
         res.data.forEach((val) => {
           // PRICE TO SMALLER AFTER COMMA
           val._price = {};
@@ -462,6 +470,14 @@ export default {
     exchange(nv, ov) {
       this._fetchReport(null);
       this.$store.commit("setIsLoading", true);
+    },
+    options: {
+      handler() {
+        this._fetchReport({
+          created_at: "descending",
+        });
+      },
+      deep: true,
     },
   },
 };

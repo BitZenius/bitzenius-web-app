@@ -401,7 +401,7 @@ export default {
         let url = require("@/static/token_logo/" + val.toUpperCase() + ".png");
         return "/token_logo/" + val.toUpperCase() + ".png";
       } catch (err) {
-        console.log("img not exist", val);
+        // console.log("img not exist", val);
         return "/token_logo/default.png";
       }
     },
