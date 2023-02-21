@@ -38,14 +38,17 @@ export default {
     if (process.browser) {
       if (localStorage.getItem("darkmode")) {
         const cookieValue = localStorage.getItem("darkmode") === "true";
-        this.darkMode = cookieValue;
-        this.$vuetify.theme.dark = cookieValue;
+        if (cookieValue) {
+          this.toggleDarkMode("DARK");
+        } else {
+          setTimeout(() => {
+            this.toggleDarkMode("LIGHT");
+          }, 100);
+        }
       } else {
-        this.toggleDarkMode();
+        this.toggleDarkMode("DARK");
       }
     }
-
-    this.toggleDarkMode("DARK");
   },
   methods: {
     toggleDarkMode(force = "") {
