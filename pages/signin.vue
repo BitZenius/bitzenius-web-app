@@ -47,7 +47,7 @@
                     v-model="email"
                     :rules="emailRules"
                     required
-                    placeholder="Email..."
+                    placeholder="Email"
                     dense
                     rounded
                     class="mb-2 custom-input py-2"
@@ -58,6 +58,7 @@
                   <v-text-field
                     v-model="password"
                     :value="password"
+                    placeholder="Password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     :rules="passwordRules"
@@ -174,16 +175,45 @@
       :src="require('assets/images/bitzy loginpage.png')"
       contain
     ></v-img>
-    <div class="text-subtitle white--text footer d-flex flex-column">
+    <div class="text-subtitle white--text footer d-flex flex-column" style="z-index: 2">
       <div>
         Download our app
         <div class="my-5">
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
-          </v-btn>
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
-          </v-btn>
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text mx-3 pa-0"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/AS128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
+
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text pa-0"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/GP128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
         </div>
       </div>
       ©2023 - BitZenius. All rights reserved.

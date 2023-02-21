@@ -1,6 +1,7 @@
 <template>
   <v-row class="py-5">
-    <v-col cols="12">
+    <v-col cols="12" style="position: relative">
+      <v-icon @click="$router.push('/bots')"> mdi-arrow-left </v-icon>
       <v-row>
         <v-col cols="12" class="text-center text-h5 font-weight-bold pl-3">
           {{ title }} for {{ selectedExchange }}

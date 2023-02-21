@@ -60,7 +60,6 @@
                     hide-details=""
                     rounded
                     type="number"
-
                     class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
@@ -99,7 +98,6 @@
                     rounded
                     class="my-2 custom-input text-body-1"
                     type="number"
-
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -241,7 +239,18 @@
       cols="6"
     >
       <v-card flat rounded class="pa-5 mt-2">
-        <h3 class="mb-4">{{ selectedStrategyName }}</h3>
+        <v-list-item class="mb-5">
+          <!-- <v-list-item-avatar> -->
+          <v-icon size="30" class="primary--text mr-3">
+            $vuetify.icons.ProfitBarChartIcon
+          </v-icon>
+          <!-- </v-list-item-avatar> -->
+          <v-list-item-content>
+            <v-list-item-title class="text-h5 font-weight-bold">{{
+              selectedStrategyName
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
         <v-simple-table
           v-if="strategy.style.steps"
@@ -284,35 +293,112 @@
                 class="text-center"
                 v-for="(child, y, key) in strategy.style.steps"
                 :key="child.key"
+                @click="selectRow(child, y)"
               >
-                <td class="text-body-1">{{ y + 1 }}</td>
-                <td class="text-body-1">
-                  <div class="d-flex align-center">
-                    <span>{{ child.drop_rate }}</span>
-                    <v-icon x-small slot="append" color="primary">
-                      mdi-percent
-                    </v-icon>
-                  </div>
-                </td>
-                <td class="text-body-1">
-                  <div class="d-flex align-center">
-                    <span>{{ child.multiplier }}</span>
-                    <v-icon x-small slot="append" color="primary">
-                      mdi-close
-                    </v-icon>
-                  </div>
-                </td>
-                <td class="text-body-1">
-                  <div class="d-flex align-center">
-                    <span>{{ child.take_profit }}</span>
-                    <v-icon x-small slot="append" color="primary">
-                      mdi-percent
-                    </v-icon>
-                  </div>
-                </td>
-                <td class="text-body-1">
-                  <span>{{ child.type }}</span>
-                </td>
+                <template v-if="editStep == y">
+                  <td class="text-body-1">
+                    {{ y + 1 }}
+                    <div class="d-flex">
+                      <v-btn
+                        @click="saveRowChanges"
+                        x-small
+                        class="mx-1"
+                        color="success"
+                      >
+                        <v-icon small>mdi-check</v-icon>
+                      </v-btn>
+                      <v-btn
+                        @click="cancelRowChanges"
+                        x-small
+                        class="mx-1"
+                        color="danger"
+                      >
+                        <v-icon small>mdi-cancel</v-icon>
+                      </v-btn>
+                    </div>
+                  </td>
+                  <td>
+                    <v-text-field
+                      class="text-body-1"
+                      v-model="customDrop"
+                      placeholder="1.2"
+                    >
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </v-text-field>
+                  </td>
+                  <td>
+                    <v-text-field
+                      class="text-body-1"
+                      v-model="customBuy"
+                      placeholder="2"
+                    >
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-close
+                      </v-icon>
+                    </v-text-field>
+                  </td>
+                  <td>
+                    <v-text-field
+                      class="text-body-1"
+                      v-model="customProfit"
+                      placeholder="1.1"
+                    >
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </v-text-field>
+                  </td>
+                  <td>
+                    <v-select
+                      :items="types"
+                      v-model="customType"
+                      label="Type"
+                    ></v-select>
+                  </td>
+                </template>
+                <template v-else>
+                  <td class="text-body-1 d-flex align-center justify-center">
+                    <v-btn
+                      v-if="y + 1 == strategy.style.steps.length"
+                      @click="deleteRow(y)"
+                      x-small
+                      class="mx-1"
+                      color="danger"
+                    >
+                      <v-icon small>mdi-delete</v-icon>
+                    </v-btn>
+                    {{ y + 1 }}
+                  </td>
+                  <td class="text-body-1">
+                    <div class="d-flex align-center">
+                      <span>{{ child.drop_rate }}</span>
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </div>
+                  </td>
+                  <td class="text-body-1">
+                    <div class="d-flex align-center">
+                      <span>{{ child.multiplier }}</span>
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-close
+                      </v-icon>
+                    </div>
+                  </td>
+                  <td class="text-body-1">
+                    <div class="d-flex align-center">
+                      <span>{{ child.take_profit }}</span>
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </div>
+                  </td>
+                  <td class="text-body-1">
+                    <span>{{ child.type }}</span>
+                  </td>
+                </template>
               </tr>
               <tr
                 v-if="
@@ -329,7 +415,7 @@
               <tr v-if="selectedStrategyName == 'Custom'">
                 <td v-if="selectedStrategyName == 'Custom'">
                   <v-btn
-                    class="customGreen basic-text--text"
+                    class="primary basic-text--text"
                     small
                     @click="
                       addRowCustom(
@@ -441,6 +527,9 @@ export default {
       },
       types: ["DCA", "GRID"],
 
+      // EDIT ROW
+      editStep: null,
+
       // RECOMMENDED
       recommendedMaxTradingPair: [0, ""],
     };
@@ -475,6 +564,48 @@ export default {
     },
     onUsdtToApplyChanged(value) {
       this.resetRecommendedSettings();
+    },
+
+    selectRow(child, step) {
+      if (this.editStep == step) {
+        return;
+      }
+      this.customDrop = child.drop_rate;
+      this.customBuy = child.multiplier;
+      this.customProfit = child.take_profit;
+      this.customType = child.type;
+
+      this.editStep = step;
+    },
+    deleteRow(step) {
+      // ACCOMMODATE ONLY THE LAST ITEM ON ARRAY
+      this.strategy.style.steps.pop();
+    },
+    cancelRowChanges() {
+      setTimeout(() => {
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        this.editStep = null;
+      }, 100);
+    },
+    saveRowChanges() {
+      this.strategy.style.steps[this.editStep] = {
+        step: this.editStep,
+        drop_rate: this.customDrop,
+        multiplier: this.customBuy,
+        take_profit: this.customProfit,
+        type: this.customType,
+      };
+
+      setTimeout(() => {
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        this.editStep = null;
+      }, 100);
     },
     addRowCustom(drop, multiplier, profit, type) {
       // if GRID selected, don't allow to select DCA;

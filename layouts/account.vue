@@ -274,12 +274,41 @@
         </v-col>
         <v-col class="d-flex align-center justify-end" cols="6">
           Download our app
-          <v-btn plain :ripple="false" class="white--text mx-3 pa-0">
-            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
-          </v-btn>
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
-          </v-btn>
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text mx-3 pa-0 my-2"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/AS128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
+
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text pa-0 my-2"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/GP128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </v-footer>

@@ -44,7 +44,7 @@
           <GlobalsExchangeList @on-exchange-changed="onExchangeChanged" />
         </v-col>
       </v-row>
-      <v-row v-if="exchange">
+      <v-row>
         <v-col cols="12" md="6" lg="3">
           <CardCredit :balance="balance" :loading="isLoading" />
         </v-col>
@@ -58,7 +58,7 @@
           <CardDeals :deal="deal" :loading="isLoadingProfit" />
         </v-col>
       </v-row>
-      <v-row v-if="exchange">
+      <v-row>
         <v-col cols="12" md="9">
           <v-row>
             <v-col cols="12">
@@ -106,7 +106,7 @@
                 ></apexchart>
 
                 <h5 v-else class="text-center">
-                  NO STATISTIC FOR THIS EXCHANGE ({{ exchange }})
+                  NO STATISTIC FOR SELECTED EXCHANGE
                 </h5>
               </v-card>
             </v-col>
