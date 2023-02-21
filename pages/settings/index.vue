@@ -138,7 +138,12 @@
                       </div>
                     </v-col>
                     <v-col cols="12" class="mt-10">
-                      <v-btn color="primary" rounded style="width: 168px">
+                      <v-btn
+                        @click="save"
+                        color="primary"
+                        rounded
+                        style="width: 168px"
+                      >
                         Save
                       </v-btn>
                     </v-col>
@@ -179,7 +184,12 @@
                   />
                 </v-col>
                 <v-col cols="12" class="mt-10">
-                  <v-btn color="primary" rounded style="width: 168px">
+                  <v-btn
+                    @click="save"
+                    color="primary"
+                    rounded
+                    style="width: 168px"
+                  >
                     Save
                   </v-btn>
                 </v-col>
@@ -253,7 +263,12 @@
                   ></v-switch>
                 </v-col>
                 <v-col cols="12" class="mt-10">
-                  <v-btn color="primary" rounded style="width: 168px">
+                  <v-btn
+                    @click="save"
+                    color="primary"
+                    rounded
+                    style="width: 168px"
+                  >
                     Save
                   </v-btn>
                 </v-col>
