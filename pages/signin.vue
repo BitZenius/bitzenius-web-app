@@ -313,12 +313,7 @@ export default {
         .catch((err) => {
           console.log('err response', err.response);
           if (err.response.data.not_verified) {
-            this.message = {
-              text: err.response.data.message ? err.response.data.message
-                : "Invalid credentials. Please try again",
-              color: "error",
-            };
-            // return this.$router.go("/verification");
+            return this.$router.go("/verification");
           } else {
             console.log('errresponsedata', err.response.data);
             this.message = {
