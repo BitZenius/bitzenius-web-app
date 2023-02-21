@@ -54,7 +54,11 @@
         <v-card
           @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
           style="position: relative; margin-bottom: 25px"
-          class="d-flex align-center justify-center exchange-card"
+          :class="
+            exchange.comingsoon
+              ? 'd-flex align-center justify-center exchange-card disabled'
+              : 'd-flex align-center justify-center exchange-card'
+          "
           flat
         >
           <v-row justify="center" align="center" class="pa-5">
@@ -207,7 +211,7 @@
       </v-card>
       <v-card class="pa-3" flat rounded>
         <v-tabs-items v-model="currentItem">
-          <v-tab-item key="Active Positions" >
+          <v-tab-item key="Active Positions">
             <v-card :key="`${counter}-default`" class="pa-8" flat>
               <v-row class="mb-3" justify="end" align="end">
                 <v-col cols="12" md="4">
@@ -439,11 +443,11 @@
             </v-card>
           </v-tab-item>
 
-          <v-tab-item key="Daily Profit" >
+          <v-tab-item key="Daily Profit">
             <ProfitHistory :key="`${counter}-profitR`" ref="profitRef" />
           </v-tab-item>
 
-          <v-tab-item key="All Trading History" >
+          <v-tab-item key="All Trading History">
             <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
           </v-tab-item>
         </v-tabs-items>
@@ -707,13 +711,14 @@ export default {
   },
   async mounted() {
     console.log("USER!!", this.user);
+
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
-      this._fetchBotsList(this.exchange); // Fetch Bots List
+      // this._fetchBotsList(this.exchange); // Fetch Bots List
       this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
-      this._fetchBotsList("Binance");
+      // this._fetchBotsList("Binance");
       this._fetchUserExchange(); // Fetch User Exchang
     }
   },
@@ -762,7 +767,7 @@ export default {
         });
 
         this.userExchanges = res.data;
-        this.exchanges.forEach((exchange) => {
+        this.exchanges.forEach((exchange, exchangeIndex) => {
           let indexOf = availableExchangeSetups.indexOf(exchange.name);
           console.log(
             `indexOf: ${indexOf} ${exchange.name}`,
@@ -771,6 +776,14 @@ export default {
           if (indexOf >= 0) {
             exchange.active = true;
             exchange.data = res.data[indexOf];
+
+            if (!this.exchange) {
+              this.selectExchangeCard(
+                `${exchange.name}`,
+                exchange,
+                exchangeIndex
+              );
+            }
           }
         });
       } else {
@@ -1054,6 +1067,11 @@ export default {
 
 .exchange-card {
   height: 100px;
+}
+
+.exchange-card.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 .custom-avatar {

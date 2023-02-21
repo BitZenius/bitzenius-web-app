@@ -175,7 +175,10 @@
       :src="require('assets/images/bitzy loginpage.png')"
       contain
     ></v-img>
-    <div class="text-subtitle white--text footer d-flex flex-column" style="z-index: 2">
+    <div
+      class="text-subtitle white--text footer d-flex flex-column"
+      style="z-index: 2"
+    >
       <div>
         Download our app
         <div class="my-5">
@@ -186,7 +189,7 @@
                 v-on="on"
                 plain
                 :ripple="false"
-                class="white--text mx-3 pa-0"
+                class="white--text mr-3 pa-0"
               >
                 <v-img
                   contain
