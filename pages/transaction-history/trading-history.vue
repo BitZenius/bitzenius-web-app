@@ -135,8 +135,8 @@
           small
           label
           v-if="item.type == 'buy'"
-          class="success--text font-weight-bold"
-          color="success lighten-4"
+          class="white--text font-weight-bold"
+          color="success"
           rounded
         >
           {{ item.type.toUpperCase() }}
@@ -176,8 +176,8 @@
             <v-chip
               v-if="parseFloat(item.desc) > 0"
               small
-              class="success--text font-weight-bold"
-              color="success lighten-4"
+              class="white--text font-weight-bold"
+              color="success"
               label
             >
               <span>${{ item._desc.first }}.{{ item._desc.second }}</span>
@@ -356,8 +356,8 @@ export default {
       this.isLoading = true;
       let tempParams = {};
       tempParams.exchange = this.exchange;
-      tempParams.limit = itemsPerPage == -1 ? this.totalItems : itemsPerPage,
-      tempParams.page = page;
+      (tempParams.limit = itemsPerPage == -1 ? this.totalItems : itemsPerPage),
+        (tempParams.page = page);
 
       if (this.pairSelected) {
         tempParams.symbol = this.pairSelected;
@@ -387,7 +387,7 @@ export default {
       this.$store.commit("setIsLoading", false);
       console.log("fetchReportTrading", res);
       if (res.success) {
-          this.totalItems = res.count;
+        this.totalItems = res.count;
         res.data.forEach((val) => {
           // PRICE TO SMALLER AFTER COMMA
           val._price = {};
