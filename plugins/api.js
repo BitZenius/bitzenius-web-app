@@ -23,7 +23,7 @@ export default function ({ $axios, store, router }, inject) {
       const config = error.response.config
       const data = error.response.data
       
-      if (store.getters.isLoggedIn && config && data.status === 401 && data.code) {
+      if (store.getters.isLoggedIn && config && data.code) {
         switch(data.code) {
           case 'auth/id-token-expired':
             store.$fire.auth.currentUser.getIdToken(true).then((newToken) => {
