@@ -1,8 +1,8 @@
 
-export default function ({ $axios, store }, inject) {
+export default function ({ $axios, store, error: nuxtError }, inject) {
   (async () => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
-    const currentUser = await store.$fire.auth.currentUser
+    const currentUser = store.$fire.auth.currentUser
     const api = $axios.create({
       headers: {
         common: {
@@ -16,20 +16,19 @@ export default function ({ $axios, store }, inject) {
 
     if (currentUser) {
       if (store.getters.getToken) {
-        api.setToken(store.getters.getToken, 'Bearer')
+        api.setHeader('authorization', `Bearer ${store.getters.getToken}`)
       } else {
-        const token = await store.$fire.auth.currentUser.getIdToken()
+        const token = await currentUser.getIdToken()
         store.commit('setToken', token)
-        api.setToken(store.getters.getToken, 'Bearer')
+        api.setHeader('authorization', `Bearer ${token}`)
       }
     }
 
-    /*
-    // for development purpose
     api.onRequest((config) => {
-      console.log(config)
+      if (store.getters.getToken) {
+        config.headers.authorization = `Bearer ${store.getters.getToken}`
+      }
     })
-    */
 
     api.onError((error) => {
       const config = error.response.config
