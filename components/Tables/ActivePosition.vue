@@ -714,7 +714,7 @@ export default {
 
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
-      // this._fetchBotsList(this.exchange); // Fetch Bots List
+      this._fetchBotsList(this.exchange); // Fetch Bots List
       this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
