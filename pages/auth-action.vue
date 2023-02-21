@@ -1,9 +1,6 @@
 <template>
   <div class="app off-white" v-if="config">
-    <v-card
-      class="verification-card d-flex justify-center"
-      color="off-white-3"
-    >
+    <v-card class="verification-card d-flex justify-center" color="off-white-3">
       <v-card-text
         style="text-align: left"
         class="d-flex flex-column justify-center align-center pa-0"
@@ -73,7 +70,7 @@
         </v-form>
       </v-card-text>
     </v-card>
-      <!-- <v-col cols="12" md="4">
+    <!-- <v-col cols="12" md="4">
         <div class="cardColor" elevation="8">
           <div class="pa-md-12 pa-8">
             <v-img
@@ -86,7 +83,7 @@
               contain
               position="center"
             />
-            
+
           </div>
           <MiniFooter />
         </div>
@@ -183,7 +180,7 @@ export default {
     }
   },
   methods: {
-  // TRIGGER
+    // TRIGGER
     handleAnimation: function (anim) {
       this.anim = anim;
     },
@@ -209,8 +206,11 @@ export default {
         })
         .catch((err) => {
           console.log(err);
-          this.message = "Redirecting to home...";
-          this.goToHome(this.config.continueUrl);
+          this.message =
+            "Authentication link already used, please use the latest verification url or resend verification email. Redirecting...";
+          setTimeout(() => {
+            this.$router.push("/verification");
+          }, 3000);
         });
     },
     handleResetPassword() {

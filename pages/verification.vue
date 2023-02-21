@@ -1,9 +1,6 @@
 <template>
-  <div class="app off-white">
-    <v-card
-      class="verification-card d-flex justify-center"
-      color="off-white-3"
-    >
+  <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
+    <v-card class="verification-card d-flex justify-center" color="off-white-3">
       <v-card-text
         style="text-align: left"
         class="d-flex flex-column align-center pa-0"
@@ -21,6 +18,7 @@
           <v-btn
             :loading="isLoading"
             depressed
+            rounded
             class="primary basic-text--text text-capitalize"
             @click.stop="sendEmailVerification"
           >
@@ -29,6 +27,7 @@
           <v-btn
             @click="logout"
             depressed
+            rounded
             color="customPink"
             class="text-capitalize ml-2"
           >
@@ -52,7 +51,8 @@ export default {
   data: () => ({
     isLoading: false,
     emailSent: false,
-    message: "A verification link has been sent to your inbox. Please ensure to check your spam folder as well",
+    message:
+      "A verification link has been sent to your inbox. Please ensure to check your spam folder as well",
     buttonText: "Resend Email",
     // LOTTIE
     anim: null, // for saving the reference to the animation
@@ -81,8 +81,7 @@ export default {
     setTimeout(() => {
       if (this.user.emailVerified) {
         return this.$router.push("/");
-      }else{
-        alert('notVerified')
+      } else {
         this.sendEmailVerification();
       }
     });
@@ -139,9 +138,26 @@ export default {
   transform: translate(-50%, -50%);
 }
 .app {
+  background: linear-gradient(
+    90deg,
+    rgba(51, 148, 248, 1) 45%,
+    rgba(255, 255, 255, 1) 45%
+  );
   height: 100%;
-  background-position: center;
+  background-position: left;
   background-repeat: no-repeat;
-  background-size: cover;
+  background-size: contain;
+  position: relative;
+  overflow-y: hidden;
+}
+
+.app.dark {
+  background: linear-gradient(90deg, #1d1f2b 45%, #212434 45%);
+  height: 100%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  overflow-y: hidden;
 }
 </style>
