@@ -69,7 +69,12 @@
                       {{ item.title }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                      <strong
+                      <strong v-if="item.key == 'total_step'"
+                        class="text-body-1 font-weight-bold basic-text--text"
+                      >
+                        {{ item.value - 1 == 0 ? 'Initial Order' : item.value - 1 }}
+                      </strong>
+                      <strong v-else
                         class="text-body-1 font-weight-bold basic-text--text"
                       >
                         {{ item.value }}
