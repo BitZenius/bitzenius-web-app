@@ -138,11 +138,11 @@
         ></base-menu-item>
       </v-list>
 
-      <v-row justify="center" class="my-0 py-0">
+      <!-- <v-row justify="center" class="my-0 py-0">
         <v-col cols="12" class="d-flex justify-center my-0 py-0">
-          <ThemeToggle></ThemeToggle>
+
         </v-col>
-      </v-row>
+      </v-row> -->
       <!-- <v-icon
         v-show="drawer"
         class="mr-3 primary--text menu-arrow"
@@ -169,6 +169,9 @@
       >
       <!-- <v-toolbar-title class="text-h5 font-weight-bold" v-text="title" /> -->
       <v-spacer />
+      <div class="d-flex align-center">
+        <ThemeToggle></ThemeToggle>
+      </div>
       <v-btn v-show="false" icon class="mr-2">
         <v-icon>mdi-translate</v-icon>
       </v-btn>
@@ -261,22 +264,51 @@
       </v-btn>
     </v-bottom-navigation>
     <v-footer v-else fixed>
-      <v-row justify="space-between">
+      <v-row justify="space-between" class="pl-5">
         <v-col cols="2"></v-col>
         <v-col
-          class="text-left text--disabled d-flex align-center pl-5"
+          class="text-left text--disabled d-flex align-center pl-10"
           cols="4"
         >
           &copy;{{ new Date().getFullYear() }} - BitZenius
         </v-col>
         <v-col class="d-flex align-center justify-end" cols="6">
           Download our app
-          <v-btn plain :ripple="false" class="white--text mx-3 pa-0">
-            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
-          </v-btn>
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
-          </v-btn>
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text mx-3 pa-0 my-2"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/AS128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
+
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text pa-0 my-2"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/GP128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
         </v-col>
       </v-row>
     </v-footer>
@@ -480,7 +512,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .main-container {
   height: 100%;
   min-height: 120vh;
@@ -520,5 +552,20 @@ export default {
   right: 0%;
   bottom: 0%;
   display: none;
+}
+
+/* .v-navigation-drawer__content {
+  overflow-y: hidden !important;
+} */
+
+/* Hide scrollbar for Chrome, Safari and Opera */
+.v-navigation-drawer__content::-webkit-scrollbar {
+  display: none;
+}
+
+/* Hide scrollbar for IE, Edge and Firefox */
+.v-navigation-drawer__content {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 </style>

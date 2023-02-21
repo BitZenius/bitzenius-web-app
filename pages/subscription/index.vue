@@ -370,7 +370,7 @@
         >
         </v-img>
 
-        <div class="lottie-container">
+        <div class="lottie-container-subs">
           <template>
             <!-- width and height are optional -->
             <lottie
@@ -556,16 +556,16 @@ export default {
       this.anim = anim;
     },
     // FETCHING API
-    async _fetchUserSubscription(){
+    async _fetchUserSubscription() {
       console.log(this.user);
-      try{
-        let res = await this.$api.$get('/user/subscription/user-trial',{
-          params:{
-            uid:this.user.uid
+      try {
+        let res = await this.$api.$get("/user/subscription/user-trial", {
+          params: {
+            uid: this.user.uid,
             // uid:'xxx'
-          }
-        })
-        if(res.data){
+          },
+        });
+        if (res.data) {
           console.log(res);
           this.$store.commit("setShowSnackbar", {
             show: true,
@@ -573,14 +573,14 @@ export default {
             color: "success",
           });
         }
-      }catch(error){
+      } catch (error) {
         this.$store.commit("setShowSnackbar", {
           show: true,
           message: "User doesn't have subscription",
           color: "danger",
         });
       }
-  },
+    },
     // END OF FETCHING API
     initialize() {
       this.isLoading = true;
@@ -804,7 +804,7 @@ table.invoice td {
   top: 82%;
   left: 20%;
 }
-.lottie-container {
+.lottie-container-subs {
   position: absolute;
   top: -5%;
   left: 0%;

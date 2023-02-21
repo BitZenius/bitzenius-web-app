@@ -122,8 +122,8 @@
                 <v-chip
                   v-if="parseFloat(item.pnl) > 0"
                   small
-                  class="success--text font-weight-bold"
-                  color="success lighten-4"
+                  class="white--text font-weight-bold"
+                  color="success"
                   label
                 >
                   <span
@@ -190,8 +190,8 @@
         <v-chip
           v-if="parseFloat(item.profit) > 0"
           small
-          class="success--text font-weight-bold"
-          color="success lighten-4"
+          class="white--text font-weight-bold"
+          color="success"
           label
         >
           <span>${{ item._profit.first }}.{{ item._profit.second }}</span>

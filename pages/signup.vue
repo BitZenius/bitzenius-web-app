@@ -2,7 +2,7 @@
   <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="5" style="z-index: 2">
         <v-row class="pa-8 basic-text--text main-card" justify="start">
           <v-col cols="12" style="max-width: 80%" class="mb-4">
             <div class="text-h4 font-weight-bold decorated-text">
@@ -74,7 +74,7 @@
                     v-model="hearAboutModel"
                     :items="hearAboutItems"
                     @change="onHearAboutSelected(hearAboutModel)"
-                    placeholder="Select one..."
+                    placeholder="Select one"
                     item-text="name"
                     item-value="value"
                     required
@@ -200,19 +200,48 @@
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
       class="ornament-3"
-      :src="require('assets/images/bitzy trading.png')"
+      :src="require('assets/images/bitzy loginpage.png')"
       contain
     ></v-img>
-    <div class="text-subtitle white--text footer d-flex flex-column">
+    <div class="text-subtitle white--text footer d-flex flex-column" style="z-index: 2">
       <div>
         Download our app
         <div class="my-5">
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
-          </v-btn>
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
-          </v-btn>
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text mx-3 pa-0"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/AS128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
+
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text pa-0"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/GP128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
         </div>
       </div>
       ©2023 - BitZenius. All rights reserved.
@@ -324,7 +353,7 @@ export default {
             email: this.email,
             password: this.password,
             referral: this.referral,
-            hearAbout: hearAboutDict,
+            // hearAbout: hearAboutDict,
           })
           .then((result) => {
             this.isLoading = true;
@@ -421,12 +450,13 @@ export default {
 }
 .ornament-3 {
   position: absolute;
-  width: 20%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
-  top: 50%;
-  left: 40%;
+  top: 45%;
+  left: 32%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 .footer {
   position: absolute;

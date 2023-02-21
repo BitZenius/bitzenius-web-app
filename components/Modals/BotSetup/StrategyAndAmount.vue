@@ -8,15 +8,17 @@
               <h3 class="mb-4 text-h6 font-weight-bold">Choose the Amount</h3>
               <!-- <v-btn small @click="_logger">logger</v-btn> -->
 
-              <v-row class="d-flex align-center" style="width: 100%">
+              <v-row class="d-flex align-end" style="width: 100%">
                 <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
                   Total USDT To Apply
                   <v-text-field
                     v-model="strategy.usdt_to_apply"
+                    @blur="onUsdtToApplyChanged(strategy.usdt_to_apply)"
                     required
                     placeholder="Total USDT To Apply"
                     hide-details=""
                     rounded
+                    type="number"
                     class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
@@ -57,6 +59,7 @@
                     placeholder="USDT Per Order"
                     hide-details=""
                     rounded
+                    type="number"
                     class="my-2 custom-input text-body-1"
                   >
                     <template v-slot:append>
@@ -94,6 +97,7 @@
                     hide-details=""
                     rounded
                     class="my-2 custom-input text-body-1"
+                    type="number"
                   >
                     <template v-slot:append>
                       <v-tooltip bottom color="primary">
@@ -119,6 +123,14 @@
                       </v-tooltip>
                     </template>
                   </v-text-field>
+                </v-col>
+
+                <v-col
+                  cols="6"
+                  v-if="recommendedMaxTradingPair[1] !== ''"
+                  style="height: 100%"
+                >
+                  <i class="text-body-1">*{{ recommendedMaxTradingPair[1] }}</i>
                 </v-col>
                 <v-col
                   v-if="false"
@@ -194,7 +206,30 @@
                 </v-col>
               </v-row>
             </div>
-            <slot> </slot>
+            <v-row>
+              <v-col cols="6">
+                <!-- <v-tooltip top color="primary">
+                  <template v-slot:activator="{ on, attrs }">
+
+                  </template>
+                  <span
+                    >Please select strategy, Total USDT to apply, and USDT per
+                    order to use this feature</span
+                  >
+                </v-tooltip> -->
+                <v-btn
+                  :disabled="selectedStrategyName == null"
+                  color="primary"
+                  rounded
+                  @click="recommendSettings"
+                >
+                  Use Recommended Settings</v-btn
+                >
+              </v-col>
+              <v-col cols="6" class="d-flex justify-end">
+                <slot> </slot>
+              </v-col>
+            </v-row>
           </v-col>
         </v-row>
       </v-card>
@@ -204,7 +239,18 @@
       cols="6"
     >
       <v-card flat rounded class="pa-5 mt-2">
-        <h3 class="mb-4">{{ selectedStrategyName }}</h3>
+        <v-list-item class="mb-5">
+          <!-- <v-list-item-avatar> -->
+          <v-icon size="30" class="primary--text mr-3">
+            $vuetify.icons.ProfitBarChartIcon
+          </v-icon>
+          <!-- </v-list-item-avatar> -->
+          <v-list-item-content>
+            <v-list-item-title class="text-h5 font-weight-bold">{{
+              selectedStrategyName
+            }}</v-list-item-title>
+          </v-list-item-content>
+        </v-list-item>
 
         <v-simple-table
           v-if="strategy.style.steps"
@@ -247,35 +293,112 @@
                 class="text-center"
                 v-for="(child, y, key) in strategy.style.steps"
                 :key="child.key"
+                @click="selectRow(child, y)"
               >
-                <td class="text-body-1">{{ y + 1 }}</td>
-                <td class="text-body-1">
-                  <div class="d-flex align-center">
-                    <span>{{ child.drop_rate }}</span>
-                    <v-icon x-small slot="append" color="primary">
-                      mdi-percent
-                    </v-icon>
-                  </div>
-                </td>
-                <td class="text-body-1">
-                  <div class="d-flex align-center">
-                    <span>{{ child.multiplier }}</span>
-                    <v-icon x-small slot="append" color="primary">
-                      mdi-close
-                    </v-icon>
-                  </div>
-                </td>
-                <td class="text-body-1">
-                  <div class="d-flex align-center">
-                    <span>{{ child.take_profit }}</span>
-                    <v-icon x-small slot="append" color="primary">
-                      mdi-percent
-                    </v-icon>
-                  </div>
-                </td>
-                <td class="text-body-1">
-                  <span>{{ child.type }}</span>
-                </td>
+                <template v-if="editStep == y">
+                  <td class="text-body-1">
+                    {{ y + 1 }}
+                    <div class="d-flex">
+                      <v-btn
+                        @click="saveRowChanges"
+                        x-small
+                        class="mx-1"
+                        color="success"
+                      >
+                        <v-icon small>mdi-check</v-icon>
+                      </v-btn>
+                      <v-btn
+                        @click="cancelRowChanges"
+                        x-small
+                        class="mx-1"
+                        color="danger"
+                      >
+                        <v-icon small>mdi-cancel</v-icon>
+                      </v-btn>
+                    </div>
+                  </td>
+                  <td>
+                    <v-text-field
+                      class="text-body-1"
+                      v-model="customDrop"
+                      placeholder="1.2"
+                    >
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </v-text-field>
+                  </td>
+                  <td>
+                    <v-text-field
+                      class="text-body-1"
+                      v-model="customBuy"
+                      placeholder="2"
+                    >
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-close
+                      </v-icon>
+                    </v-text-field>
+                  </td>
+                  <td>
+                    <v-text-field
+                      class="text-body-1"
+                      v-model="customProfit"
+                      placeholder="1.1"
+                    >
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </v-text-field>
+                  </td>
+                  <td>
+                    <v-select
+                      :items="types"
+                      v-model="customType"
+                      label="Type"
+                    ></v-select>
+                  </td>
+                </template>
+                <template v-else>
+                  <td class="text-body-1 d-flex align-center justify-center">
+                    <v-btn
+                      v-if="y + 1 == strategy.style.steps.length"
+                      @click="deleteRow(y)"
+                      x-small
+                      class="mx-1"
+                      color="danger"
+                    >
+                      <v-icon small>mdi-delete</v-icon>
+                    </v-btn>
+                    {{ y + 1 }}
+                  </td>
+                  <td class="text-body-1">
+                    <div class="d-flex align-center">
+                      <span>{{ child.drop_rate }}</span>
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </div>
+                  </td>
+                  <td class="text-body-1">
+                    <div class="d-flex align-center">
+                      <span>{{ child.multiplier }}</span>
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-close
+                      </v-icon>
+                    </div>
+                  </td>
+                  <td class="text-body-1">
+                    <div class="d-flex align-center">
+                      <span>{{ child.take_profit }}</span>
+                      <v-icon x-small slot="append" color="primary">
+                        mdi-percent
+                      </v-icon>
+                    </div>
+                  </td>
+                  <td class="text-body-1">
+                    <span>{{ child.type }}</span>
+                  </td>
+                </template>
               </tr>
               <tr
                 v-if="
@@ -292,7 +415,7 @@
               <tr v-if="selectedStrategyName == 'Custom'">
                 <td v-if="selectedStrategyName == 'Custom'">
                   <v-btn
-                    class="customGreen basic-text--text"
+                    class="primary basic-text--text"
                     small
                     @click="
                       addRowCustom(
@@ -403,6 +526,12 @@ export default {
         key: "E",
       },
       types: ["DCA", "GRID"],
+
+      // EDIT ROW
+      editStep: null,
+
+      // RECOMMENDED
+      recommendedMaxTradingPair: [0, ""],
     };
   },
   methods: {
@@ -430,6 +559,53 @@ export default {
           this.$refs.usdt_per_order.focus();
         });
       }
+
+      this.resetRecommendedSettings();
+    },
+    onUsdtToApplyChanged(value) {
+      this.resetRecommendedSettings();
+    },
+
+    selectRow(child, step) {
+      if (this.editStep == step) {
+        return;
+      }
+      this.customDrop = child.drop_rate;
+      this.customBuy = child.multiplier;
+      this.customProfit = child.take_profit;
+      this.customType = child.type;
+
+      this.editStep = step;
+    },
+    deleteRow(step) {
+      // ACCOMMODATE ONLY THE LAST ITEM ON ARRAY
+      this.strategy.style.steps.pop();
+    },
+    cancelRowChanges() {
+      setTimeout(() => {
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        this.editStep = null;
+      }, 100);
+    },
+    saveRowChanges() {
+      this.strategy.style.steps[this.editStep] = {
+        step: this.editStep,
+        drop_rate: this.customDrop,
+        multiplier: this.customBuy,
+        take_profit: this.customProfit,
+        type: this.customType,
+      };
+
+      setTimeout(() => {
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        this.editStep = null;
+      }, 100);
     },
     addRowCustom(drop, multiplier, profit, type) {
       // if GRID selected, don't allow to select DCA;
@@ -510,6 +686,66 @@ export default {
 
       // await this.fetchFormula
     },
+
+    // RECOMMENDED SETTINGS
+    resetRecommendedSettings() {
+      this.recommendedMaxTradingPair = [0, ""];
+    },
+    recommendSettings() {
+      if (!this.selectedStrategyName) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Please select strategy",
+          color: "customPink",
+        });
+        return false;
+      } else if (this.strategy.usdt_per_order < 15) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "USDT Per Order Cannot Be Under 15!",
+          color: "customPink",
+        });
+        return false;
+      }
+
+      this.recommendedMaxTradingPair = this.recommendMaxTradingPairs(
+        this.strategy.style.steps,
+        this.strategy.usdt_to_apply,
+        this.strategy.usdt_per_order
+      );
+      this.strategy.max_concurrent_trading_pair = Math.floor(
+        this.recommendedMaxTradingPair[0]
+      );
+    },
+
+    /**
+     *
+     * @param {*} array Array of steps
+     * @param {*} usdt_to_apply
+     * @param {*} usdt_per_order
+     * @returns Array[recommended value, text: recommended value ex: between x - x]
+     * Calculate recommended max trading pairs by user's total usdt to apply and usdt per order
+     */
+    recommendMaxTradingPairs(array, usdt_to_apply, usdt_per_order) {
+      console.log(array);
+      var total_usdt_per_pair = 0;
+
+      if (array.length < 1) {
+        return [0, ""];
+      }
+
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        total_usdt_per_pair += usdt_per_order * element.multiplier;
+      }
+
+      var recommended_pair = usdt_to_apply / total_usdt_per_pair;
+      var recommended_pair_text = `Recommended max trading pairs: ${Math.floor(
+        recommended_pair
+      )} - ${Math.ceil(recommended_pair)}`;
+
+      return [recommended_pair, recommended_pair_text];
+    },
   },
   mounted() {
     if (this.selectedStrategy) {
@@ -521,7 +757,6 @@ export default {
   watch: {
     strategy: {
       handler(nv, ov) {
-        console.log("nv.usdt_per_order", nv.usdt_per_order);
         nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
         nv.usdt_per_order = nv.usdt_per_order
           ? parseFloat(nv.usdt_per_order)
@@ -529,12 +764,14 @@ export default {
         nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair
           ? parseFloat(nv.max_concurrent_trading_pair)
           : 1;
+
         this.$emit("onSelected", nv);
       },
       deep: true,
     },
     selectedStrategyName: {
       handler(nv, ov) {
+        this.recommendedMaxTradingPair = [0, ""];
         this.selectStyleByName(nv);
       },
     },

@@ -9,12 +9,13 @@
     class="custom-menu mb-2"
   >
     <v-list-item-action>
-      <v-list-item-avatar size="35">
-        <v-icon v-if="icon" v-html="avatar" size="18"> </v-icon>
-      </v-list-item-avatar>
+      <v-icon v-if="icon" v-html="avatar" size="21" class="mx-4"> </v-icon>
+
+      <!-- <v-list-item-avatar size="35">
+      </v-list-item-avatar> -->
     </v-list-item-action>
     <v-list-item-content>
-      <v-list-item-title class="basic-text--text text-body-2">{{
+      <v-list-item-title class="basic-text--text text-body-1">{{
         cardtitle
       }}</v-list-item-title>
     </v-list-item-content>
@@ -112,7 +113,6 @@ export default {
 
 .custom-menu.v-list-item:not(.v-list-item--active):hover
   > .v-list-item__action
-  > .v-list-item__avatar
   > .v-icon {
   color: var(--primary) !important;
 }

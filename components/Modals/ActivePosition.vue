@@ -6,11 +6,11 @@
     :fullscreen="$vuetify.breakpoint.mobile"
   >
     <v-card flat rounded>
-      <v-card-title class="text-h6 font-weight-bold primary basic--text">
+      <v-card-title class="text-h6 font-weight-bold primary white--text">
         <v-row>
           <v-col cols="6">Transaction</v-col>
           <v-col cols="6" class="d-flex justify-end">
-            <v-btn color="basic" icon @click="closeModal">
+            <v-btn color="white" icon @click="closeModal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-col>

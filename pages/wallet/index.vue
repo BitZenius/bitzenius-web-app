@@ -14,22 +14,22 @@
             class="elevation-2 my-2"
           >
             <template v-slot:header.pair="{ header }">
-              <strong class="black--text text-body-1 font-weight-bold">{{
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
                 header.text
               }}</strong>
             </template>
             <template v-slot:header.date="{ header }">
-              <strong class="black--text text-body-1 font-weight-bold">{{
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
                 header.text
               }}</strong>
             </template>
             <template v-slot:header.price="{ header }">
-              <strong class="black--text text-body-1 font-weight-bold">{{
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
                 header.text
               }}</strong>
             </template>
             <template v-slot:header.qty="{ header }">
-              <strong class="black--text text-body-1 font-weight-bold">{{
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
                 header.text
               }}</strong>
             </template>
@@ -179,8 +179,8 @@
                 <v-chip
                   v-if="item.status == 1"
                   small
-                  class="success--text font-weight-bold"
-                  color="success-light"
+                  class="white--text font-weight-bold"
+                  color="success"
                 >
                   Done
                 </v-chip>
@@ -231,7 +231,7 @@ export default {
   data() {
     return {
       // Detail Dialog
-      showDetailDialog:false,
+      showDetailDialog: false,
       tradingHeadersDetail: [
         {
           text: "Pair",
@@ -256,7 +256,7 @@ export default {
           cellClass: "font-weight-bold",
         },
       ],
-      tradingItemsDetail:[],
+      tradingItemsDetail: [],
       // End Of Detail Dialog
       text: "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor in",
       title: "Wallet Overview",
@@ -377,7 +377,7 @@ export default {
               description: result.description,
               amount: result.debt || result.credit,
               debt: result.debt,
-              reference:result.reference,
+              reference: result.reference,
               credit: result.credit,
               type: result.type.replace("_", " "),
               status: result.status,
@@ -407,12 +407,12 @@ export default {
     },
 
     // Trigger
-    async onDetailClicked(val){
-      try{
-        let res = await this.$api.$get('/user/balance/detail',{
-          params:{
-            order_id:val.reference.id
-          }
+    async onDetailClicked(val) {
+      try {
+        let res = await this.$api.$get("/user/balance/detail", {
+          params: {
+            order_id: val.reference.id,
+          },
         });
 
         let tempArray = [];
@@ -432,14 +432,13 @@ export default {
         });
         this.tradingItemsDetail = tempArray;
         this.showDetailDialog = true;
-      }catch(error){
+      } catch (error) {
         this.$store.commit("setShowSnackbar", {
           show: true,
           message: error.message,
           color: "danger",
         });
       }
-
     },
     closeModal() {
       alert("closeModal");

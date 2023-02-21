@@ -12,7 +12,7 @@
 
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
-      <v-col cols="12" md="5">
+      <v-col cols="12" md="5" style="z-index: 2">
         <v-row class="pa-8 basic-text--text main-card" justify="start">
           <v-col cols="12" style="max-width: 80%" class="mb-8">
             <div class="text-h4 font-weight-bold decorated-text">
@@ -47,7 +47,7 @@
                     v-model="email"
                     :rules="emailRules"
                     required
-                    placeholder="Email..."
+                    placeholder="Email"
                     dense
                     rounded
                     class="mb-2 custom-input py-2"
@@ -58,6 +58,7 @@
                   <v-text-field
                     v-model="password"
                     :value="password"
+                    placeholder="Password"
                     :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
                     :type="show1 ? 'text' : 'password'"
                     :rules="passwordRules"
@@ -139,7 +140,9 @@
               :color="message.color"
             >
               <v-row>
-                <v-col class="grow d-flex justify-center align-center white--text">
+                <v-col
+                  class="grow d-flex justify-center align-center white--text"
+                >
                   {{ message.text }}
                 </v-col>
                 <v-col class="shrink">
@@ -168,21 +171,49 @@
     <v-img class="ornament-1" src="/images/signin-vector.svg"></v-img>
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
-      width="650"
       class="ornament-3"
-      :src="require('assets/images/bitzy trading.png')"
+      :src="require('assets/images/bitzy loginpage.png')"
       contain
     ></v-img>
-    <div class="text-subtitle white--text footer d-flex flex-column">
+    <div class="text-subtitle white--text footer d-flex flex-column" style="z-index: 2">
       <div>
         Download our app
         <div class="my-5">
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/AS128.png')"></v-img>
-          </v-btn>
-          <v-btn plain :ripple="false" class="white--text pa-0">
-            <v-img contain :src="require('@/assets/images/GP128.png')"></v-img>
-          </v-btn>
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text mx-3 pa-0"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/AS128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
+
+          <v-tooltip color="primary" top>
+            <template v-slot:activator="{ on, attrs }">
+              <v-btn
+                v-bind="attrs"
+                v-on="on"
+                plain
+                :ripple="false"
+                class="white--text pa-0"
+              >
+                <v-img
+                  contain
+                  :src="require('@/assets/images/GP128.png')"
+                ></v-img>
+              </v-btn>
+            </template>
+            <span>Coming soon!</span>
+          </v-tooltip>
         </div>
       </div>
       ©2023 - BitZenius. All rights reserved.
@@ -282,7 +313,9 @@ export default {
             return this.$router.go("/verification");
           } else {
             this.message = {
-              text: err.response.data ? err.response.data : "Invalid credentials. Please try again",
+              text: err.response.data
+                ? err.response.data
+                : "Invalid credentials. Please try again",
               color: "error",
             };
           }
@@ -408,12 +441,13 @@ export default {
 }
 .ornament-3 {
   position: absolute;
-  width: 20%;
-  height: 50%;
+  width: 100%;
+  height: 100%;
   border-radius: 20px;
-  top: 50%;
-  left: 40%;
+  top: 45%;
+  left: 32%;
   transform: translate(-50%, -50%);
+  z-index: 1;
 }
 .footer {
   position: absolute;

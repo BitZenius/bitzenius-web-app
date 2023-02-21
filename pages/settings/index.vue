@@ -15,12 +15,12 @@
             <v-list dense>
               <v-list-item
                 :class="
-                  e1 == 1
+                  e1 == 0
                     ? 'custom-stepper mb-2 off-white-3'
                     : 'custom-stepper mb-2 off-white-2'
                 "
                 :ripple="false"
-                @click="e1 = 1"
+                @click="e1 = 0"
               >
                 <v-list-item-content>
                   <v-list-item-titl class="pl-2 text-body-1 font-weight-bold"
@@ -30,12 +30,12 @@
               </v-list-item>
               <v-list-item
                 :class="
-                  e1 == 2
+                  e1 == 1
                     ? 'custom-stepper mb-2 off-white-3'
                     : 'custom-stepper mb-2 off-white-2'
                 "
                 :ripple="false"
-                @click="e1 = 2"
+                @click="e1 = 1"
               >
                 <v-list-item-content>
                   <v-list-item-title class="pl-2 text-body-1 font-weight-bold"
@@ -46,12 +46,12 @@
 
               <v-list-item
                 :class="
-                  e1 == 3
+                  e1 == 2
                     ? 'custom-stepper mb-2 off-white-3'
                     : 'custom-stepper mb-2 off-white-2'
                 "
                 :ripple="false"
-                @click="e1 = 3"
+                @click="e1 = 2"
               >
                 <v-list-item-content>
                   <v-list-item-title class="pl-2 text-body-1 font-weight-bold"
@@ -65,7 +65,204 @@
           <!-- CUSTOM STEPPER ENDS -->
         </v-col>
         <v-col cols="9">
+          <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
+            <v-tab-item key="0">
+              <v-row>
+                <v-col cols="12">
+                  <v-alert
+                    border="left"
+                    dense
+                    colored-border
+                    color="success"
+                    class="text-body-1 font-weight-bold custom-alert"
+                    >Profile Information</v-alert
+                  >
+                </v-col>
+                <v-col cols="2">
+                  <v-avatar size="100">
+                    <img
+                      :src="userData.photo_url"
+                      :alt="userData.display_name"
+                    />
+                  </v-avatar>
+                </v-col>
+                <v-col cols="10">
+                  <v-row>
+                    <v-col cols="12" class="d-flex align-center mt-8">
+                      <v-btn
+                        depressed
+                        :loading="isSelecting"
+                        @click.stop="doUpload"
+                        color="primary"
+                        rounded
+                        class="mr-5"
+                      >
+                        Upload New Picture
+                      </v-btn>
+                      <v-btn depressed rounded color="primary" outlined>
+                        Remove
+                      </v-btn>
+                      <v-file-input
+                        ref="uploader"
+                        @change="(file) => uploadImage(file)"
+                        hide-input
+                        class="d-none"
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <div class="mb-2 font-weight-bold">Display Name</div>
+
+                      <v-text-field
+                        v-model="userData.display_name"
+                        rounded
+                        class="custom-input py-2"
+                        dense
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <div class="mb-2 font-weight-bold">Email</div>
+
+                      <v-text-field
+                        v-model="userData.email"
+                        rounded
+                        class="custom-input py-2"
+                        dense
+                        disabled
+                      />
+                    </v-col>
+                    <v-col cols="12">
+                      <div class="mb-2 font-weight-bold">Password</div>
+                      <div class="grey--text mb-3">
+                        To change your password, please logout from your account
+                        and click "forgot password" to reset your password
+                      </div>
+                    </v-col>
+                    <v-col cols="12" class="mt-10">
+                      <v-btn color="primary" rounded style="width: 168px">
+                        Save
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+
+            <v-tab-item key="1">
+              <v-row>
+                <v-col cols="12">
+                  <v-alert
+                    border="left"
+                    dense
+                    colored-border
+                    color="customYellow"
+                    class="text-body-1 font-weight-bold custom-alert"
+                    >Wallet Information</v-alert
+                  >
+                </v-col>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Virtual Account</div>
+                  <v-text-field
+                    v-model="userData.wallet_va"
+                    rounded
+                    class="custom-input py-2"
+                    dense
+                    disabled
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Wallet Address</div>
+                  <v-text-field
+                    v-model="userData.wallet"
+                    rounded
+                    class="custom-input py-2"
+                    dense
+                  />
+                </v-col>
+                <v-col cols="12" class="mt-10">
+                  <v-btn color="primary" rounded style="width: 168px">
+                    Save
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+
+            <v-tab-item key="2">
+              <v-row>
+                <v-col cols="12">
+                  <v-alert
+                    border="left"
+                    dense
+                    colored-border
+                    color="customPink"
+                    class="text-body-1 font-weight-bold custom-alert"
+                    >Account Settings</v-alert
+                  >
+                </v-col>
+                <v-col cols="8">
+                  <div class="font-weight-bold">Telegram Bot</div>
+                  <div class="grey--text">
+                    Activate BitZenius Telegram Bot as your virtual assistant
+                  </div>
+                </v-col>
+                <v-col cols="4" class="d-flex align-center justify-end">
+                  <v-btn
+                    depressed
+                    :loading="isLoading"
+                    class="mt-3 text-capitalize"
+                    :color="telegramConnected ? 'secondary' : 'primary'"
+                    :disabled="telegramConnected"
+                    @click.stop="connectTelegram"
+                  >
+                    <v-icon left> mdi-send </v-icon>
+                    {{ telegramConnected ? "Connected" : "Connect" }}
+                  </v-btn>
+                  <a ref="telegramLink" target="_blank" />
+                </v-col>
+                <v-col cols="12">
+                  <div class="font-weight-bold">Two-Factor Authentication</div>
+                  <div class="grey--text">
+                    Choose your preferred 2FA for your account
+                  </div>
+                </v-col>
+                <v-col
+                  cols="8"
+                  class="font-weight-bold d-flex align-center justify-start"
+                >
+                  Email
+                </v-col>
+                <v-col cols="4" class="d-flex align-center justify-end">
+                  <v-switch
+                    v-model="selected2FA.email"
+                    hide-details
+                    inset
+                    color="primary"
+                  ></v-switch>
+                </v-col>
+                <v-col
+                  cols="8"
+                  class="font-weight-bold d-flex align-center justify-start"
+                >
+                  Telegram
+                </v-col>
+                <v-col cols="4" class="d-flex align-center justify-end">
+                  <v-switch
+                    v-model="selected2FA.telegram"
+                    hide-details
+                    inset
+                    color="primary"
+                  ></v-switch>
+                </v-col>
+                <v-col cols="12" class="mt-10">
+                  <v-btn color="primary" rounded style="width: 168px">
+                    Save
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+          </v-tabs-items>
+
           <v-stepper
+            v-if="false"
             class="off-white-3"
             flat
             v-model="e1"
@@ -73,372 +270,26 @@
             style="height: 100%"
           >
             <v-stepper-items class="off-white-3" style="width: 100%">
-              <v-stepper-content class="pa-5 off-white-3" step="1">
-                <v-row>
-                  <v-col cols="12">
-                    <v-alert
-                      border="left"
-                      dense
-                      colored-border
-                      color="success"
-                      class="text-body-1 font-weight-bold custom-alert"
-                      >Profile Information</v-alert
-                    >
-                  </v-col>
-                  <v-col cols="2">
-                    <v-avatar size="100">
-                      <img
-                        :src="userData.photo_url"
-                        :alt="userData.display_name"
-                      />
-                    </v-avatar>
-                  </v-col>
-                  <v-col cols="10">
-                    <v-row>
-                      <v-col cols="12" class="d-flex align-center mt-8">
-                        <v-btn
-                          depressed
-                          :loading="isSelecting"
-                          @click.stop="doUpload"
-                          color="primary"
-                          rounded
-                          class="mr-5"
-                        >
-                          Upload New Picture
-                        </v-btn>
-                        <v-btn depressed rounded color="primary" outlined>
-                          Remove
-                        </v-btn>
-                        <v-file-input
-                          ref="uploader"
-                          @change="(file) => uploadImage(file)"
-                          hide-input
-                          class="d-none"
-                        />
-                      </v-col>
-                      <v-col cols="6">
-                        <div class="mb-2 font-weight-bold">Display Name</div>
-
-                        <v-text-field
-                          v-model="userData.display_name"
-                          rounded
-                          class="custom-input py-2"
-                          dense
-                        />
-                      </v-col>
-                      <v-col cols="6">
-                        <div class="mb-2 font-weight-bold">Email</div>
-
-                        <v-text-field
-                          v-model="userData.email"
-                          rounded
-                          class="custom-input py-2"
-                          dense
-                          disabled
-                        />
-                      </v-col>
-                      <v-col cols="12">
-                        <div class="mb-2 font-weight-bold">Password</div>
-                        <div class="grey--text mb-3">
-                          To change your password, please logout from your
-                          account and click "forgot password" to reset your
-                          password
-                        </div>
-                      </v-col>
-                      <v-col cols="12" class="mt-10">
-                        <v-btn color="primary" rounded style="width: 168px">
-                          Save
-                        </v-btn>
-                      </v-col>
-                    </v-row>
-                  </v-col>
-                </v-row>
+              <v-stepper-content
+                class="pa-5 off-white-3"
+                step="1"
+                transition="scale-transition"
+              >
               </v-stepper-content>
 
-              <v-stepper-content class="pa-5 off-white-3" step="2">
-                <v-row>
-                  <v-col cols="12">
-                    <v-alert
-                      border="left"
-                      dense
-                      colored-border
-                      color="customYellow"
-                      class="text-body-1 font-weight-bold custom-alert"
-                      >Wallet Information</v-alert
-                    >
-                  </v-col>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">Virtual Account</div>
-                    <v-text-field
-                      v-model="userData.wallet_va"
-                      rounded
-                      class="custom-input py-2"
-                      dense
-                      disabled
-                    />
-                  </v-col>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">Wallet Address</div>
-                    <v-text-field
-                      v-model="userData.wallet"
-                      rounded
-                      class="custom-input py-2"
-                      dense
-                    />
-                  </v-col>
-                  <v-col cols="12" class="mt-10">
-                    <v-btn color="primary" rounded style="width: 168px">
-                      Save
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-stepper-content>
+              <v-stepper-content
+                class="pa-5 off-white-3"
+                step="2"
+                transition="scale-transition"
+              ></v-stepper-content>
 
-              <v-stepper-content class="pa-5 off-white-3" step="3">
-                <v-row>
-                  <v-col cols="12">
-                    <v-alert
-                      border="left"
-                      dense
-                      colored-border
-                      color="customPink"
-                      class="text-body-1 font-weight-bold custom-alert"
-                      >Account Settings</v-alert
-                    >
-                  </v-col>
-                  <v-col cols="8">
-                    <div class="font-weight-bold">Telegram Bot</div>
-                    <div class="grey--text">
-                      Activate BitZenius Telegram Bot as your virtual assistant
-                    </div>
-                  </v-col>
-                  <v-col cols="4" class="d-flex align-center justify-end">
-                    <v-btn
-                      depressed
-                      :loading="isLoading"
-                      class="mt-3 text-capitalize"
-                      :color="telegramConnected ? 'secondary' : 'primary'"
-                      :disabled="telegramConnected"
-                      @click.stop="connectTelegram"
-                    >
-                      <v-icon left> mdi-send </v-icon>
-                      {{ telegramConnected ? "Connected" : "Connect" }}
-                    </v-btn>
-                    <a ref="telegramLink" target="_blank" />
-                  </v-col>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">
-                      Two-Factor Authentication
-                    </div>
-                    <div class="grey--text">
-                      Choose your preferred 2FA for your account
-                    </div>
-                  </v-col>
-                  <v-col
-                    cols="8"
-                    class="font-weight-bold d-flex align-center justify-start"
-                  >
-                    Email
-                  </v-col>
-                  <v-col cols="4" class="d-flex align-center justify-end">
-                    <v-switch
-                      v-model="selected2FA.email"
-                      hide-details
-                      inset
-                      color="primary"
-                    ></v-switch>
-                  </v-col>
-                  <v-col
-                    cols="8"
-                    class="font-weight-bold d-flex align-center justify-start"
-                  >
-                    Telegram
-                  </v-col>
-                  <v-col cols="4" class="d-flex align-center justify-end">
-                    <v-switch
-                      v-model="selected2FA.telegram"
-                      hide-details
-                      inset
-                      color="primary"
-                    ></v-switch>
-                  </v-col>
-                  <v-col cols="12" class="mt-10">
-                    <v-btn color="primary" rounded style="width: 168px">
-                      Save
-                    </v-btn>
-                  </v-col>
-                </v-row>
-              </v-stepper-content>
+              <v-stepper-content
+                class="pa-5 off-white-3"
+                step="3"
+                transition="scale-transition"
+              ></v-stepper-content>
             </v-stepper-items>
           </v-stepper>
-        </v-col>
-      </v-row>
-
-      <v-row v-if="false">
-        <v-col cols="12" md="4">
-          <v-card class="px-3" elevation="0">
-            <div class="text-center pa-3">
-              <v-avatar size="180" class="mt-5">
-                <img :src="userData.photo_url" :alt="userData.display_name" />
-              </v-avatar>
-              <v-btn
-                depressed
-                :loading="isSelecting"
-                @click.stop="doUpload"
-                block
-                class="mt-5 text-capitalize"
-                color="primary"
-              >
-                Upload Image
-              </v-btn>
-              <v-file-input
-                ref="uploader"
-                @change="(file) => uploadImage(file)"
-                hide-input
-                class="d-none"
-              />
-            </div>
-          </v-card>
-        </v-col>
-        <v-col cols="12" md="8">
-          <v-card class="pa-md-6 pa-4" elevation="0">
-            <v-tabs v-model="tab">
-              <v-tab class="font-weight-bold"> Profile </v-tab>
-              <v-tab class="font-weight-bold"> Wallet </v-tab>
-              <v-tab class="font-weight-bold"> Settings </v-tab>
-            </v-tabs>
-            <v-divider />
-            <v-tabs-items v-model="tab">
-              <v-tab-item class="pt-8">
-                <v-row>
-                  <v-col cols="6">
-                    <div class="mb-2 font-weight-bold">Display Name</div>
-                    <div class="grey--text mb-3">
-                      Change your name if needed
-                    </div>
-                    <v-text-field
-                      v-model="userData.display_name"
-                      rounded
-                      class="custom-input py-2"
-                      dense
-                    />
-                  </v-col>
-                  <v-col cols="6">
-                    <div class="mb-2 font-weight-bold">Email</div>
-                    <div class="grey--text mb-3">
-                      Currently, change email address is not available
-                    </div>
-                    <v-text-field
-                      v-model="userData.email"
-                      rounded
-                      class="custom-input py-2"
-                      dense
-                      disabled
-                    />
-                  </v-col>
-                </v-row>
-                <v-divider class="my-5" />
-                <v-row> </v-row>
-                <v-divider class="my-5" />
-                <v-row>
-                  <v-col cols="12">
-                    <div class="mb-2 font-weight-bold">Password</div>
-                    <div class="grey--text mb-3">
-                      To change your password, please logout from your account
-                      and click "forgot password" to reset your password
-                    </div>
-                  </v-col>
-                </v-row>
-              </v-tab-item>
-              <v-tab-item class="pt-8">
-                <v-row>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">Virtual Account</div>
-                    <div class="grey--text mb-3">
-                      Your Polygon ERC20 virtual account
-                    </div>
-                    <v-text-field
-                      v-model="userData.wallet_va"
-                      rounded
-                      class="custom-input py-2"
-                      dense
-                      disabled
-                    />
-                  </v-col>
-                </v-row>
-                <v-divider class="my-5" />
-                <v-row>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">Wallet Address</div>
-                    <div class="grey--text mb-3">
-                      Your wallet address for withdrawal destination
-                    </div>
-                    <v-text-field
-                      v-model="userData.wallet"
-                      rounded
-                      class="custom-input py-2"
-                      dense
-                    />
-                  </v-col>
-                </v-row>
-              </v-tab-item>
-              <v-tab-item class="pt-8">
-                <v-row>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">Telegram Bot</div>
-                    <div class="grey--text">
-                      Activate BitZenius Telegram Bot as your virtual assistant
-                    </div>
-                    <v-btn
-                      depressed
-                      :loading="isLoading"
-                      class="mt-3 text-capitalize"
-                      :color="telegramConnected ? 'secondary' : 'primary'"
-                      :disabled="telegramConnected"
-                      @click.stop="connectTelegram"
-                    >
-                      <v-icon left> mdi-send </v-icon>
-                      {{ telegramConnected ? "Connected" : "Connect" }}
-                    </v-btn>
-                    <a ref="telegramLink" target="_blank" />
-                  </v-col>
-                </v-row>
-                <v-divider class="my-5" />
-                <v-row>
-                  <v-col cols="12">
-                    <div class="font-weight-bold">
-                      Two-Factor Authentication
-                    </div>
-                    <div class="grey--text">
-                      Choose your preferred 2FA for your account
-                    </div>
-                    <v-radio-group v-model="selected2Fa" class="px-3">
-                      <v-radio value="none" label="Disabled" />
-                      <v-radio value="email" label="Email" />
-                      <v-radio
-                        value="telegram"
-                        :disabled="!telegramConnected"
-                        label="Telegram"
-                      />
-                    </v-radio-group>
-                  </v-col>
-                </v-row>
-              </v-tab-item>
-            </v-tabs-items>
-            <v-row>
-              <v-col cols="12" md="6">
-                <v-btn
-                  depressed
-                  :loading="isLoading"
-                  class="mt-5 text-capitalize"
-                  color="primary"
-                  @click="save"
-                >
-                  Save Changes
-                </v-btn>
-              </v-col>
-            </v-row>
-          </v-card>
         </v-col>
       </v-row>
 
@@ -511,7 +362,7 @@ export default {
       },
       listener: new Object(),
       telegramConnected: false,
-      e1: 1,
+      e1: 0,
     };
   },
   head() {

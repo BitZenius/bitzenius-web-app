@@ -8,13 +8,14 @@
     class="custom-menu mb-2"
   >
     <template v-slot:prependIcon>
-      <v-list-item-avatar>
-        <v-icon v-if="icon" v-html="avatar" size="18"> </v-icon>
-      </v-list-item-avatar>
+      <v-icon v-if="icon" v-html="avatar" size="21" class="mx-4"> </v-icon>
+      <!-- <v-list-item-avatar>
+
+      </v-list-item-avatar> -->
     </template>
     <template v-slot:activator>
       <v-list-item-content>
-        <v-list-item-title class="basic-text--text text-body-2">
+        <v-list-item-title class="basic-text--text text-body-1">
           {{ cardtitle }}</v-list-item-title
         >
       </v-list-item-content>

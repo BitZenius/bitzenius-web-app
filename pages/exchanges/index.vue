@@ -28,7 +28,7 @@
               />
             </div>
           </v-col>
-          <v-col cols="3" class="d-flex flex-column justify-center align-start">
+          <v-col cols="3" class="d-flex flex-column justify-start align-start">
             <v-card
               flat
               rounded
@@ -258,13 +258,13 @@ export default {
           image: "/exchange_logo/binance.png",
           comingsoon: false,
         },
-        {
-          name: "Bybit",
-          selected: false,
-          active: false,
-          image: "/exchange_logo/bybit.png",
-          comingsoon: false,
-        },
+        // {
+        //   name: "Bybit",
+        //   selected: false,
+        //   active: false,
+        //   image: "/exchange_logo/bybit.png",
+        //   comingsoon: false,
+        // },
         {
           name: "Kucoin",
           selected: false,
@@ -272,13 +272,13 @@ export default {
           image: "/exchange_logo/kucoin.png",
           comingsoon: true,
         },
-        {
-          name: "Tokocrypto",
-          selected: false,
-          active: false,
-          image: "/exchange_logo/tokocrypto.png",
-          comingsoon: true,
-        },
+        // {
+        //   name: "Tokocrypto",
+        //   selected: false,
+        //   active: false,
+        //   image: "/exchange_logo/tokocrypto.png",
+        //   comingsoon: true,
+        // },
       ],
       // END OF CARD EXCHANGE
 
@@ -569,7 +569,7 @@ export default {
 
 .image-container {
   width: 100%;
-  height: 314px;
+  height: 100%;
   overflow: hidden;
   position: absolute;
   top: 0%;
