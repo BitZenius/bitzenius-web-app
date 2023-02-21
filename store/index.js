@@ -78,6 +78,13 @@ export const getters = {
       return false
     }
   },
+  getToken: (state) => {
+    try {
+      return state.token
+    } catch {
+      return false
+    }
+  },
   isEmailVerified: (state) => {
     try {
       return state.authUser.emailVerified !== false
