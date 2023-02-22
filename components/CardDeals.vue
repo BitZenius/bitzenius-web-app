@@ -13,7 +13,7 @@
         <v-list-item-subtitle
           class="basic-text--text font-weight-bold text-body-1 mb-1"
         >
-          Deals in 24hr
+          Today's Deals
         </v-list-item-subtitle>
         <v-list-item-title
           class="text-h5 font-weight-bold basic-text--text text--lighten-2"

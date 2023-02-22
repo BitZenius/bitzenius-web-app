@@ -1,5 +1,8 @@
 <template>
   <v-row>
+    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
+      <ModalsLearnHowItWorks @close-modal="test1 = false"></ModalsLearnHowItWorks>
+    </BaseModal>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
       <template>
         <ModalsBotSetup
@@ -199,6 +202,18 @@
           </v-overlay>
         </v-card>
       </v-col>
+    </v-col>
+
+    <v-col cols="12">
+      <v-btn
+        rounded
+        class="text-capitalize"
+        color="primary"
+        depressed
+        @click="test1 = true"
+      >
+        Learn how it works
+      </v-btn>
     </v-col>
 
     <v-col cols="12">
@@ -474,6 +489,7 @@ export default {
   },
   data() {
     return {
+      test1:false,
       counter: 0,
       currentItem: "Active Positions",
       tables: ["Active Positions", "Daily Profit", "All Trading History"],
@@ -811,7 +827,12 @@ export default {
           let average = parseFloat(activePosition[index].average);
           let percentage =
             average == 0 ? 0 : (parseFloat(data.c) - average) / average;
+
           let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
+          pnl += activePosition[index].grid_profit;
+          
+          percentage = pnl / activePosition[index].amountUsd;
+
           activePosition[index].profit.value = pnl.toFixed(3);
           let convertPercentage = percentage * 100;
           activePosition[index].profit.percentage =

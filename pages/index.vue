@@ -9,11 +9,11 @@
       <v-btn class="mr-2 mb-2" @click="test3 = true"
         >START YOUR FIRST BOT MODAL</v-btn
       >
-      <!-- <v-btn class="mr-2 mb-2" @click="test4 = true"
+      <v-btn class="mr-2 mb-2" @click="test4 = true"
       >VERIFY YOUR EMAIL ADDRESS MODAL</v-btn
     >
     <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
-    <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn> -->
+    <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
 
       <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
@@ -362,12 +362,21 @@ export default {
     },
     async _fetchDailyDeals() {
       this.isLoadingDeals = true;
+      let current = new Date();
+      let y, m, d, start, end;
+      y = current.getFullYear();
+      m = current.getMonth();
+      d = current.getDate();
+      start = this.$moment(new Date(y, m, d)).valueOf();
+      end = this.$moment(new Date(y, m, d + 1)).valueOf();
       let res = await this.$api.$get("/user/deal", {
         params: {
-          range: "daily",
+          exchange:this.exchange,
+          start_date: start,
+          end_date: end
         },
       });
-      this.deal = res.data ? res.data.trades : 0;
+      this.deal = res.data ? res.data : 0;
       this.isLoadingDeals = false;
       this.$store.commit("setIsLoading", false);
     },

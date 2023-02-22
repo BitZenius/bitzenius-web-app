@@ -8,7 +8,6 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <!-- <h4>Learn how it works!</h4> -->
       <TablesActivePosition />
     </v-col>
   </v-row>
