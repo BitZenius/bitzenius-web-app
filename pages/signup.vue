@@ -360,7 +360,7 @@ export default {
             email: this.email,
             password: this.password,
             referral: this.referral,
-            // hearAbout: hearAboutDict,
+            hearAbout: hearAboutDict,
           })
           .then((result) => {
             this.isLoading = true;
