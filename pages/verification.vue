@@ -24,7 +24,7 @@
           >
             {{ buttonText }}
           </v-btn>
-          <v-btn
+          <!-- <v-btn
             @click="logout"
             depressed
             rounded
@@ -32,7 +32,7 @@
             class="text-capitalize ml-2"
           >
             Logout
-          </v-btn>
+          </v-btn> -->
         </div>
       </v-card-text>
     </v-card>

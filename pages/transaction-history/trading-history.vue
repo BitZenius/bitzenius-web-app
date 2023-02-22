@@ -42,11 +42,12 @@
       </v-col>
       <v-col cols="12" md="3">
         <v-text-field
-          v-model="searchQuery"
+          v-model="searchPair"
           placeholder="Search By Pair"
           rounded
           dense
           class="mb-2 custom-input py-2"
+          @keydown.enter="findPair"
         >
           <template v-slot:prepend-inner>
             <v-icon class="mr-4 grey-2--text">mdi-magnify</v-icon>
@@ -62,6 +63,7 @@
       :server-items-length="totalItems"
       :items-per-page="rowsPerPage"
       class="elevation-2 my-2"
+      disable-sort
     >
       <template v-slot:header.pair="{ header }">
         <strong class="basic-text--text text-body-1 font-weight-bold">{{
@@ -286,6 +288,8 @@ export default {
       modal: false,
       menu2: false,
       // SEARCHING
+      search:{},
+      searchPair:null,
       searchQuery: null,
       // SORTING PURPOSE
       availablePair: [],
@@ -366,6 +370,10 @@ export default {
         tempParams.sorting = sorting;
       }
 
+      if(this.searchPair){
+        tempParams.search = this.search;
+      }
+
       if (this.dates.length > 0) {
         tempParams.dates = [];
         this.dates.forEach((date, id) => {
@@ -391,7 +399,7 @@ export default {
         res.data.forEach((val) => {
           // PRICE TO SMALLER AFTER COMMA
           val._price = {};
-          let stringPrice = String(parseFloat(val.price).toFixed(4)).split(".");
+          let stringPrice = String(parseFloat(val.average_fill_price).toFixed(4)).split(".");
           // let stringPrice = String(val.price).split(".");
           val._price.first = parseFloat(stringPrice[0]);
           val._price.second = stringPrice[1];
@@ -428,6 +436,15 @@ export default {
       }
     },
     // TRIGGER
+    findPair(e){
+      e.preventDefault();
+      console.log(this.searchPair);
+      if(this.searchPair){
+        let query = {symbol:this.searchPair};
+        this.search = query;
+      }
+      this._fetchReport();
+    },
     onDateChanged(dates) {
       console.log("dates", dates);
       let sort = {};

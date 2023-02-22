@@ -60,6 +60,7 @@
           </v-card-title>
           <v-card-text class="my-2">
             <v-data-table
+              disable-sort
               :loading="isLoading"
               :headers="tradingHeadersDetail"
               :items="tradingItemsDetail"
