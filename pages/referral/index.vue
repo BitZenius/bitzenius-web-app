@@ -225,6 +225,9 @@
                   </span>
                 </div>
               </template>
+              <template v-slot:no-data>
+                <BaseNoData :label="`No Rewards History`"></BaseNoData>
+              </template>
             </v-data-table>
           </v-col>
         </v-row>

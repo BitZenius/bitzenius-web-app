@@ -4,6 +4,7 @@ export const state = () => ({
   title: 'BitZenius',
   authUser: null,
   subscription: null,
+  hasTrial: false,
   token: null,
   theme: 'dark',
   isLoading: false,
@@ -67,6 +68,9 @@ export const mutations = {
       ...state.globalCss,
       ...globalCss
     }
+  },
+  setHasTrial(state, trial) {
+    state.hasTrial = trial
   }
 }
 

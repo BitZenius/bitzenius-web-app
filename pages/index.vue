@@ -1,7 +1,7 @@
 <template>
   <v-row class="py-5">
     <!-- TEST -->
-    <template v-if="false">
+    <template>
       <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test2 = true"
         >CREATE BOT FINISH MODAL</v-btn
@@ -105,9 +105,11 @@
                   :series="chartData.series"
                 ></apexchart>
 
-                <h5 v-else class="text-center">
-                  NO STATISTIC FOR SELECTED EXCHANGE
-                </h5>
+                <template v-else>
+                  <BaseNoData
+                    :label="`No Statistic for this Selected Exchange`"
+                  ></BaseNoData>
+                </template>
               </v-card>
             </v-col>
             <v-col cols="12" v-show="false">

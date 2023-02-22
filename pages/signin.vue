@@ -72,11 +72,7 @@
                   </v-text-field>
                   <p class="mt-5 mb-10">
                     <router-link
-                      class="
-                        font-weight-bold
-                        primary--text
-                        text-decoration-none
-                      "
+                      class="font-weight-bold primary--text text-decoration-none"
                       to="/forgot-password"
                       >Forgot your password?
                     </router-link>
@@ -157,6 +153,9 @@
       </v-col>
     </v-row>
     <!-- ORNAMENTS -->
+    <div class="d-flex align-center theme-toggle">
+      <ThemeToggle></ThemeToggle>
+    </div>
     <v-img
       :src="
         $vuetify.theme.dark
@@ -293,7 +292,7 @@ export default {
             this.$fire.auth
               .signInWithCustomToken(result.token)
               .then((r) => {
-                console.log('r', r);
+                console.log("r", r);
                 this.$router.go({ path: "/" });
               })
               .catch((e) => {
@@ -311,13 +310,14 @@ export default {
           }
         })
         .catch((err) => {
-          console.log('err response', err.response);
+          console.log("err response", err.response);
           if (err.response.data.not_verified) {
             return this.$router.go("/verification");
           } else {
-            console.log('errresponsedata', err.response.data);
+            console.log("errresponsedata", err.response.data);
             this.message = {
-              text: err.response.data.message ? err.response.data.message
+              text: err.response.data.message
+                ? err.response.data.message
                 : "Invalid credentials. Please try again",
               color: "error",
             };
@@ -468,5 +468,11 @@ export default {
 .main-card {
   margin-left: 20px;
   max-width: 90%;
+}
+.theme-toggle {
+  position: absolute;
+  z-index: 10;
+  right: 2%;
+  top: 5%;
 }
 </style>

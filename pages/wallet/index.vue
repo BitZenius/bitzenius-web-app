@@ -95,6 +95,9 @@
                 item.amount_coin_filled.toFixed(4)
               }}</span>
             </template>
+            <template v-slot:no-data>
+              <BaseNoData  :label="`No Transaction`"></BaseNoData>
+            </template>
           </v-data-table>
         </v-card-actions>
       </v-card>
@@ -209,6 +212,9 @@
                   </span>
                 </div>
               </template>
+              <template v-slot:no-data>
+              <BaseNoData  :label="`No Transaction`"></BaseNoData>
+            </template>
             </v-data-table>
           </v-card>
         </v-col>

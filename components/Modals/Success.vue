@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="6"></v-col>
         <v-col cols="6" class="d-flex justify-end">
-          <v-btn color="black" icon @click="closeModal">
+          <v-btn color="basic-text--text" icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -37,7 +37,12 @@
       </v-row>
     </v-card-text>
     <v-card-actions class="d-flex justify-center pb-5">
-      <v-btn rounded style="width: 60%" color="primary" :ripple="false"
+      <v-btn
+        rounded
+        @click="mainEvent"
+        style="width: 60%"
+        color="primary"
+        :ripple="false"
         >Continue</v-btn
       >
     </v-card-actions>
@@ -70,6 +75,9 @@ export default {
     },
     closeModal() {
       this.$emit("close-modal", false);
+    },
+    mainEvent() {
+      this.$emit("main-event");
     },
   },
 };

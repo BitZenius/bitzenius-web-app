@@ -437,7 +437,14 @@
                   </v-chip>
                 </template>
                 <template v-slot:no-data>
-                  <p>No record available!</p>
+                  <BaseNoData
+                    v-if="!selectedExchangeActive"
+                    :label="`No automated bots`"
+                  ></BaseNoData>
+                  <BaseNoDataAutomatedBots
+                    v-else
+                    :label="`Assembling automated bots`"
+                  ></BaseNoDataAutomatedBots>
                 </template>
               </v-data-table>
             </v-card>
@@ -601,6 +608,8 @@ export default {
       descending: false,
 
       listOfSockets: [],
+
+      selectedExchangeActive: false,
     };
   },
   props: {
@@ -872,6 +881,7 @@ export default {
         this.exchanges[i].selected = false;
       }
       this.exchanges[index].selected = true;
+      this.selectedExchangeActive = this.exchanges[index].active;
 
       // RE-FETCH LIST
       this._fetchBotsList(val);

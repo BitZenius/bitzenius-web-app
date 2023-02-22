@@ -75,6 +75,7 @@ export default {
         this.convertFinished = true;
       } else {
         this.value = { first: 0, second: 0 };
+        this.convertFinished = true;
       }
     },
   },

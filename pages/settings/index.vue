@@ -244,6 +244,7 @@
                   <v-switch
                     v-model="selected2FA.email"
                     hide-details
+                    readonly
                     inset
                     color="primary"
                   ></v-switch>
