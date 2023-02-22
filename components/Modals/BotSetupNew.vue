@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="6"></v-col>
         <v-col cols="6" class="d-flex justify-end">
-          <v-btn color="basic" icon @click="closeModal">
+          <v-btn color="basic-text--text" icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>

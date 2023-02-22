@@ -16,13 +16,7 @@
                 <v-row>
                   <v-col cols="12" md="4">
                     <div
-                      class="
-                        py-5
-                        d-flex
-                        flex-column
-                        align-center
-                        justify-center
-                      "
+                      class="py-5 d-flex flex-column align-center justify-center"
                     >
                       <h3 class="text-center mt-2 primary--text">
                         {{ mainPlan.name }}
@@ -50,6 +44,7 @@
                         >
                       </div>
                       <v-btn
+                        v-if="hasTrial"
                         depressed
                         color="success"
                         class="mt-5"
@@ -61,12 +56,13 @@
                       </v-btn>
 
                       <v-btn
+                        v-else
                         depressed
                         color="success"
                         class="mt-5"
                         rounded
                         large
-                        @click="openOrderDialog(mainPlan.id)"
+                        @click="freeTrialDialog = true"
                       >
                         Start your free trial
                       </v-btn>
@@ -190,13 +186,7 @@
                 >
                   <v-card elevation="0" class="pa-8" outlined>
                     <div
-                      class="
-                        py-8
-                        d-flex
-                        flex-column
-                        align-center
-                        justify-center
-                      "
+                      class="py-8 d-flex flex-column align-center justify-center"
                     >
                       <h3 class="text-center primary--text">
                         {{ i.name }}
@@ -259,14 +249,7 @@
                       <v-divider />
                     </v-list>
                     <div
-                      class="
-                        pt-5
-                        pb-2
-                        d-flex
-                        flex-column
-                        align-center
-                        justify-center
-                      "
+                      class="pt-5 pb-2 d-flex flex-column align-center justify-center"
                     >
                       <v-btn
                         depressed
@@ -476,6 +459,26 @@
         </v-card>
       </template>
     </v-dialog>
+    <BaseModal
+      @close="freeTrialDialog = false"
+      :parentModel="freeTrialDialog"
+      :maxWidth="'650'"
+    >
+      <ModalsFreeTrial
+        @main-event="purchaseSubscription(mainPlan.id)"
+        @close-modal="freeTrialDialog = false"
+      ></ModalsFreeTrial>
+    </BaseModal>
+    <BaseModal
+      @close="successDialog = false"
+      :parentModel="successDialog"
+      :maxWidth="'450'"
+    >
+      <ModalsSuccess
+        @main-event="successDialog = false"
+        @close-modal="successDialog = false"
+      ></ModalsSuccess>
+    </BaseModal>
   </v-row>
 </template>
 
@@ -512,6 +515,9 @@ export default {
       // LOTTIE
       anim: null, // for saving the reference to the animation
       lottieOptions: { animationData: animationData.default },
+
+      freeTrialDialog: false,
+      successDialog: false,
     };
   },
   head() {
@@ -525,6 +531,9 @@ export default {
     },
     subscription() {
       return this.$store.state.subscription;
+    },
+    hasTrial() {
+      return this.$store.state.hasTrial;
     },
   },
   watch: {
@@ -551,6 +560,7 @@ export default {
             // uid:'xxx'
           },
         });
+        this.$store.commit("setHasTrial", res.data);
         if (res.data) {
           console.log(res);
           this.$store.commit("setShowSnackbar", {
@@ -643,6 +653,7 @@ export default {
       }
     },
     purchaseSubscription(planId) {
+      this.freeTrialDialog = false;
       this.isLoading = true;
       this.$api
         .$post("/user/subscription/purchase", {
@@ -651,6 +662,7 @@ export default {
         })
         .then((data) => {
           this.invoiceId = data.result._id;
+          this.successDialog = true;
           this.closeOrderDialog();
         })
         .catch((err) => {

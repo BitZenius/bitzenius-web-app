@@ -4,6 +4,7 @@
       <v-switch
         inset
         color="primary"
+        class="my-0"
         hide-details=""
         v-model="darkMode"
       ></v-switch>

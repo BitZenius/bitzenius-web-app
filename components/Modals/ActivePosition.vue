@@ -296,8 +296,9 @@
         <v-row v-if="tab != 2">
           <v-col cols="12" md="4">
             <v-btn
-              color="customPink basic--text"
+              color="customPink white--text"
               block
+              rounded
               @click="
                 showStopAgreement = !showStopAgreement;
                 showSellAgreement = false;
@@ -310,8 +311,9 @@
           <v-col cols="12" md="4">
             <v-btn
               :disabled="detail.positions.length <= 0"
-              color="danger basic--text"
+              color="danger white--text"
               block
+              rounded
               @click="
                 showSellAgreement = !showSellAgreement;
                 showStopAgreement = false;
@@ -326,6 +328,7 @@
               :disabled="detail.positions.length <= 0"
               color="primary"
               block
+              rounded
               @click="
                 showAveragingAgreement = !showAveragingAgreement;
                 showSellAgreement = false;

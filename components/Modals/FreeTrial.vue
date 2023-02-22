@@ -4,7 +4,7 @@
       <v-row>
         <v-col cols="6"></v-col>
         <v-col cols="6" class="d-flex justify-end">
-          <v-btn color="basic" icon @click="closeModal">
+          <v-btn color="basic-text--text" icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -44,7 +44,7 @@
       </v-row>
     </v-card-text>
     <v-card-actions>
-      <v-btn rounded block color="primary" :ripple="false"
+      <v-btn rounded block color="primary" @click="mainEvent" :ripple="false"
         >Start my free trial now</v-btn
       >
     </v-card-actions>
@@ -62,9 +62,9 @@ export default {
   data() {
     return {
       steps: [
-        "Lorem ipsum dolor sit amet",
-        "Lorem ipsum dolor sit amet",
-        "Lorem ipsum dolor sit amet",
+        "Unlimited Exchanges",
+        "Fully Automated Bots",
+        "Referral Support",
       ],
       // LOTTIE
       anim: null, // for saving the reference to the animation
@@ -77,6 +77,9 @@ export default {
     },
     closeModal() {
       this.$emit("close-modal", false);
+    },
+    mainEvent() {
+      this.$emit("main-event");
     },
   },
 };

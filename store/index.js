@@ -4,6 +4,7 @@ export const state = () => ({
   title: 'BitZenius',
   authUser: null,
   subscription: null,
+  hasTrial: false,
   token: null,
   theme: 'dark',
   isLoading: false,
@@ -67,6 +68,9 @@ export const mutations = {
       ...state.globalCss,
       ...globalCss
     }
+  },
+  setHasTrial(state, trial) {
+    state.hasTrial = trial
   }
 }
 
@@ -74,6 +78,13 @@ export const getters = {
   isLoggedIn: (state) => {
     try {
       return state.authUser.uid !== null
+    } catch {
+      return false
+    }
+  },
+  getToken: (state) => {
+    try {
+      return state.token
     } catch {
       return false
     }

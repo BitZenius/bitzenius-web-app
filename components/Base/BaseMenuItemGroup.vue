@@ -125,7 +125,6 @@ export default {
 .custom-menu.v-list-group
   > .v-list-item:not(.v-list-item--active):hover
   > .v-list-item__icon
-  > .v-list-item__avatar
   > .v-icon {
   color: var(--primary) !important;
 }

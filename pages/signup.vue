@@ -103,8 +103,9 @@
                         <template v-slot:label>
                           <span class="text-body-1"
                             >By checking the checkbox you're agree on our policy
-                            <a class="customGreen--text" href="#"
-                              >read more about the ToS</a
+                            Read more about the
+                            <a class="customGreen--text" href="#"></a>
+                              Terms of Services</a
                             ></span
                           >
                         </template>
@@ -185,6 +186,9 @@
       </v-col>
     </v-row>
     <!-- ORNAMENTS -->
+    <div class="d-flex align-center theme-toggle">
+      <ThemeToggle></ThemeToggle>
+    </div>
     <v-img
       :src="
         $vuetify.theme.dark
@@ -478,6 +482,12 @@ export default {
 .main-card {
   margin-left: 20px;
   max-width: 90%;
+}
+.theme-toggle {
+  position: absolute;
+  z-index: 10;
+  right: 2%;
+  top: 5%;
 }
 </style>
 
