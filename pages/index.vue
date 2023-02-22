@@ -1,7 +1,7 @@
 <template>
   <v-row class="py-5">
     <!-- TEST -->
-    <template>
+    <template v-if="false">
       <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test2 = true"
         >CREATE BOT FINISH MODAL</v-btn
