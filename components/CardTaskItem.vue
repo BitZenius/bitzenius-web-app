@@ -1,11 +1,14 @@
 <template>
   <v-card :outlined="completed" flat color="success" class="custom-card-item">
     <v-list flat class="pa-0">
-      <v-list-item>
+      <v-list-item exact two-line :to="path">
         <v-list-item-content>
           <v-list-item-title class="font-weight-bold text-body-2">{{
             title
           }}</v-list-item-title>
+          <v-list-item-subtitle class="font-weight-bold text-body-2">{{
+            description
+          }}</v-list-item-subtitle>
         </v-list-item-content>
         <v-avatar v-if="completed">
           <v-icon class="customGreen2--text">mdi-checkbox-marked-circle</v-icon>
@@ -29,10 +32,22 @@ export default {
         return "Default title";
       },
     },
+    description: {
+      type: String,
+      default: () => {
+        return "Default description";
+      },
+    },
     completed: {
       type: Boolean,
       default: () => {
         return false;
+      },
+    },
+    path: {
+      type: String,
+      default: () => {
+        return "/";
       },
     },
   },

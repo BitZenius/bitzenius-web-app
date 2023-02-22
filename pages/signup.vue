@@ -204,7 +204,11 @@
     <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
     <v-img
       class="ornament-3"
-      :src="require('assets/images/bitzy loginpage.png')"
+      :src="
+        $vuetify.theme.dark
+          ? require('assets/images/bitzy darkmode loginpage.png')
+          : require('assets/images/bitzy loginpage.png')
+      "
       contain
     ></v-img>
     <div

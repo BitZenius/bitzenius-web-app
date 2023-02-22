@@ -15,6 +15,10 @@ export const state = () => ({
   },
   globalCss: {
     topMargin: 0
+  },
+  profileCompletion: {
+    step: 1,
+    stepTotal: 1
   }
 })
 
@@ -71,6 +75,12 @@ export const mutations = {
   },
   setHasTrial(state, trial) {
     state.hasTrial = trial
+  },
+  setProfileCompletion(state, data) {
+    state.profileCompletion = {
+      step: data.step,
+      stepTotal: data.step_total
+    }
   }
 }
 
@@ -104,5 +114,15 @@ export const getters = {
   },
   snackbar: (state) => {
     return state.snackbar
+  },
+  profileCompletion: (state) => {
+    try {
+      return state.profileCompletion
+    } catch (error) {
+      return {
+        step: 0,
+        stepTotal: 1
+      }
+    }
   }
 }

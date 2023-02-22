@@ -72,11 +72,7 @@
                 <v-card-text v-if="userData" class="mt-3">
                   <v-row justify="center " align="center">
                     <v-col cols="12" md="4">
-                      <v-img
-                        position="center"
-                        contain
-                        :src="require('~/assets/qrcodeplaceholder.jpg')"
-                      ></v-img>
+                      <qr-code :text="userData.wallet_va"></qr-code>
                     </v-col>
                     <v-col cols="12" md="8">
                       <div class="mb-5">

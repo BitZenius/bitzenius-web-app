@@ -8,7 +8,7 @@
   >
     <v-progress-circular
       :rotate="270"
-      :value="20"
+      :value="profileCompletionProgress"
       color="primary"
       class="d-flex align-center justify-center mr-2"
     >
@@ -26,7 +26,9 @@
         {{ userData.displayName }}
       </v-list-item-title>
       <v-list-item-subttitle class="basic-text--text text-body-2">
-        <strong class="primary--text font-weight-bold">{{ 64 }}%</strong>
+        <strong class="primary--text font-weight-bold"
+          >{{ profileCompletionProgress }}%</strong
+        >
         Profile completion
       </v-list-item-subttitle>
     </v-list-item-content>
@@ -57,6 +59,16 @@ export default {
           uid: "6qcnpemu34Q2vU9KOsEO6vfVbYl2",
         };
       },
+    },
+  },
+  computed: {
+    profileCompletion() {
+      return this.$store.state.profileCompletion;
+    },
+    profileCompletionProgress() {
+      return (
+        (this.profileCompletion.step / this.profileCompletion.stepTotal) * 100
+      );
     },
   },
 };

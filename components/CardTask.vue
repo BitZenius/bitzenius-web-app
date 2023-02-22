@@ -17,10 +17,17 @@
       >
         Task Overview
       </v-col>
-      <v-col v-for="i in 5" :key="`task-${i}`" cols="12" class="mt-2">
+      <v-col
+        v-for="(data, i) in taskData"
+        :key="`task-${i}`"
+        cols="12"
+        class="mt-2"
+      >
         <CardTaskItem
-          :title="`Default task ${i}`"
-          :completed="i > 3 || i == 2"
+          :title="data.title"
+          :description="data.description"
+          :path="data.path"
+          :completed="data.completed"
         ></CardTaskItem>
       </v-col>
     </v-row>
@@ -34,6 +41,14 @@ import * as animationData from "~/assets/lottie/dashboard/new user task.json";
 export default {
   components: {
     lottie,
+  },
+  props: {
+    taskData: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
   },
   data() {
     return {

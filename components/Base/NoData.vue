@@ -19,7 +19,7 @@
 
 <script>
 import lottie from "vue-lottie/src/lottie.vue";
-import * as animationData from "~/assets/lottie/no-data-preview.json";
+import * as animationData from "~/assets/lottie/no-transaction.json";
 
 export default {
   props: {

@@ -220,13 +220,7 @@
                           <v-text-field
                             v-model="searchTerm"
                             placeholder="Search tokens..."
-                            class="
-                              my-2
-                              d-flex
-                              align-center
-                              custom-input
-                              text-body-1
-                            "
+                            class="my-2 d-flex align-center custom-input text-body-1"
                             rounded
                             @input="searchTokens"
                           >
@@ -387,11 +381,7 @@
                                 </v-list-item-title>
 
                                 <v-list-item-subtitle
-                                  class="
-                                    text-body-1
-                                    font-weight-bold
-                                    basic-text--text
-                                  "
+                                  class="text-body-1 font-weight-bold basic-text--text"
                                 >
                                   {{ item.value }}
                                 </v-list-item-subtitle>

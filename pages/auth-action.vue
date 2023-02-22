@@ -1,6 +1,9 @@
 <template>
   <div class="app off-white" v-if="config">
-    <v-card class="verification-card d-flex justify-center" color="off-white-3">
+    <v-card
+      class="verification-card d-flex justify-center pa-5"
+      color="off-white-3"
+    >
       <v-card-text
         style="text-align: left"
         class="d-flex flex-column justify-center align-center pa-0"
@@ -19,26 +22,38 @@
             <v-col cols="12">
               <v-text-field
                 v-model="password"
+                :value="password"
+                placeholder="Password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show1 ? 'text' : 'password'"
                 :rules="passwordRules"
-                label="Password"
-                outlined
-                class="mb-2"
-                type="password"
+                dense
+                required
+                @click:append="show1 = !show1"
+                rounded
+                class="mb-2 custom-input py-2"
+                prepend-inner-icon="$vuetify.icons.LockIcon"
               ></v-text-field>
               <v-text-field
                 v-model="confirmPassword"
+                :value="confirmPassword"
+                placeholder="Confirm Password"
+                :append-icon="show2 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show2 ? 'text' : 'password'"
                 :rules="confirmPasswordRules"
-                label="Re-type Password"
-                outlined
-                class="mb-2"
-                type="password"
+                dense
+                required
+                @click:append="show2 = !show2"
+                rounded
+                class="mb-2 custom-input py-2"
+                prepend-inner-icon="$vuetify.icons.LockIcon"
               ></v-text-field>
               <v-btn
                 :loading="isLoading"
                 style="width: 100%"
-                color="customGreen"
+                color="primary"
                 x-large
-                class="text-capitalize basic-text--text"
+                class="text-capitalize"
                 depressed
                 @click.stop="handleResetPassword"
               >
@@ -108,6 +123,8 @@ export default {
     lottie,
   },
   data: () => ({
+    show1: false,
+    show2: false,
     config: null,
     auth: null,
     isLoading: false,
@@ -265,7 +282,7 @@ export default {
 .verification-card {
   position: absolute;
   width: 50%;
-  height: 50%;
+  height: 70%;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);

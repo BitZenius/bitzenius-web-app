@@ -1,7 +1,7 @@
 <template>
-  <v-row class="py-5">
+  <v-row class="py-5 mb-10">
     <!-- TEST -->
-    <template>
+    <template v-if="false">
       <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test2 = true"
         >CREATE BOT FINISH MODAL</v-btn
@@ -126,7 +126,7 @@
               <CardBalance class="px-2 py-5" />
             </v-col>
             <v-col cols="12">
-              <CardTask class="px-2 py-5" />
+              <CardTask :taskData="profileCompletionTasks" class="px-2 py-5" />
             </v-col>
           </v-row>
         </v-col>
@@ -252,6 +252,8 @@ export default {
       },
       profit: 0,
       balance: {},
+      profileCompletionTasks: [],
+
       isLoading: false,
       isLoadingProfit: false,
       isLoadingDeals: false,
@@ -272,6 +274,17 @@ export default {
   },
   methods: {
     // FETCH API
+    async _fetchUserCompletion() {
+      this.isLoading = true;
+      try {
+        let res = await this.$api.$get("/user/profile/completion");
+        this.profileCompletionTasks = res.data;
+        this.$store.commit("setProfileCompletion", res);
+      } catch (error) {
+        console.log(error);
+      }
+      this.$store.commit("setIsLoading", false);
+    },
     async _fetchUserBalance() {
       this.isLoading = true;
       let res = await this.$api.$get("/user/user-exchange-balance", {
@@ -406,6 +419,7 @@ export default {
     this._fetchDailyDeals();
     this._fetchUserBalance();
     this._fetchProfit();
+    this._fetchUserCompletion();
     setTimeout(() => {
       this.$store.commit("setIsLoading", false);
     }, 500);

@@ -16,8 +16,8 @@
               <v-list-item
                 :class="
                   e1 == 0
-                    ? 'custom-stepper mb-2 off-white-3'
-                    : 'custom-stepper mb-2 off-white-2'
+                    ? 'custom-stepper mb-2 off-white-2'
+                    : 'custom-stepper mb-2 off-white-3'
                 "
                 :ripple="false"
                 @click="e1 = 0"
@@ -31,8 +31,8 @@
               <v-list-item
                 :class="
                   e1 == 1
-                    ? 'custom-stepper mb-2 off-white-3'
-                    : 'custom-stepper mb-2 off-white-2'
+                    ? 'custom-stepper mb-2 off-white-2'
+                    : 'custom-stepper mb-2 off-white-3'
                 "
                 :ripple="false"
                 @click="e1 = 1"
@@ -47,8 +47,8 @@
               <v-list-item
                 :class="
                   e1 == 2
-                    ? 'custom-stepper mb-2 off-white-3'
-                    : 'custom-stepper mb-2 off-white-2'
+                    ? 'custom-stepper mb-2 off-white-2'
+                    : 'custom-stepper mb-2 off-white-3'
                 "
                 :ripple="false"
                 @click="e1 = 2"
@@ -446,6 +446,7 @@ export default {
     closeDialog() {
       this.progressDialog = false;
       this.uploadProgress = null;
+      this.save();
     },
     doUpload() {
       this.isSelecting = true;
