@@ -12,9 +12,14 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="content">
       <v-row class="pa-5">
-        <v-col cols="12" class="content d-flex flex-column align-center justify-center">
+        <v-col cols="12">
+          <v-img
+              :src="'/animation/animation-bots.gif'"
+              @load="onGifLoaded"
+              style="width:100%;"
+          />
           <lottie
             :width="256"
             :height="256"
@@ -23,11 +28,9 @@
             v-if="!isLoaded"
           />
           <h3 v-if="!isLoaded">Image is loading!</h3>
-          <v-img
-              :src="'/animation/animation-bots.gif'"
-              @load="onGifLoaded"
-          />
-          <div class="mt-5">
+        </v-col>
+        <v-col cols="12" class="d-flex flex-column align-center">
+          <div>
             <p style="text-align:justify;">
               Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas est iusto facilis vel nisi, doloremque perferendis ad quasi repellat tempore recusandae quod aperiam, laboriosam quis nostrum veniam laudantium necessitatibus eius?
             </p>
