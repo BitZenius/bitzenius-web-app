@@ -29,7 +29,7 @@
         <strong class="primary--text font-weight-bold"
           >{{ profileCompletionProgress }}%</strong
         >
-        Profile completion
+        Task completion
       </v-list-item-subttitle>
     </v-list-item-content>
 
