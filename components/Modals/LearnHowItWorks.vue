@@ -14,7 +14,7 @@
     </v-card-title>
     <v-card-text>
       <v-row class="pa-5">
-        <v-col cols="12" class="d-flex flex-column align-center justify-center">
+        <v-col cols="12" class="content d-flex flex-column align-center justify-center">
           <lottie
             :width="256"
             :height="256"
@@ -27,14 +27,21 @@
               :src="'/animation/animation-bots.gif'"
               @load="onGifLoaded"
           />
+          <div class="mt-5">
+            <p style="text-align:justify;">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas est iusto facilis vel nisi, doloremque perferendis ad quasi repellat tempore recusandae quod aperiam, laboriosam quis nostrum veniam laudantium necessitatibus eius?
+            </p>
+            <ul>
+              <li>Hello World</li>
+              <li>Hello World</li>
+              <li>Hello World</li>
+              <li>Hello World</li>
+              <li>Hello World</li>
+            </ul>
+          </div>
         </v-col>
       </v-row>
     </v-card-text>
-    <v-card-actions>
-      <!-- <v-btn rounded block color="primary" :ripple="false"
-        >Start my free trial now</v-btn
-      > -->
-    </v-card-actions>
   </v-card>
 </template>
 
@@ -74,4 +81,8 @@ export default {
 </script>
 
 <style>
+  .content{
+    height:400px;
+    overflow-y: scroll;
+  }
 </style>
