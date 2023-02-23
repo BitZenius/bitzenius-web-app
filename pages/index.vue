@@ -10,10 +10,10 @@
         >START YOUR FIRST BOT MODAL</v-btn
       >
       <v-btn class="mr-2 mb-2" @click="test4 = true"
-      >VERIFY YOUR EMAIL ADDRESS MODAL</v-btn
-    >
-    <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
-    <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn>
+        >VERIFY YOUR EMAIL ADDRESS MODAL</v-btn
+      >
+      <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
+      <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
 
       <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
@@ -59,7 +59,7 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="12" md="9">
+        <v-col cols="12" md="12">
           <v-row>
             <v-col cols="12">
               <v-card class="pa-2" flat>
@@ -96,6 +96,7 @@
                   </v-col>
                 </v-row>
                 <apexchart
+                  :key="$vuetify.theme.dark"
                   v-if="
                     showChart && exchange && chartData.series[0].data.length > 0
                   "
@@ -120,15 +121,13 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12" md="3">
-          <v-row>
-            <v-col cols="12" class="mb-10">
-              <CardBalance class="px-2 py-5" />
-            </v-col>
-            <v-col cols="12">
-              <CardTask :taskData="profileCompletionTasks" class="px-2 py-5" />
-            </v-col>
-          </v-row>
+      </v-row>
+      <v-row justify="space-between">
+        <v-col cols="3" class="mb-10">
+          <CardBalance class="px-2 py-5" />
+        </v-col>
+        <v-col cols="9">
+          <CardTask :taskData="profileCompletionTasks" class="px-2 py-5" />
         </v-col>
       </v-row>
     </v-col>
@@ -238,10 +237,16 @@ export default {
           xaxis: {
             categories: [],
           },
-          // theme: {
-          //   mode: this.$store.getters.theme,
-          // },
-          // colors: this.$store.getters.theme == "dark" ? "#3394F8" : "#3394F8",
+          theme: {
+            mode: "dark",
+            palette: "palette1",
+            monochrome: {
+              enabled: false,
+              color: "#255aee",
+              shadeTo: "light",
+              shadeIntensity: 0.65,
+            },
+          },
         },
         series: [
           {
@@ -346,7 +351,13 @@ export default {
               this.chartData.options.xaxis.categories = [];
               this.chartData.series = [{ name: "P&L", data: [] }];
             } else {
-              this.chartData.options.xaxis.categories = res.categories;
+              var newCategories = res.categories.map((r) => {
+                return r.split("-")[0];
+              });
+              console.log("resChart2", newCategories);
+              this.chartData.options.xaxis.categories = newCategories;
+              this.chartData.options.xaxis.min = newCategories.length - 10;
+              this.chartData.options.xaxis.max = newCategories.length;
               let value = [];
               res.series.forEach((val) => {
                 let convert =
@@ -386,9 +397,9 @@ export default {
       end = this.$moment(new Date(y, m, d + 1)).valueOf();
       let res = await this.$api.$get("/user/deal", {
         params: {
-          exchange:this.exchange,
+          exchange: this.exchange,
           start_date: start,
-          end_date: end
+          end_date: end,
         },
       });
       this.deal = res.data ? res.data : 0;
@@ -434,6 +445,14 @@ export default {
     }, 500);
   },
   watch: {
+    "$vuetify.theme.dark": {
+      handler(nv, ov) {
+        this.chartData.options.theme.mode = this.$vuetify.theme.dark
+          ? "dark"
+          : "light";
+      },
+      immediate: true,
+    },
     exchange(nv, ov) {
       this.$store.commit("exchange/setSelectedExchange", nv);
       this._fetchChart();
@@ -468,3 +487,12 @@ export default {
   },
 };
 </script>
+
+<style>
+.#SvgjsTspan1152 {
+}
+
+div.apexcharts-theme-dark > svg {
+  background: #212434 !important;
+}
+</style>

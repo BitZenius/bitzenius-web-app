@@ -12,7 +12,104 @@
         <v-col cols="3" class="d-flex align-end justify-end pt-10">
           <!-- CUSTOM STEPPER -->
           <v-card flat class="custom-stepper-container" style="height: 100%">
-            <v-list dense>
+            <v-list dense rounded>
+              <v-list-item
+                :class="
+                  e1 == 0
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
+                :ripple="false"
+                @click="e1 = 0"
+              >
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 == 0 ? 100 : 0"
+                  color="primary"
+                  class="d-flex align-center justify-center"
+                >
+                  <!-- <v-list-item-avatar size="50" class="ma-0"
+                    > -->
+                  <v-icon
+                    size="20"
+                    :color="e1 == 0 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.ProfitBarChartIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
+                </v-progress-circular>
+                <v-list-item-content>
+                  <v-list-item-title class="pl-4 text-body-1 font-weight-bold"
+                    >Basic</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+              <v-list-item
+                :class="
+                  e1 == 1
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
+                :ripple="false"
+                @click="e1 = 1"
+              >
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 == 1 ? 100 : 0"
+                  color="primary"
+                  class="d-flex align-center justify-center"
+                >
+                  <!-- <v-list-item-avatar size="50" class="ma-0"> -->
+                  <v-icon
+                    size="20"
+                    :color="e1 == 1 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.ChartArrowUpIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
+                </v-progress-circular>
+                <v-list-item-content>
+                  <v-list-item-title class="pl-4 text-body-1 font-weight-bold"
+                    >Wallet</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+
+              <v-list-item
+                :class="
+                  e1 == 2
+                    ? 'custom-stepper off-white-2 mb-2'
+                    : 'custom-stepper mb-2'
+                "
+                :ripple="false"
+                @click="e1 = 2"
+              >
+                <v-progress-circular
+                  :rotate="270"
+                  :size="60"
+                  :width="7"
+                  :value="e1 == 2 ? 100 : 0"
+                  color="primary"
+                  class="d-flex align-center justify-center"
+                >
+                  <!-- <v-list-item-avatar size="50" class="ma-0"> -->
+                  <v-icon
+                    size="20"
+                    :color="e1 == 2 ? 'primary' : ''"
+                    v-html="`$vuetify.icon.CopyCheckIcon`"
+                  ></v-icon>
+                  <!-- </v-list-item-avatar> -->
+                </v-progress-circular>
+                <v-list-item-content>
+                  <v-list-item-title class="pl-4 text-body-1 font-weight-bold"
+                    >Account</v-list-item-title
+                  >
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+            <v-list dense v-if="false">
               <v-list-item
                 :class="
                   e1 == 0
@@ -23,8 +120,8 @@
                 @click="e1 = 0"
               >
                 <v-list-item-content>
-                  <v-list-item-titl class="pl-2 text-body-1 font-weight-bold"
-                    >Basic</v-list-item-titl
+                  <v-list-item-title class="pl-2 text-body-1 font-weight-bold"
+                    >Basic</v-list-item-title
                   >
                 </v-list-item-content>
               </v-list-item>

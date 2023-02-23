@@ -1,7 +1,7 @@
 <template>
-  <v-card class="pa-2" flat>
-    <v-row>
-      <v-col cols="5" style="position: relative">
+  <v-card class="pa-5" style="width: 95%; margin-left: auto" flat>
+    <v-row class="pa-3">
+      <v-col cols="1" style="position: relative">
         <div class="custom-avatar off-white-2">
           <lottie
             :width="50"
@@ -12,18 +12,16 @@
         </div>
       </v-col>
       <v-col
-        cols="7"
-        class="pt-5 basic-text--text font-weight-bold text-body-1"
+        cols="11"
+        class="py-5 basic-text--text font-weight-bold text-body-1"
       >
         Task Overview
       </v-col>
-      <v-col
-        v-for="(data, i) in taskData"
-        :key="`task-${i}`"
-        cols="12"
-        class="mt-2"
-      >
+      <v-col cols="12" class="task-item-container no-scrollbar pa-3">
         <CardTaskItem
+          v-for="(data, i) in taskData"
+          class="task-item"
+          :key="`task-${i}`"
           :title="data.title"
           :description="data.description"
           :path="data.path"
@@ -84,13 +82,24 @@ export default {
   height: 80px;
   border-radius: 100%;
   border: 4px solid var(--primary);
-  top: -50%;
-  left: 25%;
+  top: -30%;
+  left: -50%;
 }
 
 .absolute-tooltip {
   position: absolute;
   top: 10%;
   right: 5%;
+}
+
+.task-item-container {
+  overflow-x: auto;
+  display: flex;
+  justify-content: flex-start;
+  column-gap: 20px;
+}
+
+.task-item {
+  min-width: 250px;
 }
 </style>

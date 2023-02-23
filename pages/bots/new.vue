@@ -26,7 +26,11 @@
         justify="center"
         style="min-height: 600px"
       >
-        <v-col cols="2" class="d-flex align-center justify-end">
+        <v-col
+          cols="1"
+          style="min-width: 10%"
+          class="d-flex align-center justify-end"
+        >
           <!-- CUSTOM STEPPER -->
           <v-card flat rounded class="custom-stepper-container">
             <v-list dense rounded>
@@ -141,7 +145,7 @@
 
           <!-- CUSTOM STEPPER ENDS -->
         </v-col>
-        <v-col cols="10">
+        <v-col cols="11" style="max-width: 90% !important">
           <v-stepper flat v-model="e1" :ripple="false">
             <v-stepper-items class="off-white-3" style="width: 100%">
               <v-stepper-content class="py-0 px-0" step="1">
@@ -974,6 +978,6 @@ export default {
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
-  padding: 50px 0px 50px 50px;
+  padding: 50px 0px 50px 25px;
 }
 </style>
