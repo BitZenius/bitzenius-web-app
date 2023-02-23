@@ -12,34 +12,39 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-card-text>
+    <v-card-text class="content">
       <v-row class="pa-5">
-        <v-col cols="12" class="d-flex align-center justify-center">
-          <!-- <template v-if="!isLoaded">
-            <div class="d-flex flex-column align-center justify-center">
-                <lottie
-                :width="256"
-                :height="256"
-                :options="lottieOptions"
-                v-on:animCreated="handleAnimation"
-                />
-                <span>Image is loading..</span>
-            </div>
-          </template> -->
-         <template v-show="isLoaded">
-            <v-img
-                :src="'/animation/animation-bots.gif'"
-                @load="onGifLoaded"
-            />
-         </template>
+        <v-col cols="12">
+          <v-img
+              :src="'/animation/animation-bots.gif'"
+              @load="onGifLoaded"
+              style="width:100%;"
+          />
+          <lottie
+            :width="256"
+            :height="256"
+            :options="lottieOptions"
+            v-on:animCreated="handleAnimation"
+            v-if="!isLoaded"
+          />
+          <h3 v-if="!isLoaded">Image is loading!</h3>
+        </v-col>
+        <v-col cols="12" class="d-flex flex-column align-center">
+          <div>
+            <p style="text-align:justify;">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas est iusto facilis vel nisi, doloremque perferendis ad quasi repellat tempore recusandae quod aperiam, laboriosam quis nostrum veniam laudantium necessitatibus eius?
+            </p>
+            <ul>
+              <li>Hello World</li>
+              <li>Hello World</li>
+              <li>Hello World</li>
+              <li>Hello World</li>
+              <li>Hello World</li>
+            </ul>
+          </div>
         </v-col>
       </v-row>
     </v-card-text>
-    <v-card-actions>
-      <!-- <v-btn rounded block color="primary" :ripple="false"
-        >Start my free trial now</v-btn
-      > -->
-    </v-card-actions>
   </v-card>
 </template>
 
@@ -72,7 +77,6 @@ export default {
       this.$emit("close-modal", false);
     },
     onGifLoaded(){
-        alert('loaded');
         this.isLoaded = true;
     }
   },
@@ -80,4 +84,8 @@ export default {
 </script>
 
 <style>
+  .content{
+    height:400px;
+    overflow-y: scroll;
+  }
 </style>

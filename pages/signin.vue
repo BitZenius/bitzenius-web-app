@@ -282,13 +282,15 @@ export default {
     resetValidation() {
       this.$refs.form.resetValidation();
     },
-    signIn() {
+    async signIn() {
       this.isLoading = true;
       this.loadingText = "Please wait...";
+      let userIp = await this.$axios.get("https://api.ipify.org/?format=json");
       this.$api
         .$post("/user/auth/signin", {
           email: this.email,
           password: this.password,
+          ip:userIp.data.ip
         })
         .then((result) => {
           console.log("result login", result);

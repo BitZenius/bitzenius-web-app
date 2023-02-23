@@ -61,6 +61,8 @@
               </v-btn>
             </v-col>
           </v-row>
+          <v-row v-else-if="config.mode == 'unlockDevice'">
+          </v-row>
           <!-- <v-row v-else-if="config.mode == 'verifyEmail'">
             <v-col cols="12">
               <v-btn
@@ -179,10 +181,16 @@ export default {
     this.auth = auth;
     this.config = config;
 
+    console.log('config', config);
+    console.log('routeQuery', this.$route.query);
     switch (config.mode) {
       case "verifyEmail":
         this.title = "Verifying your email..";
         this.handleVerifyEmail();
+        break;
+      case "unlockDevice":
+        this.title = 'Unlocking your device..';
+        this.handleUnlockDevice();
         break;
       case "resetPassword":
         this.title = "Reset your password";
@@ -200,6 +208,27 @@ export default {
     // TRIGGER
     handleAnimation: function (anim) {
       this.anim = anim;
+    },
+    handleUnlockDevice(){
+      let id = this.$route.query.id ? this.$route.query.id : null;
+      if(!id){
+        this.message = "Unable to unlock your device, please make sure you did it correctly!";
+        return;
+      }
+      console.log('id', id);
+      this.$api.$get('/user/auth/unlock', {
+        params:{
+          id
+        }
+      }).then((res)=>{
+        console.log('res unlock', res);
+        this.message = "Device unlock success. Redirecting to home...";
+        setTimeout(() => {
+          this.$router.push("/");
+        }, 3000);
+      }).catch((err)=>{
+        this.message = err;
+      })
     },
     handleVerifyEmail() {
       this.isLoading = true;
