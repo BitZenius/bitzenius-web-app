@@ -14,24 +14,19 @@
     </v-card-title>
     <v-card-text>
       <v-row class="pa-5">
-        <v-col cols="12" class="d-flex align-center justify-center">
-          <!-- <template v-if="!isLoaded">
-            <div class="d-flex flex-column align-center justify-center">
-                <lottie
-                :width="256"
-                :height="256"
-                :options="lottieOptions"
-                v-on:animCreated="handleAnimation"
-                />
-                <span>Image is loading..</span>
-            </div>
-          </template> -->
-         <template v-show="isLoaded">
-            <v-img
-                :src="'/animation/animation-bots.gif'"
-                @load="onGifLoaded"
-            />
-         </template>
+        <v-col cols="12" class="d-flex flex-column align-center justify-center">
+          <lottie
+            :width="256"
+            :height="256"
+            :options="lottieOptions"
+            v-on:animCreated="handleAnimation"
+            v-if="!isLoaded"
+          />
+          <h3 v-if="!isLoaded">Image is loading!</h3>
+          <v-img
+              :src="'/animation/animation-bots.gif'"
+              @load="onGifLoaded"
+          />
         </v-col>
       </v-row>
     </v-card-text>
@@ -72,7 +67,6 @@ export default {
       this.$emit("close-modal", false);
     },
     onGifLoaded(){
-        alert('loaded');
         this.isLoaded = true;
     }
   },
