@@ -242,9 +242,9 @@
     </v-overlay>
 
     <v-row class="pa-4">
-      <v-col cols="12" class="mt-10">
+      <!-- <v-col cols="12" class="mt-10">
         <v-icon @click="$router.push('/')"> mdi-arrow-left </v-icon>
-      </v-col>
+      </v-col> -->
 
       <v-col cols="12" class="my-10">
         <div
@@ -318,7 +318,6 @@
                   <v-switch
                     v-model="rememberMe"
                     hide-details
-                    readonly
                     inset
                     color="primary"
                   ></v-switch>
@@ -607,26 +606,14 @@ export default {
 }
 
 .mobileApp {
-  /* background: linear-gradient(
-    90deg,
-    rgba(51, 148, 248, 1) 45%,
-    rgba(255, 255, 255, 1) 45%
-  ); */
   height: 100%;
-  background-position: left;
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: relative;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 
 .mobileApp.dark {
-  /* background: linear-gradient(90deg, #1d1f2b 45%, #212434 45%); */
   height: 100%;
-  background-position: left;
-  background-repeat: no-repeat;
-  background-size: contain;
-  position: relative;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 

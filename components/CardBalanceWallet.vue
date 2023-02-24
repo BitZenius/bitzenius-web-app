@@ -330,6 +330,41 @@
         </v-card>
       </template>
     </v-dialog>
+
+    <BaseModal
+      @close="loadingModal = false"
+      :parentModel="loadingModal"
+      :maxWidth="'450'"
+    >
+      <ModalsLoading
+        :description="`OTP has been sent to your email address. Please check to proceed`"
+        :ctaTitle="`INPUT OTP`"
+        @close-modal="loadingModal = false"
+        @main-event="otpModal = true"
+      ></ModalsLoading>
+    </BaseModal>
+
+    <BaseModal
+      @close="otpModal = false"
+      :parentModel="otpModal"
+      :maxWidth="'450'"
+    >
+      <ModalsOTP
+        @close-modal="otpModal = false"
+        @main-event="(otpCode) => withdrawWithOTP(otpCode)"
+      ></ModalsOTP>
+    </BaseModal>
+
+    <BaseModal
+      @close="successModal = false"
+      :parentModel="successModal"
+      :maxWidth="'450'"
+    >
+      <ModalsSuccess
+        @close-modal="successModal = false"
+        @main-event="successModal = false"
+      ></ModalsSuccess>
+    </BaseModal>
   </v-card>
 </template>
 
@@ -346,6 +381,9 @@ export default {
       isLoading: false,
       actionMode: "Deposit",
       withdrawAmount: 0,
+      loadingModal: false,
+      otpModal: false,
+      successModal: false,
     };
   },
   mounted() {
@@ -368,6 +406,33 @@ export default {
           this.isLoading = false;
         });
     },
+    withdrawWithOTP(otpCode) {
+      this.isLoading = true;
+
+      // return console.log({
+      //   amount: this.withdrawAmount,
+      //   otp: `${otpCode}`,
+      // });
+      this.$api
+        .$post("/user/balance/withdraw", {
+          amount: this.withdrawAmount,
+          otp: `${otpCode}`,
+        })
+        .then((res) => {
+          console.log(res);
+          this.loadingModal = false;
+          this.successModal = true;
+        })
+        .catch((err) => {
+          console.log(err);
+          this.isLoading = false;
+        })
+        .finally(() => {
+          this.isLoading = false;
+          this.otpModal = false;
+          this.$emit("refetch")
+        });
+    },
     withdraw() {
       this.isLoading = true;
       this.$api
@@ -376,6 +441,7 @@ export default {
         })
         .then((res) => {
           console.log(res);
+          this.loadingModal = true;
         })
         .catch((err) => {
           console.log(err);
