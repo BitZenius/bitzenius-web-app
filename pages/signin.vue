@@ -1,5 +1,8 @@
 <template>
-  <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
+  <div
+    v-if="isMobile() == false"
+    :class="$vuetify.theme.dark ? 'app dark ' : 'app'"
+  >
     <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
       <v-progress-circular
         indeterminate
@@ -70,6 +73,7 @@
                     prepend-inner-icon="$vuetify.icons.LockIcon"
                   >
                   </v-text-field>
+
                   <p class="mt-5 mb-10">
                     <router-link
                       class="font-weight-bold primary--text text-decoration-none"
@@ -226,6 +230,183 @@
     </div>
     <!-- ORNAMENTS END -->
   </div>
+  <div v-else :class="$vuetify.theme.dark ? 'mobileApp dark ' : 'mobileApp'">
+    <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
+      <v-progress-circular
+        indeterminate
+        color="customGreen"
+        size="50"
+        width="7"
+      />
+      <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
+    </v-overlay>
+
+    <v-row class="pa-4">
+      <v-col cols="12" class="mt-10">
+        <v-icon @click="$router.push('/')"> mdi-arrow-left </v-icon>
+      </v-col>
+
+      <v-col cols="12" class="my-10">
+        <div
+          style="max-width: 80%"
+          class="text-h4 font-weight-bold decorated-text"
+        >
+          Sign in to your account.
+        </div>
+      </v-col>
+      <v-col cols="12">
+        <v-form v-if="showOtp" v-model="valid" lazy-validation>
+          <div class="text-center my-5">
+            Verify your account by entering the 4 digits code we sent to
+            ****@mail.com
+            {{ otpMethod }}
+          </div>
+          <v-row>
+            <v-col cols="12">
+              <v-otp-input
+                v-model="otpCode"
+                length="6"
+                light
+                type="number"
+                :disabled="isLoading"
+                @finish="onOtpCompleted"
+              />
+            </v-col>
+          </v-row>
+        </v-form>
+        <v-form v-else ref="form" v-model="valid" lazy-validation>
+          <v-row class="basic-text--text">
+            <v-col cols="12">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                required
+                placeholder="Email"
+                dense
+                rounded
+                class="mb-2 custom-input py-2"
+                prepend-inner-icon="$vuetify.icons.MailIcon"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-model="password"
+                :value="password"
+                placeholder="Password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show1 ? 'text' : 'password'"
+                :rules="passwordRules"
+                dense
+                required
+                @click:append="show1 = !show1"
+                rounded
+                class="mb-2 custom-input py-2"
+                prepend-inner-icon="$vuetify.icons.LockIcon"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col
+                  cols="8"
+                  class="font-weight-bold d-flex align-center justify-start"
+                >
+                  Remember me
+                </v-col>
+                <v-col cols="4" class="d-flex align-center justify-end">
+                  <v-switch
+                    v-model="rememberMe"
+                    hide-details
+                    readonly
+                    inset
+                    color="primary"
+                  ></v-switch>
+                </v-col>
+              </v-row>
+            </v-col>
+            <v-col cols="12">
+              <p class="">
+                <router-link
+                  class="font-weight-bold primary--text text-decoration-none"
+                  to="/forgot-password"
+                  >Forgot your password?
+                </router-link>
+              </p>
+            </v-col>
+            <v-col cols="12">
+              <base-button-animated
+                :loading="isLoading"
+                :disabled="isLoading"
+                style="width: 100%"
+                color="customGreen"
+                depressed
+                @click.native="signIn"
+                class="mt-5"
+                :text="'Sign in'"
+              ></base-button-animated>
+              <!-- <v-btn
+                    :loading="isLoading"
+                    :disabled="isLoading"
+                    style="width: 100%"
+                    color="customGreen"
+                    x-large
+                    class="text-capitalize basic-text--text"
+                    depressed
+                    @click.stop="signIn"
+                  >
+                    Sign in
+                  </v-btn> -->
+            </v-col>
+            <v-col cols="12">
+              <div class="my-5 font-weight-bold text-center">
+                Does not have an account?
+                <a class="primary--text" @click="$router.push('/signup')"
+                  ><b>Sign up</b></a
+                >
+              </div>
+            </v-col>
+          </v-row>
+          <div v-show="false" class="text-center subtitle-1 my-2">OR</div>
+          <v-row v-show="false">
+            <v-col cols="12">
+              <v-btn
+                style="width: 100%"
+                color="error"
+                x-large
+                class="text-capitalize mb-10"
+                depressed
+                outlined
+                @click.stop="googleSignin"
+              >
+                <v-icon left> mdi-google </v-icon>
+                Sign in with Google
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+      <v-col cols="12" v-if="message">
+        <v-alert
+          transition="slide-y-transition"
+          rounded
+          v-show="message"
+          :color="message.color"
+        >
+          <v-row>
+            <v-col class="grow d-flex justify-center align-center white--text">
+              {{ message.text }}
+            </v-col>
+            <v-col class="shrink">
+              <v-btn icon @click.stop="message = null">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-alert>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -253,6 +434,7 @@ export default {
     message: null,
     loadingText: null,
     otpMethod: "",
+    rememberMe: false,
   }),
   head: {
     title: "Sign In",
@@ -267,6 +449,9 @@ export default {
     isLoggedIn(val) {
       val && this.$router.push("/");
     },
+  },
+  mounted() {
+    // alert(this.isMobile());
   },
   methods: {
     validate() {
@@ -290,7 +475,7 @@ export default {
         .$post("/user/auth/signin", {
           email: this.email,
           password: this.password,
-          ip:userIp.data.ip
+          ip: userIp.data.ip,
         })
         .then((result) => {
           console.log("result login", result);
@@ -413,6 +598,30 @@ export default {
 
 .app.dark {
   background: linear-gradient(90deg, #1d1f2b 45%, #212434 45%);
+  height: 100%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  overflow-y: hidden;
+}
+
+.mobileApp {
+  /* background: linear-gradient(
+    90deg,
+    rgba(51, 148, 248, 1) 45%,
+    rgba(255, 255, 255, 1) 45%
+  ); */
+  height: 100%;
+  background-position: left;
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: relative;
+  overflow-y: hidden;
+}
+
+.mobileApp.dark {
+  /* background: linear-gradient(90deg, #1d1f2b 45%, #212434 45%); */
   height: 100%;
   background-position: left;
   background-repeat: no-repeat;
