@@ -351,10 +351,8 @@ export default {
       return this.$store.state.globalCss.topMargin;
     },
   },
-  beforeCreate(){
-    
-  },
-  beforeMount(){
+  beforeCreate() {},
+  beforeMount() {
     // IF NOT VERIFIED REDIRECT TO VERIFICATION LINK
     if (!this.user.emailVerified) {
       return this.$router.push("/verification");
@@ -363,7 +361,7 @@ export default {
     }
   },
   mounted() {
-    this.$store.commit("setIsLoading", true);
+    // this.$store.commit("setIsLoading", true);
 
     if (!this.$vuetify.breakpoint.mobile) {
       this.drawer = true;
