@@ -1,5 +1,15 @@
 <template>
   <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
+    <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
+      <v-progress-circular
+        indeterminate
+        color="customGreen"
+        size="50"
+        width="7"
+      />
+      <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
+    </v-overlay>
+
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
       <v-col cols="12" md="5" style="z-index: 2">
@@ -301,6 +311,7 @@ export default {
       { name: "Friends", value: "friends" },
       { name: "Others", value: "others" },
     ],
+    loadingText: null,
   }),
   head: {
     title: "Signup",
@@ -351,6 +362,8 @@ export default {
       this.$refs.form.resetValidation();
     },
     signUp() {
+      this.loadingText = "Please wait...";
+      this.isLoading = true;
       const valid = this.$refs.form.validate();
       if (valid) {
         var hearAboutDict = {
@@ -367,7 +380,6 @@ export default {
             hearAbout: hearAboutDict,
           })
           .then((result) => {
-            this.isLoading = true;
             this.$fire.auth
               .signInWithEmailAndPassword(this.email, this.password)
               .then((r) => {

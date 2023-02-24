@@ -32,7 +32,7 @@
       </v-col>
       <v-col cols="12" class="pa-0">
         <v-card class="py-10" flat>
-          <v-row align="center" justify="center">
+          <v-row align="center">
             <v-col cols="12" md="12" class="d-flex justify-center">
               <v-btn
                 class="mx-1 text-capitalize d-flex"
@@ -70,7 +70,7 @@
                   </v-btn>
                 </v-card-title>
                 <v-card-text v-if="userData" class="mt-3">
-                  <v-row justify="center " align="center">
+                  <v-row align="center">
                     <v-col cols="12" md="4">
                       <qr-code :text="userData.wallet_va"></qr-code>
                     </v-col>

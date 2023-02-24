@@ -357,17 +357,19 @@ export default {
       return this.$store.state.globalCss.topMargin;
     },
   },
+  beforeCreate(){
+    
+  },
+  beforeMount(){
+    // IF NOT VERIFIED REDIRECT TO VERIFICATION LINK
+    if (!this.user.emailVerified) {
+      return this.$router.push("/verification");
+    } else {
+      this.$store.commit("setIsLoading", false);
+    }
+  },
   mounted() {
     this.$store.commit("setIsLoading", true);
-
-    setTimeout(() => {
-      // IF NOT VERIFIED REDIRECT TO VERIFICATION LINK
-      if (!this.user.emailVerified) {
-        return this.$router.push("/verification");
-      } else {
-        this.$store.commit("setIsLoading", false);
-      }
-    });
 
     if (!this.$vuetify.breakpoint.mobile) {
       this.drawer = true;

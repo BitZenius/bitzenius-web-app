@@ -70,7 +70,7 @@ export default {
           parseFloat(this.balance.free_usdt).toFixed(2)
         ).split(".");
         value.first = parseFloat(string[0]);
-        value.second = parseFloat(string[1]);
+        value.second = string[1];
         this.value = value;
         this.convertFinished = true;
       } else {

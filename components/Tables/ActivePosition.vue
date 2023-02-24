@@ -836,13 +836,29 @@ export default {
           let average = parseFloat(activePosition[index].average);
           let percentage =
             average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-
           let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
-          pnl += activePosition[index].grid_profit;
-          
-          percentage = pnl / activePosition[index].amountUsd;
 
+          // Floating P&L
+          activePosition[index].floatingProfit = {};
+          activePosition[index].floatingProfit.value = pnl.toFixed(3);
+          activePosition[index].floatingProfit.percentage = (percentage * 100).toFixed(3);
+
+          // Realized P&L
+          activePosition[index].realizedProfit = {};
+          activePosition[index].realizedProfit.value = activePosition[index].grid_profit.toFixed(3);
+          activePosition[index].realizedProfit.percentage = activePosition[index].amountUsd > 0 ? (activePosition[index].grid_profit / activePosition[index].amountUsd * 100).toFixed(3) : 0;
+
+          // Total P&L
+          pnl += activePosition[index].grid_profit;
+          percentage = pnl / activePosition[index].amountUsd;
           activePosition[index].profit.value = pnl.toFixed(3);
+
+          /**
+           * 1. Floating P&L  ()
+           * 2. Realized P&L  ()
+           * 3. Total P&L     ()
+           */
+
           let convertPercentage = percentage * 100;
           activePosition[index].profit.percentage =
             convertPercentage.toFixed(3);

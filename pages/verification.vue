@@ -11,7 +11,7 @@
           :options="lottieOptions"
           v-on:animCreated="handleAnimation"
         />
-        <h3 class="white--text">
+        <h3 class="basic--text">
           {{ message }}
         </h3>
         <div class="d-flex justify-center align-center mt-4">
@@ -79,6 +79,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
+      console.log('user', this.user);
       if (this.user.emailVerified) {
         return this.$router.push("/");
       } else {

@@ -13,6 +13,7 @@
             <v-btn color="white" icon @click="closeModal">
               <v-icon>mdi-close</v-icon>
             </v-btn>
+            <!-- <v-btn @click="logger" x-small rounded> logger </v-btn> -->
           </v-col>
         </v-row>
       </v-card-title>
@@ -51,6 +52,118 @@
             </v-tabs>
           </v-col>
           <v-col cols="12">
+            <v-row v-show="tab == 3">
+              <v-col cols="12">
+                <v-row>
+                  <v-col cols="6" class="d-flex justify-start align-center">
+                    <v-tooltip right>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon class="mr-2" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                        <strong>Floating P&L</strong>
+                      </template>
+                      <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</span>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="6" class="d-flex flex-column justify-center align-center">
+                    <div class="d-flex flex-column align-start justify-center">
+                      <strong
+                        class="danger--text text-subtitle-2 font-weight-bold"
+                        v-if="parseFloat(pair.floatingProfit.percentage) < 0"
+                        >{{ pair.floatingProfit.percentage }}%</strong
+                      >
+                      <strong
+                        class="success--text text-subtitle-2 font-weight-bold"
+                        v-if="parseFloat(pair.floatingProfit.percentage) > 0"
+                        >{{ pair.floatingProfit.percentage }}%</strong
+                      >
+
+                      <span
+                        v-if="parseFloat(pair.floatingProfit.value) < 0"
+                        class="danger--text text-subtitle-2 font-weight-bold"
+                        >{{ pair.floatingProfit.value }} USDT</span
+                      >
+                      <span
+                        v-else
+                        class="success--text text-subtitle-2 font-weight-bold"
+                        >{{ pair.floatingProfit.value }} USDT</span
+                      >
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6" class="d-flex justify-start align-center">
+                    <v-tooltip right>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-icon class="mr-2" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                        <strong>Realized P&L</strong>
+                      </template>
+                      <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</span>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="6" class="d-flex flex-column justify-center align-center">
+                    <div class="d-flex flex-column align-start justify-center">
+                      <strong
+                        class="danger--text text-subtitle-2 font-weight-bold"
+                        v-if="parseFloat(pair.realizedProfit.percentage) < 0"
+                        >{{ pair.realizedProfit.percentage }}%</strong
+                      >
+                      <strong
+                        class="success--text text-subtitle-2 font-weight-bold"
+                        v-if="parseFloat(pair.realizedProfit.percentage) > 0"
+                        >{{ pair.realizedProfit.percentage }}%</strong
+                      >
+
+                      <span
+                        v-if="parseFloat(pair.realizedProfit.value) < 0"
+                        class="danger--text text-subtitle-2 font-weight-bold"
+                        >{{ pair.realizedProfit.value }} USDT</span
+                      >
+                      <span
+                        v-else
+                        class="success--text text-subtitle-2 font-weight-bold"
+                        >{{ pair.realizedProfit.value }} USDT</span
+                      >
+                    </div>
+                  </v-col>
+                </v-row>
+                <v-row>
+                  <v-col cols="6" class="d-flex justify-start align-center">
+                    <v-tooltip right>
+                      <template v-slot:activator="{ on, attrs }">
+                          <v-icon class="mr-2"  v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                          <strong>Total P&L</strong>
+                        </template>
+                      <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</span>
+                    </v-tooltip>
+                  </v-col>
+                  <v-col cols="6" class="d-flex flex-column justify-center align-center">
+                    <div class="d-flex flex-column align-start justify-center">
+                      <strong
+                        class="danger--text text-subtitle-2 font-weight-bold"
+                        v-if="parseFloat(pair.profit.percentage) < 0"
+                        >{{ pair.profit.percentage }}%</strong
+                      >
+                      <strong
+                        class="success--text text-subtitle-2 font-weight-bold"
+                        v-if="parseFloat(pair.profit.percentage) > 0"
+                        >{{ pair.profit.percentage }}%</strong
+                      >
+
+                      <span
+                        v-if="parseFloat(pair.profit.value) < 0"
+                        class="danger--text text-subtitle-2 font-weight-bold"
+                        >{{ pair.profit.value }} USDT</span
+                      >
+                      <span
+                        v-else
+                        class="success--text text-subtitle-2 font-weight-bold"
+                        >{{ pair.profit.value }} USDT</span
+                      >
+                    </div>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
             <v-row v-show="tab == 0">
               <v-col
                 v-for="(item, i) in detailItems"
@@ -432,6 +545,7 @@ export default {
         { icon: "mdi-pencil", text: "Detail" },
         { icon: "mdi-lightbulb-outline", text: "Strategy" },
         { icon: "mdi-file-table-box-outline", text: "Formula" },
+        { icon: "mdi-cog", text: "P&L" },
       ],
 
       // SHOW HANDLER
