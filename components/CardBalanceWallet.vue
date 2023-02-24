@@ -340,7 +340,10 @@
         :description="`OTP has been sent to your email address. Please check to proceed`"
         :ctaTitle="`INPUT OTP`"
         @close-modal="loadingModal = false"
-        @main-event="otpModal = true"
+        @main-event="
+          otpModal = true;
+          loadingModal = false;
+        "
       ></ModalsLoading>
     </BaseModal>
 
@@ -430,7 +433,7 @@ export default {
         .finally(() => {
           this.isLoading = false;
           this.otpModal = false;
-          this.$emit("refetch")
+          this.$emit("refetch");
         });
     },
     withdraw() {
