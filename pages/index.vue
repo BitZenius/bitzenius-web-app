@@ -132,10 +132,115 @@
       </v-row>
     </v-col>
   </v-row>
-  <div v-else class="mobile-main-container">
-    <div class="mobile-first-container primary"></div>
-    <div class="mobile-second-container"></div>
-  </div>
+  <v-row class="px-4" v-else>
+    <v-col cols="12">
+      <v-row>
+        <v-col cols="8" @click="showUserDetail = true">
+          <MenuProfile :dataMode="false" :userData="user"></MenuProfile>
+        </v-col>
+        <v-col cols="4"></v-col>
+        <v-col cols="12">
+          <CardBalanceWallet class="mb-6" />
+        </v-col>
+        <v-col cols="12" style="overflow-x: auto" class="no-scrollbar">
+          <v-row style="flex-wrap: nowrap" class="no-scrollbar">
+            <v-col cols="5">
+              <CardCredit :balance="balance" :loading="isLoading" />
+            </v-col>
+            <v-col cols="5">
+              <CardAsset :balance="balance" :loading="isLoading" />
+            </v-col>
+            <v-col cols="5">
+              <CardProfit :profit="profit" :loading="isLoadingProfit" />
+            </v-col>
+            <v-col cols="5">
+              <CardDeals :deal="deal" :loading="isLoadingProfit" />
+            </v-col>
+          </v-row>
+        </v-col>
+        <v-col cols="12">
+          <CardTaskInfo
+            @show-task="showUserDetail = true"
+            :taskData="profileCompletionTasks"
+          ></CardTaskInfo>
+        </v-col>
+        <v-col cols="12" md="12">
+          <v-row>
+            <v-col cols="12">
+              <v-card class="pa-2" flat>
+                <v-row>
+                  <v-col
+                    cols="12"
+                    class="d-flex justify-start text-h6 font-weight-bold px-5 py-3"
+                  >
+                    Statistic
+                  </v-col>
+                  <v-col cols="6" class="d-flex justify-start align-center">
+                    <v-btn-toggle rounded v-model="style" color="primary" group>
+                      <v-btn value="daily" @click="onStyleSelected(style)">
+                        Daily
+                      </v-btn>
+                      <v-btn value="monthly" @click="onStyleSelected(style)">
+                        Monthly
+                      </v-btn>
+                    </v-btn-toggle>
+                  </v-col>
+                  <v-col cols="6" class="d-flex justify-center align-center">
+                    <v-select
+                      variant="underlined"
+                      v-model="styleValue"
+                      item-value="value"
+                      item-text="name"
+                      :items="
+                        style == 'daily' ? styleDailyList : styleMonthlyList
+                      "
+                      :placeholder="
+                        style == 'daily' ? 'Select Month' : 'Select Year'
+                      "
+                      rounded
+                    ></v-select>
+                  </v-col>
+                </v-row>
+                <apexchart
+                  :key="$vuetify.theme.dark"
+                  v-if="
+                    showChart && exchange && chartData.series[0].data.length > 0
+                  "
+                  height="300"
+                  type="area"
+                  :options="chartData.options"
+                  :series="chartData.series"
+                ></apexchart>
+
+                <template v-else>
+                  <BaseNoData
+                    :label="`No Statistic for this Selected Exchange`"
+                  ></BaseNoData>
+                </template>
+              </v-card>
+            </v-col>
+            <v-col cols="12" v-show="false">
+              <TablesActivePosition
+                :showTabs="false"
+                :showExchangeCards="false"
+              />
+            </v-col>
+          </v-row>
+        </v-col>
+      </v-row>
+    </v-col>
+
+    <BaseModalMobile
+      @close="showUserDetail = false"
+      :parentModel="showUserDetail"
+      :maxWidth="'650'"
+    >
+      <ModalsUserDetail
+        :taskData="profileCompletionTasks"
+        @close-modal="showUserDetail = false"
+      ></ModalsUserDetail>
+    </BaseModalMobile>
+  </v-row>
 </template>
 <script>
 export default {
@@ -266,6 +371,8 @@ export default {
       isLoading: false,
       isLoadingProfit: false,
       isLoadingDeals: false,
+
+      showUserDetail: false,
     };
   },
   head() {
@@ -276,6 +383,9 @@ export default {
   computed: {
     userToken() {
       return this.$store.state.token;
+    },
+    user() {
+      return this.$store.state.authUser;
     },
     exchange() {
       return this.$store.state.exchange.selectedExchange;

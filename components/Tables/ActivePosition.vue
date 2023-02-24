@@ -547,7 +547,7 @@ export default {
           comingsoon: false,
           summary: [
             { value: "-", title: "Strategy" },
-            { value: "-", title: "Total USDT" },
+            { value: "-", title: "Total Allocated USDT" },
             { value: "-", title: "Technical Analysis" },
             { value: "-", title: "Minimum Trading Volume" },
           ],

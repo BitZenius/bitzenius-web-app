@@ -1,5 +1,5 @@
 <template>
-  <v-card flat class="no-padding">
+  <v-card v-if="isMobile() == false" flat class="no-padding">
     <v-row no-gutters>
       <v-col cols="12" class="pa-0">
         <v-card class="pa-2 custom-card" flat>
@@ -368,6 +368,227 @@
         @main-event="successModal = false"
       ></ModalsSuccess>
     </BaseModal>
+  </v-card>
+  <v-card v-else flat class="no-padding">
+    <v-row no-gutters>
+      <v-col cols="12" class="pa-0">
+        <v-card class="pa-4 custom-card" flat>
+          <v-row align="center">
+            <v-col cols="6" class="d-flex flex-column align-left">
+              <v-list-item-avatar
+                size="40"
+                color="#F4F7FD"
+                class="ma-0"
+                style="align-self: start !important"
+              >
+                <v-img
+                  max-width="25px"
+                  max-height="25px"
+                  :src="require('~/assets/images/wallet-icon.svg')"
+                  position="center"
+                ></v-img>
+              </v-list-item-avatar>
+              <span class="white--text font-weight-bold text-body-1 mt-3">
+                Credit Balance
+              </span>
+              <span
+                class="text-h5 font-weight-black white--text text--lighten-2"
+              >
+                <v-skeleton-loader v-if="isLoading" loading type="heading" />
+                <div v-else>{{ balance | currency("$", 2) }}</div>
+              </span>
+            </v-col>
+            <v-col
+              cols="6"
+              class="d-flex align-center justify-center"
+              style="height: 100%"
+            >
+              <v-row>
+                <v-col
+                  cols="6"
+                  class="d-flex flex-column align-center justify-center white--text"
+                >
+                  <v-btn
+                    color="white"
+                    @click="showDeposit"
+                    depressed
+                    fab
+                    class="mb-2"
+                  >
+                    <v-img
+                      max-width="25px"
+                      max-height="25px"
+                      :src="require('~/assets/images/wallet-icon.svg')"
+                      position="center"
+                    ></v-img>
+                  </v-btn>
+
+                  Deposit
+                </v-col>
+                <v-col
+                  cols="6"
+                  class="d-flex flex-column align-center justify-center white--text"
+                >
+                  <v-btn
+                    color="white"
+                    @click="showDeposit"
+                    depressed
+                    fab
+                    class="mb-2"
+                  >
+                    <v-img
+                      max-width="25px"
+                      max-height="25px"
+                      :src="require('~/assets/images/wallet-icon.svg')"
+                      position="center"
+                    ></v-img>
+                  </v-btn>
+                  Withdraw
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-row>
+    <v-dialog
+      v-model="depositDialog"
+      max-width="900"
+      :fullscreen="$vuetify.breakpoint.mobile"
+      transition="dialog-bottom-transition"
+    >
+      <template>
+        <v-card flat>
+          <v-card-title class="text-h5">
+            Deposit
+            <v-spacer></v-spacer>
+            <v-btn icon @click="depositDialog = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-text v-if="userData" class="mt-3">
+            <v-row justify="center " align="center">
+              <v-col cols="12" md="4">
+                <qr-code :text="userData.wallet_va"></qr-code>
+              </v-col>
+              <v-col cols="12" md="8">
+                <div class="mb-5">
+                  <p class="font-weight-bold">
+                    Network<br /><strong>POLYGON (ERC20)</strong>
+                  </p>
+                  <p class="font-weight-bold">
+                    Address<br /><strong>{{ userData.wallet_va }}</strong>
+                    <v-tooltip color="primary" v-model="copied" top>
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-btn
+                          icon
+                          v-bind="attrs"
+                          v-on="on"
+                          color="primary"
+                          size="16"
+                          v-clipboard:copy="userData.wallet_va"
+                          v-clipboard:success="onCopy"
+                          v-clipboard:error="onError"
+                        >
+                          <v-icon color="grey lighten-1">
+                            mdi-content-copy
+                          </v-icon>
+                        </v-btn>
+                      </template>
+                      <span>{{ copied ? "Copy" : "Copied" }}</span>
+                    </v-tooltip>
+                  </p>
+                </div>
+                <div class="text-chip font-weight-bold off-white">
+                  To make deposit <b>USDT</b> to your account, please transfer
+                  amount to your <b>Virtual Account Wallet</b> with the
+                  following information. Minimum transfer amount is
+                  <b>$10</b> and <b>$1</b> of admin fee will be applied. For
+                  example, if you transfer $100, so $99 will be added to your
+                  balance.
+                </div>
+              </v-col>
+            </v-row>
+          </v-card-text>
+          <v-card-text v-else class="mt-3">
+            You don't have an Virtual Account Wallet. Please contact our
+            customer service for further information.
+          </v-card-text>
+        </v-card>
+      </template>
+    </v-dialog>
+    <v-dialog
+      v-model="withdrawDialog"
+      max-width="600"
+      :fullscreen="$vuetify.breakpoint.mobile"
+    >
+      <template>
+        <v-card class="pa-3">
+          <v-card-title class="text-h5 lighten-2">
+            Withdraw
+            <v-spacer></v-spacer>
+            <v-btn icon @click="withdrawDialog = false">
+              <v-icon>mdi-close</v-icon>
+            </v-btn>
+          </v-card-title>
+          <v-card-text v-if="userData" class="mt-3">
+            To make deposit <b>USDT</b> to your account, please transfer amount
+            to your <b>Virtual Account Wallet</b> with the following
+            information. Minimum transfer amount is <b>$10</b> and <b>$1</b> of
+            admin fee will be applied. For example, if you transfer $100, so $99
+            will be added to your balance.
+            <div class="mt-5">
+              <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
+              <p>
+                Address<br /><strong>{{ userData.wallet_va }}</strong>
+              </p>
+            </div>
+          </v-card-text>
+          <v-card-text v-else class="mt-3">
+            You don't have an Virtual Account Wallet. Please contact our
+            customer service for further information.
+          </v-card-text>
+        </v-card>
+      </template>
+    </v-dialog>
+
+    <BaseModalMobile
+      @close="loadingModal = false"
+      :parentModel="loadingModal"
+      :maxWidth="'450'"
+    >
+      <ModalsLoading
+        :description="`OTP has been sent to your email address. Please check to proceed`"
+        :ctaTitle="`INPUT OTP`"
+        @close-modal="loadingModal = false"
+        @main-event="
+          otpModal = true;
+          loadingModal = false;
+        "
+      ></ModalsLoading>
+    </BaseModalMobile>
+
+    <BaseModalMobile
+      @close="otpModal = false"
+      :parentModel="otpModal"
+      :maxWidth="'450'"
+    >
+      <ModalsOTP
+        @close-modal="otpModal = false"
+        @main-event="(otpCode) => withdrawWithOTP(otpCode)"
+      ></ModalsOTP>
+    </BaseModalMobile>
+
+    <BaseModalMobile
+      @close="successModal = false"
+      :parentModel="successModal"
+      :maxWidth="'450'"
+    >
+      <ModalsSuccess
+        @close-modal="successModal = false"
+        @main-event="successModal = false"
+      ></ModalsSuccess>
+    </BaseModalMobile>
   </v-card>
 </template>
 

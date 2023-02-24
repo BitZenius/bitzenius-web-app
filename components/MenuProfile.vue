@@ -7,6 +7,7 @@
     two-line
   >
     <v-progress-circular
+      v-if="dataMode"
       :rotate="270"
       :value="profileCompletionProgress"
       color="primary"
@@ -21,19 +22,41 @@
       </v-list-item-avatar>
     </v-progress-circular>
 
+    <v-list-item-avatar v-else size="25" class="mr-2">
+      <v-img
+        :src="userData.photoURL"
+        :alt="userData.displayName"
+        contain
+      ></v-img>
+    </v-list-item-avatar>
+
     <v-list-item-content>
-      <v-list-item-title class="basic-text--text text-body-1 font-weight-bold">
-        {{ userData.displayName }}
-      </v-list-item-title>
-      <v-list-item-subttitle class="basic-text--text text-body-2">
-        <strong class="primary--text font-weight-bold"
-          >{{ profileCompletionProgress }}%</strong
+      <template v-if="dataMode">
+        <v-list-item-title
+          class="basic-text--text text-body-1 font-weight-bold"
         >
-        Task completion
-      </v-list-item-subttitle>
+          {{ userData.displayName }}
+        </v-list-item-title>
+        <v-list-item-subttitle class="basic-text--text text-body-2">
+          <strong class="primary--text font-weight-bold"
+            >{{ profileCompletionProgress }}%</strong
+          >
+          Task completion
+        </v-list-item-subttitle>
+      </template>
+      <template v-else>
+        <v-list-item-subttitle class="basic-text--text text-body-2">
+          Welcome
+        </v-list-item-subttitle>
+        <v-list-item-title
+          class="basic-text--text text-body-1 font-weight-bold"
+        >
+          {{ userData.displayName }}
+        </v-list-item-title>
+      </template>
     </v-list-item-content>
 
-    <v-chip class="custom-chip-2" small color="primary">
+    <v-chip v-if="dataMode" class="custom-chip-2" small color="primary">
       {{
         userData.subscription ? "Active" : userData.trial ? "Trial" : "Inactive"
       }}
@@ -44,6 +67,12 @@
 <script>
 export default {
   props: {
+    dataMode: {
+      type: Boolean,
+      default: () => {
+        return true;
+      },
+    },
     userData: {
       type: Object,
       default: () => {

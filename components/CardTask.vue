@@ -1,5 +1,10 @@
 <template>
-  <v-card class="pa-5" style="width: 95%; margin-left: auto" flat>
+  <v-card
+    v-if="isMobile() == false"
+    class="pa-5"
+    style="width: 95%; margin-left: auto"
+    flat
+  >
     <v-row class="pa-3">
       <v-col cols="1" style="position: relative">
         <div class="custom-avatar off-white-2">
@@ -27,6 +32,38 @@
           :path="data.path"
           :completed="data.completed"
         ></CardTaskItem>
+      </v-col>
+    </v-row>
+  </v-card>
+  <v-card v-else flat>
+    <v-row class="pa-3">
+      <v-col cols="4" style="position: relative">
+        <div class="custom-avatar-2 off-white-2">
+          <lottie
+            :width="50"
+            :height="50"
+            :options="lottieOptions"
+            v-on:animCreated="handleAnimation"
+          />
+        </div>
+      </v-col>
+      <v-col
+        cols="8"
+        class="basic-text--text font-weight-bold text-body-1 d-flex align-center"
+      >
+        Task Overview
+      </v-col>
+      <v-col cols="12" class="task-item-container no-scrollbar">
+        <v-row>
+          <v-col cols="12" v-for="(data, i) in taskData" :key="`task-${i}`">
+            <CardTaskItem
+              :title="data.title"
+              :description="data.description"
+              :path="data.path"
+              :completed="data.completed"
+            ></CardTaskItem>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-card>
@@ -84,6 +121,16 @@ export default {
   border: 4px solid var(--primary);
   top: -30%;
   left: -50%;
+}
+
+.custom-avatar-2 {
+  display: flex;
+  flex-wrap: wrap;
+  align-content: center;
+  justify-content: center;
+  width: 80px;
+  height: 80px;
+  border-radius: 100%;
 }
 
 .absolute-tooltip {

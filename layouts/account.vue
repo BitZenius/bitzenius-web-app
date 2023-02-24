@@ -175,7 +175,7 @@
       <v-btn v-show="false" icon class="mr-2">
         <v-icon>mdi-translate</v-icon>
       </v-btn>
-      <v-menu offset-y>
+      <v-menu offset-y v-if="isMobile() == false">
         <template #activator="{ on, attrs }">
           <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
             <v-icon>mdi-bell</v-icon>
