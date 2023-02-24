@@ -79,6 +79,7 @@
                     placeholder="Amount"
                     hide-details=""
                     rounded
+                    type="number"
                     class="my-2 custom-input text-body-1"
                   >
                   </v-text-field>
@@ -89,7 +90,7 @@
                     color="primary"
                     style="width: 95%"
                     depressed
-                    @click="showWithdraw"
+                    @click="withdraw"
                     block
                   >
                     Withdraw
@@ -361,6 +362,23 @@ export default {
         })
         .catch((err) => {
           this.balance = 0;
+          this.isLoading = false;
+        })
+        .finally(() => {
+          this.isLoading = false;
+        });
+    },
+    withdraw() {
+      this.isLoading = true;
+      this.$api
+        .$post("/user/balance/withdraw", {
+          amount: this.withdrawAmount,
+        })
+        .then((res) => {
+          console.log(res);
+        })
+        .catch((err) => {
+          console.log(err);
           this.isLoading = false;
         })
         .finally(() => {

@@ -1,7 +1,9 @@
 <template>
   <v-row>
     <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
-      <ModalsLearnHowItWorks @close-modal="test1 = false"></ModalsLearnHowItWorks>
+      <ModalsLearnHowItWorks
+        @close-modal="test1 = false"
+      ></ModalsLearnHowItWorks>
     </BaseModal>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
       <template>
@@ -117,6 +119,35 @@
               >
                 <v-icon dark> mdi-cog </v-icon>
               </v-btn>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col
+                  cols="12"
+                  v-for="(item, i) in exchange.summary"
+                  :key="`item-summary-${i}`"
+                >
+                  <v-card flat rounded color="off-white">
+                    <v-list-item>
+                      <v-icon size="20" class="mr-4" color="primary">
+                        {{ _determineIcon(item.title) }}
+                      </v-icon>
+
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-2">
+                          {{ item.title }}
+                        </v-list-item-title>
+
+                        <v-list-item-subtitle
+                          class="text-body-1 font-weight-bold basic-text--text"
+                        >
+                          {{ item.value }}
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-card>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
           <!-- ORNAMENTS -->
@@ -496,7 +527,7 @@ export default {
   },
   data() {
     return {
-      test1:false,
+      test1: false,
       counter: 0,
       currentItem: "Active Positions",
       tables: ["Active Positions", "Daily Profit", "All Trading History"],
@@ -514,6 +545,12 @@ export default {
           active: false,
           image: "/exchange_logo/binance.png",
           comingsoon: false,
+          summary: [
+            { value: "-", title: "Strategy" },
+            { value: "-", title: "Total USDT" },
+            { value: "-", title: "Technical Analysis" },
+            { value: "-", title: "Minimum Trading Volume" },
+          ],
         },
         // {
         //   name: "Bybit",
@@ -528,6 +565,12 @@ export default {
           active: false,
           image: "/exchange_logo/kucoin.png",
           comingsoon: true,
+          summary: [
+            { value: "-", title: "Strategy" },
+            { value: "-", title: "Total USDT" },
+            { value: "-", title: "Technical Analysis" },
+            { value: "-", title: "Minimum Trading Volume" },
+          ],
         },
         // {
         //   name: "Tokocrypto",
@@ -798,9 +841,11 @@ export default {
             `indexOf: ${indexOf} ${exchange.name}`,
             res.data[indexOf]
           );
+          exchange.summary = this.mapSummary(null, true);
           if (indexOf >= 0) {
             exchange.active = true;
             exchange.data = res.data[indexOf];
+            exchange.summary = this.mapSummary(exchange.data);
 
             if (!this.exchange) {
               this.selectExchangeCard(
@@ -811,6 +856,8 @@ export default {
             }
           }
         });
+
+        console.log(this.exchanges);
       } else {
         this.$store.commit("setShowSnackbar", {
           show: true,
@@ -839,7 +886,7 @@ export default {
 
           let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
           pnl += activePosition[index].grid_profit;
-          
+
           percentage = pnl / activePosition[index].amountUsd;
 
           activePosition[index].profit.value = pnl.toFixed(3);
@@ -1023,6 +1070,61 @@ export default {
         this.id = null;
       });
     },
+
+    /**
+     * Map summary
+     * @param {*} data
+     * @param {bool} use_default if true, use default placeholder value
+     * Turn bot data into array of object, containing the same info summary like in new bots pages
+     */
+    mapSummary(data, use_default = false) {
+      var result = [
+        { value: "-", title: "Strategy" },
+        { value: "-", title: "Total USDT" },
+        { value: "-", title: "Technical Analysis" },
+        { value: "-", title: "Minimum Trading Volume" },
+      ];
+
+      if (use_default) {
+        return result;
+      }
+
+      try {
+        result[0].value = data.strategy.style.name;
+        result[1].value = "$" + data.strategy.usdt_to_apply;
+        result[2].value = `${data.analysis.indicators[0].indicator} ${
+          data.analysis.condition == "AND" ? "&" : "/"
+        } ${data.analysis.indicators[1].indicator}`;
+        result[3].value = data.analysis.minimum_trading_volume;
+      } catch (err) {
+        console.log("MAP SUMMARY: ", err);
+      }
+
+      return result;
+    },
+
+    /**
+     * Determine Icon
+     * @param {*} text
+     * Choose custom icon based on title
+     */
+    _determineIcon(text) {
+      switch (text) {
+        case "Exchange":
+          return "$vuetify.icon.ExchangeIcon";
+        case "Strategy":
+          return "$vuetify.icon.ProfitBarChartIcon";
+        case "Total USDT":
+          return "$vuetify.icon.ProfitBarChartIcon";
+        case "Technical Analysis":
+          return "$vuetify.icon.ChartArrowUpIcon";
+        case "Minimum Trading Volume":
+          return "$vuetify.icon.ProfitBarChartIcon";
+
+        default:
+          return "$vuetify.icon.ProfitBarChartIcon";
+      }
+    },
   },
 };
 </script>
@@ -1097,7 +1199,7 @@ export default {
 }
 
 .exchange-card {
-  height: 100px;
+  /* height: 100px; */
 }
 
 .exchange-card.disabled {

@@ -1,16 +1,25 @@
 <template>
   <div class="app off-white" v-if="config">
     <v-card
-      class="verification-card d-flex justify-center pa-5"
+      class="verification-card d-flex justify-center pa-5 pb-10"
       color="off-white-3"
     >
       <v-card-text
         style="text-align: left"
         class="d-flex flex-column justify-center align-center pa-0"
       >
+        <v-img
+          :src="
+            $vuetify.theme.dark
+              ? '/bitzenius-logo-white.png'
+              : '/bitzenius-logo-white.png'
+          "
+          width="240"
+          contain
+        />
         <lottie
-          :width="200"
-          :height="200"
+          :width="180"
+          :height="180"
           :options="lottieOptions"
           v-on:animCreated="handleAnimation"
         />
@@ -61,8 +70,7 @@
               </v-btn>
             </v-col>
           </v-row>
-          <v-row v-else-if="config.mode == 'unlockDevice'">
-          </v-row>
+          <v-row v-else-if="config.mode == 'unlockDevice'"> </v-row>
           <!-- <v-row v-else-if="config.mode == 'verifyEmail'">
             <v-col cols="12">
               <v-btn
@@ -181,15 +189,15 @@ export default {
     this.auth = auth;
     this.config = config;
 
-    console.log('config', config);
-    console.log('routeQuery', this.$route.query);
+    console.log("config", config);
+    console.log("routeQuery", this.$route.query);
     switch (config.mode) {
       case "verifyEmail":
         this.title = "Verifying your email..";
         this.handleVerifyEmail();
         break;
       case "unlockDevice":
-        this.title = 'Unlocking your device..';
+        this.title = "Unlocking your device..";
         this.handleUnlockDevice();
         break;
       case "resetPassword":
@@ -209,26 +217,30 @@ export default {
     handleAnimation: function (anim) {
       this.anim = anim;
     },
-    handleUnlockDevice(){
+    handleUnlockDevice() {
       let id = this.$route.query.id ? this.$route.query.id : null;
-      if(!id){
-        this.message = "Unable to unlock your device, please make sure you did it correctly!";
+      if (!id) {
+        this.message =
+          "Unable to unlock your device, please make sure you did it correctly!";
         return;
       }
-      console.log('id', id);
-      this.$api.$get('/user/auth/unlock', {
-        params:{
-          id
-        }
-      }).then((res)=>{
-        console.log('res unlock', res);
-        this.message = "Device unlock success. Redirecting to home...";
-        setTimeout(() => {
-          this.$router.push("/");
-        }, 3000);
-      }).catch((err)=>{
-        this.message = err;
-      })
+      console.log("id", id);
+      this.$api
+        .$get("/user/auth/unlock", {
+          params: {
+            id,
+          },
+        })
+        .then((res) => {
+          console.log("res unlock", res);
+          this.message = "Device unlock success. Redirecting to home...";
+          setTimeout(() => {
+            this.$router.push("/");
+          }, 3000);
+        })
+        .catch((err) => {
+          this.message = err;
+        });
     },
     handleVerifyEmail() {
       this.isLoading = true;

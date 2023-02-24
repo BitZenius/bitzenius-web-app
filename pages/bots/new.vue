@@ -367,17 +367,9 @@
                         >
                           <v-card flat rounded color="off-white">
                             <v-list-item>
-                              <!-- <v-list-item-avatar size="50" color="off-white"> -->
-                              <!-- <v-img
-                                  max-width="25px"
-                                  max-height="25px"
-                                  :src="require('~/assets/images/deal.svg')"
-                                  position="center"
-                                ></v-img> -->
                               <v-icon size="20" class="mr-4" color="primary">
                                 {{ _determineIcon(item.title) }}
                               </v-icon>
-                              <!-- </v-list-item-avatar> -->
 
                               <v-list-item-content>
                                 <v-list-item-title class="text-body-2">
