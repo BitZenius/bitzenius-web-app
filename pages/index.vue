@@ -1,5 +1,5 @@
 <template>
-  <v-row class="py-5 mb-10">
+  <v-row v-if="isMobile() == false" class="py-5 mb-10">
     <!-- TEST -->
     <template v-if="false">
       <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
@@ -132,6 +132,10 @@
       </v-row>
     </v-col>
   </v-row>
+  <div v-else class="mobile-main-container">
+    <div class="mobile-first-container primary"></div>
+    <div class="mobile-second-container"></div>
+  </div>
 </template>
 <script>
 export default {
@@ -494,5 +498,12 @@ export default {
 
 div.apexcharts-theme-dark > svg {
   background: #212434 !important;
+}
+
+.mobile-main-container {
+}
+.mobile-first-container {
+  width: 100%;
+  height: 300px;
 }
 </style>

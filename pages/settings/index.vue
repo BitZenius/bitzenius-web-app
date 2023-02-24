@@ -429,6 +429,16 @@
         </v-card>
       </v-dialog>
     </v-col>
+    <BaseModal
+      @close="successModal = false"
+      :parentModel="successModal"
+      :maxWidth="'450'"
+    >
+      <ModalsSuccess
+        @close-modal="successModal = false"
+        @main-event="successModal = false"
+      ></ModalsSuccess>
+    </BaseModal>
   </v-row>
 </template>
 
@@ -476,6 +486,8 @@ export default {
       listener: new Object(),
       telegramConnected: false,
       e1: 0,
+
+      successModal: false,
     };
   },
   head() {
@@ -572,6 +584,8 @@ export default {
             displayName: this.userData.display_name,
             photoURL: this.userData.photo_url,
           });
+
+          this.successModal = true;
         })
         .catch((err) => {
           console.log(err);

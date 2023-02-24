@@ -1,5 +1,5 @@
 <template>
-  <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
+  <div   v-if="isMobile() == false" :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
     <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
       <v-progress-circular
         indeterminate
@@ -9,7 +9,6 @@
       />
       <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
     </v-overlay>
-
     <v-row no-gutters class="pa-10 noGutters" align="center">
       <v-col cols="12" md="7"> </v-col>
       <v-col cols="12" md="5" style="z-index: 2">
@@ -269,6 +268,211 @@
     </div>
     <!-- ORNAMENTS END -->
   </div>
+  <div v-else :class="$vuetify.theme.dark ? 'mobileApp dark ' : 'mobileApp'">
+    <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
+      <v-progress-circular
+        indeterminate
+        color="customGreen"
+        size="50"
+        width="7"
+      />
+      <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
+    </v-overlay>
+
+    <v-row class="pa-4">
+      <!-- <v-col cols="12" class="mt-10">
+        <v-icon @click="$router.push('/')"> mdi-arrow-left </v-icon>
+      </v-col> -->
+
+      <v-col cols="12" class="my-10">
+        <div
+          style="max-width: 80%"
+          class="text-h4 font-weight-bold decorated-text"
+        >
+          Create new account.
+        </div>
+      </v-col>
+      <v-col cols="12">
+
+        <v-form ref="form" lazy-validation>
+          <v-row>
+            <v-col cols="12">
+              <v-text-field
+                v-model="name"
+                :rules="nameRules"
+                validate-on-blur
+                placeholder="Full name"
+                rounded
+                class="mb-2 custom-input py-2"
+                color="black"
+                dense
+                prepend-inner-icon="$vuetify.icons.UserIcon"
+              >
+              </v-text-field>
+              </v-col>
+              <v-col cols="12">
+                <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                validate-on-blur
+                placeholder="Email"
+                rounded
+                class="mb-2 custom-input py-2"
+                color="black"
+                dense
+                prepend-inner-icon="$vuetify.icons.MailIcon"
+              >
+              </v-text-field>
+            </v-col>
+              <v-col cols="12">
+                <v-text-field
+                v-model="password"
+                :value="password"
+                :append-icon="show1 ? 'mdi-eye' : 'mdi-eye-off'"
+                :type="show1 ? 'text' : 'password'"
+                :rules="passwordRules"
+                required
+                @click:append="show1 = !show1"
+                placeholder="Password"
+                validate-on-blur
+                rounded
+                class="mb-2 custom-input py-2"
+                color="black"
+                dense
+                prepend-inner-icon="$vuetify.icons.LockIcon"
+              >
+              </v-text-field>
+            </v-col>
+              <v-col cols="12">
+                <v-text-field
+                v-model="referral"
+                required
+                placeholder="Referral code"
+                rounded
+                class="mb-2 custom-input py-2"
+                color="black"
+                dense
+                prepend-inner-icon="$vuetify.icons.ReferralIcon"
+              >
+              </v-text-field>
+            </v-col>
+
+
+            <v-col cols="12"><span class="px-4 mt-3"
+              >How did you hear about BitZenius?</span
+            >
+          </v-col>
+            <v-col cols="12">
+              <v-select
+                v-model="hearAboutModel"
+                :items="hearAboutItems"
+                @change="onHearAboutSelected(hearAboutModel)"
+                placeholder="Select one"
+                item-text="name"
+                item-value="value"
+                required
+                solo
+                flat
+                rounded
+              >
+              </v-select>
+            </v-col>
+            <v-col cols="12">
+              <v-text-field
+                v-if="showHearAboutText"
+                v-model="hearAbout"
+                required
+                placeholder="Ex: From a TV show"
+                rounded
+                class="mb-2 custom-input py-2"
+                color="black"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col>
+
+
+
+
+              <v-row justify="center">
+                <v-col cols="11">
+                  <v-checkbox
+                    v-model="checkbox"
+                    :rules="[(v) => !!v || 'You must agree to continue!']"
+                    required
+                  >
+                    <template v-slot:label>
+                      <span class="text-body-1"
+                        >By checking the checkbox you're agree on our policy
+                        Read more about the
+                        <a class="customGreen--text" href="#"></a>
+                          Terms of Services</a
+                        ></span
+                      >
+                    </template>
+                  </v-checkbox>
+                </v-col>
+              </v-row>
+
+              <base-button-animated
+                :disabled="!checkbox"
+                style="width: 100%"
+                color="customGreen"
+                depressed
+                @click.native="signUp"
+                class="mt-5"
+                :text="'Sign Up'"
+              ></base-button-animated>
+            </v-col>
+            <v-col cols="12">
+              <div class="my-5 font-weight-bold text-center">
+                Already have an account?
+                <a class="primary--text" @click="$router.push('/signin')"
+                  ><b>Log in</b></a
+                >
+              </div>
+            </v-col>
+          </v-row>
+          <div v-show="false" class="text-center subtitle-1 my-2">OR</div>
+          <v-row v-show="false">
+            <v-col cols="12">
+              <v-btn
+                style="width: 100%"
+                color="error"
+                x-large
+                class="text-capitalize mb-10"
+                depressed
+                outlined
+                @click.stop="googleSignin"
+              >
+                <v-icon left> mdi-google </v-icon>
+                Sign up with Google
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+      <v-col cols="12" v-if="message">
+        <v-alert
+          transition="slide-y-transition"
+          rounded
+          v-show="message"
+          :color="message.color"
+        >
+          <v-row>
+            <v-col class="grow d-flex justify-center align-center white--text">
+              {{ message.text }}
+            </v-col>
+            <v-col class="shrink">
+              <v-btn icon @click.stop="message = null">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-alert>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -441,6 +645,18 @@ export default {
   background-repeat: no-repeat;
   background-size: contain;
   position: relative;
+  overflow-y: hidden;
+}
+
+.mobileApp {
+  height: 100%;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+.mobileApp.dark {
+  height: 100%;
+  overflow-x: hidden;
   overflow-y: hidden;
 }
 

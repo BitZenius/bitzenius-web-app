@@ -182,12 +182,16 @@
                       {{ item.title }}
                     </v-list-item-title>
                     <v-list-item-subtitle>
-                      <strong v-if="item.key == 'total_step'"
+                      <strong
+                        v-if="item.key == 'total_step'"
                         class="text-body-1 font-weight-bold basic-text--text"
                       >
-                        {{ item.value - 1 == 0 ? 'Initial Order' : item.value - 1 }}
+                        {{
+                          item.value - 1 == 0 ? "Initial Order" : item.value - 1
+                        }}
                       </strong>
-                      <strong v-else
+                      <strong
+                        v-else
                         class="text-body-1 font-weight-bold basic-text--text"
                       >
                         {{ item.value }}
@@ -598,7 +602,7 @@ export default {
       ],
       detailItems: [
         {
-          title: "Amount",
+          title: "Amount (USDT)",
           key: "total_amount",
           value: 0,
         },
@@ -899,6 +903,8 @@ export default {
       }
     },
     setDetail() {
+      this.detailItems[3].title = `Quantity (${this.pair.pair_from})`;
+
       for (let data of this.detailItems) {
         if (data.key) {
           data.value = this.detail[data.key];

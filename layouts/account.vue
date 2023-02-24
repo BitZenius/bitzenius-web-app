@@ -216,17 +216,10 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <!-- <v-slide-x-transition>
-      <v-icon
-        v-show="!drawer"
-        class="mr-3 primary--text menu-arrow-fixed"
-        @click.stop="drawer = !drawer"
-        >mdi-arrow-right-drop-circle</v-icon
-      >
-    </v-slide-x-transition> -->
 
     <v-main class="main-container off-white">
       <v-container
+        v-if="isMobile() == false"
         class="main-container off-white"
         :style="`padding-top:${topMargin}px`"
         fluid
@@ -237,6 +230,7 @@
         <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
         <!-- ORNAMENTS END -->
       </v-container>
+      <nuxt v-else class="pa-0" />
     </v-main>
     <v-bottom-navigation
       v-if="$vuetify.breakpoint.mobile"
