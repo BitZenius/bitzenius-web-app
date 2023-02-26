@@ -48,8 +48,7 @@
                 class="text-capitalize"
                 color="primary"
                 depressed
-                disabled
-                @click="showWithdraw"
+                @click="$router.push('/wallet')"
               >
                 Withdraw
               </v-btn>

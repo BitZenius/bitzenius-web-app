@@ -4,6 +4,7 @@
     :max-width="maxWidth"
     :fullscreen="$vuetify.breakpoint.mobile"
     transition="dialog-bottom-transition"
+    :persistent="persistent"
   >
     <slot></slot>
   </v-dialog>
@@ -14,6 +15,12 @@ export default {
   props: {
     parentModel: false,
     maxWidth: String,
+    persistent: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
+    },
   },
   data() {
     return {

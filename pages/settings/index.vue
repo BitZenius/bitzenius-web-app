@@ -585,6 +585,7 @@ export default {
             photoURL: this.userData.photo_url,
           });
 
+          this.getProfile();
           this.successModal = true;
         })
         .catch((err) => {

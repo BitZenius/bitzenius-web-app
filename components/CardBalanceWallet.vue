@@ -32,76 +32,7 @@
       </v-col>
       <v-col cols="12">
         <v-card flat rounded class="pa-4">
-          <v-row align="center" justify="center">
-            <v-col cols="12" class="d-flex justify-center">
-              <v-btn
-                @click.native="actionMode = 'Deposit'"
-                class="my-2"
-                rounded
-                depressed
-                :color="actionMode == 'Deposit' ? 'primary--text' : 'off-white'"
-              >
-                Deposit
-              </v-btn>
-              <v-btn
-                @click.native="actionMode = 'Withdraw'"
-                class="my-2"
-                rounded
-                depressed
-                :color="
-                  actionMode == 'Withdraw' ? 'primary--text' : 'off-white'
-                "
-              >
-                Withdraw
-              </v-btn>
-            </v-col>
-            <v-col cols="12">
-              <v-row align="center" justify="start">
-                <v-col cols="12" v-if="actionMode == 'Deposit'">
-                  <v-btn
-                    class="text-capitalize"
-                    rounded
-                    color="primary"
-                    style="width: 95%"
-                    depressed
-                    @click="showDeposit"
-                    block
-                  >
-                    Deposit
-                  </v-btn></v-col
-                >
-                <v-col v-else cols="12">
-                  <div class="mb-2 font-weight-bold">Amount</div>
-
-                  <v-text-field
-                    v-model="withdrawAmount"
-                    required
-                    placeholder="Amount"
-                    hide-details=""
-                    rounded
-                    type="number"
-                    class="my-2 custom-input text-body-1"
-                  >
-                  </v-text-field>
-
-                  <v-btn
-                    rounded
-                    class="text-capitalize"
-                    color="primary"
-                    style="width: 95%"
-                    depressed
-                    @click="withdraw"
-                    block
-                  >
-                    Withdraw
-                  </v-btn>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-        </v-card>
-        <v-card v-if="false" class="py-10" flat>
-          <v-row align="center" justify="center">
+          <v-row align="center">
             <v-col cols="12" md="12" class="d-flex justify-center">
               <v-btn
                 class="mx-1 text-capitalize d-flex"
@@ -117,117 +48,12 @@
                 class="text-capitalize"
                 color="primary"
                 depressed
-                disabled
                 @click="showWithdraw"
               >
                 Withdraw
               </v-btn>
             </v-col>
           </v-row>
-          <v-dialog
-            v-model="depositDialog"
-            max-width="900"
-            :fullscreen="$vuetify.breakpoint.mobile"
-          >
-            <template>
-              <v-card flat>
-                <v-card-title class="text-h5">
-                  Deposit
-                  <v-spacer></v-spacer>
-                  <v-btn icon @click="depositDialog = false">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-card-title>
-                <v-card-text v-if="userData" class="mt-3">
-                  <v-row justify="center " align="center">
-                    <v-col cols="12" md="4">
-                      <v-img
-                        position="center"
-                        contain
-                        :src="require('~/assets/qrcodeplaceholder.jpg')"
-                      ></v-img>
-                    </v-col>
-                    <v-col cols="12" md="8">
-                      <div class="mb-5">
-                        <p class="font-weight-bold">
-                          Network<br /><strong>POLYGON (ERC20)</strong>
-                        </p>
-                        <p class="font-weight-bold">
-                          Address<br /><strong>{{ userData.wallet_va }}</strong>
-                          <v-tooltip color="primary" v-model="copied" top>
-                            <template v-slot:activator="{ on, attrs }">
-                              <v-btn
-                                icon
-                                v-bind="attrs"
-                                v-on="on"
-                                color="primary"
-                                size="16"
-                                v-clipboard:copy="userData.wallet_va"
-                                v-clipboard:success="onCopy"
-                                v-clipboard:error="onError"
-                              >
-                                <v-icon color="grey lighten-1">
-                                  mdi-content-copy
-                                </v-icon>
-                              </v-btn>
-                            </template>
-                            <span>{{ copied ? "Copy" : "Copied" }}</span>
-                          </v-tooltip>
-                        </p>
-                      </div>
-                      <div class="text-chip font-weight-bold">
-                        To make deposit <b>USDT</b> to your account, please
-                        transfer amount to your
-                        <b>Virtual Account Wallet</b> with the following
-                        information. Minimum transfer amount is <b>$10</b> and
-                        <b>$1</b> of admin fee will be applied. For example, if
-                        you transfer $100, so $99 will be added to your balance.
-                      </div>
-                    </v-col>
-                  </v-row>
-                </v-card-text>
-                <v-card-text v-else class="mt-3">
-                  You don't have an Virtual Account Wallet. Please contact our
-                  customer service for further information.
-                </v-card-text>
-              </v-card>
-            </template>
-          </v-dialog>
-          <v-dialog
-            v-model="withdrawDialog"
-            max-width="600"
-            :fullscreen="$vuetify.breakpoint.mobile"
-          >
-            <template>
-              <v-card class="pa-3">
-                <v-card-title class="text-h5 lighten-2">
-                  Whithdraw
-                  <v-spacer></v-spacer>
-                  <v-btn icon @click="withdrawDialog = false">
-                    <v-icon>mdi-close</v-icon>
-                  </v-btn>
-                </v-card-title>
-                <v-card-text v-if="userData" class="mt-3">
-                  To make deposit <b>USDT</b> to your account, please transfer
-                  amount to your <b>Virtual Account Wallet</b> with the
-                  following information. Minimum transfer amount is
-                  <b>$10</b> and <b>$1</b> of admin fee will be applied. For
-                  example, if you transfer $100, so $99 will be added to your
-                  balance.
-                  <div class="mt-5">
-                    <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
-                    <p>
-                      Address<br /><strong>{{ userData.wallet_va }}</strong>
-                    </p>
-                  </div>
-                </v-card-text>
-                <v-card-text v-else class="mt-3">
-                  You don't have an Virtual Account Wallet. Please contact our
-                  customer service for further information.
-                </v-card-text>
-              </v-card>
-            </template>
-          </v-dialog>
         </v-card>
       </v-col>
     </v-row>
@@ -310,52 +136,59 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text v-if="userData" class="mt-3">
-            To make deposit <b>USDT</b> to your account, please transfer amount
-            to your <b>Virtual Account Wallet</b> with the following
-            information. Minimum transfer amount is <b>$10</b> and <b>$1</b> of
-            admin fee will be applied. For example, if you transfer $100, so $99
-            will be added to your balance.
-            <div class="mt-5">
-              <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
-              <p>
-                Address<br /><strong>{{ userData.wallet_va }}</strong>
-              </p>
-            </div>
-          </v-card-text>
-          <v-card-text v-else class="mt-3">
-            You don't have an Virtual Account Wallet. Please contact our
-            customer service for further information.
+          <v-card-text class="mt-3">
+            <v-row>
+              <v-col cols="12">
+                <ol>
+                  <li>Minimum amount to withdraw is 1$</li>
+                  <li>
+                    If you withdraw all of your remaining balance, all of your
+                    running bots will be automatically stopped
+                  </li>
+                </ol>
+              </v-col>
+              <v-col cols="12">
+                <span class="text-body-1">Amount to withdraw (USDT)</span>
+                <v-text-field
+                  v-model="withdrawAmount"
+                  required
+                  placeholder="Amount"
+                  hide-details=""
+                  rounded
+                  type="number"
+                  class="my-2 custom-input text-body-1"
+                >
+                </v-text-field>
+                <v-btn
+                  class="mt-5"
+                  color="primary"
+                  flat
+                  rounded
+                  :disabled="withdrawAmount < 1"
+                  block
+                  @click="withdraw"
+                >
+                  Withdraw
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
       </template>
     </v-dialog>
 
     <BaseModal
-      @close="loadingModal = false"
-      :parentModel="loadingModal"
+      @close="withdrawModal = false"
+      :parentModel="withdrawModal"
       :maxWidth="'450'"
+      :persistent="true"
     >
-      <ModalsLoading
-        :description="`OTP has been sent to your email address. Please check to proceed`"
-        :ctaTitle="`INPUT OTP`"
-        @close-modal="loadingModal = false"
-        @main-event="
-          otpModal = true;
-          loadingModal = false;
-        "
-      ></ModalsLoading>
-    </BaseModal>
-
-    <BaseModal
-      @close="otpModal = false"
-      :parentModel="otpModal"
-      :maxWidth="'450'"
-    >
-      <ModalsOTP
-        @close-modal="otpModal = false"
+      <ModalsWithdraw
+        :mode="withdrawModalMode"
+        :description="withdrawModalDescription"
+        @close-modal="withdrawModal = false"
         @main-event="(otpCode) => withdrawWithOTP(otpCode)"
-      ></ModalsOTP>
+      ></ModalsWithdraw>
     </BaseModal>
 
     <BaseModal
@@ -553,30 +386,17 @@
     </v-dialog>
 
     <BaseModalMobile
-      @close="loadingModal = false"
-      :parentModel="loadingModal"
+      @close="withdrawModal = false"
+      :parentModel="withdrawModal"
       :maxWidth="'450'"
+      :persistent="true"
     >
-      <ModalsLoading
-        :description="`OTP has been sent to your email address. Please check to proceed`"
-        :ctaTitle="`INPUT OTP`"
-        @close-modal="loadingModal = false"
-        @main-event="
-          otpModal = true;
-          loadingModal = false;
-        "
-      ></ModalsLoading>
-    </BaseModalMobile>
-
-    <BaseModalMobile
-      @close="otpModal = false"
-      :parentModel="otpModal"
-      :maxWidth="'450'"
-    >
-      <ModalsOTP
-        @close-modal="otpModal = false"
+      <ModalsWithdraw
+        :mode="withdrawModalMode"
+        :description="withdrawModalDescription"
+        @close-modal="withdrawModal = false"
         @main-event="(otpCode) => withdrawWithOTP(otpCode)"
-      ></ModalsOTP>
+      ></ModalsWithdraw>
     </BaseModalMobile>
 
     <BaseModalMobile
@@ -605,7 +425,9 @@ export default {
       isLoading: false,
       actionMode: "Deposit",
       withdrawAmount: 0,
-      loadingModal: false,
+      withdrawModal: false,
+      withdrawModalMode: "LOADING",
+      withdrawModalDescription: "",
       otpModal: false,
       successModal: false,
     };
@@ -633,45 +455,63 @@ export default {
     withdrawWithOTP(otpCode) {
       this.isLoading = true;
 
-      // return console.log({
-      //   amount: this.withdrawAmount,
-      //   otp: `${otpCode}`,
-      // });
-      this.$api
-        .$post("/user/balance/withdraw", {
-          amount: this.withdrawAmount,
-          otp: `${otpCode}`,
-        })
-        .then((res) => {
-          console.log(res);
-          this.loadingModal = false;
-          this.successModal = true;
-        })
-        .catch((err) => {
-          console.log(err);
-          this.isLoading = false;
-        })
-        .finally(() => {
-          this.isLoading = false;
-          this.otpModal = false;
-          this.$emit("refetch");
-        });
+      setTimeout(() => {
+        this.withdrawModalMode = "LOADING";
+        this.withdrawModalDescription = "Processing withdraw";
+
+        this.$api
+          .$post("/user/balance/withdraw", {
+            amount: this.withdrawAmount,
+            otp: `${otpCode}`,
+          })
+          .then((res) => {
+            console.log(res);
+
+            this.successModal = true;
+            this.withdrawModal = false;
+          })
+          .catch((err) => {
+            console.log(err);
+            this.withdrawModalMode = "ERROR";
+            if (err.response && err.response.data.message) {
+              this.withdrawModalDescription = err.response.data.message;
+            }
+            this.isLoading = false;
+          })
+          .finally(() => {
+            this.isLoading = false;
+
+            this.$emit("refetch");
+          });
+      }, 1000);
     },
     withdraw() {
       this.isLoading = true;
+      this.withdrawModal = true;
+      this.withdrawModalMode = "LOADING";
+      this.withdrawModalDescription = "Sending OTP code to your email";
+
       this.$api
         .$post("/user/balance/withdraw", {
           amount: this.withdrawAmount,
         })
         .then((res) => {
-          console.log(res);
-          this.loadingModal = true;
+          this.withdrawModalMode = "OTP";
+          this.withdrawModalDescription =
+            "OTP code has been sent to your email";
         })
         .catch((err) => {
-          console.log(err);
+          console.log(err.response);
+
+          this.withdrawModalMode = "ERROR";
+
+          if (err.response && err.response.data.message) {
+            this.withdrawModalDescription = err.response.data.message;
+          }
           this.isLoading = false;
         })
         .finally(() => {
+          this.withdrawDialog = false;
           this.isLoading = false;
         });
     },
