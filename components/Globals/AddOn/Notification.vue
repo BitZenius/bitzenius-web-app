@@ -3,17 +3,18 @@
         <v-btn @click="showOverlay = false" fab x-small color="danger" style="position:absolute; top:-3%; right:0;">
             <v-icon>mdi-close</v-icon>
         </v-btn>
+        <code>{{notifications}}</code>
         <v-list color="primary" elevation="10" style="border-radius:15px;">
-            <div v-for="(val,i) in 5" :key="i">
+            <div v-for="(notification,i) in notifications" :key="i">
                 <v-divider></v-divider>
                 <v-list-item>
                     <v-list-item-avatar>
                         <v-icon large class="customPink">mdi-alert-circle-outline</v-icon>
                     </v-list-item-avatar>
                     <v-list-item-content>
-                        <v-list-item-title class="font-weight-bold">Your account is not secure</v-list-item-title>
+                        <v-list-item-title class="font-weight-bold">Notification {{i+1}}</v-list-item-title>
                         <v-list-item-subtitle class="customYellow--text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.</br> Id nostrum ab accusamus nesciunt a error incidunt odit veniam nobis, delectus quidem praesentium eius
+                          {{notification.message}}
                         </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
@@ -32,6 +33,7 @@
 
 <script>
 export default {
+  props:['notifications'],
   data: () => ({
     showOverlay: false,
     items: [

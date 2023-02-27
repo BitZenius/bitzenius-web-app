@@ -2,7 +2,7 @@
   <v-app>
     <GlobalsAddOnLoader />
     <GlobalsAddOnSnackbar />
-    <GlobalsAddOnNotification ref="notification" />
+    <GlobalsAddOnNotification :notifications="notifications" ref="notification" />
     <v-navigation-drawer
       v-if="isMobile() == false"
       class="main-nav"
@@ -184,23 +184,21 @@
           </v-btn>
         </template>
         <v-list v-if="user">
-          <v-list-item>
+          <v-list-item v-for="(notification, i) in notifications" :key="i">
             <v-list-item-avatar>
               <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold"
-                >Your account is not secure</v-list-item-title
+                >Notification {{i+1}}</v-list-item-title
               >
               <v-list-item-subtitle>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.<br />
-                Id nostrum ab accusamus nesciunt a error incidunt odit veniam
-                nobis, delectus quidem praesentium eius
+                {{notification.message}}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-divider />
-          <v-list-item>
+          <!-- <v-divider /> -->
+          <!-- <v-list-item>
             <v-list-item-avatar>
               <v-icon class="customGreen">mdi-check</v-icon>
             </v-list-item-avatar>
@@ -214,7 +212,7 @@
                 nobis, delectus quidem praesentium eius
               </v-list-item-subtitle>
             </v-list-item-content>
-          </v-list-item>
+          </v-list-item> -->
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -338,6 +336,7 @@ export default {
       bottomNav: "home",
       listener: null,
       showNotification: false,
+      notifications:[],
     };
   },
   computed: {
@@ -374,6 +373,7 @@ export default {
     }
     this.listenSubscription();
     this.streamNotification();
+    this.getUserNotifications();
   },
   beforeDestroy() {
     this.listener();
@@ -396,6 +396,30 @@ export default {
             color: "customPink",
           });
         });
+    },
+
+    async getUserNotifications(){
+      this.$api.$get("/user/user-notifications")
+      .then((res)=>{
+        console.log('user-notification', res);
+        if(res.success){
+          this.notifications = res.data;
+        }else{
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: res.message,
+            color: "customPink",
+          });          
+        }
+      })
+      .catch((error)=>{
+        console.log(error);
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: err.response.message,
+          color: "customPink",
+        });
+      })
     },
 
     async getUserIp() {
@@ -504,7 +528,13 @@ export default {
       });
 
       this.socket.on("notification", (msg) => {
-        this.$refs.notification.show();
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "You received new notification, please check!",
+          color: "customGreen",
+        });
+        this.getUserNotifications();
+        // this.$refs.notification.show();
       });
     },
   },
