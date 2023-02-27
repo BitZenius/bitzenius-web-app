@@ -881,10 +881,8 @@ export default {
           // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
           // data.c   = Current Price (from binance stream)
           let average = parseFloat(activePosition[index].average);
-          let percentage =
-            average == 0 ? 0 : (parseFloat(data.c) - average) / average;
+          let percentage = average == 0 ? 0 : (parseFloat(data.c) - average) / average;
           let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
-          pnl += activePosition[index].grid_profit;
 
           percentage = pnl / activePosition[index].amountUsd;
 
