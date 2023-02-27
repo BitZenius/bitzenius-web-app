@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-5">
+  <v-row class="pa-5" v-if="isMobile() == false">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -205,6 +205,191 @@
         @close-modal="closeModal"
       />
     </BaseModal>
+
+    <v-snackbar
+      v-model="snackbar"
+      :timeout="snackbarTimeout"
+      dark
+      bottom
+      color="success"
+      elevation="15"
+    >
+      {{ snackbarText }}
+      <template v-slot:action="{ attrs }">
+        <v-btn color="white" text v-bind="attrs" @click="snackbar = false">
+          Close
+        </v-btn>
+      </template>
+    </v-snackbar>
+  </v-row>
+  <v-row class="pa-5" v-else>
+    <v-col cols="12">
+      <v-row>
+        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+          {{ title }}
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="12">
+      <v-row class="mt-10">
+        <v-col cols="6" v-for="(exchange, index) in exchanges" :key="index">
+          <v-card
+            style="position: relative; margin-bottom: 25px"
+            :class="{
+              'd-flex align-center justify-center exchange-active':
+                exchange.selected,
+              'd-flex align-center justify-center': !exchange.selected,
+            }"
+            rounded
+          >
+            <div class="custom-avatar off-white-3">
+              <v-img contain :src="exchange.image"></v-img>
+            </div>
+            <v-row class="pa-3 pt-10">
+              <v-col
+                cols="12"
+                class="d-flex justify-space-between align-center pt-10 px-5"
+              >
+                <v-btn
+                  @click="_addExchange(exchange)"
+                  class="mx-2"
+                  fab
+                  x-small
+                  outlined
+                  :disabled="
+                    exchange.active ||
+                    !user.subscription ||
+                    user.subscription == false ||
+                    exchange.comingsoon
+                  "
+                  color="primary"
+                >
+                  <v-icon> mdi-cog </v-icon>
+                </v-btn>
+                <v-btn
+                  @click="_addExchange(exchange)"
+                  class="mx-2"
+                  fab
+                  x-small
+                  outlined
+                  :disabled="
+                    !exchange.active ||
+                    !user.subscription ||
+                    user.subscription == false ||
+                    exchange.comingsoon
+                  "
+                  color="primary"
+                >
+                  <v-icon> mdi-pencil </v-icon>
+                </v-btn>
+                <v-btn
+                  class="mx-2"
+                  fab
+                  x-small
+                  outlined
+                  :disabled="
+                    !exchange.active ||
+                    !user.subscription ||
+                    user.subscription == false ||
+                    exchange.comingsoon
+                  "
+                  color="danger"
+                >
+                  <v-icon> mdi-delete </v-icon>
+                </v-btn>
+              </v-col>
+              <v-col cols="12" c>
+                <h4 class="text-body-1 font-weight-bold mb-2 ml-2">
+                  {{ exchange.name }}
+                </h4>
+                <v-alert
+                  dense
+                  border="left"
+                  colored-border
+                  :color="
+                    exchange.comingsoon
+                      ? 'white'
+                      : exchange.active
+                      ? 'primary'
+                      : 'success'
+                  "
+                  class="pr-0"
+                >
+                  <span
+                    class="text-caption font-weight-bold"
+                    v-if="exchange.updateAt"
+                  >
+                    Latest Update :
+                    {{ $moment(exchange.updatedAt).format("DD/MM/YYYY HH:mm") }}
+                  </span>
+                  <span
+                    class="text-caption font-weight-bold"
+                    v-else-if="exchange.comingsoon"
+                  >
+                    Coming soon
+                  </span>
+                  <span class="text-caption font-weight-bold" v-else>
+                    Setup exchange
+                  </span>
+                </v-alert>
+              </v-col>
+            </v-row>
+            <!-- ORNAMENTS -->
+            <div v-if="false" class="ornament o1"></div>
+            <!-- ORNAMENTS END -->
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="12" class="d-flex flex-column justify-start align-start">
+      <v-card
+        flat
+        rounded
+        color="primary2"
+        class="pa-3 primary-text--text text-body-2 mb-2"
+      >
+        Please be sure to whitelist the following IP address when creating an
+        API Key on your exchange. It is a required step!
+      </v-card>
+      <v-card
+        flat
+        rounded
+        color="primary2"
+        class="pa-3 primary-text--text text-body-2 custom-card"
+      >
+        {{ whitelistIp }}
+        <v-tooltip v-model="copied" top>
+          <template v-slot:activator="{ on, attrs }">
+            <v-btn
+              icon
+              v-bind="attrs"
+              v-on="on"
+              color="black"
+              size="16"
+              v-clipboard:copy="whitelistIp"
+              v-clipboard:success="onCopy"
+              v-clipboard:error="onError"
+            >
+              <v-icon small color="primary-text"> mdi-content-copy </v-icon>
+            </v-btn>
+          </template>
+          {{ copied ? "Copy" : "Copied" }}
+        </v-tooltip>
+      </v-card>
+    </v-col>
+
+    <BaseModalMobile
+      v-if="showAddExchange"
+      @close="showAddExchange = false"
+      :parentModel="showAddExchange"
+      :maxWidth="450"
+    >
+      <ModalsExchangeSetup
+        :data="data"
+        :exchange="selectedExchange"
+        @close-modal="closeModal"
+      />
+    </BaseModalMobile>
 
     <v-snackbar
       v-model="snackbar"

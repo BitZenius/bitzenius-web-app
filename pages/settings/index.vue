@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="userData" class="pa-5">
+  <v-row v-if="userData && isMobile() == false" class="pa-5">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -162,7 +162,7 @@
           <!-- CUSTOM STEPPER ENDS -->
         </v-col>
         <v-col cols="9">
-          <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
+          <v-tabs-items v-model="e1" vertical style="height: 100%" class="pa-5">
             <v-tab-item key="0">
               <v-row>
                 <v-col cols="12">
@@ -405,6 +405,273 @@
           </v-stepper>
         </v-col>
       </v-row>
+
+      <v-dialog v-model="progressDialog" max-width="480px" persistent>
+        <v-card>
+          <v-card-text class="pt-5">
+            <p>Uploading progress</p>
+            <v-progress-linear
+              v-if="uploadProgress"
+              v-model="uploadProgress"
+              color="light-blue"
+              striped
+              height="25"
+            >
+              <div class="subtitle">{{ uploadProgress }}%</div>
+            </v-progress-linear>
+          </v-card-text>
+          <v-card-actions v-if="uploadProgress === 100">
+            <v-btn color="blue darken-1" text @click="closeDialog">
+              Finish
+            </v-btn>
+            <v-spacer />
+          </v-card-actions>
+        </v-card>
+      </v-dialog>
+    </v-col>
+    <BaseModal
+      @close="successModal = false"
+      :parentModel="successModal"
+      :maxWidth="'450'"
+    >
+      <ModalsSuccess
+        @close-modal="successModal = false"
+        @main-event="successModal = false"
+      ></ModalsSuccess>
+    </BaseModal>
+  </v-row>
+  <v-row v-else-if="userData && isMobile() == true" class="pa-5">
+    <v-col cols="12">
+      <v-row>
+        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+          <v-icon @click="$router.push('/account')">mdi-arrow-left</v-icon>
+          {{ title }}
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="12">
+      <v-tabs class="pa-2" v-model="e1">
+        <v-tab :ripple="false" key="0">
+          <span class="text-body-1 text-capitalize">Basic</span>
+        </v-tab>
+        <v-tab :ripple="false" key="1">
+          <span class="text-body-1 text-capitalize">Wallet</span>
+        </v-tab>
+        <v-tab :ripple="false" key="2">
+          <span class="text-body-1 text-capitalize">Settings</span>
+        </v-tab>
+      </v-tabs>
+      <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
+        <v-tab-item key="0">
+          <v-row>
+            <v-col cols="12">
+              <v-alert
+                border="left"
+                dense
+                colored-border
+                color="success"
+                class="text-body-1 font-weight-bold custom-alert"
+                >Profile Information</v-alert
+              >
+            </v-col>
+            <v-col cols="12">
+              <v-avatar size="100">
+                <img :src="userData.photo_url" :alt="userData.display_name" />
+              </v-avatar>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col cols="12" class="d-flex align-center mt-8">
+                  <v-btn
+                    depressed
+                    :loading="isSelecting"
+                    @click.stop="doUpload"
+                    color="primary"
+                    rounded
+                    class="mr-5"
+                  >
+                    Upload New Picture
+                  </v-btn>
+                  <v-btn depressed rounded color="primary" outlined>
+                    Remove
+                  </v-btn>
+                  <v-file-input
+                    ref="uploader"
+                    @change="(file) => uploadImage(file)"
+                    hide-input
+                    class="d-none"
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <div class="mb-2 font-weight-bold">Display Name</div>
+
+                  <v-text-field
+                    v-model="userData.display_name"
+                    rounded
+                    class="custom-input py-2"
+                    dense
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <div class="mb-2 font-weight-bold">Email</div>
+
+                  <v-text-field
+                    v-model="userData.email"
+                    rounded
+                    class="custom-input py-2"
+                    dense
+                    disabled
+                  />
+                </v-col>
+                <v-col cols="12">
+                  <div class="mb-2 font-weight-bold">Password</div>
+                  <div class="grey--text mb-3">
+                    To change your password, please logout from your account and
+                    click "forgot password" to reset your password
+                  </div>
+                </v-col>
+                <v-col cols="12" class="mt-10">
+                  <v-btn
+                    @click="save"
+                    color="primary"
+                    rounded
+                    block
+                    style="width: 168px"
+                  >
+                    Save
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-tab-item>
+
+        <v-tab-item key="1">
+          <v-row>
+            <v-col cols="12">
+              <v-alert
+                border="left"
+                dense
+                colored-border
+                color="customYellow"
+                class="text-body-1 font-weight-bold custom-alert"
+                >Wallet Information</v-alert
+              >
+            </v-col>
+            <v-col cols="12">
+              <div class="font-weight-bold">Virtual Account</div>
+              <v-text-field
+                v-model="userData.wallet_va"
+                rounded
+                class="custom-input py-2"
+                dense
+                disabled
+              />
+            </v-col>
+            <v-col cols="12">
+              <div class="font-weight-bold">Wallet Address</div>
+              <v-text-field
+                v-model="userData.wallet"
+                rounded
+                class="custom-input py-2"
+                dense
+              />
+            </v-col>
+            <v-col cols="12" class="mt-10">
+              <v-btn
+                block
+                @click="save"
+                color="primary"
+                rounded
+                style="width: 168px"
+              >
+                Save
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-tab-item>
+
+        <v-tab-item key="2">
+          <v-row>
+            <v-col cols="12">
+              <v-alert
+                border="left"
+                dense
+                colored-border
+                color="customPink"
+                class="text-body-1 font-weight-bold custom-alert"
+                >Account Settings</v-alert
+              >
+            </v-col>
+            <v-col cols="8">
+              <div class="font-weight-bold">Telegram Bot</div>
+              <div class="grey--text">
+                Activate BitZenius Telegram Bot as your virtual assistant
+              </div>
+            </v-col>
+            <v-col cols="4" class="d-flex align-center justify-end">
+              <v-btn
+                depressed
+                :loading="isLoading"
+                class="mt-3 text-capitalize"
+                :color="telegramConnected ? 'secondary' : 'primary'"
+                :disabled="telegramConnected"
+                @click.stop="connectTelegram"
+              >
+                <v-icon left> mdi-send </v-icon>
+                {{ telegramConnected ? "Connected" : "Connect" }}
+              </v-btn>
+              <a ref="telegramLink" target="_blank" />
+            </v-col>
+            <v-col cols="12">
+              <div class="font-weight-bold">Two-Factor Authentication</div>
+              <div class="grey--text">
+                Choose your preferred 2FA for your account
+              </div>
+            </v-col>
+            <v-col
+              cols="8"
+              class="font-weight-bold d-flex align-center justify-start"
+            >
+              Email
+            </v-col>
+            <v-col cols="4" class="d-flex align-center justify-end">
+              <v-switch
+                v-model="selected2FA.email"
+                hide-details
+                readonly
+                inset
+                color="primary"
+              ></v-switch>
+            </v-col>
+            <v-col
+              cols="8"
+              class="font-weight-bold d-flex align-center justify-start"
+            >
+              Telegram
+            </v-col>
+            <v-col cols="4" class="d-flex align-center justify-end">
+              <v-switch
+                v-model="selected2FA.telegram"
+                hide-details
+                inset
+                color="primary"
+              ></v-switch>
+            </v-col>
+            <v-col cols="12" class="mt-10">
+              <v-btn
+                block
+                @click="save"
+                color="primary"
+                rounded
+                style="width: 168px"
+              >
+                Save
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-tab-item>
+      </v-tabs-items>
 
       <v-dialog v-model="progressDialog" max-width="480px" persistent>
         <v-card>

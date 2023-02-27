@@ -4,6 +4,7 @@
     <GlobalsAddOnSnackbar />
     <GlobalsAddOnNotification ref="notification" />
     <v-navigation-drawer
+      v-if="isMobile() == false"
       class="main-nav"
       :style="`top:${topMargin}px`"
       v-model="drawer"
@@ -151,6 +152,7 @@
       > -->
     </v-navigation-drawer>
     <v-app-bar
+      v-if="isMobile() == false"
       :class="$vuetify.theme.dark ? 'custom-app-bar-dark' : 'custom-app-bar'"
       :style="`top:${topMargin}px`"
       fixed
@@ -240,21 +242,25 @@
       grow
       height="72"
     >
-      <v-btn value="home" to="/">
+      <v-btn active-class="active-icon" value="home" to="/">
         <span>Home</span>
-        <v-icon>mdi-home-outline</v-icon>
+        <v-icon>$vuetify.icons.HomeIcon</v-icon>
       </v-btn>
-      <v-btn value="exchange" to="/exchanges">
+      <v-btn active-class="active-icon" value="exchange" to="/exchanges">
         <span>Exchanges</span>
-        <v-icon>mdi-briefcase-outline</v-icon>
+        <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
       </v-btn>
-      <v-btn value="bot" to="/bots">
+      <v-btn active-class="active-icon" value="bot" to="/bots">
         <span>Bots</span>
-        <v-icon>mdi-robot-outline</v-icon>
+        <v-icon>$vuetify.icons.BotIcon</v-icon>
       </v-btn>
-      <v-btn value="trading" to="/trading-history">
-        <span>Trading</span>
-        <v-icon>mdi-table-large</v-icon>
+      <v-btn active-class="active-icon" value="trading" to="/trading-history">
+        <span>Advanced</span>
+        <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
+      </v-btn>
+      <v-btn active-class="active-icon" value="account" to="/account">
+        <span>Account</span>
+        <v-icon>$vuetify.icons.SettingsIcon</v-icon>
       </v-btn>
     </v-bottom-navigation>
     <v-footer v-else fixed>
@@ -508,8 +514,8 @@ export default {
 <style>
 .main-container {
   height: 100%;
-  min-height: 120vh;
 }
+
 .main-nav {
   overflow: unset !important;
 }
@@ -560,5 +566,15 @@ export default {
 .v-navigation-drawer__content {
   -ms-overflow-style: none; /* IE and Edge */
   scrollbar-width: none; /* Firefox */
+}
+
+.active-icon > .v-btn__content > .v-icon {
+  color: var(--primary);
+}
+
+@media only screen and (min-width: 960px) {
+  .main-container {
+    min-height: 120vh;
+  }
 }
 </style>
