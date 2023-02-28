@@ -1,5 +1,5 @@
 <template>
-  <v-card elevation="8" class="pa-5 mt-10">
+  <v-card v-if="checkMobile() == false" elevation="8" class="pa-5 mt-10">
     <v-row v-if="false" class="py-5">
       <v-col cols="12" class="d-flex justify-center">
         <div
@@ -100,6 +100,460 @@
         </v-btn>
       </template>
     </v-data-table>
+    <BaseModal
+      :parentModel="invoiceDialog"
+      :maxWidth="'600'"
+      @close="invoiceDialog = false"
+    >
+      <template>
+        <v-card flat rounded v-if="activeInvoice" style="overflow-x: hidden">
+          <v-card-title
+            class="text-h6 font-weight-bold primary basic--text mb-5"
+          >
+            <v-row>
+              <v-col cols="6">
+                <v-img
+                  :src="'/bitzenius-logo-white.png'"
+                  height="24"
+                  contain
+                  position="left center"
+                />
+              </v-col>
+              <v-col cols="4" class="d-flex justify-end">
+                <v-btn color="basic" icon @click="closeInvoiceDialog">
+                  <v-icon>mdi-close</v-icon>
+                </v-btn>
+              </v-col>
+            </v-row>
+          </v-card-title>
+          <v-card-text>
+            <v-row class="pa-5">
+              <v-col cols="6">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="text-body-2 font-weight-bold basic-text--text"
+                    >
+                      Invoice ID
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <strong class="text-body-1">
+                        {{ activeInvoice.invoice_id }}
+                      </strong>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="6">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="text-body-2 font-weight-bold basic-text--text"
+                    >
+                      Date
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <strong class="text-body-1">
+                        {{
+                          $moment(activeInvoice.created_at).format(
+                            "DD MMM YYYY HH:mm"
+                          )
+                        }}</strong
+                      >
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="6">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="text-body-2 font-weight-bold basic-text--text"
+                    >
+                      Status
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <v-chip
+                        v-if="activeInvoice.payment.paid"
+                        small
+                        color="success"
+                      >
+                        Paid at
+                        {{
+                          $moment(activeInvoice.payment.date).format(
+                            "DD MMM YYYY HH:mm"
+                          )
+                        }}
+                      </v-chip>
+                      <v-chip v-else small> Unpaid </v-chip>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="6" v-if="activeInvoice.payment.method">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title
+                      class="text-body-2 font-weight-bold basic-text--text"
+                    >
+                      Payment Method
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      <strong class="text-body-1">{{
+                        activeInvoice.payment.method
+                          .replace("_", " ")
+                          .toUpperCase()
+                      }}</strong>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12">
+                <v-row justify="space-between">
+                  <v-col cols="6">
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >Description</strong
+                    >
+                  </v-col>
+                  <v-col cols="6" class="text-right">
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >Amount</strong
+                    >
+                  </v-col>
+                </v-row>
+                <v-row
+                  justify="space-between"
+                  class="off-white rounded-row mb-2"
+                >
+                  <v-col cols="6">
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >{{ activeInvoice.description }}</strong
+                    >
+                  </v-col>
+                  <v-col
+                    cols="6"
+                    class="text-right font-weight-bold basic-text--text"
+                  >
+                    {{ activeInvoice.totals.subtotal | currency("$") }}
+                  </v-col>
+                </v-row>
+                <v-row justify="space-between" class="off-white rounded-row">
+                  <v-col cols="6">
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >Subtotal</strong
+                    >
+                  </v-col>
+                  <v-col cols="6" class="text-right">
+                    {{ activeInvoice.totals.subtotal | currency("$") }}
+                  </v-col>
+                  <v-col cols="6">
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >{{
+                        translateDiscount(activeInvoice.discount.source)
+                      }}</strong
+                    >
+                  </v-col>
+                  <v-col cols="6" class="text-right">
+                    {{ (activeInvoice.totals.discount * -1) | currency("$") }}
+                  </v-col>
+                  <v-col cols="6">
+                    <strong
+                      class="text-body-1 font-weight-bold basic-text--text"
+                      >Grand Total</strong
+                    >
+                  </v-col>
+                  <v-col
+                    cols="6"
+                    class="text-right font-weight-bold basic-text--text"
+                  >
+                    {{ activeInvoice.totals.total | currency("$") }}
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-row>
+            <v-row
+              v-if="!activeInvoice.payment.paid"
+              justify="space-between"
+              class="mt-5"
+            >
+              <v-col cols="12">
+                <v-radio-group v-model="payment" column>
+                  <v-radio
+                    label="Pay using crypto currency (USDT)"
+                    value="crypto"
+                  />
+                  <v-radio
+                    value="credit_balance"
+                    :disabled="balance < activeInvoice.totals.total"
+                  >
+                    <template v-slot:label>
+                      <div>
+                        Pay using credit balance
+                        <strong class="success--text">{{
+                          balance | currency("$")
+                        }}</strong>
+                      </div>
+                    </template>
+                  </v-radio>
+                </v-radio-group>
+                <div v-if="payment == 'crypto'">
+                  To make payment to this invoice, please transfer
+                  {{ activeInvoice.totals.total | currency("$") }} of USDT to
+                  your virtual account with the following details:
+                  <table class="invoice">
+                    <tbody>
+                      <tr>
+                        <td><b>Network</b></td>
+                        <td>POLYGON (ERC20)</td>
+                      </tr>
+                      <tr>
+                        <td><b>Address</b></td>
+                        <td>
+                          {{ activeInvoice.wallet_va }}
+                          <v-tooltip v-model="copied" top>
+                            <template v-slot:activator="{ on, attrs }">
+                              <v-btn
+                                icon
+                                v-bind="attrs"
+                                v-on="on"
+                                color="primary"
+                                size="16"
+                                v-clipboard:copy="activeInvoice.wallet_va"
+                                v-clipboard:success="onCopy"
+                                v-clipboard:error="onError"
+                              >
+                                <v-icon color="grey lighten-1">
+                                  mdi-content-copy
+                                </v-icon>
+                              </v-btn>
+                            </template>
+                            <span>{{ copied ? "Copy" : "Copied" }}</span>
+                          </v-tooltip>
+                        </td>
+                      </tr>
+                    </tbody>
+                  </table>
+                </div>
+                <div v-else>
+                  <v-btn
+                    depressed
+                    color="success"
+                    :loading="isLoading"
+                    @click="payInvoice"
+                  >
+                    Pay Now
+                  </v-btn>
+                </div>
+              </v-col>
+            </v-row>
+            <v-row v-else justify="space-between" class="mt-5">
+              <v-col cols="6" class="d-flex align-center font-weight-bold">
+                <v-list-item-avatar size="25" color="success" class="mr-2">
+                  <v-icon color="white" small> mdi-check </v-icon>
+                </v-list-item-avatar>
+                Thank you for your payment
+              </v-col>
+              <v-col cols="6"> </v-col>
+            </v-row>
+          </v-card-text>
+        </v-card>
+      </template>
+    </BaseModal>
+    <v-dialog> </v-dialog>
+  </v-card>
+  <v-card v-else elevation="8" class="pa-3">
+    <v-row>
+      <v-col cols="12">
+        <v-list flat color="rgba(0,0,0,0)" two-line>
+          <v-list-item>
+            <!-- <v-list-item-avatar> -->
+            <v-icon size="30" class="primary--text mr-3">
+              $vuetify.icons.SubscriptionIcon
+            </v-icon>
+            <!-- </v-list-item-avatar> -->
+            <v-list-item-content>
+              <v-list-item-title class="text-h5 font-weight-bold"
+                >My Invoices</v-list-item-title
+              >
+              <v-list-item-subtitle class="text-body-2">
+                Payment history
+              </v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-list>
+      </v-col>
+      <v-col cols="12">
+        <v-data-table
+          :headers="headers"
+          :items="invoices"
+          :loading="isLoading"
+          :options.sync="options"
+          :server-items-length="totalItems"
+          :items-per-page="rowsPerPage"
+          disable-sort
+          class="elevation-0"
+          loading-text="Loading... Please wait"
+        >
+          <template v-slot:body="{ items }">
+            <v-row v-for="(item, i) in items" :key="`${i}-item`" class="mb-5">
+              <v-col cols="12">
+                <v-list-item two-line>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-2">
+                      Invoice ID
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{ item.invoice_id }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-2">
+                      Date
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{ item.date }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="12">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-2">
+                      Description
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{ item.description }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="6">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-2">
+                      Amount
+                    </v-list-item-title>
+                    <v-list-item-subtitle>
+                      {{ item.totals.total | toCurrency }}
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+              <v-col cols="6">
+                <v-list-item>
+                  <v-list-item-content>
+                    <!-- <v-list-item-title class="text-body-2">
+                      Status
+                    </v-list-item-title> -->
+                    <v-list-item-subtitle>
+                      <v-list-item-avatar
+                        v-if="item.payment.paid"
+                        size="25"
+                        color="success"
+                      >
+                        <v-icon color="white" small> mdi-check </v-icon>
+                      </v-list-item-avatar>
+                      <v-chip v-else small> Unpaid </v-chip>
+                      <v-btn
+                        icon
+                        color="primary"
+                        depressed
+                        @click="getInvoice(item._id)"
+                      >
+                        <v-icon>mdi-eye</v-icon>
+                      </v-btn>
+                    </v-list-item-subtitle>
+                  </v-list-item-content>
+                </v-list-item>
+              </v-col>
+            </v-row>
+          </template>
+
+          <template v-slot:header.invoice_id="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.date="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.description="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.totals.total="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.payment.paid="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.active="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+
+          <template #item.type="{ item }">
+            <v-chip small label>
+              {{ item.type.toUpperCase() }}
+            </v-chip>
+          </template>
+
+          <template #item.date="{ item }">
+            <div class="text-subtitle-2 font-weight-bold">
+              {{ item.date }}
+            </div>
+          </template>
+
+          <template #item.description="{ item }">
+            <div class="text-subtitle-2 font-weight-bold">
+              {{ item.description }}
+            </div>
+          </template>
+
+          <template #item.totals.total="{ item }">
+            <div class="text-subtitle-2 font-weight-bold">
+              {{ item.totals.total | currency("$") }}
+            </div>
+          </template>
+
+          <template #item.invoice_id="{ item }">
+            <span class="text-subtitle-2 font-weight-bold">{{
+              item.invoice_id
+            }}</span>
+          </template>
+
+          <template #item.payment.paid="{ item }">
+            <!-- <v-chip v-if="item.payment.paid" small color="success">
+          Paid at {{ $moment(item.payment.date).format("DD MMM YYYY HH:mm") }}
+        </v-chip> -->
+          </template>
+          <template #item.active="{ item }">
+            <v-btn icon color="primary" depressed @click="getInvoice(item._id)">
+              <v-icon>mdi-eye</v-icon>
+            </v-btn>
+          </template>
+        </v-data-table>
+      </v-col>
+    </v-row>
+
     <BaseModal
       :parentModel="invoiceDialog"
       :maxWidth="'600'"

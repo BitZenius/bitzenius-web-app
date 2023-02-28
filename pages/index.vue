@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="isMobile() == false" class="py-5 mb-10">
+  <v-row v-if="checkMobile() == false" class="py-5 mb-10">
     <!-- TEST -->
     <template v-if="false">
       <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>

@@ -7,7 +7,7 @@
       ref="notification"
     />
     <v-navigation-drawer
-      v-if="isMobile() == false"
+      v-if="checkMobile() == false"
       class="main-nav"
       :style="`top:${topMargin}px`"
       v-model="drawer"
@@ -155,7 +155,7 @@
       > -->
     </v-navigation-drawer>
     <v-app-bar
-      v-if="isMobile() == false"
+      v-if="checkMobile() == false"
       :class="$vuetify.theme.dark ? 'custom-app-bar-dark' : 'custom-app-bar'"
       :style="`top:${topMargin}px`"
       fixed
@@ -180,7 +180,7 @@
       <v-btn v-show="false" icon class="mr-2">
         <v-icon>mdi-translate</v-icon>
       </v-btn>
-      <v-menu offset-y v-if="isMobile() == false">
+      <v-menu offset-y v-if="checkMobile() == false">
         <template #activator="{ on, attrs }">
           <v-btn icon class="mr-2" v-bind="attrs" v-on="on">
             <v-icon>mdi-bell</v-icon>
@@ -222,7 +222,7 @@
     <ThemeToggle v-else style="display: none !important"></ThemeToggle>
     <v-main class="main-container off-white">
       <v-container
-        v-if="isMobile() == false"
+        v-if="checkMobile() == false"
         class="main-container off-white"
         :style="`padding-top:${topMargin}px`"
         fluid

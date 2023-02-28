@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="isMobile() == false" class="pa-5">
+  <v-row v-if="checkMobile() == false" class="pa-5">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -423,8 +423,8 @@
                     :key="`${i}-item`"
                     class="mb-5"
                   >
-                    <v-col cols="6">
-                      <v-list-item>
+                    <v-col cols="5">
+                      <v-list-item three-line>
                         <v-list-item-content>
                           <v-list-item-title class="text-body-2">
                             Date
@@ -435,7 +435,7 @@
                         </v-list-item-content>
                       </v-list-item>
                     </v-col>
-                    <v-col cols="6">
+                    <v-col cols="7">
                       <v-list-item>
                         <v-list-item-content>
                           <v-list-item-title class="text-body-2">
@@ -458,8 +458,8 @@
                         </v-list-item-content>
                       </v-list-item>
                     </v-col>
-                    <v-col cols="6">
-                      <v-list-item>
+                    <v-col cols="5">
+                      <v-list-item three-line>
                         <v-list-item-content>
                           <v-list-item-title class="text-body-2">
                             Type
@@ -470,35 +470,52 @@
                         </v-list-item-content>
                       </v-list-item>
                     </v-col>
+                    <v-col cols="7">
+                      <v-list-item three-line>
+                        <v-list-item-content>
+                          <v-list-item-title class="text-body-2">
+                            Description
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            {{ item.description }}
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title class="text-body-2">
+                            Status
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            <v-chip v-if="item.status == 0" small>
+                              On Processing
+                            </v-chip>
+                            <v-chip
+                              v-if="item.status == 1"
+                              small
+                              color="success"
+                              class="white--text"
+                            >
+                              Done
+                            </v-chip>
+                            <v-chip
+                              v-if="item.status == 2"
+                              small
+                              color="error"
+                              class="white--text"
+                            >
+                              Cancelled
+                            </v-chip>
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-col>
+                    <v-col cols="6"> </v-col>
                   </v-row>
                 </template>
-                <template #item.type="{ item }">
-                  <v-chip color="primary" small label>
-                    {{ item.type.toUpperCase() }}
-                  </v-chip>
-                </template>
-                <template #item.status="{ item }">
-                  <v-chip v-if="item.status == 0" small> On Processing </v-chip>
-                  <v-chip
-                    v-if="item.status == 1"
-                    small
-                    color="success"
-                    class="white--text"
-                  >
-                    Done
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 2"
-                    small
-                    color="error"
-                    class="white--text"
-                  >
-                    Cancelled
-                  </v-chip>
-                </template>
-                <template #item.amount="{ item }">
-                  <div class="text-right"></div>
-                </template>
+
                 <template v-slot:no-data>
                   <BaseNoData :label="`No Rewards History`"></BaseNoData>
                 </template>
@@ -695,7 +712,7 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 .lottie-container {
   position: absolute;
   top: 0%;
@@ -712,5 +729,9 @@ export default {
   left: 50%;
   top: 100%;
   transform: translate(-50%, -50%);
+}
+
+.v-data-table--mobile > .v-data-table__wrapper {
+  overflow-x: hidden !important;
 }
 </style>

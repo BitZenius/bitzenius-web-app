@@ -1,5 +1,5 @@
 <template>
-  <div   v-if="isMobile() == false" :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
+  <div   v-if="checkMobile() == false" :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
     <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
       <v-progress-circular
         indeterminate

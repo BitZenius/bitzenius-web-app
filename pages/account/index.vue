@@ -180,7 +180,7 @@ export default {
     },
   },
   mounted() {
-    if (this.isMobile() == false) {
+    if (this.checkMobile() == false) {
       this.$router.push("/settings");
     }
     this._fetchUserCompletion();

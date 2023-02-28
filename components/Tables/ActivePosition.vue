@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="isMobile() == false">
+  <v-row v-if="checkMobile() == false">
     <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
       <ModalsLearnHowItWorks
         @close-modal="test1 = false"
@@ -536,16 +536,7 @@
       @close-modal="closeModal"
       @close="showActivePosition = false"
     />
-    <!-- <v-dialog
-      persistent
-      v-if="showActivePosition"
-      v-model="showActivePosition"
-      max-width="600"
-    >
-      <template>
 
-      </template>
-    </v-dialog> -->
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -561,11 +552,10 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-row v-if="showExchangeCards" cols="12" class="px-0 pt-10">
+    <v-row v-if="showExchangeCards" cols="12" class="px-0">
       <v-col v-for="(exchange, index) in exchanges" :key="index" cols="12">
         <v-card
-          @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
-          style="position: relative; margin-bottom: 25px"
+          style="position: relative"
           :class="
             exchange.comingsoon
               ? 'd-flex align-center justify-center exchange-card disabled'
@@ -575,18 +565,23 @@
         >
           <v-row justify="center" align="center" class="pa-5">
             <v-col
+              @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
               cols="5"
-              class="d-flex justify-center"
+              class="d-flex justify-center align-center"
               style="position: relative"
             >
               <div class="custom-avatar off-white-3">
                 <v-img contain :src="exchange.image"></v-img>
               </div>
-              <h4 class="text-body-1 font-weight-bold mt-5">
+              <h4 class="text-body-1 font-weight-bold ml-3">
                 {{ exchange.name }}
               </h4>
             </v-col>
-            <v-col cols="7" class="d-flex justify-center align-center">
+            <v-col
+              cols="7"
+              class="d-flex justify-center align-center"
+              v-if="expansionPanel == exchange.name"
+            >
               <template v-if="exchange.active">
                 <v-btn
                   @click="_addBot(exchange)"
@@ -626,135 +621,101 @@
               >
                 <v-icon dark> mdi-cog </v-icon>
               </v-btn>
+              <v-btn
+                @click="expandExchange(exchange.name)"
+                class="mx-2"
+                fab
+                x-small
+                outlined
+                color="primary"
+              >
+                <v-icon dark> mdi-chevron-up </v-icon>
+              </v-btn>
+              <v-list-item-avatar
+                v-if="exchange.selected"
+                size="25"
+                color="#27D79E"
+              >
+                <v-icon color="white" small> mdi-check </v-icon>
+              </v-list-item-avatar>
             </v-col>
-            <v-col cols="12">
-              <v-row>
-                <v-col
-                  cols="12"
-                  v-for="(item, i) in exchange.summary"
-                  :key="`item-summary-${i}`"
-                >
-                  <v-card flat rounded color="off-white">
-                    <v-list-item>
-                      <v-icon size="20" class="mr-4" color="primary">
-                        {{ _determineIcon(item.title) }}
-                      </v-icon>
+            <v-col cols="7" class="d-flex justify-center align-center" v-else>
+              <v-btn
+                @click="expandExchange(exchange.name)"
+                class="mx-2"
+                fab
+                x-small
+                outlined
+                color="primary"
+              >
+                <v-icon dark> mdi-chevron-down </v-icon>
+              </v-btn>
+              <v-list-item-avatar
+                v-if="exchange.selected"
+                size="25"
+                color="#27D79E"
+              >
+                <v-icon color="white" small> mdi-check </v-icon>
+              </v-list-item-avatar>
+            </v-col>
+            <v-expand-transition>
+              <v-col cols="12" v-if="expansionPanel == exchange.name">
+                <v-row>
+                  <v-col
+                    cols="12"
+                    v-for="(item, i) in exchange.summary"
+                    :key="`item-summary-${i}`"
+                  >
+                    <v-card flat rounded color="off-white">
+                      <v-list-item>
+                        <v-icon size="20" class="mr-4" color="primary">
+                          {{ _determineIcon(item.title) }}
+                        </v-icon>
 
-                      <v-list-item-content>
-                        <v-list-item-title class="text-body-2">
-                          {{ item.title }}
-                        </v-list-item-title>
+                        <v-list-item-content>
+                          <v-list-item-title class="text-body-2">
+                            {{ item.title }}
+                          </v-list-item-title>
 
-                        <v-list-item-subtitle
-                          class="text-body-1 font-weight-bold basic-text--text"
-                        >
-                          <template v-if="i == 1 || i == 3">
-                            {{ item.value | toCurrency }}</template
+                          <v-list-item-subtitle
+                            class="text-body-1 font-weight-bold basic-text--text"
                           >
-                          <template v-else> {{ item.value }}</template>
-                        </v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-col>
+                            <template v-if="i == 1 || i == 3">
+                              {{ item.value | toCurrency }}</template
+                            >
+                            <template v-else> {{ item.value }}</template>
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-card>
+                  </v-col>
+                </v-row>
+              </v-col>
+            </v-expand-transition>
           </v-row>
           <!-- ORNAMENTS -->
-          <v-list-item-avatar
-            v-if="exchange.selected"
-            class="exchange-checkmark"
-            size="25"
-            color="#27D79E"
-          >
-            <v-icon color="white" small> mdi-check </v-icon>
-          </v-list-item-avatar>
+
           <div class="ornament o1"></div>
           <!-- ORNAMENTS END -->
-        </v-card>
-        <!-- <v-btn small @click="logger()">logger</v-btn> -->
-        <v-card
-          v-if="false"
-          @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
-          style="position: relative; height: 110px"
-          :class="{
-            'd-flex align-center justify-center exchange-active':
-              exchange.selected,
-            'd-flex align-center justify-center': !exchange.selected,
-          }"
-          elevation="3"
-        >
-          <div v-if="exchange.selected" class="exchange-selected">Selected</div>
-          <div v-if="exchange.active">
-            <v-btn
-              x-small
-              icon
-              fab
-              class="danger white--text delete-button"
-              @click="_deleteBot(exchange)"
-              >X</v-btn
-            >
-          </div>
-          <v-row>
-            <v-col sm="12" md="4" class="d-flex align-center justify-start">
-              <img
-                style="width: 100px; padding: 25px"
-                :src="exchange.image"
-                alt=""
-              />
-            </v-col>
-            <v-col
-              sm="12"
-              md="8"
-              class="d-flex flex-column justify-center align-center"
-            >
-              <h4>{{ exchange.name }}</h4>
-              <div v-if="exchange.active" class="d-flex justify-center">
-                <v-btn
-                  :disabled="!user.subscription || user.subscription == false"
-                  small
-                  outlined
-                  color="primary"
-                  class="mr-2"
-                  @click="_addBot(exchange)"
-                  >Edit Bot</v-btn
-                >
-              </div>
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-else
-                color="primary"
-                small
-                @click="_addBot(exchange)"
-                >Setup Bot</v-btn
-              >
-            </v-col>
-          </v-row>
-          <v-overlay
-            v-if="exchange.comingsoon"
-            z-index="1"
-            :absolute="true"
-            opacity="0.7"
-            overlay="true"
-          >
-            <h3 style="letter-spacing: 2px" class="customYellow--text">
-              Coming Soon!
-            </h3>
-          </v-overlay>
         </v-card>
       </v-col>
     </v-row>
 
-    <v-col cols="12">
+    <v-col cols="12" class="mt-4">
       <v-btn
         rounded
         class="text-capitalize"
         color="primary"
         depressed
+        block
         @click="test1 = true"
       >
         Learn how it works
       </v-btn>
+    </v-col>
+
+    <v-col cols="12" class="mb-4 text-center text-h6">
+      Bots for {{ exchange }}
     </v-col>
 
     <v-col cols="12">
@@ -1179,6 +1140,7 @@ export default {
       listOfSockets: [],
 
       selectedExchangeActive: false,
+      expansionPanel: 1,
     };
   },
   props: {
@@ -1663,6 +1625,14 @@ export default {
           return "$vuetify.icon.ProfitBarChartIcon";
       }
     },
+
+    expandExchange(value) {
+      if (this.expansionPanel == value) {
+        return (this.expansionPanel = null);
+      }
+
+      this.expansionPanel = value;
+    },
   },
 };
 </script>
@@ -1759,6 +1729,33 @@ export default {
   top: 0%;
   left: 0%;
   transform: translate(25%, -75%);
+}
+
+@media only screen and (max-width: 1023px) {
+  .custom-avatar {
+    box-shadow: unset;
+    display: flex;
+    flex-wrap: wrap;
+    align-content: center;
+    justify-content: center;
+    padding: 15px;
+    width: 65px;
+    height: 65px;
+    border-radius: 100% !important;
+    position: unset;
+    transform: translate(0%, 0%);
+  }
+
+  .ornament {
+    position: absolute;
+    width: 40%;
+    height: 4px;
+    border-radius: 8px;
+
+    left: 25%;
+    top: 100%;
+    transform: translate(-50%, -50%);
+  }
 }
 </style>
 

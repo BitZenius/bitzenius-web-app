@@ -1,6 +1,6 @@
 <template>
   <v-card
-    v-if="isMobile() == false"
+    v-if="checkMobile() == false"
     class="pa-5"
     style="width: 95%; margin-left: auto"
     flat

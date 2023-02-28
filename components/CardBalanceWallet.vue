@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="isMobile() == false" flat class="no-padding">
+  <v-card v-if="checkMobile() == false" flat class="no-padding">
     <v-row no-gutters>
       <v-col cols="12" class="pa-0">
         <v-card class="pa-2 custom-card" flat>

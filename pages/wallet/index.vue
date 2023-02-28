@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="isMobile() == false" class="pa-5">
+  <v-row v-if="checkMobile() == false" class="pa-5">
     <v-dialog
       v-model="showDetailDialog"
       width="auto"

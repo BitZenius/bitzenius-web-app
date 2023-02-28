@@ -1,5 +1,5 @@
 <template>
-  <div v-if="isMobile() == false">
+  <div v-if="checkMobile() == false">
     <v-chip
       style="width: 100%"
       v-if="!exist"
