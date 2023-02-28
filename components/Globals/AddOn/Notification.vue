@@ -1,12 +1,13 @@
 <template>
     <v-overlay :value="showOverlay" z-index="5000" opacity="0.9">
-        <v-btn @click="showOverlay = false" fab x-small color="danger" style="position:absolute; top:-3%; right:0;">
+        <v-btn class="right" @click="showOverlay = false" icon>
             <v-icon>mdi-close</v-icon>
         </v-btn>
-        <code>{{notifications}}</code>
-        <v-list color="primary" elevation="10" style="border-radius:15px;">
+        <small>
+          Please resolve all existing important notification!
+        </small>
+        <v-list elevation="10" style="border-radius:15px;">
             <div v-for="(notification,i) in notifications" :key="i">
-                <v-divider></v-divider>
                 <v-list-item>
                     <v-list-item-avatar>
                         <v-icon large class="customPink">mdi-alert-circle-outline</v-icon>
@@ -18,13 +19,12 @@
                         </v-list-item-subtitle>
                     </v-list-item-content>
                     <v-list-item-action>
-                    <v-btn small color="customGreen basic-text--text" style="text-transform: unset !important;">
+                    <!-- <v-btn small color="customGreen basic-text--text" style="text-transform: unset !important;">
                         I've read it
-                    </v-btn>
+                    </v-btn> -->
                     </v-list-item-action>
                 </v-list-item>
-                <v-divider></v-divider>
-            </div>
+              </div>
         </v-list>
     </v-overlay>
 </template>
@@ -72,7 +72,8 @@ export default {
       },
     ],
   }),
-  mounted() {},
+  mounted() {
+  },
   methods: {
     show() {
       this.showOverlay = true;
@@ -80,3 +81,11 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+.close-button {
+  position: absolute;
+  right: 3%;
+  top: 5%;
+}
+</style>
