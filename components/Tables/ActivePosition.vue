@@ -141,7 +141,10 @@
                         <v-list-item-subtitle
                           class="text-body-1 font-weight-bold basic-text--text"
                         >
-                          {{ item.value }}
+                          <template v-if="i == 1 || i == 3">
+                            {{ item.value | toCurrency }}</template
+                          >
+                          <template v-else> {{ item.value }}</template>
                         </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
@@ -645,7 +648,10 @@
                         <v-list-item-subtitle
                           class="text-body-1 font-weight-bold basic-text--text"
                         >
-                          {{ item.value }}
+                          <template v-if="i == 1 || i == 3">
+                            {{ item.value | toCurrency }}</template
+                          >
+                          <template v-else> {{ item.value }}</template>
                         </v-list-item-subtitle>
                       </v-list-item-content>
                     </v-list-item>
@@ -1071,7 +1077,7 @@ export default {
           comingsoon: true,
           summary: [
             { value: "-", title: "Strategy" },
-            { value: "-", title: "Total USDT" },
+            { value: "-", title: "Total Allocated USDT" },
             { value: "-", title: "Technical Analysis" },
             { value: "-", title: "Minimum Trading Volume" },
           ],
@@ -1385,7 +1391,8 @@ export default {
           // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
           // data.c   = Current Price (from binance stream)
           let average = parseFloat(activePosition[index].average);
-          let percentage = average == 0 ? 0 : (parseFloat(data.c) - average) / average;
+          let percentage =
+            average == 0 ? 0 : (parseFloat(data.c) - average) / average;
           let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
 
           percentage = pnl / activePosition[index].amountUsd;
@@ -1611,7 +1618,7 @@ export default {
     mapSummary(data, use_default = false) {
       var result = [
         { value: "-", title: "Strategy" },
-        { value: "-", title: "Total USDT" },
+        { value: "-", title: "Total Allocated USDT" },
         { value: "-", title: "Technical Analysis" },
         { value: "-", title: "Minimum Trading Volume" },
       ];
@@ -1622,7 +1629,7 @@ export default {
 
       try {
         result[0].value = data.strategy.style.name;
-        result[1].value = "$" + data.strategy.usdt_to_apply;
+        result[1].value = data.strategy.usdt_to_apply;
         result[2].value = `${data.analysis.indicators[0].indicator} ${
           data.analysis.condition == "AND" ? "&" : "/"
         } ${data.analysis.indicators[1].indicator}`;

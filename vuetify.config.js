@@ -24,6 +24,10 @@ import CopyIcon from "~/assets/custom-icons/Copy.vue";
 import EarningsIcon from "~/assets/custom-icons/Earnings.vue";
 import GiftIcon from "~/assets/custom-icons/Gift.vue";
 
+import CameraSwitchIcon from "~/assets/custom-icons/CameraSwitch.vue";
+import DepositIcon from "~/assets/custom-icons/Deposit.vue";
+import WithdrawIcon from "~/assets/custom-icons/Withdraw.vue";
+
 export default {
 
   icons: {
@@ -94,9 +98,15 @@ export default {
       GiftIcon: {
         component: GiftIcon
       },
-
-
-
+      CameraSwitchIcon: {
+        component: CameraSwitchIcon
+      },
+      DepositIcon: {
+        component: DepositIcon
+      },
+      WithdrawIcon: {
+        component: WithdrawIcon
+      }
     },
   },
 

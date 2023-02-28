@@ -196,9 +196,7 @@
                       >
                         Upload New Picture
                       </v-btn>
-                      <v-btn depressed rounded color="primary" outlined>
-                        Remove
-                      </v-btn>
+
                       <v-file-input
                         ref="uploader"
                         @change="(file) => uploadImage(file)"
@@ -464,37 +462,31 @@
       <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
         <v-tab-item key="0">
           <v-row>
-            <v-col cols="12">
-              <v-alert
-                border="left"
-                dense
-                colored-border
-                color="success"
-                class="text-body-1 font-weight-bold custom-alert"
-                >Profile Information</v-alert
-              >
-            </v-col>
-            <v-col cols="12">
-              <v-avatar size="100">
+            <v-col
+              cols="12"
+              class="d-flex justify-center align-center"
+              style="position: relative"
+            >
+              <v-avatar size="125">
                 <img :src="userData.photo_url" :alt="userData.display_name" />
               </v-avatar>
+
+              <v-btn
+                depressed
+                :loading="isSelecting"
+                @click.stop="doUpload"
+                color="primary"
+                rounded
+                fab
+                small
+                class="floating-upload-icon"
+              >
+                <v-icon>$vuetify.icons.CameraSwitchIcon</v-icon>
+              </v-btn>
             </v-col>
             <v-col cols="12">
               <v-row>
                 <v-col cols="12" class="d-flex align-center mt-8">
-                  <v-btn
-                    depressed
-                    :loading="isSelecting"
-                    @click.stop="doUpload"
-                    color="primary"
-                    rounded
-                    class="mr-5"
-                  >
-                    Upload New Picture
-                  </v-btn>
-                  <v-btn depressed rounded color="primary" outlined>
-                    Remove
-                  </v-btn>
                   <v-file-input
                     ref="uploader"
                     @change="(file) => uploadImage(file)"
@@ -549,16 +541,6 @@
         <v-tab-item key="1">
           <v-row>
             <v-col cols="12">
-              <v-alert
-                border="left"
-                dense
-                colored-border
-                color="customYellow"
-                class="text-body-1 font-weight-bold custom-alert"
-                >Wallet Information</v-alert
-              >
-            </v-col>
-            <v-col cols="12">
               <div class="font-weight-bold">Virtual Account</div>
               <v-text-field
                 v-model="userData.wallet_va"
@@ -593,16 +575,6 @@
 
         <v-tab-item key="2">
           <v-row>
-            <v-col cols="12">
-              <v-alert
-                border="left"
-                dense
-                colored-border
-                color="customPink"
-                class="text-body-1 font-weight-bold custom-alert"
-                >Account Settings</v-alert
-              >
-            </v-col>
             <v-col cols="8">
               <div class="font-weight-bold">Telegram Bot</div>
               <div class="grey--text">
@@ -976,5 +948,12 @@ export default {
   > .v-alert__wrapper
   > .v-alert__border.v-alert__border--left.v-alert__border--has-color {
   border-radius: 25% !important;
+}
+
+.floating-upload-icon {
+  position: absolute;
+  top: 75%;
+  left: 50%;
+  transform: translate(50%, 0%);
 }
 </style>

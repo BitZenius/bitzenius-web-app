@@ -1,0 +1,25 @@
+<template>
+  <svg
+    id="withdraw"
+    xmlns="http://www.w3.org/2000/svg"
+    width="20"
+    height="18"
+    viewBox="0 0 20 18"
+  >
+    <g id="Vector">
+      <path
+        id="_2D389FF2-6FF6-4268-BE25-AA3DBBB13853"
+        data-name="2D389FF2-6FF6-4268-BE25-AA3DBBB13853"
+        d="M4,0H16a4,4,0,0,1,1.5,7.709V4A1.5,1.5,0,0,0,16,2.5H4A1.5,1.5,0,0,0,2.5,4V7.709A4,4,0,0,1,4,0Z"
+        fill="currentColor"
+      />
+      <path
+        id="_7287CB41-C68A-4FB2-888F-358DFFA9C5E6"
+        data-name="7287CB41-C68A-4FB2-888F-358DFFA9C5E6"
+        d="M16,4V16a2,2,0,0,1-2,2H6a2,2,0,0,1-2-2V4ZM8.53,11.47l.72.72V8a.75.75,0,0,1,1.5,0v4.189l.72-.72a.75.75,0,0,1,1.061,1.061l-1.293,1.293a1.75,1.75,0,0,1-2.475,0L7.47,12.531A.75.75,0,0,1,8.53,11.47Z"
+        fill="currentColor"
+        fill-rule="evenodd"
+      />
+    </g>
+  </svg>
+</template>

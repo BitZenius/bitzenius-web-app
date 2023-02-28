@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-5">
+  <v-row v-if="isMobile() == false" class="pa-5">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -234,6 +234,281 @@
       </v-card>
     </v-col>
   </v-row>
+  <v-row v-else class="pa-5">
+    <v-col cols="12">
+      <v-row>
+        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+          <v-icon @click="mobileBack">mdi-arrow-left</v-icon>
+          {{ title }}
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-slide-x-transition mode="out-in" hide-on-leave>
+      <v-col v-show="mobileMode == 'DEFAULT'" cols="12">
+        <v-row>
+          <v-col cols="12">
+            <div>
+              <template>
+                <!-- width and height are optional -->
+                <lottie
+                  :width="300"
+                  :height="300"
+                  :options="lottieOptions"
+                  v-on:animCreated="handleAnimation"
+                />
+              </template>
+            </div>
+          </v-col>
+          <v-col cols="12">
+            <v-card flat rounded>
+              <v-row>
+                <v-col cols="6">
+                  <v-list two-line>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-1 font-weight-bold"
+                          >Total Referrals</v-list-item-title
+                        >
+
+                        <strong class="text-h5 font-weight-bold">
+                          {{ totalReferredUsers }}
+                        </strong>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-col>
+                <v-col cols="6">
+                  <v-list two-line>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-1 font-weight-bold"
+                          >Total Earned</v-list-item-title
+                        >
+
+                        <strong class="text-h5 font-weight-bold">
+                          {{ totalRewards | currency("$") }}
+                        </strong>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-list>
+                </v-col>
+              </v-row>
+            </v-card>
+          </v-col>
+          <v-col cols="12">
+            <v-card v-if="referralCode" flat rounded class="pa-2">
+              <v-list rounded color="off-white-2 pa-1 mb-2">
+                <v-list-item class="">
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-1 font-weight-bold"
+                      >Referral Code</v-list-item-title
+                    >
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <v-list-item-action-text
+                      class="text-h6 font-weight-bold primary--text"
+                    >
+                      <v-tooltip v-model="copied" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <h1
+                            v-bind="attrs"
+                            v-on="on"
+                            color="primary"
+                            v-clipboard:copy="referralCode"
+                            v-clipboard:success="onCopy"
+                            v-clipboard:error="onError"
+                            style="cursor: pointer"
+                            class="text-h6 font-weight-bold primary--text"
+                          >
+                            {{ referralCode }}
+                            <v-icon color="primary" class="ml-1"
+                              >$vuetify.icons.CopyIcon</v-icon
+                            >
+                          </h1>
+                        </template>
+                        <span>{{ copied ? "Copy" : "Copied" }}</span>
+                      </v-tooltip>
+                    </v-list-item-action-text>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+              <v-list rounded color="off-white-2 pa-1 ">
+                <v-list-item>
+                  <v-list-item-content>
+                    <v-list-item-title class="text-body-1 font-weight-bold"
+                      >Referral Link</v-list-item-title
+                    >
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    <v-list-item-action-text
+                      class="text-h6 font-weight-bold primary--text"
+                    >
+                      {{ formatCopyText(referralLink) }}
+                      <v-tooltip v-model="copied2" top>
+                        <template v-slot:activator="{ on, attrs }">
+                          <v-btn
+                            icon
+                            v-bind="attrs"
+                            v-on="on"
+                            color="primary"
+                            size="16"
+                            v-clipboard:copy="referralLink"
+                            v-clipboard:success="onCopy2"
+                            v-clipboard:error="onError"
+                          >
+                            <v-icon color="primary" class="ml-1">
+                              $vuetify.icons.CopyIcon
+                            </v-icon>
+                          </v-btn>
+                        </template>
+                        <span>{{ copied2 ? "Copy" : "Copied" }}</span>
+                      </v-tooltip>
+                    </v-list-item-action-text>
+                  </v-list-item-action>
+                </v-list-item>
+              </v-list>
+            </v-card>
+          </v-col>
+
+          <v-col
+            cols="12"
+            class="text-center primary--text text-decoration-underline"
+            @click="mobileMode = 'HISTORY'"
+          >
+            Rewards History
+          </v-col>
+        </v-row>
+      </v-col>
+    </v-slide-x-transition>
+    <v-slide-x-transition mode="out-in" hide-on-leave>
+      <v-col v-show="mobileMode == 'HISTORY'" cols="12">
+        <v-row>
+          <v-col cols="12">
+            <v-list flat color="rgba(0,0,0,0)" two-line>
+              <v-list-item>
+                <!-- <v-list-item-avatar> -->
+                <v-icon size="30" class="primary--text mr-3">
+                  $vuetify.icons.GiftIcon
+                </v-icon>
+                <!-- </v-list-item-avatar> -->
+                <v-list-item-content>
+                  <v-list-item-title class="text-h5 font-weight-bold"
+                    >My Rewards History</v-list-item-title
+                  >
+                  <v-list-item-subtitle class="text-body-2">
+                    Track your earned rewards of all your referral
+                  </v-list-item-subtitle>
+                </v-list-item-content>
+              </v-list-item>
+            </v-list>
+          </v-col>
+        </v-row>
+        <v-card flat rounded class="pa-3">
+          <v-row>
+            <v-col cols="12">
+              <v-data-table
+                :headers="headers"
+                :items="transactions"
+                :loading="isLoading"
+                :options.sync="options"
+                :server-items-length="totalItems"
+                :items-per-page="rowsPerPage"
+                disable-sort
+                class="elevation-0"
+                loading-text="Loading... Please wait"
+              >
+                <template v-slot:body="{ items }">
+                  <v-row
+                    v-for="(item, i) in items"
+                    :key="`${i}-item`"
+                    class="mb-5"
+                  >
+                    <v-col cols="6">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title class="text-body-2">
+                            Date
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            {{ item.date }}
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title class="text-body-2">
+                            Bonus
+                          </v-list-item-title>
+                          <v-list-item-subtitle>
+                            <span v-if="item.credit > 0" class="success--text">
+                              {{ item.amount | currency("$") }}
+                              <v-icon color="success" size="16"
+                                >mdi-arrow-bottom-left</v-icon
+                              >
+                            </span>
+                            <span v-if="item.debt > 0" class="danger--text">
+                              {{ item.amount | currency("$") }}
+                              <v-icon color="danger" size="16"
+                                >mdi-arrow-top-right</v-icon
+                              >
+                            </span>
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-list-item-title class="text-body-2">
+                            Type
+                          </v-list-item-title>
+                          <v-list-item-subtitle class="primary--text">
+                            {{ item.type.toUpperCase() }}
+                          </v-list-item-subtitle>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </v-col>
+                  </v-row>
+                </template>
+                <template #item.type="{ item }">
+                  <v-chip color="primary" small label>
+                    {{ item.type.toUpperCase() }}
+                  </v-chip>
+                </template>
+                <template #item.status="{ item }">
+                  <v-chip v-if="item.status == 0" small> On Processing </v-chip>
+                  <v-chip
+                    v-if="item.status == 1"
+                    small
+                    color="success"
+                    class="white--text"
+                  >
+                    Done
+                  </v-chip>
+                  <v-chip
+                    v-if="item.status == 2"
+                    small
+                    color="error"
+                    class="white--text"
+                  >
+                    Cancelled
+                  </v-chip>
+                </template>
+                <template #item.amount="{ item }">
+                  <div class="text-right"></div>
+                </template>
+                <template v-slot:no-data>
+                  <BaseNoData :label="`No Rewards History`"></BaseNoData>
+                </template>
+              </v-data-table>
+            </v-col>
+          </v-row>
+        </v-card>
+      </v-col>
+    </v-slide-x-transition>
+  </v-row>
 </template>
 
 <script>
@@ -291,6 +566,9 @@ export default {
       // LOTTIE
       anim: null, // for saving the reference to the animation
       lottieOptions: { animationData: animationData.default },
+
+      // MOBILE
+      mobileMode: "DEFAULT",
     };
   },
   head() {
@@ -313,6 +591,18 @@ export default {
     this.getRewards();
   },
   methods: {
+    formatCopyText(text) {
+      var first = text.slice(0, 8);
+      var last = text.slice(text.length - 5, text.length);
+      return first + "..." + last;
+    },
+    mobileBack() {
+      if (this.mobileMode == "DEFAULT") {
+        this.$router.push("/account");
+      } else {
+        this.mobileMode = "DEFAULT";
+      }
+    },
     handleAnimation: function (anim) {
       this.anim = anim;
     },

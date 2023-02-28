@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-5">
+  <v-row v-if="isMobile() == false" class="pa-5">
     <v-dialog
       v-model="showDetailDialog"
       width="auto"
@@ -212,6 +212,245 @@
                   </span>
                 </div>
               </template>
+              <template v-slot:no-data>
+              <BaseNoData  :label="`No Transaction`"></BaseNoData>
+            </template>
+            </v-data-table>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="4" v-if="false">
+      <v-row>
+        <v-col cols="12"> </v-col>
+        <v-col cols="12" v-if="false">
+          <CardRecentTransactionWallet> </CardRecentTransactionWallet>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
+  <v-row v-else class="pa-5">
+    <v-dialog
+      v-model="showDetailDialog"
+      width="auto"
+    >
+
+
+      <v-card>
+        <v-data-table
+            :loading="isLoading"
+            :headers="tradingHeadersDetail"
+            :items="tradingItemsDetail"
+            class="elevation-2 my-2"
+          >
+            <template v-slot:header.pair="{ header }">
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+            <template v-slot:header.date="{ header }">
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+            <template v-slot:header.price="{ header }">
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+            <template v-slot:header.qty="{ header }">
+              <strong class="basic-text--text text-body-1 font-weight-bold">{{
+                header.text
+              }}</strong>
+            </template>
+
+            <template v-slot:item.pair="{ item }">
+              <v-row>
+                <!-- <code>{{item.pair_from}}</code>
+                                  <code>{{item.pair_to}}</code> -->
+                <v-col cols="12" class="d-flex align-center justify-start">
+                  <v-list-item-avatar class="ma-0">
+                    <v-img
+                      style="width: 28px !important"
+                      max-width="28"
+                      max-height="28"
+                      :alt="item.pair"
+                      :src="getImgUrl(item.pair_from)"
+                    ></v-img>
+                  </v-list-item-avatar>
+
+                  <div class="d-flex flex-column ml-3">
+                    <div class="d-flex flex-column">
+                      <span class="text-subtitle-2 font-weight-bold">
+                        {{ item.pair_from }} /
+                        {{ item.pair_to }}
+                      </span>
+                      <small class="text-body-2">{{ item._id }}</small>
+                    </div>
+                  </div>
+                </v-col>
+              </v-row>
+            </template>
+            <template v-slot:item.date="{ item }">
+              <span class="text-subtitle-2 font-weight-bold">
+                {{ $moment(item.executed_at).format("DD/MM/YYYY HH:mm") }}
+              </span>
+            </template>
+            <template v-slot:item.price="{ item }">
+              <v-chip
+                v-if="parseFloat(item.pnl) > 0"
+                small
+                class="success--text font-weight-bold"
+                color="success lighten-4"
+                label
+              >
+                <span
+                  >${{ item._profit.first }}.{{ item._profit.second }}</span
+                >
+              </v-chip>
+              <v-chip
+                v-else
+                small
+                class="font-weight-bold"
+                color="danger"
+                label
+              >
+                <span
+                  >${{ item._profit.first }}.{{ item._profit.second }}</span
+                >
+              </v-chip>
+            </template>
+            <template v-slot:item.qty="{ item }">
+              <span class="text-subtitle-2 font-weight-bold">{{
+                item.amount_coin_filled.toFixed(4)
+              }}</span>
+            </template>
+            <template v-slot:no-data>
+              <BaseNoData  :label="`No Transaction`"></BaseNoData>
+            </template>
+          </v-data-table>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
+    <v-col cols="12">
+      <v-row>
+        <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+          <v-icon @click="$router.push('/account')">mdi-arrow-left</v-icon>
+          {{ title }}
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="12">
+      <v-row>
+        <v-col cols="12">
+          <CardBalanceWallet @refetch="refetch" class="mb-6" />
+          <!-- <CardActionWallet></CardActionWallet> -->
+        </v-col>
+        <!-- <v-col cols="6">
+        </v-col> -->
+        <v-col cols="12">
+          <v-card flat rounded class="pa-3">
+            <h3 class="text-body-h6 font-weight-bold pa-3">
+              Transaction History
+            </h3>
+            <v-data-table
+              :headers="headers"
+              :items="transactions"
+              :loading="isLoading"
+              :options.sync="options"
+              :server-items-length="totalItems"
+              :items-per-page="rowsPerPage"
+              disable-sort
+              class="text-body-2"
+              loading-text="Loading... Please wait"
+              @click:row="onDetailClicked"
+            >
+            <template v-slot:body="{items}">
+                <v-row v-for="item,i in items" :key="`${i}-item`" class="mb-5">
+                  <v-col cols="6"></v-col>
+                  <v-col cols="6" class="text-right">
+                    <v-chip v-if="item.status == 0" small> On Processing </v-chip>
+                    <v-chip
+                      v-if="item.status == 1"
+                      small
+                      class="white--text font-weight-bold"
+                      color="success"
+                    >
+                      Done
+                    </v-chip>
+                    <v-chip
+                      v-if="item.status == 2"
+                      class="orange--text font-weight-bold"
+                      color="customYellow lighten-2"
+                      small
+                    >
+                      Cancelled
+                    </v-chip>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-2">
+                          Date
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                          {{ item.date }}
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-2">
+                          Amount
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                          <span
+                    v-if="item.credit > 0"
+                    class="success--text text-body-2"
+                  >
+                    <v-icon color="success" size="16"
+                      >mdi-arrow-bottom-left</v-icon
+                    >{{ item.amount | currency("$") }}
+                  </span>
+                  <span v-if="item.debt > 0" class="danger--text text-body-2">
+                    <v-icon color="danger" size="16">mdi-arrow-top-right</v-icon
+                    >{{ item.amount | currency("$") }}
+                  </span>
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-2">
+                          Type
+                        </v-list-item-title>
+                        <v-list-item-subtitle class=" primary--text">
+                          {{ item.type.toUpperCase() }}
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-col>
+                  <v-col cols="6">
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title class="text-body-2">
+                          Description
+                        </v-list-item-title>
+                        <v-list-item-subtitle>
+                          {{ item.description }}
+                        </v-list-item-subtitle>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </v-col>
+                </v-row>
+            </template>
+
+
+
               <template v-slot:no-data>
               <BaseNoData  :label="`No Transaction`"></BaseNoData>
             </template>

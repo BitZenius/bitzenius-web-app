@@ -41,6 +41,7 @@ export default {
     '~/plugins/clipboard',
     '~/plugins/vue-qr-code',
     '~/plugins/mixin',
+    '~/plugins/filter',
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

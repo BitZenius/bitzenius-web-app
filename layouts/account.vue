@@ -2,7 +2,10 @@
   <v-app>
     <GlobalsAddOnLoader />
     <GlobalsAddOnSnackbar />
-    <GlobalsAddOnNotification :notifications="notifications" ref="notification" />
+    <GlobalsAddOnNotification
+      :notifications="notifications"
+      ref="notification"
+    />
     <v-navigation-drawer
       v-if="isMobile() == false"
       class="main-nav"
@@ -190,10 +193,10 @@
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold"
-                >Notification {{i+1}}</v-list-item-title
+                >Notification {{ i + 1 }}</v-list-item-title
               >
               <v-list-item-subtitle>
-                {{notification.message}}
+                {{ notification.message }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
@@ -216,7 +219,7 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-
+    <ThemeToggle v-else style="display: none !important"></ThemeToggle>
     <v-main class="main-container off-white">
       <v-container
         v-if="isMobile() == false"
@@ -336,7 +339,7 @@ export default {
       bottomNav: "home",
       listener: null,
       showNotification: false,
-      notifications:[],
+      notifications: [],
     };
   },
   computed: {
@@ -398,28 +401,29 @@ export default {
         });
     },
 
-    async getUserNotifications(){
-      this.$api.$get("/user/user-notifications")
-      .then((res)=>{
-        console.log('user-notification', res);
-        if(res.success){
-          this.notifications = res.data;
-        }else{
+    async getUserNotifications() {
+      this.$api
+        .$get("/user/user-notifications")
+        .then((res) => {
+          console.log("user-notification", res);
+          if (res.success) {
+            this.notifications = res.data;
+          } else {
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: res.message,
+              color: "customPink",
+            });
+          }
+        })
+        .catch((error) => {
+          console.log(error);
           this.$store.commit("setShowSnackbar", {
             show: true,
-            message: res.message,
+            message: err.response.message,
             color: "customPink",
-          });          
-        }
-      })
-      .catch((error)=>{
-        console.log(error);
-        this.$store.commit("setShowSnackbar", {
-          show: true,
-          message: err.response.message,
-          color: "customPink",
+          });
         });
-      })
     },
 
     async getUserIp() {

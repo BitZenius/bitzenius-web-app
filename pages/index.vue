@@ -135,10 +135,16 @@
   <v-row class="px-4" v-else>
     <v-col cols="12">
       <v-row>
-        <v-col cols="8" >
-          <MenuProfile @click="showUserDetail = true" :dataMode="false" :userData="user"></MenuProfile>
+        <v-col cols="7">
+          <MenuProfile
+            @click="showUserDetail = true"
+            :dataMode="false"
+            :userData="user"
+          ></MenuProfile>
         </v-col>
-        <v-col cols="4"></v-col>
+        <v-col cols="5">
+          <GlobalsExchangeList @on-exchange-changed="onExchangeChanged" />
+        </v-col>
         <v-col cols="12">
           <CardBalanceWallet class="mb-6" />
         </v-col>
