@@ -68,7 +68,7 @@
             <p
               class="font-weight-bold basic-text--text text-h6 text-center mt-5"
             >
-              {{ errorMessage }}
+              {{ description }}
             </p>
           </template>
         </v-col>

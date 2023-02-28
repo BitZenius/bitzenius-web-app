@@ -164,7 +164,7 @@
                   color="primary"
                   flat
                   rounded
-                  :disabled="withdrawAmount < 1"
+                  :disabled="withdrawAmount < 1 || withdrawAmount > balance"
                   block
                   @click="withdraw"
                 >
@@ -461,7 +461,7 @@ export default {
 
         this.$api
           .$post("/user/balance/withdraw", {
-            amount: this.withdrawAmount,
+            amount: parseFloat(this.withdrawAmount),
             otp: `${otpCode}`,
           })
           .then((res) => {
@@ -493,7 +493,7 @@ export default {
 
       this.$api
         .$post("/user/balance/withdraw", {
-          amount: this.withdrawAmount,
+          amount: parseFloat(this.withdrawAmount),
         })
         .then((res) => {
           this.withdrawModalMode = "OTP";

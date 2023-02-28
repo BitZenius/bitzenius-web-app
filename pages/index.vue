@@ -135,8 +135,8 @@
   <v-row class="px-4" v-else>
     <v-col cols="12">
       <v-row>
-        <v-col cols="8" @click="showUserDetail = true">
-          <MenuProfile :dataMode="false" :userData="user"></MenuProfile>
+        <v-col cols="8" >
+          <MenuProfile @click="showUserDetail = true" :dataMode="false" :userData="user"></MenuProfile>
         </v-col>
         <v-col cols="4"></v-col>
         <v-col cols="12">

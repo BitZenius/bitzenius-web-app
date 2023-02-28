@@ -15,6 +15,7 @@ export default {
   props: {
     parentModel: false,
     maxWidth: String,
+
     persistent: {
       type: Boolean,
       default: () => {
