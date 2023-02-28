@@ -247,7 +247,7 @@
           <!-- </v-list-item-avatar> -->
           <v-list-item-content>
             <v-list-item-title class="text-h5 font-weight-bold">{{
-              selectedStrategyName
+              isForceCustom ? "Custom" : selectedStrategyName
             }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -503,6 +503,7 @@ export default {
   data() {
     return {
       selectedStrategyName: null,
+      isForceCustom: false,
       strategy: {
         usdt_to_apply: 0,
         usdt_per_order: 0,
@@ -579,7 +580,11 @@ export default {
     },
     deleteRow(step) {
       // ACCOMMODATE ONLY THE LAST ITEM ON ARRAY
-      this.strategy.style.steps.pop();
+      this.customStyle.steps = [...this.strategy.style.steps];
+      this.customStyle.steps.pop();
+
+      this.isForceCustom = true;
+      this.selectedStrategyName = "Custom";
     },
     cancelRowChanges() {
       setTimeout(() => {
@@ -591,20 +596,35 @@ export default {
       }, 100);
     },
     saveRowChanges() {
-      this.strategy.style.steps[this.editStep] = {
-        step: this.editStep,
-        drop_rate: this.customDrop,
-        multiplier: this.customBuy,
-        take_profit: this.customProfit,
-        type: this.customType,
-      };
+      this.isForceCustom = true;
+      var temp = [...this.strategy.style.steps];
+
+      console.log("TEMP: ", temp);
+
+      // this.selectStyleByName("Custom");
+      this.selectedStrategyName = "Custom";
 
       setTimeout(() => {
-        this.customDrop = null;
-        this.customBuy = null;
-        this.customProfit = null;
-        this.customType = null;
-        this.editStep = null;
+        console.log("TEMP: ", temp);
+        this.customStyle.steps = [...temp];
+
+        this.customStyle.steps[this.editStep] = {
+          step: this.editStep,
+          drop_rate: this.customDrop,
+          multiplier: this.customBuy,
+          take_profit: this.customProfit,
+          type: this.customType,
+        };
+
+        this.strategy.style.steps = [...this.customStyle.steps];
+
+        setTimeout(() => {
+          this.customDrop = null;
+          this.customBuy = null;
+          this.customProfit = null;
+          this.customType = null;
+          this.editStep = null;
+        }, 100);
       }, 100);
     },
     addRowCustom(drop, multiplier, profit, type) {
@@ -659,7 +679,7 @@ export default {
     },
     selectStyle(val) {
       console.log(val);
-      this.strategy.style = val;
+      this.strategy.style = { ...val };
       for (let i = 0; i < this.styleList.length; i++) {
         this.styleList[i].active = false;
       }
@@ -772,6 +792,8 @@ export default {
     selectedStrategyName: {
       handler(nv, ov) {
         this.recommendedMaxTradingPair = [0, ""];
+        this.isForceCustom = false;
+
         this.selectStyleByName(nv);
       },
     },

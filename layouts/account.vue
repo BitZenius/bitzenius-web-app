@@ -63,7 +63,7 @@
           :cardtitle="`Advanced Bots`"
         >
           <base-menu-item
-            :to="'/grid'"
+            :to="'/advanced-bots/grid/new'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
@@ -71,10 +71,9 @@
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
-            :to="'/dca'"
+            :to="'/advanced-bots/dca/new'"
             :icon="true"
             :avatar="`$vuetify.icons.CoinIcon`"
-            :disabled="true"
             :cardtitle="`DCA`"
             class="ml-2"
           ></base-menu-item>

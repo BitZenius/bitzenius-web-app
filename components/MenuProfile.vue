@@ -37,12 +37,12 @@
         >
           {{ userData.displayName }}
         </v-list-item-title>
-        <v-list-item-subttitle class="basic-text--text text-body-2">
+        <v-list-item-subtitle class="basic-text--text text-body-2">
           <strong class="primary--text font-weight-bold"
             >{{ profileCompletionProgress }}%</strong
           >
           Task completion
-        </v-list-item-subttitle>
+        </v-list-item-subtitle>
       </template>
       <template v-else>
         <v-list-item-subttitle class="basic-text--text text-body-2">
