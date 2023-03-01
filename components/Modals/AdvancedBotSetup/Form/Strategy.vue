@@ -332,8 +332,33 @@ export default {
     onUsdtToApplyChanged(value) {
       this.resetRecommendedSettings();
     },
+    checkGridDCA(step) {
+      var stepsArray = this.strategy.style.steps.map((item) => {
+        return item.type;
+      });
+      var stepsBefore = stepsArray.slice(0, step);
+      var stepsAfter = stepsArray.slice(step + 1, stepsArray.length - step);
 
+      var isDCABefore = stepsBefore.includes("DCA");
+      var isGridBefore = stepsBefore.includes("GRID");
+      var isDCAAfter = stepsAfter.includes("DCA");
+
+      if (isDCABefore && isGridBefore) {
+        this.types = ["GRID"];
+      } else if (isDCABefore && !isGridBefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCAAfter) {
+        this.types = ["DCA"];
+      } else if (isDCAAfter && !isDCABefore) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCABefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else {
+        this.types = ["DCA", "GRID"];
+      }
+    },
     selectRow(child, step) {
+      this.checkGridDCA(step);
       if (this.editStep == step) {
         return;
       }

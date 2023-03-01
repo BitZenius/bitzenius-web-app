@@ -114,7 +114,7 @@
               <v-card
                 min-height="500px"
                 flat
-                class="d-flex flex-column align-start pa-5 mt-2"
+                class="d-flex flex-column align-start pa-3"
               >
                 <h3 class="mb-4 text-h6 font-weight-bold">Bot Setup Summary</h3>
                 <v-row
@@ -123,10 +123,10 @@
                   justify="center"
                   align="center"
                 >
-                  <v-col cols="10">
-                    <v-row justify="start" align="center" class="ma-4">
+                  <v-col cols="12">
+                    <v-row justify="start" align="center">
                       <v-col
-                        cols="4"
+                        cols="6"
                         v-for="(item, i) in summary"
                         :key="`item-summary-${i}`"
                       >
@@ -418,6 +418,12 @@ export default {
         {
           color: "indigo",
           icon: "mdi-buffer",
+          title: "Token",
+          value: null,
+        },
+        {
+          color: "indigo",
+          icon: "mdi-buffer",
           title: "Strategy",
           // value: 'Moderate'
           value: null,
@@ -436,13 +442,13 @@ export default {
           // value: 'Bollinger & RSI'
           value: null,
         },
-        {
-          color: "green",
-          icon: "mdi-buffer",
-          title: "Minimum Trading Volume",
-          // value: '$10,000,000'
-          value: null,
-        },
+        // {
+        //   color: "green",
+        //   icon: "mdi-buffer",
+        //   title: "Minimum Trading Volume",
+        //   // value: '$10,000,000'
+        //   value: null,
+        // },
       ],
 
       // VALIDATION
@@ -487,8 +493,10 @@ export default {
         let allowed = false;
         if (
           this.bot.strategy.usdt_per_order &&
-          this.bot.strategy.usdt_per_order != 0
+          this.bot.strategy.usdt_per_order != 0 &&
+          this.selectedToken != ""
         ) {
+          this.bot.selectedToken = this.selectedToken;
           allowed = true;
         }
         if (allowed) {
@@ -813,12 +821,12 @@ export default {
     bot: {
       handler(nv, ov) {
         this.summary[0].value = nv.selected_exchange;
-        this.summary[1].value = nv.strategy.style.name;
-        this.summary[2].value = "$" + nv.strategy.usdt_to_apply;
-        this.summary[3].value = `${nv.analysis.first_analysis.analysis} ${
+        this.summary[1].value = nv.selectedToken;
+        this.summary[2].value = nv.strategy.style.name;
+        this.summary[3].value = "$" + nv.strategy.usdt_to_apply;
+        this.summary[4].value = `${nv.analysis.first_analysis.analysis} ${
           nv.analysis.condition == "AND" ? "&" : "/"
         } ${nv.analysis.second_analysis.analysis}`;
-        this.summary[4].value = nv.analysis.minimum_trading_volume;
       },
       deep: true,
     },
