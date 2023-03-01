@@ -3,7 +3,7 @@
     <GlobalsAddOnLoader />
     <GlobalsAddOnSnackbar />
     <GlobalsAddOnNotification
-      :notifications="notifications"
+      :notifications="importantNotifications"
       ref="notification"
     />
     <v-navigation-drawer
@@ -185,7 +185,7 @@
             <v-icon>mdi-bell</v-icon>
           </v-btn>
         </template>
-        <v-list v-if="user">
+        <v-list v-if="user" style="height: 200px" class="overflow-y-auto">
           <v-list-item v-for="(notification, i) in notifications" :key="i">
             <v-list-item-avatar>
               <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
@@ -199,22 +199,11 @@
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <!-- <v-divider /> -->
-          <!-- <v-list-item>
-            <v-list-item-avatar>
-              <v-icon class="customGreen">mdi-check</v-icon>
-            </v-list-item-avatar>
-            <v-list-item-content>
-              <v-list-item-title class="font-weight-bold"
-                >You received the highest profit all time!</v-list-item-title
-              >
-              <v-list-item-subtitle>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit.<br />
-                Id nostrum ab accusamus nesciunt a error incidunt odit veniam
-                nobis, delectus quidem praesentium eius
-              </v-list-item-subtitle>
-            </v-list-item-content>
-          </v-list-item> -->
+          <v-list-item class="float-right">
+            <v-btn outline @click="readMore()" color="primary" rounded
+              >Read More</v-btn
+            >
+          </v-list-item>
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -339,6 +328,7 @@ export default {
       listener: null,
       showNotification: false,
       notifications: [],
+      importantNotifications: [],
     };
   },
   computed: {
@@ -381,6 +371,9 @@ export default {
     this.listener();
   },
   methods: {
+    readMore() {
+      alert("hello world");
+    },
     async writeIp(userIp) {
       console.log(navigator.userAgent);
       this.$api
@@ -537,7 +530,14 @@ export default {
           color: "customGreen",
         });
         this.getUserNotifications();
-        // this.$refs.notification.show();
+      });
+
+      this.socket.on("important-notification", (msg) => {
+        console.log("imporant msg", msg);
+        if (msg && msg.length > 0) {
+          this.importantNotifications = msg;
+          this.$refs.notification.show();
+        }
       });
     },
   },
