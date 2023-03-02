@@ -1,5 +1,5 @@
 <template>
-  <v-card flat rounded class="pa-3">
+  <v-card flat rounded class="pa-3 no-shadow">
     <h3 class="mb-4 text-h6 font-weight-bold">Initial setup</h3>
     <v-row align="center" justify="center">
       <v-col cols="12">

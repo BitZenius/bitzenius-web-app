@@ -1,5 +1,5 @@
 <template>
-  <v-card flat rounded>
+  <v-card flat rounded class="pa-3 no-shadow">
     <v-row align="center" justify="center">
       <v-col cols="12" :class="wide ? '' : 'pa-5 mt-2'">
         <div class="d-flex flex-column align-start">

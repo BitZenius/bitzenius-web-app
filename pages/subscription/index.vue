@@ -222,137 +222,140 @@
       </div>
     </v-col>
     <!-- Temporary to disable montly plans -->
-    <v-card elevation="8" class="pa-5 mt-10" v-if="false">
-      <v-row class="pt-8">
-        <v-col cols="12" class="d-flex justify-center">
-          <div
-            class="d-flex flex-column align-center justify-center"
-            style="max-width: 80%"
-          >
-            <h2>Need more plans?</h2>
-            <p class="text-center mt-2">
-              Take a look of standard plans and select your choice
-            </p>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12" class="d-flex justify-center">
-          <div class="mb-5">
-            <v-btn
-              depressed
-              class="mr-1"
-              large
-              :color="monthly ? 'primary' : ''"
-              rounded
-              @click="switchCicle"
+    <v-col cols="12">
+      <v-card elevation="8" class="pa-5 mt-10">
+        <v-row class="pt-8">
+          <v-col cols="12" class="d-flex justify-center">
+            <div
+              class="d-flex flex-column align-center justify-center"
+              style="max-width: 80%"
             >
-              Monthly
-            </v-btn>
-            <v-btn
-              depressed
-              large
-              :color="monthly ? '' : 'primary'"
-              rounded
-              @click="switchCicle"
-            >
-              Yearly
-            </v-btn>
-          </div>
-        </v-col>
-      </v-row>
-      <v-row>
-        <v-col cols="12">
-          <v-row>
-            <v-col
-              v-for="i in pricings"
-              :key="i.id"
-              cols="12"
-              md="4"
-              class="align-center justify-center"
-            >
-              <v-card elevation="0" class="pa-8" outlined>
-                <div
-                  class="py-8 d-flex flex-column align-center justify-center"
-                >
-                  <h3 class="text-center primary--text">
-                    {{ i.name }}
-                  </h3>
-                  <span class="text-center mt-2 text-h3 font-weight-black"
-                    ><span class="text-h5">$</span>{{ i.price
-                    }}<span class="text-h5"
-                      >/{{ monthly ? "month" : "year" }}</span
-                    ></span
+              <h2>Need more plans?</h2>
+              <p class="text-center mt-2">
+                Take a look of standard plans and select your choice
+              </p>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" class="d-flex justify-center">
+            <div class="mb-5">
+              <v-btn
+                depressed
+                class="mr-1"
+                large
+                :color="monthly ? 'primary' : ''"
+                rounded
+                @click="switchCicle"
+              >
+                Monthly
+              </v-btn>
+              <v-btn
+                depressed
+                large
+                :color="monthly ? '' : 'primary'"
+                rounded
+                @click="switchCicle"
+              >
+                Yearly
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-row>
+              <v-col
+                v-for="i in pricings"
+                :key="i.id"
+                cols="12"
+                md="4"
+                class="align-center justify-center"
+              >
+                <v-card elevation="0" class="pa-8" outlined>
+                  <div
+                    class="py-8 d-flex flex-column align-center justify-center"
                   >
-                </div>
-                <v-list>
-                  <v-divider />
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title> Exchanges </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      {{ i.config.max_exchange }}
-                    </v-list-item-action>
-                  </v-list-item>
-                  <v-divider />
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title>
-                        Fully Automated Bots
-                      </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      {{ i.config.automated_bot }}
-                    </v-list-item-action>
-                  </v-list-item>
-                  <v-divider />
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title> Smart Trade </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      {{ i.config.max_smart_trade_bot }}
-                    </v-list-item-action>
-                  </v-list-item>
-                  <v-divider />
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title> DCA Bots </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      {{ i.config.max_dca_bot }}
-                    </v-list-item-action>
-                  </v-list-item>
-                  <v-divider />
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-list-item-title> Grid Bots </v-list-item-title>
-                    </v-list-item-content>
-                    <v-list-item-action>
-                      {{ i.config.max_grid_bot }}
-                    </v-list-item-action>
-                  </v-list-item>
-                  <v-divider />
-                </v-list>
-                <div
-                  class="pt-5 pb-2 d-flex flex-column align-center justify-center"
-                >
-                  <v-btn
-                    depressed
-                    color="primary"
-                    large
-                    @click="openOrderDialog(i.id)"
+                    <h3 class="text-center primary--text">
+                      {{ i.name }}
+                    </h3>
+                    <span class="text-center mt-2 text-h3 font-weight-black"
+                      ><span class="text-h5">$</span>{{ i.price
+                      }}<span class="text-h5"
+                        >/{{ monthly ? "month" : "year" }}</span
+                      ></span
+                    >
+                  </div>
+                  <v-list>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> Exchanges </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_exchange }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          Fully Automated Bots
+                        </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.automated_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> Smart Trade </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_smart_trade_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> DCA Bots </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_dca_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> Grid Bots </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_grid_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                  </v-list>
+                  <div
+                    class="pt-5 pb-2 d-flex flex-column align-center justify-center"
                   >
-                    Subscribe
-                  </v-btn>
-                </div>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-col>
-      </v-row>
-    </v-card>
+                    <v-btn
+                      depressed
+                      color="primary"
+                      large
+                      @click="openOrderDialog(i.id)"
+                    >
+                      Subscribe
+                    </v-btn>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
+
     <v-col v-if="false" cols="12"> </v-col>
     <v-dialog
       v-model="orderDialog"

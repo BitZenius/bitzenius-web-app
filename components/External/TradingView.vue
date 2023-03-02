@@ -1,9 +1,14 @@
 <template>
-  <vue-trading-view :options="chartOptions"></vue-trading-view>
+  <vue-trading-view :key="compKey" :options="chartOptions"></vue-trading-view>
 </template>
 
 <script>
 export default {
+  data() {
+    return {
+      compKey: 0,
+    };
+  },
   props: {
     defaultOptions: {
       type: Object,
@@ -25,7 +30,17 @@ export default {
   },
   computed: {
     chartOptions() {
-      return { ...this.defaultOptions, symbol: this.symbol };
+      var options = { ...this.defaultOptions, symbol: this.symbol };
+
+      options.theme = this.$vuetify.theme.dark ? "dark" : "light";
+      return options;
+    },
+  },
+  watch: {
+    "$vuetify.theme.dark": {
+      handler(nv, ov) {
+        this.compKey++;
+      },
     },
   },
   mounted() {},
@@ -34,6 +49,6 @@ export default {
 
 <style>
 #vue-trading-view {
-  height: 600px;
+  height: 620px;
 }
 </style>

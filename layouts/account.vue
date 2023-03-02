@@ -71,7 +71,7 @@
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
-            :to="'/advanced-bots/dca/new'"
+            :to="'/advanced-bots/dca'"
             :icon="true"
             :avatar="`$vuetify.icons.CoinIcon`"
             :cardtitle="`DCA`"
@@ -368,11 +368,23 @@ export default {
     this.listenSubscription();
     this.streamNotification();
     this.getUserNotifications();
+    this._fetchUserCompletion();
   },
   beforeDestroy() {
     this.listener();
   },
   methods: {
+    // FETCH API
+    async _fetchUserCompletion() {
+      this.isLoading = true;
+      try {
+        let res = await this.$api.$get("/user/profile/completion");
+        this.$store.commit("setProfileCompletion", res);
+      } catch (error) {
+        console.log(error);
+      }
+      this.$store.commit("setIsLoading", false);
+    },
     checkMobile() {
       var check = false;
       (function (a) {

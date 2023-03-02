@@ -8,7 +8,7 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <TablesActivePosition />
+      <TablesActivePositionDCA />
     </v-col>
   </v-row>
 </template>
@@ -18,7 +18,7 @@ export default {
   layout: "account",
   data() {
     return {
-      title: "Automated Bots",
+      title: "Advanced Bots - DCA",
     };
   },
   head() {

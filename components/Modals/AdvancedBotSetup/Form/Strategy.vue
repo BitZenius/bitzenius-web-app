@@ -15,7 +15,7 @@
               cols="4"
               class="pt-0"
               v-for="(item, i) in styleList"
-              :key="`${item.name}-${i}`"
+              :key="i"
             >
               <v-radio :value="item.name">
                 <template v-slot:label>
@@ -82,7 +82,7 @@
           <tr
             class="text-center"
             v-for="(child, y, key) in strategy.style.steps"
-            :key="`${child.key}  ${key}`"
+            :key="key"
             @click="selectRow(child, y)"
           >
             <template v-if="editStep == y">

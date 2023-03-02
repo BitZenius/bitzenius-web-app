@@ -6,7 +6,7 @@ input:-webkit-autofill:active {
   -webkit-text-fill-color: black !important;
 }
 
-.v-card.theme--light {
+.v-card:not(.no-shadow).theme--light {
   box-shadow: 0px 20px 25px #3394F80D !important;
 }
 
