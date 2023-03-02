@@ -719,8 +719,8 @@
     </v-col>
 
     <v-col cols="12">
-      <v-card v-show="showTabs" class="pa-3 mb-5" flat rounded>
-        <v-tabs class="pa-2" v-model="currentItem">
+      <v-card v-show="showTabs" class="mb-5" flat rounded>
+        <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
           <v-tab :ripple="false" v-for="item in tables" :key="item">
             <span class="text-body-1 text-capitalize">{{ item }}</span>
           </v-tab>
@@ -729,7 +729,7 @@
       <v-card class="pa-3" flat rounded>
         <v-tabs-items v-model="currentItem">
           <v-tab-item key="Active Positions">
-            <v-card :key="`${counter}-default`" class="pa-8" flat>
+            <v-card :key="`${counter}-default`" flat>
               <v-row class="mb-3" justify="end" align="end">
                 <v-col cols="12" md="4">
                   <v-text-field

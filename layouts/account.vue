@@ -221,7 +221,9 @@
         <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
         <!-- ORNAMENTS END -->
       </v-container>
-      <nuxt v-else class="pa-0" />
+      <v-container v-else fluid class="off-white pa-0">
+        <nuxt class="pa-0" />
+      </v-container>
     </v-main>
     <v-bottom-navigation
       v-if="$vuetify.breakpoint.mobile"

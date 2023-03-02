@@ -1,5 +1,5 @@
 <template>
-  <v-row class="py-5">
+  <v-row class="py-5" v-if="checkMobile() == false">
     <v-col cols="12" style="position: relative">
       <v-icon @click="$router.push('/bots')"> mdi-arrow-left </v-icon>
       <v-row>
@@ -438,6 +438,442 @@
       </v-row>
     </v-col>
   </v-row>
+  <v-row v-else class="pt-5">
+    <v-col cols="12" style="position: relative" class="px-5">
+      <v-row>
+        <v-col cols="12" class="text-h5 font-weight-bold pl-3">
+          <v-icon @click="$router.push('/bots')"> mdi-arrow-left </v-icon>
+          {{ title }} for {{ selectedExchange }}
+        </v-col>
+      </v-row>
+    </v-col>
+    <v-col cols="12" class="pb-0">
+      <v-row no-gutters align="center" justify="center">
+        <v-col
+          cols="12"
+          class="d-flex align-center justify-center"
+          style="height: 100%"
+        >
+          <!-- CUSTOM STEPPER -->
+
+          <v-row justify="space-around" class="px-5">
+            <v-col cols="2">
+              <v-btn
+                :color="e1 == 0 ? 'primary' : 'off-white-2'"
+                @click="e1 = 0"
+                depressed
+                block
+                class="custom-button-tab"
+              >
+                <v-icon size="20" :color="e1 == 0 ? 'white' : 'primary'"
+                  >$vuetify.icons.DepositIcon</v-icon
+                >
+              </v-btn>
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                :color="e1 == 1 ? 'primary' : 'off-white-2'"
+                @click="e1 = 1"
+                depressed
+                block
+                class="custom-button-tab"
+              >
+                <v-icon size="20" :color="e1 == 1 ? 'white' : 'primary'"
+                  >$vuetify.icon.ProfitBarChartIcon</v-icon
+                >
+              </v-btn>
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                :color="e1 == 2 ? 'primary' : 'off-white-2'"
+                @click="e1 = 2"
+                depressed
+                block
+                class="custom-button-tab"
+              >
+                <v-icon size="20" :color="e1 == 2 ? 'white' : 'primary'"
+                  >$vuetify.icon.ChartArrowUpIcon</v-icon
+                >
+              </v-btn>
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                :color="e1 == 3 ? 'primary' : 'off-white-2'"
+                @click="e1 = 3"
+                depressed
+                block
+                class="custom-button-tab"
+              >
+                <v-icon size="20" :color="e1 == 3 ? 'white' : 'primary'"
+                  >$vuetify.icons.CopyCheckIcon</v-icon
+                >
+              </v-btn>
+            </v-col>
+            <v-col cols="2">
+              <v-btn
+                :color="e1 == 4 ? 'primary' : 'off-white-2'"
+                @click="e1 = 4"
+                depressed
+                block
+                class="custom-button-tab"
+              >
+                <v-icon size="20" :color="e1 == 4 ? 'white' : 'primary'"
+                  >$vuetify.icons.DocumentTextIcon</v-icon
+                >
+              </v-btn>
+            </v-col>
+          </v-row>
+
+          <!-- CUSTOM STEPPER ENDS -->
+        </v-col>
+        <v-col cols="12" class="mt-5">
+          <v-card flat rounded class="card-tab">
+            <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
+              <v-tab-item key="0">
+                <ModalsBotSetupAmount
+                  v-if="showStrategySetup"
+                  :selected-strategy="bot.strategy"
+                  ref="strategyRef"
+                  @onSelected="onStrategySelected"
+                >
+                  <v-btn
+                    width="120"
+                    rounded
+                    color="primary"
+                    @click="_continue(2)"
+                  >
+                    Continue
+                  </v-btn>
+                </ModalsBotSetupAmount>
+              </v-tab-item>
+              <v-tab-item key="1">
+                <ModalsBotSetupStrategy
+                  v-if="showStrategySetup"
+                  :selected-strategy="bot.strategy"
+                  ref="strategyRef"
+                  @onSelected="onStrategySelected"
+                >
+                  <v-row>
+                    <v-col cols="12">
+                      <div class="d-flex float-left my-4">
+                        <v-btn
+                          width="120"
+                          color="primary"
+                          @click="e1 = 0"
+                          rounded
+                          outlined
+                        >
+                          Back
+                        </v-btn>
+                      </div>
+                      <div class="d-flex float-right my-4">
+                        <v-btn
+                          width="120"
+                          rounded
+                          color="primary"
+                          @click="_continue(3)"
+                        >
+                          Continue
+                        </v-btn>
+                      </div>
+                    </v-col>
+                  </v-row>
+                </ModalsBotSetupStrategy>
+              </v-tab-item>
+              <v-tab-item key="2">
+                <v-card flat rounded style="min-height: 600px">
+                  <ModalsBotSetupTechnicalAnalysis
+                    v-if="showTechnicalAnalysis"
+                    :selected-technical="bot.analysis"
+                    ref="analysisRef"
+                    :wide="true"
+                    @onAnalysisSelected="onAnalysisSelected"
+                  >
+                    <v-row>
+                      <v-col cols="12">
+                        <div class="d-flex float-left my-4">
+                          <v-btn
+                            width="120"
+                            color="primary"
+                            @click="e1 = 0"
+                            rounded
+                            outlined
+                          >
+                            Back
+                          </v-btn>
+                        </div>
+                        <div class="d-flex float-right my-4">
+                          <v-btn
+                            width="120"
+                            rounded
+                            color="primary"
+                            @click="_continue(3)"
+                          >
+                            Continue
+                          </v-btn>
+                        </div>
+                      </v-col>
+                    </v-row>
+                  </ModalsBotSetupTechnicalAnalysis>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item key="3">
+                <v-card style="min-height: 600px" rounded flat class="pa-3">
+                  <h3 class="mb-4 text-h6 font-weight-bold">
+                    Token Exceptions
+                  </h3>
+                  <v-row>
+                    <v-col cols="12">
+                      <v-row align="center">
+                        <v-col cols="12" class="d-flex align-center">
+                          <v-row style="width: 100%" justify="end">
+                            <v-col
+                              cols="12"
+                              class="d-flex flex-wrap align-center justify-center"
+                            >
+                              <v-chip
+                                v-for="(token, i) in tokenException"
+                                :key="`v-chip-${i}`"
+                                class="ma-2 custom-chip"
+                                color="primary"
+                                close
+                                small
+                                text-color="white"
+                                @click:close="toggleTokenException(token)"
+                              >
+                                {{ token }}
+                              </v-chip>
+                            </v-col>
+                          </v-row>
+                        </v-col>
+                        <v-col cols="12">
+                          <v-btn
+                            color="primary"
+                            rounded
+                            block
+                            @click="showExceptionModal = true"
+                            >Add Exceptions
+                          </v-btn>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <BaseModalMobile
+                      @close="showExceptionModal = false"
+                      :parentModel="showExceptionModal"
+                      :maxWidth="'450'"
+                    >
+                      <v-card flat rounded>
+                        <v-card-title
+                          class="text-h6 font-weight-bold basic--text"
+                        >
+                          <v-row>
+                            <v-col cols="6"></v-col>
+                            <v-col cols="6" class="d-flex justify-end">
+                              <v-btn
+                                color="basic-text--text"
+                                icon
+                                @click="showExceptionModal = false"
+                              >
+                                <v-icon>mdi-close</v-icon>
+                              </v-btn>
+                            </v-col>
+                          </v-row>
+                        </v-card-title>
+                        <v-card-text>
+                          <v-row class="chip-container">
+                            <v-col cols="12" class="d-flex align-center">
+                              <v-text-field
+                                v-model="searchTerm"
+                                placeholder="Search tokens..."
+                                class="my-2 d-flex align-center custom-input text-body-1"
+                                rounded
+                                @input="searchTokens"
+                              >
+                                <template v-slot:prepend-inner>
+                                  <v-icon class="mr-4">mdi-magnify</v-icon>
+                                </template>
+                              </v-text-field>
+                            </v-col>
+                            <v-col
+                              cols="6"
+                              v-for="(token, i) in tokens"
+                              :key="`v-chip-${i}`"
+                              class="d-flex justify-center"
+                            >
+                              <v-chip
+                                class="ma-2 custom-chip"
+                                color="off-white "
+                                text-color="basic-text--text"
+                                @click.native="toggleTokenException(token)"
+                              >
+                                <v-avatar
+                                  v-if="tokenException.includes(token)"
+                                  left
+                                >
+                                  <v-icon class="customGreen2--text"
+                                    >mdi-checkbox-marked-circle</v-icon
+                                  >
+                                </v-avatar>
+                                {{ token }}
+                              </v-chip>
+                            </v-col>
+                          </v-row>
+                        </v-card-text>
+                      </v-card>
+                    </BaseModalMobile>
+
+                    <v-col cols="12">
+                      <v-row justify="center" align="center">
+                        <v-col cols="12">
+                          <div class="d-flex float-left my-4">
+                            <v-btn
+                              width="120"
+                              color="primary"
+                              @click="e1 = 2"
+                              rounded
+                              outlined
+                            >
+                              Back
+                            </v-btn>
+                          </div>
+                          <div class="d-flex float-right my-4">
+                            <v-btn
+                              width="120"
+                              rounded
+                              color="primary"
+                              @click="e1 = 4"
+                            >
+                              Continue
+                            </v-btn>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+
+                  <v-select
+                    v-if="tokens.length > 0 && false"
+                    dense
+                    class="mt-3 px-3"
+                    v-model="tokenException"
+                    :items="tokens"
+                    chips
+                    label="Token Exceptions"
+                    multiple
+                    outlined
+                  >
+                    <template v-slot:prepend-item>
+                      <v-list-item>
+                        <v-list-item-content>
+                          <v-text-field
+                            v-model="searchTerm"
+                            placeholder="Search"
+                            @input="searchTokens"
+                          ></v-text-field>
+                        </v-list-item-content>
+                      </v-list-item>
+                    </template>
+                  </v-select>
+                </v-card>
+              </v-tab-item>
+              <v-tab-item key="4">
+                <v-card
+                  flat
+                  class="d-flex flex-column align-start pa-3"
+                  style="min-height: 600px"
+                >
+                  <h3 class="mb-4 text-h6 font-weight-bold">
+                    Bot Setup Summary
+                  </h3>
+                  <v-row
+                    class="mt-1"
+                    style="width: 100%"
+                    justify="center"
+                    align="center"
+                  >
+                    <v-col cols="12">
+                      <v-row justify="start" align="center">
+                        <v-col
+                          cols="12"
+                          v-for="(item, i) in summary"
+                          :key="`item-summary-${i}`"
+                        >
+                          <v-card flat rounded color="off-white">
+                            <v-list-item>
+                              <v-icon size="20" class="mr-4" color="primary">
+                                {{ _determineIcon(item.title) }}
+                              </v-icon>
+
+                              <v-list-item-content>
+                                <v-list-item-title class="text-body-2">
+                                  {{ item.title }}
+                                </v-list-item-title>
+
+                                <v-list-item-subtitle
+                                  class="text-body-1 font-weight-bold basic-text--text"
+                                >
+                                  {{ item.value }}
+                                </v-list-item-subtitle>
+                              </v-list-item-content>
+                            </v-list-item>
+                          </v-card>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                    <v-col cols="12">
+                      <v-row justify="center">
+                        <v-col cols="12">
+                          <div class="d-flex float-left my-4">
+                            <v-btn
+                              width="120"
+                              color="primary"
+                              @click="e1 = 3"
+                              rounded
+                              outlined
+                            >
+                              Back
+                            </v-btn>
+                          </div>
+
+                          <div class="d-flex float-right my-4">
+                            <v-btn
+                              width="120"
+                              rounded
+                              color="customPink"
+                              @click="_submitBotSetup(isUpdateMode)"
+                              :disabled="
+                                !user.subscription || user.subscription == false
+                              "
+                              v-if="!isUpdateMode"
+                            >
+                              Submit
+                            </v-btn>
+                            <v-btn
+                              width="120"
+                              rounded
+                              color="customPink"
+                              class="white--text"
+                              @click="_submitBotSetup(isUpdateMode)"
+                              :disabled="
+                                !user.subscription || user.subscription == false
+                              "
+                              v-else
+                            >
+                              Update
+                            </v-btn>
+                          </div>
+                        </v-col>
+                      </v-row>
+                    </v-col>
+                  </v-row>
+                </v-card>
+              </v-tab-item>
+            </v-tabs-items>
+          </v-card>
+        </v-col>
+      </v-row>
+    </v-col>
+  </v-row>
 </template>
 
   <script>
@@ -547,6 +983,8 @@ export default {
       // PROPS FOR COMPONENTS
       showStrategySetup: false,
       showTechnicalAnalysis: false,
+
+      showExceptionModal: false,
     };
   },
   computed: {
@@ -961,5 +1399,24 @@ export default {
   flex-direction: column;
   justify-content: space-between;
   padding: 50px 0px 50px 25px;
+}
+.custom-button-tab {
+  width: 40px;
+  min-height: 40px;
+}
+
+@media only screen and (max-width: 1023px) {
+  .chip-container {
+    width: 100%;
+    max-height: unset;
+    overflow-y: auto;
+  }
+
+  .card-tab {
+    min-height: 600px;
+  }
+  .card-tab > .v-window {
+    min-height: 600px;
+  }
 }
 </style>
