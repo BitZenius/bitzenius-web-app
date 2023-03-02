@@ -1,13 +1,12 @@
 <template>
   <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
-    <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
+    <v-overlay absolute v-if="isLoading" opacity="0.8" class="text-center">
       <v-progress-circular
         indeterminate
         color="customGreen"
         size="50"
         width="7"
       />
-      <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
     </v-overlay>
 
     <v-row no-gutters class="pa-10 noGutters" align="center">
@@ -59,6 +58,28 @@
                 </v-col>
               </v-row>
             </v-form>
+          </v-col>
+
+          <v-col cols="12" v-if="message">
+            <v-alert
+              transition="slide-y-transition"
+              rounded
+              v-show="message"
+              :color="message.color"
+            >
+              <v-row>
+                <v-col
+                  class="grow d-flex justify-center align-center white--text"
+                >
+                  {{ message.text }}
+                </v-col>
+                <v-col class="shrink">
+                  <v-btn icon @click.stop="message = null">
+                    <v-icon>mdi-close</v-icon>
+                  </v-btn>
+                </v-col>
+              </v-row>
+            </v-alert>
           </v-col>
         </v-row>
       </v-col>
@@ -138,6 +159,7 @@ export default {
   components: { BaseButtonAnimated },
   layout: "default",
   data: () => ({
+    loadingText:null,
     valid: true,
     email: "",
     emailRules: [
@@ -153,6 +175,8 @@ export default {
   methods: {
     sendRequest() {
       const valid = this.$refs.form.validate();
+      this.isLoading = true;
+
 
       if (valid) {
         this.isLoading = true;
@@ -161,12 +185,16 @@ export default {
             email: this.email,
           })
           .then((result) => {
+            console.log('result', result);
+            this.isLoading = false;
+            this.loadingText = "Your reset-password email has been sent!"
             this.message = {
               text: result.message,
               color: "success",
             };
           })
           .catch((err) => {
+            console.log('err',err);
             this.message = {
               text: err.response.data.message,
               color: "error",
