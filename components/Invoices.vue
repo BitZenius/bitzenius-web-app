@@ -286,6 +286,50 @@
               class="mt-5"
             >
               <v-col cols="12">
+                <div class="my-5">
+                  <p>Have a promo code?</p>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="promoCode"
+                        dense
+                        clear-icon="mdi-close-circle"
+                        clearable
+                        type="text"
+                        outlined
+                        @click:clear="clearPromoCode"
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <v-btn
+                        class="py-5 text-capitalize"
+                        :loading="isValidatingPromoCode"
+                        block
+                        depressed
+                        @click="
+                          $emit(
+                            'validatePromoCode',
+                            promoCode,
+                            activeInvoice.plan_id
+                          )
+                        "
+                      >
+                        Apply Promo
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <v-alert
+                    v-if="promoCodeData"
+                    class="mt-3"
+                    dense
+                    text
+                    :type="promoCodeData.error ? 'error' : 'success'"
+                  >
+                    {{ promoCodeData.message }}
+                  </v-alert>
+                </div>
+              </v-col>
+              <v-col cols="12">
                 <v-radio-group v-model="payment" column>
                   <v-radio
                     label="Pay using crypto currency (USDT)"
@@ -355,6 +399,7 @@
                 </div>
               </v-col>
             </v-row>
+
             <v-row v-else justify="space-between" class="mt-5">
               <v-col cols="6" class="d-flex align-center font-weight-bold">
                 <v-list-item-avatar size="25" color="success" class="mr-2">
@@ -558,7 +603,7 @@
       </v-col>
     </v-row>
 
-    <BaseModal
+    <BaseModalMobile
       :parentModel="invoiceDialog"
       :maxWidth="'600'"
       @close="invoiceDialog = false"
@@ -568,7 +613,7 @@
           <v-card-title
             class="text-h6 font-weight-bold primary basic--text mb-5"
           >
-            <v-row>
+            <v-row style="width: 100%">
               <v-col cols="6">
                 <v-img
                   :src="'/bitzenius-logo-white.png'"
@@ -577,8 +622,8 @@
                   position="left center"
                 />
               </v-col>
-              <v-col cols="4" class="d-flex justify-end">
-                <v-btn color="basic" icon @click="closeInvoiceDialog">
+              <v-col cols="6" class="d-flex justify-end">
+                <v-btn color="white" icon @click="closeInvoiceDialog">
                   <v-icon>mdi-close</v-icon>
                 </v-btn>
               </v-col>
@@ -740,6 +785,50 @@
               class="mt-5"
             >
               <v-col cols="12">
+                <div class="my-5">
+                  <p>Have a promo code?</p>
+                  <v-row>
+                    <v-col cols="6">
+                      <v-text-field
+                        v-model="promoCode"
+                        dense
+                        clear-icon="mdi-close-circle"
+                        clearable
+                        type="text"
+                        outlined
+                        @click:clear="clearPromoCode"
+                      />
+                    </v-col>
+                    <v-col cols="6">
+                      <v-btn
+                        class="py-5 text-capitalize"
+                        :loading="isValidatingPromoCode"
+                        block
+                        depressed
+                        @click="
+                          $emit(
+                            'validatePromoCode',
+                            promoCode,
+                            activeInvoice.plan_id
+                          )
+                        "
+                      >
+                        Apply Promo
+                      </v-btn>
+                    </v-col>
+                  </v-row>
+                  <v-alert
+                    v-if="promoCodeData"
+                    class="mt-3"
+                    dense
+                    text
+                    :type="promoCodeData.error ? 'error' : 'success'"
+                  >
+                    {{ promoCodeData.message }}
+                  </v-alert>
+                </div>
+              </v-col>
+              <v-col cols="12">
                 <v-radio-group v-model="payment" column>
                   <v-radio
                     label="Pay using crypto currency (USDT)"
@@ -821,7 +910,7 @@
           </v-card-text>
         </v-card>
       </template>
-    </BaseModal>
+    </BaseModalMobile>
     <v-dialog> </v-dialog>
   </v-card>
 </template>
@@ -835,6 +924,8 @@ export default {
         return null;
       },
     },
+    promoCodeData: Object,
+    isValidatingPromoCode: Boolean,
   },
   data() {
     return {
@@ -880,6 +971,10 @@ export default {
       copied: false,
       payment: "crypto",
       balance: 0,
+
+      // PROMO CODE
+      selectedPlan: null,
+      promoCode: "",
     };
   },
   computed: {
@@ -1013,6 +1108,10 @@ export default {
       }
 
       return sources[source];
+    },
+    clearPromoCode() {
+      this.promoCode = "";
+      this.$emit("clearPromoCode");
     },
   },
 };
