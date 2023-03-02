@@ -14,7 +14,7 @@
           </strong>
           <!-- <v-btn small @click="logger">logger</v-btn> -->
           <v-row style="width: 100%">
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-select
                 v-model="technical.first_analysis.analysis"
                 item-value="id"
@@ -26,7 +26,7 @@
               >
               </v-select>
             </v-col>
-            <v-col cols="6" class="mx-0">
+            <v-col cols="12" md="6" class="mx-0">
               <v-select
                 v-model="technical.first_analysis.time"
                 :items="timeList"
@@ -77,7 +77,7 @@
             Choose Second Analysis
           </strong>
           <v-row style="width: 100%">
-            <v-col cols="6">
+            <v-col cols="12" md="6">
               <v-select
                 v-model="technical.second_analysis.analysis"
                 item-value="id"
@@ -88,7 +88,7 @@
                 rounded
               ></v-select>
             </v-col>
-            <v-col cols="6" class="mx-0">
+            <v-col cols="12" md="6" class="mx-0">
               <v-select
                 v-model="technical.second_analysis.time"
                 :items="timeList"

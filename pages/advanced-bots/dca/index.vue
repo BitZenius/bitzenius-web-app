@@ -3,6 +3,9 @@
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
+          <v-icon v-if="checkMobile()" @click="$router.push('/advanced-bots')"
+            >mdi-arrow-left</v-icon
+          >
           {{ title }}
         </v-col>
       </v-row>

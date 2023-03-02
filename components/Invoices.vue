@@ -386,6 +386,14 @@
                       </tr>
                     </tbody>
                   </table>
+                  <v-btn
+                    depressed
+                    color="success"
+                    :loading="isLoading"
+                    @click="payInvoice"
+                  >
+                    Pay Now
+                  </v-btn>
                 </div>
                 <div v-else>
                   <v-btn
@@ -885,6 +893,14 @@
                       </tr>
                     </tbody>
                   </table>
+                  <v-btn
+                    depressed
+                    color="success"
+                    :loading="isLoading"
+                    @click="payInvoice"
+                  >
+                    Pay Now
+                  </v-btn>
                 </div>
                 <div v-else>
                   <v-btn
@@ -1000,6 +1016,12 @@ export default {
     this.initialize();
   },
   methods: {
+    invokeDiscount(source, discount) {
+      this.activeInvoice.totals.discount = discount * -1;
+      this.activeInvoice.totals.total =
+        this.activeInvoice.totals.subtotal - this.activeInvoice.totals.discount;
+      this.activeInvoice.discount.source = source;
+    },
     initialize() {
       this.isLoading = true;
       const { page, itemsPerPage } = this.options;
@@ -1066,7 +1088,13 @@ export default {
     payInvoice() {
       this.isLoading = true;
       this.$api
-        .$post("/user/subscription/invoices/" + this.activeInvoice._id + "/pay")
+        .$post(
+          "/user/subscription/invoices/" + this.activeInvoice._id + "/pay",
+          {
+            promo_code: this.promoCode,
+            payment_method: this.payment,
+          }
+        )
         .then((res) => {
           this.closeInvoiceDialog();
           this.$store.commit("setShowSnackbar", {

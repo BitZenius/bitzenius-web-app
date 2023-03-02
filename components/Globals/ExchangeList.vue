@@ -88,7 +88,7 @@ export default {
     },
     async fetchAvailableExchanges() {
       let res = await this.$api.$get("/user/exchange");
-      let tempArray = [];
+      let tempArray = ["Binance"];
       res.data.forEach((val) => {
         tempArray.push(val.title);
       });

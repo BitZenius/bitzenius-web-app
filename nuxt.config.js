@@ -119,6 +119,10 @@ export default {
   pwa: {
     manifest: {
       lang: 'en'
+    },
+    meta: {
+      nativeUI: true,
+      theme_color: "#3394F8"
     }
   },
 

@@ -209,6 +209,7 @@
                 </v-row>
                 <apexchart
                   :key="$vuetify.theme.dark"
+                  ref="apexchart"
                   v-if="
                     showChart && exchange && chartData.series[0].data.length > 0
                   "
@@ -449,9 +450,18 @@ export default {
     },
     async _fetchChart() {
       console.log("fetchChart");
-      console.log(this.startDate);
-      console.log(this.endDate);
+      // console.log(this.startDate);
+      // console.log(this.endDate);
       this.showChart = false;
+      var params = {
+        exchange: this.exchange,
+        startdate: this.startDate,
+        enddate: this.endDate,
+        style: this.style,
+      };
+
+      console.log("_fetchChart params: ", params);
+
       this.$api
         .$get("/user/chart", {
           params: {
@@ -472,12 +482,13 @@ export default {
               this.chartData.series = [{ name: "P&L", data: [] }];
             } else {
               var newCategories = res.categories.map((r) => {
-                return r.split("-")[0];
+                var split = r.split("-");
+                return split[0] + "-" + split[1];
               });
               console.log("resChart2", newCategories);
               this.chartData.options.xaxis.categories = newCategories;
-              this.chartData.options.xaxis.min = newCategories.length - 10;
-              this.chartData.options.xaxis.max = newCategories.length;
+              this.chartData.options.xaxis.min = 1;
+              this.chartData.options.xaxis.max = 31;
               let value = [];
               res.series.forEach((val) => {
                 let convert =
@@ -489,6 +500,7 @@ export default {
               });
               this.chartData.series[0].data = res.series;
             }
+            this.$refs.apexchart.zoomX(4, 5);
             this.$forceUpdate();
           } else {
             this.$store.commit("setShowSnackbar", {
@@ -532,6 +544,8 @@ export default {
       this.style = style;
     },
     onExchangeChanged() {
+      console.log("onExchangeChanged: EXCHANGE CHANGED");
+
       this.$store.commit("setIsLoading", true);
       this._fetchChart();
       this._fetchDailyDeals();
@@ -555,7 +569,7 @@ export default {
   async mounted() {
     this.$store.commit("setTitle", this.title);
     this.setDefaultChart();
-    this._fetchChart();
+    // this._fetchChart();
     this._fetchDailyDeals();
     this._fetchUserBalance();
     this._fetchProfit();
@@ -574,6 +588,7 @@ export default {
       immediate: true,
     },
     exchange(nv, ov) {
+      console.log("WATCH: exchange");
       this.$store.commit("exchange/setSelectedExchange", nv);
       this._fetchChart();
       this._fetchDailyDeals();
@@ -581,6 +596,7 @@ export default {
       this._fetchProfit();
     },
     styleValue(nv, ov) {
+      console.log("WATCH: styleValue", nv, ov);
       let current, y, m, d;
       current = new Date();
       y = current.getFullYear();

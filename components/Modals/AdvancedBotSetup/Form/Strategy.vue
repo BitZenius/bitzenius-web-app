@@ -12,7 +12,8 @@
             style="width: 100%"
           >
             <v-col
-              cols="4"
+              cols="12"
+              md="4"
               class="pt-0"
               v-for="(item, i) in styleList"
               :key="i"
@@ -186,7 +187,10 @@
                 </div>
               </td>
               <td class="text-body-1">
-                <span>{{ child.type }}</span>
+                <span v-if="advancedBotsType.length == 1">{{
+                  advancedBotsType[0]
+                }}</span>
+                <span v-else>{{ child.type }}</span>
               </td>
             </template>
           </tr>
@@ -265,7 +269,20 @@
 
 <script>
 export default {
-  props: ["selectedStrategy"],
+  props: {
+    advancedBotsType: {
+      type: String,
+      default: () => {
+        return [];
+      },
+    },
+    selectedStrategy: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
   data() {
     return {
       selectedStrategyName: null,
@@ -333,6 +350,10 @@ export default {
       this.resetRecommendedSettings();
     },
     checkGridDCA(step) {
+      if (this.advancedBotsType !== []) {
+        this.types = this.advancedBotsType;
+        return;
+      }
       var stepsArray = this.strategy.style.steps.map((item) => {
         return item.type;
       });

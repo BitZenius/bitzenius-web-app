@@ -187,6 +187,7 @@
       ></TablesPricingPlans>
       <Invoices
         class="pa-2 mt-5"
+        ref="invoices"
         :promoCodeData="promoCodeData"
         :isValidatingPromoCode="isValidatingPromoCode"
         @clearPromoCode="
@@ -1105,6 +1106,8 @@ export default {
           this.promoCodeData = result.data;
           this.promoCodeData.message = `Yeay! ${result.data.description} has been applied to this order`;
           this.promoCodeData.error = false;
+
+          this.$refs.invoices.invokeDiscount("promo", result.discount);
         })
         .catch((err) => {
           this.isValidatingPromoCode = false;

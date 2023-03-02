@@ -6,6 +6,23 @@
         <div class="d-flex flex-column align-start">
           <v-row class="d-flex align-end" style="width: 100%">
             <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
+              Name
+              <v-text-field
+                ref="bot_name"
+                v-model="bot_name"
+                required
+                placeholder="Bot Name"
+                hide-details=""
+                rounded
+                class="my-2 custom-input text-body-1"
+              >
+              </v-text-field>
+            </v-col>
+            <v-col cols="12">
+              Exchange
+              <GlobalsExchangeList></GlobalsExchangeList>
+            </v-col>
+            <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
               USDT Per Order
               <v-text-field
                 ref="usdt_per_order"
@@ -53,7 +70,7 @@
               <v-select
                 dense
                 class="mt-3 px-3"
-                v-model="selectedToken"
+                v-model="selected_token"
                 :items="tokensCopy"
                 rounded
               >
@@ -98,10 +115,12 @@ export default {
         usdt_to_apply: 0,
         usdt_per_order: 0,
         max_concurrent_trading_pair: 0,
+
         style: {
           name: null,
         },
       },
+      bot_name: "",
       applyBalance: 100,
       selectedItem: 1,
       styleList: [],
@@ -127,7 +146,7 @@ export default {
       // TOKEN
       searchTerm: "",
       tokensCopy: [],
-      selectedToken: "BTCUSDT",
+      selected_token: "BTCUSDT",
     };
   },
   methods: {
@@ -392,7 +411,7 @@ export default {
         this.selectStyleByName(nv);
       },
     },
-    selectedToken(nv, ov) {
+    selected_token(nv, ov) {
       this.$emit("changedSelectedToken", nv);
     },
   },

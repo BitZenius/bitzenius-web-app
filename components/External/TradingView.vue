@@ -51,4 +51,10 @@ export default {
 #vue-trading-view {
   height: 620px;
 }
+
+@media only screen and (max-width: 1023px) {
+  #vue-trading-view {
+    height: 310px;
+  }
+}
 </style>

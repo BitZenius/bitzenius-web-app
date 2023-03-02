@@ -234,11 +234,16 @@
       height="72"
     >
       <div class="d-flex float-left">
-        <v-btn active-class="active-icon" value="home" to="/">
+        <v-btn :ripple="false" active-class="active-icon" class="bottom-button-navigation" value="home" to="/">
           <span>Home</span>
           <v-icon>$vuetify.icons.HomeIcon</v-icon>
         </v-btn>
-        <v-btn active-class="active-icon" value="exchange" to="/exchanges">
+        <v-btn
+          :ripple="false"
+          active-class="active-icon" class="bottom-button-navigation"
+          value="exchange"
+          to="/exchanges"
+        >
           <span>Exchanges</span>
           <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
         </v-btn>
@@ -246,16 +251,26 @@
 
       <div class="bot-button-container">
         <v-btn class="bot-button" color="primary" value="bot" to="/bots">
-          <span>Bots</span>
-          <v-icon>$vuetify.icons.BotIcon</v-icon>
+          <span class="white--text">Bots</span>
+          <v-icon color="white">$vuetify.icons.BotIcon</v-icon>
         </v-btn>
       </div>
       <div class="d-flex float-right">
-        <v-btn active-class="active-icon" value="trading" to="/trading-history">
+        <v-btn
+          :ripple="false"
+          active-class="active-icon" class="bottom-button-navigation"
+          value="trading"
+          to="/advanced-bots"
+        >
           <span>Advanced</span>
           <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
         </v-btn>
-        <v-btn active-class="active-icon" value="account" to="/account">
+        <v-btn
+          :ripple="false"
+          active-class="active-icon" class="bottom-button-navigation"
+          value="account"
+          to="/account"
+        >
           <span>Account</span>
           <v-icon>$vuetify.icons.SettingsIcon</v-icon>
         </v-btn>
@@ -656,6 +671,12 @@ export default {
   height: 80px !important;
   max-width: 80px !important;
   max-height: 80px !important;
+  z-index: 20;
+}
+
+.bottom-button-navigation{
+  min-height: 80px !important;
+  min-width: 70px !important;
 }
 
 @media only screen and (min-width: 960px) {

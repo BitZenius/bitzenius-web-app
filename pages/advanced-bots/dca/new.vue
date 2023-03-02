@@ -1,32 +1,48 @@
 <template>
-  <v-row class="py-5">
-    <v-col cols="12" style="position: relative" class="mb-5">
+  <v-row class="py-5 pa-3">
+    <v-col
+      v-if="checkMobile() == false"
+      cols="12"
+      style="position: relative"
+      class="mb-5"
+    >
       <v-icon @click="$router.push('/advanced-bots/dca')">
         mdi-arrow-left
       </v-icon>
-      <v-row>
-        <v-col cols="12" class="text-center text-h5 font-weight-bold">
-          {{ title }} for {{ selectedExchange }}
-        </v-col>
-      </v-row>
+    </v-col>
+    <v-col v-if="checkMobile()" cols="12" class="text-h5 font-weight-bold">
+      <v-icon @click="$router.push('/advanced-bots/dca')">
+        mdi-arrow-left
+      </v-icon>
+      {{ title }} for {{ selectedExchange }}
+    </v-col>
+    <v-col v-else cols="12" class="text-center text-h5 font-weight-bold">
+      {{ title }} for {{ selectedExchange }}
     </v-col>
     <v-col cols="12">
       <v-row>
-        <v-col cols="7">
+        <v-col :cols="checkMobile() ? 12 : 7">
           <ExternalTradingView
             :key="tvKey"
-            :symbol="selectedToken"
+            :symbol="selected_token"
           ></ExternalTradingView>
         </v-col>
-        <v-col cols="5">
+        <v-col :cols="checkMobile() ? 12 : 5">
           <v-row>
             <v-col cols="12">
-              <v-card flat rounded class="mb-4 px-4">
-                <v-row justify="space-around">
-                  <v-col cols="2">
+              <v-card
+                flat
+                rounded
+                :class="checkMobile() ? 'mb-4' : 'mb-4 px-4'"
+              >
+                <v-row justify="space-around" class="pa-3">
+                  <v-col
+                    cols="2"
+                    class="pa-1 d-flex justify-center align-center"
+                  >
                     <v-progress-circular
                       :rotate="270"
-                      :size="60"
+                      :size="checkMobile() ? 50 : 60"
                       :width="7"
                       :value="e1 >= 0 ? 100 : 0"
                       color="primary"
@@ -40,10 +56,13 @@
                       ></v-icon>
                     </v-progress-circular>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col
+                    cols="2"
+                    class="pa-1 d-flex justify-center align-center"
+                  >
                     <v-progress-circular
                       :rotate="270"
-                      :size="60"
+                      :size="checkMobile() ? 50 : 60"
                       :width="7"
                       :value="e1 >= 1 ? 100 : 0"
                       color="primary"
@@ -57,10 +76,13 @@
                       ></v-icon>
                     </v-progress-circular>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col
+                    cols="2"
+                    class="pa-1 d-flex justify-center align-center"
+                  >
                     <v-progress-circular
                       :rotate="270"
-                      :size="60"
+                      :size="checkMobile() ? 50 : 60"
                       :width="7"
                       :value="e1 >= 2 ? 100 : 0"
                       color="primary"
@@ -74,10 +96,13 @@
                       ></v-icon>
                     </v-progress-circular>
                   </v-col>
-                  <v-col cols="2">
+                  <v-col
+                    cols="2"
+                    class="pa-1 d-flex justify-center align-center"
+                  >
                     <v-progress-circular
                       :rotate="270"
-                      :size="60"
+                      :size="checkMobile() ? 50 : 60"
                       :width="7"
                       :value="e1 >= 3 ? 100 : 0"
                       color="primary"
@@ -126,6 +151,7 @@
                 <v-tab-item key="1">
                   <ModalsAdvancedBotSetupFormStrategy
                     v-if="showStrategySetup"
+                    :advancedBotsType="['DCA']"
                     :selected-strategy="bot.strategy"
                     ref="strategyRef"
                     @onSelected="onStrategySelected"
@@ -332,7 +358,11 @@ export default {
       shownTokens: [],
       tokensCopy: [],
       tokenException: [],
+
+      // BOT
+      bot_type: "DCA",
       bot: {
+        name: "Test Bot",
         selected_exchange: null,
         strategy: {
           style: {
@@ -370,6 +400,12 @@ export default {
       ],
       searchTerm: "",
       summary: [
+        {
+          color: "indigo",
+          icon: "mdi-buffer",
+          title: "Name",
+          value: null,
+        },
         {
           color: "indigo",
           icon: "mdi-buffer",
@@ -421,7 +457,7 @@ export default {
 
       // TV
       tvKey: 0,
-      selectedToken: "BINANCE:BTCUSDT",
+      selected_token: "BTCUSDT",
     };
   },
   computed: {
@@ -444,7 +480,7 @@ export default {
     ...mapMutations("exchange", ["setSelectedExchange"]),
     // TV
     tokenSelected(token) {
-      this.selectedToken = token;
+      this.selected_token = token;
       this.tvKey++;
     },
     // TRIGGER
@@ -455,9 +491,13 @@ export default {
         if (
           this.bot.strategy.usdt_per_order &&
           this.bot.strategy.usdt_per_order != 0 &&
-          this.selectedToken != ""
+          this.selected_token != "" &&
+          this.$refs.amountRef.bot_name != "" &&
+          this.selectedExchange != ""
         ) {
-          this.bot.selectedToken = this.selectedToken;
+          this.bot.selected_token = this.selected_token;
+          this.bot.name = this.$refs.amountRef.bot_name;
+          this.bot.exchange = this.selectedExchange;
           allowed = true;
         }
         if (allowed) {
@@ -503,7 +543,6 @@ export default {
             color: "customPink",
           });
         }
-        console.log(this.bot.analysis);
       }
 
       this.e1 = target - 1;
@@ -515,7 +554,7 @@ export default {
       this.bot.selected_exchange = val;
     },
     onStrategySelected(val) {
-      console.log("onStrategySelected");
+      console.log("onStrategySelected", val);
       this.bot.strategy = val;
     },
     onAnalysisSelected(val) {
@@ -618,6 +657,17 @@ export default {
         });
         return;
       }
+
+      // MAP PARAM SELECTED TOKEN
+      var split_token = this.bot.selected_token.split(":");
+      if (split_token.length > 0) {
+        this.bot.selected_token = split_token[1];
+      }
+
+      // MAP PARAM STRATEGY
+      this.bot.strategy.steps = this.bot.strategy.style.steps;
+      this.bot.strategy.style = this.bot.strategy.style.name;
+
       let paramTemp = {
         ...this.bot,
       };
@@ -644,7 +694,14 @@ export default {
 
       delete paramTemp.analysis;
       paramTemp.analysis = analysis;
+      paramTemp.type = this.bot_type;
+
+      // return console.log("paramTemp", paramTemp);
+
       this.$store.commit("setIsLoading", true);
+
+      // DONT MANUALLY CHANGED IS UPDATE MODE
+      isUpdateMode = false;
 
       if (isUpdateMode) {
         delete paramTemp.id;
@@ -655,7 +712,7 @@ export default {
         console.log("paramTemp", paramTemp);
         console.log("query", query);
 
-        let res = await this.$api.$put("/user/bot", paramTemp, {
+        let res = await this.$api.$put("/user/advanced-bot", paramTemp, {
           params: query,
         });
         setTimeout(() => {
@@ -667,7 +724,7 @@ export default {
         });
       } else {
         // ON INSERT
-        let res = await this.$api.$post("/user/bot", paramTemp);
+        let res = await this.$api.$post("/user/advanced-bot", paramTemp);
         setTimeout(() => {
           this.$store.commit("setShowSnackbar", {
             show: true,
@@ -781,11 +838,12 @@ export default {
     },
     bot: {
       handler(nv, ov) {
-        this.summary[0].value = nv.selected_exchange;
-        this.summary[1].value = nv.selectedToken;
-        this.summary[2].value = nv.strategy.style.name;
-        this.summary[3].value = "$" + nv.strategy.usdt_to_apply;
-        this.summary[4].value = `${nv.analysis.first_analysis.analysis} ${
+        this.summary[0].value = nv.name;
+        this.summary[1].value = nv.selected_exchange;
+        this.summary[2].value = nv.selected_token;
+        this.summary[3].value = nv.strategy.style.name;
+        this.summary[4].value = "$" + nv.strategy.usdt_to_apply;
+        this.summary[5].value = `${nv.analysis.first_analysis.analysis} ${
           nv.analysis.condition == "AND" ? "&" : "/"
         } ${nv.analysis.second_analysis.analysis}`;
       },
