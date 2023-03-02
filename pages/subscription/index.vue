@@ -222,7 +222,7 @@
       </div>
     </v-col>
     <!-- Temporary to disable montly plans -->
-    <v-col cols="12">
+    <v-col cols="12" v-if="false">
       <v-card elevation="8" class="pa-5 mt-10">
         <v-row class="pt-8">
           <v-col cols="12" class="d-flex justify-center">
