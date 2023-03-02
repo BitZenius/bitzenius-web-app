@@ -7,7 +7,29 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12" v-if="subscription == null || subscription.id == 0">
+    <v-col cols="12" v-if="isLoading">
+      <!-- <v-row>
+        <v-col cols="12">
+          <v-skeleton-loader class="mx-auto" type="text"></v-skeleton-loader>
+        </v-col>
+
+        <v-col cols="4">
+          <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
+        </v-col>
+
+        <v-col cols="4">
+          <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
+        </v-col>
+
+        <v-col cols="4">
+          <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
+        </v-col>
+      </v-row> -->
+    </v-col>
+    <v-col
+      cols="12"
+      v-else-if="(subscription == null || subscription.id == 0) && !hasTrial"
+    >
       <div>
         <v-card elevation="8" class="pa-8">
           <v-row>
@@ -150,80 +172,12 @@
         </v-alert>
       </div>
     </v-col>
-    <v-col cols="12" v-else>
-      <div class="relative-container-subs">
-        <v-card class="card-1 overflow-y-hidden pa-2" flat color="primary">
-          <v-img
-            width="860"
-            class="background-image"
-            src="/images/signin-vector.svg"
-          >
-          </v-img>
 
-          <v-row class="pa-5 py-10" align="end">
-            <v-col cols="12" class="d-flex align-end justify-start"> </v-col>
-            <v-col cols="12">
-              <div>
-                <span class="text-h4 font-weight-bold primary-text--text"
-                  >Premium</span
-                >
-                <v-chip
-                  v-if="subscription.trial"
-                  color="customGreen"
-                  class="ml-2 primary-text--text"
-                  depressed
-                >
-                  <strong>TRIAL</strong>
-                </v-chip>
-                <p class="primary-text--text">
-                  You're subscribed to our premium membership
-                </p>
-                <v-btn
-                  depressed
-                  :ripple="false"
-                  color="customPink primary-text--text"
-                  class="px-2 py-0"
-                >
-                  until {{ $moment(subscription.end).format("DD MMM YYYY") }}
-                </v-btn>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card>
-
-        <Invoices class="card-2 pa-2" :invoice_id.sync="invoiceId" />
-
-        <!-- ORNAMENT -->
-        <v-img
-          width="90"
-          class="ornament-1-subs"
-          :src="require('@/assets/images/ornament-green-arrow.svg')"
-        >
-        </v-img>
-        <v-img
-          width="60"
-          class="ornament-2-subs"
-          :src="require('@/assets/images/ornament-thunder.svg')"
-        >
-        </v-img>
-
-        <div class="lottie-container-subs">
-          <template>
-            <!-- width and height are optional -->
-            <lottie
-              :width="256"
-              :height="256"
-              :options="lottieOptions"
-              v-on:animCreated="handleAnimation"
-            />
-          </template>
-        </div>
-        <!-- ORNAMENT ENDS -->
-      </div>
-    </v-col>
-    <!-- Temporary to disable montly plans -->
-    <v-col cols="12" v-if="false">
-      <v-card elevation="8" class="pa-5 mt-10">
+    <v-col
+      cols="12"
+      v-else-if="(subscription == null || subscription.id == 0) && hasTrial"
+    >
+      <v-card elevation="8" class="pa-5">
         <v-row class="pt-8">
           <v-col cols="12" class="d-flex justify-center">
             <div
@@ -355,8 +309,78 @@
         </v-row>
       </v-card>
     </v-col>
+    <v-col cols="12" v-else>
+      <div class="relative-container-subs">
+        <v-card class="card-1 overflow-y-hidden pa-2" flat color="primary">
+          <v-img
+            width="860"
+            class="background-image"
+            src="/images/signin-vector.svg"
+          >
+          </v-img>
 
-    <v-col v-if="false" cols="12"> </v-col>
+          <v-row class="pa-5 py-10" align="end">
+            <v-col cols="12" class="d-flex align-end justify-start"> </v-col>
+            <v-col cols="12">
+              <div>
+                <span class="text-h4 font-weight-bold primary-text--text"
+                  >Premium</span
+                >
+                <v-chip
+                  v-if="subscription.trial"
+                  color="customGreen"
+                  class="ml-2 primary-text--text"
+                  depressed
+                >
+                  <strong>TRIAL</strong>
+                </v-chip>
+                <p class="primary-text--text">
+                  You're subscribed to our premium membership
+                </p>
+                <v-btn
+                  depressed
+                  :ripple="false"
+                  color="customPink primary-text--text"
+                  class="px-2 py-0"
+                >
+                  until {{ $moment(subscription.end).format("DD MMM YYYY") }}
+                </v-btn>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card>
+
+        <Invoices class="card-2 pa-2" :invoice_id.sync="invoiceId" />
+
+        <!-- ORNAMENT -->
+        <v-img
+          width="90"
+          class="ornament-1-subs"
+          :src="require('@/assets/images/ornament-green-arrow.svg')"
+        >
+        </v-img>
+        <v-img
+          width="60"
+          class="ornament-2-subs"
+          :src="require('@/assets/images/ornament-thunder.svg')"
+        >
+        </v-img>
+
+        <div class="lottie-container-subs">
+          <template>
+            <!-- width and height are optional -->
+            <lottie
+              :width="256"
+              :height="256"
+              :options="lottieOptions"
+              v-on:animCreated="handleAnimation"
+            />
+          </template>
+        </div>
+        <!-- ORNAMENT ENDS -->
+      </div>
+    </v-col>
+
     <v-dialog
       v-model="orderDialog"
       max-width="600"
@@ -493,7 +517,11 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12" v-if="subscription == null || subscription.id == 0">
+    <v-col cols="12" v-if="isLoading"></v-col>
+    <v-col
+      cols="12"
+      v-else-if="(subscription == null || subscription.id == 0) && !hasTrial"
+    >
       <div>
         <v-card elevation="8" class="pa-8">
           <v-row>
@@ -767,6 +795,142 @@
         </v-alert>
       </div>
     </v-col>
+    <v-col
+      cols="12"
+      v-else-if="(subscription == null || subscription.id == 0) && hasTrial"
+    >
+      <v-card elevation="8" class="pa-5">
+        <v-row class="pt-8">
+          <v-col cols="12" class="d-flex justify-center">
+            <div
+              class="d-flex flex-column align-center justify-center"
+              style="max-width: 80%"
+            >
+              <h2>Need more plans?</h2>
+              <p class="text-center mt-2">
+                Take a look of standard plans and select your choice
+              </p>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12" class="d-flex justify-center">
+            <div class="mb-5">
+              <v-btn
+                depressed
+                class="mr-1"
+                large
+                :color="monthly ? 'primary' : ''"
+                rounded
+                @click="switchCicle"
+              >
+                Monthly
+              </v-btn>
+              <v-btn
+                depressed
+                large
+                :color="monthly ? '' : 'primary'"
+                rounded
+                @click="switchCicle"
+              >
+                Yearly
+              </v-btn>
+            </div>
+          </v-col>
+        </v-row>
+        <v-row>
+          <v-col cols="12">
+            <v-row>
+              <v-col
+                v-for="i in pricings"
+                :key="i.id"
+                cols="12"
+                md="4"
+                class="align-center justify-center"
+              >
+                <v-card elevation="0" class="pa-8" outlined>
+                  <div
+                    class="py-8 d-flex flex-column align-center justify-center"
+                  >
+                    <h3 class="text-center primary--text">
+                      {{ i.name }}
+                    </h3>
+                    <span class="text-center mt-2 text-h3 font-weight-black"
+                      ><span class="text-h5">$</span>{{ i.price
+                      }}<span class="text-h5"
+                        >/{{ monthly ? "month" : "year" }}</span
+                      ></span
+                    >
+                  </div>
+                  <v-list>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> Exchanges </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_exchange }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title>
+                          Fully Automated Bots
+                        </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.automated_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> Smart Trade </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_smart_trade_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> DCA Bots </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_dca_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-list-item-title> Grid Bots </v-list-item-title>
+                      </v-list-item-content>
+                      <v-list-item-action>
+                        {{ i.config.max_grid_bot }}
+                      </v-list-item-action>
+                    </v-list-item>
+                    <v-divider />
+                  </v-list>
+                  <div
+                    class="pt-5 pb-2 d-flex flex-column align-center justify-center"
+                  >
+                    <v-btn
+                      depressed
+                      color="primary"
+                      large
+                      @click="openOrderDialog(i.id)"
+                    >
+                      Subscribe
+                    </v-btn>
+                  </div>
+                </v-card>
+              </v-col>
+            </v-row>
+          </v-col>
+        </v-row>
+      </v-card>
+    </v-col>
     <v-col cols="12" v-else>
       <v-row>
         <v-col cols="12">
@@ -1007,8 +1171,8 @@ export default {
       this.switchCicleData(val);
     },
   },
-  mounted() {
-    this._fetchUserSubscription();
+  async mounted() {
+    await this._fetchUserSubscription();
     this.$store.commit("setTitle", this.title);
     this.initialize();
   },
@@ -1018,6 +1182,7 @@ export default {
     },
     // FETCHING API
     async _fetchUserSubscription() {
+      this.isLoading = true;
       console.log(this.user);
       try {
         let res = await this.$api.$get("/user/subscription/user-trial", {
@@ -1026,8 +1191,8 @@ export default {
             // uid:'xxx'
           },
         });
-        this.$store.commit("setHasTrial", res.data);
-        if (res.data) {
+        this.$store.commit("setHasTrial", res);
+        if (res) {
           console.log(res);
           this.$store.commit("setShowSnackbar", {
             show: true,

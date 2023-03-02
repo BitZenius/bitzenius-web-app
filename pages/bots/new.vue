@@ -595,7 +595,7 @@
                           <v-btn
                             width="120"
                             color="primary"
-                            @click="e1 = 0"
+                            @click="e1 = 1"
                             rounded
                             outlined
                           >
@@ -607,7 +607,7 @@
                             width="120"
                             rounded
                             color="primary"
-                            @click="_continue(3)"
+                            @click="_continue(4)"
                           >
                             Continue
                           </v-btn>
@@ -812,7 +812,10 @@
                                 <v-list-item-subtitle
                                   class="text-body-1 font-weight-bold basic-text--text"
                                 >
-                                  {{ item.value }}
+                                  <template v-if="i == 2 || i == 4">
+                                    {{ item.value | toCurrency }}</template
+                                  >
+                                  <template v-else> {{ item.value }}</template>
                                 </v-list-item-subtitle>
                               </v-list-item-content>
                             </v-list-item>

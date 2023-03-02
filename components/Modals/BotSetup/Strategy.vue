@@ -29,14 +29,14 @@
         </v-radio-group>
       </v-col>
     </v-row>
-    <v-list-item class="mb-5" v-if="strategy.style.steps">
+    <v-list-item class="mb-5 px-0" v-if="strategy.style.steps">
       <!-- <v-list-item-avatar> -->
-      <v-icon size="30" class="primary--text mr-3">
+      <v-icon size="20" class="primary--text mr-3">
         $vuetify.icons.ProfitBarChartIcon
       </v-icon>
       <!-- </v-list-item-avatar> -->
       <v-list-item-content>
-        <v-list-item-title class="text-h5 font-weight-bold">{{
+        <v-list-item-title class="text-h6 font-weight-bold">{{
           isForceCustom ? "Custom" : selectedStrategyName
         }}</v-list-item-title>
       </v-list-item-content>

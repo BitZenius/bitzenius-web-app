@@ -200,7 +200,7 @@
             </v-list-item-content>
           </v-list-item>
           <v-list-item class="float-right">
-            <v-btn outline @click="readMore()" color="primary" rounded
+            <v-btn outlined @click="readMore()" color="primary" rounded
               >Read More</v-btn
             >
           </v-list-item>
@@ -233,26 +233,33 @@
       grow
       height="72"
     >
-      <v-btn active-class="active-icon" value="home" to="/">
-        <span>Home</span>
-        <v-icon>$vuetify.icons.HomeIcon</v-icon>
-      </v-btn>
-      <v-btn active-class="active-icon" value="exchange" to="/exchanges">
-        <span>Exchanges</span>
-        <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
-      </v-btn>
-      <v-btn active-class="active-icon" value="bot" to="/bots">
-        <span>Bots</span>
-        <v-icon>$vuetify.icons.BotIcon</v-icon>
-      </v-btn>
-      <v-btn active-class="active-icon" value="trading" to="/trading-history">
-        <span>Advanced</span>
-        <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
-      </v-btn>
-      <v-btn active-class="active-icon" value="account" to="/account">
-        <span>Account</span>
-        <v-icon>$vuetify.icons.SettingsIcon</v-icon>
-      </v-btn>
+      <div class="d-flex float-left">
+        <v-btn active-class="active-icon" value="home" to="/">
+          <span>Home</span>
+          <v-icon>$vuetify.icons.HomeIcon</v-icon>
+        </v-btn>
+        <v-btn active-class="active-icon" value="exchange" to="/exchanges">
+          <span>Exchanges</span>
+          <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
+        </v-btn>
+      </div>
+
+      <div class="bot-button-container">
+        <v-btn class="bot-button" color="primary" value="bot" to="/bots">
+          <span>Bots</span>
+          <v-icon>$vuetify.icons.BotIcon</v-icon>
+        </v-btn>
+      </div>
+      <div class="d-flex float-right">
+        <v-btn active-class="active-icon" value="trading" to="/trading-history">
+          <span>Advanced</span>
+          <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
+        </v-btn>
+        <v-btn active-class="active-icon" value="account" to="/account">
+          <span>Account</span>
+          <v-icon>$vuetify.icons.SettingsIcon</v-icon>
+        </v-btn>
+      </div>
     </v-bottom-navigation>
     <v-footer v-else fixed>
       <v-row justify="space-between" class="pl-5">
@@ -632,6 +639,23 @@ export default {
 
 .active-icon > .v-btn__content > .v-icon {
   color: var(--primary);
+}
+
+.bot-button-container {
+  position: relative;
+  min-width: 50px;
+}
+
+.bot-button {
+  position: absolute;
+  top: 0%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 100% !important;
+  width: 80px !important;
+  height: 80px !important;
+  max-width: 80px !important;
+  max-height: 80px !important;
 }
 
 @media only screen and (min-width: 960px) {

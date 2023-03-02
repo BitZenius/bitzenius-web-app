@@ -1,5 +1,9 @@
 <template>
-  <v-card v-if="checkMobile() == false" elevation="8" class="pa-5 mt-10">
+  <v-card
+    v-if="checkMobile() == false"
+    elevation="8"
+    class="pa-5 mt-10 d-flex flex-column justify-start"
+  >
     <v-row v-if="false" class="py-5">
       <v-col cols="12" class="d-flex justify-center">
         <div
@@ -120,8 +124,8 @@
                 />
               </v-col>
               <v-col cols="4" class="d-flex justify-end">
-                <v-btn color="basic" icon @click="closeInvoiceDialog">
-                  <v-icon>mdi-close</v-icon>
+                <v-btn icon @click="closeInvoiceDialog">
+                  <v-icon class="white--text">mdi-close</v-icon>
                 </v-btn>
               </v-col>
             </v-row>

@@ -30,7 +30,7 @@
                       :width="7"
                       :value="e1 >= 0 ? 100 : 0"
                       color="primary"
-                      class="d-flex align-center justify-center"
+                      class="d-flex align-center justify-center step-button"
                       @click="e1 = 0"
                     >
                       <v-icon
@@ -47,7 +47,7 @@
                       :width="7"
                       :value="e1 >= 1 ? 100 : 0"
                       color="primary"
-                      class="d-flex align-center justify-center"
+                      class="d-flex align-center justify-center step-button"
                       @click="e1 = 1"
                     >
                       <v-icon
@@ -64,7 +64,7 @@
                       :width="7"
                       :value="e1 >= 2 ? 100 : 0"
                       color="primary"
-                      class="d-flex align-center justify-center"
+                      class="d-flex align-center justify-center step-button"
                       @click="e1 = 2"
                     >
                       <v-icon
@@ -81,7 +81,7 @@
                       :width="7"
                       :value="e1 >= 3 ? 100 : 0"
                       color="primary"
-                      class="d-flex align-center justify-center"
+                      class="d-flex align-center justify-center step-button"
                       @click="e1 = 3"
                     >
                       <v-icon
@@ -845,5 +845,8 @@ export default {
 .custom-stepper-container-mobile {
   display: flex;
   flex-wrap: wrap;
+}
+.step-button {
+  cursor: pointer;
 }
 </style>

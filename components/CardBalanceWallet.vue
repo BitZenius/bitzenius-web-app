@@ -291,7 +291,7 @@
           </v-card-title>
           <v-card-text v-if="userData" class="mt-3">
             <v-row justify="center " align="center">
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="4" class="d-flex justify-center">
                 <qr-code :text="userData.wallet_va"></qr-code>
               </v-col>
               <v-col cols="12" md="8">
