@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="isMobile() == false" class="pa-2 custom-card" flat>
+  <v-card v-if="checkMobile() == false" class="pa-2 custom-card" flat>
     <v-list-item two-line>
       <v-list-item-avatar size="40" color="off-white-2">
         <v-img

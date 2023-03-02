@@ -1,5 +1,35 @@
 <template>
-  <div>
+  <div v-if="checkMobile() == false">
+    <v-chip
+      style="width: 100%"
+      v-if="!exist"
+      @click="exist = !exist"
+      class=""
+      color="danger"
+      label
+      text-color="white"
+    >
+      <v-icon left> mdi-label </v-icon>
+      You don't have any exchanges registered!
+    </v-chip>
+    <v-select
+      v-else
+      v-model="selected"
+      :items="exchangeItems"
+      @change="onExchangeChange(selected)"
+      required
+      solo
+      flat
+    >
+      <template v-slot:prepend-inner>
+        <v-icon color="primary" size="20" class="mr-2"
+          >$vuetify.icons.ExchangeIcon</v-icon
+        >
+      </template></v-select
+    >
+    <!-- <v-btn small @click="logger">logger</v-btn> -->
+  </div>
+  <div v-else>
     <v-chip
       style="width: 100%"
       v-if="!exist"

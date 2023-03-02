@@ -1,7 +1,6 @@
 <svg id="withdraw" xmlns="http://www.w3.org/2000/svg" width="20" height="18" viewBox="0 0 20 18">
-  <g id="withdraw-2" data-name="withdraw">
-    <path id="Subtract" d="M4,0H16a4,4,0,0,1,0,8V4H4V8A4,4,0,0,1,4,0Z" fill="#fe759f"/>
-    <path id="Vector" d="M12,12V0H0V12a2,2,0,0,0,2,2h8A2,2,0,0,0,12,12Z" transform="translate(4 4)" fill="#fe759f" opacity="0.4"/>
-    <path id="Vector_Stroke_" data-name="Vector (Stroke)" d="M3.5,2.146l.72.72A.75.75,0,0,0,5.28,1.805L3.987.513a1.75,1.75,0,0,0-2.475,0L.22,1.805A.75.75,0,0,0,1.28,2.866L2,2.146V6.336a.75.75,0,0,0,1.5,0Z" transform="translate(12.75 14.336) rotate(180)" fill="#fe759f"/>
+  <g id="Vector">
+    <path id="_2D389FF2-6FF6-4268-BE25-AA3DBBB13853" data-name="2D389FF2-6FF6-4268-BE25-AA3DBBB13853" d="M4,0H16a4,4,0,0,1,1.5,7.709V4A1.5,1.5,0,0,0,16,2.5H4A1.5,1.5,0,0,0,2.5,4V7.709A4,4,0,0,1,4,0Z" fill="#3394f8"/>
+    <path id="_7287CB41-C68A-4FB2-888F-358DFFA9C5E6" data-name="7287CB41-C68A-4FB2-888F-358DFFA9C5E6" d="M16,4V16a2,2,0,0,1-2,2H6a2,2,0,0,1-2-2V4ZM8.53,11.47l.72.72V8a.75.75,0,0,1,1.5,0v4.189l.72-.72a.75.75,0,0,1,1.061,1.061l-1.293,1.293a1.75,1.75,0,0,1-2.475,0L7.47,12.531A.75.75,0,0,1,8.53,11.47Z" fill="#3394f8" fill-rule="evenodd"/>
   </g>
 </svg>

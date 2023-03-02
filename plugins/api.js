@@ -3,6 +3,7 @@ export default function ({ $axios, store, error: nuxtError }, inject) {
   (async () => {
     const timezone = Intl.DateTimeFormat().resolvedOptions().timeZone;
     const currentUser = store.$fire.auth.currentUser
+    console.log('currentUser', currentUser);
     const api = $axios.create({
       headers: {
         common: {

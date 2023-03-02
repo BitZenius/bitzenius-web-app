@@ -1,7 +1,7 @@
 <template>
-  <v-card flat rounded style="min-height: 600px">
+  <v-card flat rounded class="pa-3 no-shadow">
     <v-row align="center" justify="center">
-      <v-col :cols="wide ? 12 : 8" :class="wide ? '' : 'pa-5 mt-2'">
+      <v-col cols="12" :class="wide ? '' : 'pa-5 mt-2'">
         <div class="d-flex flex-column align-start">
           <h3 v-if="!wide" class="mb-4 text-h6 font-weight-bold">
             Choose First Analysis
@@ -98,30 +98,6 @@
               ></v-select>
             </v-col>
           </v-row>
-
-          <template v-if="technical.minimum_trading_volume != -1">
-            <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
-              Minimum trading volume in 24h
-            </h3>
-            <strong
-              v-else
-              class="text-body-1 font-weight-bold basic-text--text my-3"
-            >
-              Condition
-            </strong>
-            <v-row style="width: 100%">
-              <v-col class="d-flex justify-center" cols="12">
-                <v-select
-                  v-model="technical.minimum_trading_volume"
-                  item-value="value"
-                  item-text="name"
-                  :items="tradingVolumeList"
-                  placeholder="Trading Volume"
-                  class="custom-input text-body-1"
-                  rounded
-                ></v-select>
-              </v-col> </v-row
-          ></template>
         </div>
         <slot></slot>
       </v-col>

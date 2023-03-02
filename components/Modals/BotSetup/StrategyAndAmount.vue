@@ -247,7 +247,7 @@
           <!-- </v-list-item-avatar> -->
           <v-list-item-content>
             <v-list-item-title class="text-h5 font-weight-bold">{{
-              selectedStrategyName
+              isForceCustom ? "Custom" : selectedStrategyName
             }}</v-list-item-title>
           </v-list-item-content>
         </v-list-item>
@@ -503,6 +503,7 @@ export default {
   data() {
     return {
       selectedStrategyName: null,
+      isForceCustom: false,
       strategy: {
         usdt_to_apply: 0,
         usdt_per_order: 0,
@@ -565,8 +566,34 @@ export default {
     onUsdtToApplyChanged(value) {
       this.resetRecommendedSettings();
     },
+    checkGridDCA(step) {
+      var stepsArray = this.strategy.style.steps.map((item) => {
+        return item.type;
+      });
 
+      var stepsBefore = stepsArray.slice(0, step);
+      var stepsAfter = stepsArray.slice(step + 1, stepsArray.length - step);
+
+      var isDCABefore = stepsBefore.includes("DCA");
+      var isGridBefore = stepsBefore.includes("GRID");
+      var isDCAAfter = stepsAfter.includes("DCA");
+
+      if (isDCABefore && isGridBefore) {
+        this.types = ["GRID"];
+      } else if (isDCABefore && !isGridBefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCAAfter) {
+        this.types = ["DCA"];
+      } else if (isDCAAfter && !isDCABefore) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCABefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else {
+        this.types = ["DCA", "GRID"];
+      }
+    },
     selectRow(child, step) {
+      this.checkGridDCA(step);
       if (this.editStep == step) {
         return;
       }
@@ -579,7 +606,11 @@ export default {
     },
     deleteRow(step) {
       // ACCOMMODATE ONLY THE LAST ITEM ON ARRAY
-      this.strategy.style.steps.pop();
+      this.customStyle.steps = [...this.strategy.style.steps];
+      this.customStyle.steps.pop();
+
+      this.isForceCustom = true;
+      this.selectedStrategyName = "Custom";
     },
     cancelRowChanges() {
       setTimeout(() => {
@@ -591,20 +622,35 @@ export default {
       }, 100);
     },
     saveRowChanges() {
-      this.strategy.style.steps[this.editStep] = {
-        step: this.editStep,
-        drop_rate: this.customDrop,
-        multiplier: this.customBuy,
-        take_profit: this.customProfit,
-        type: this.customType,
-      };
+      this.isForceCustom = true;
+      var temp = [...this.strategy.style.steps];
+
+      console.log("TEMP: ", temp);
+
+      // this.selectStyleByName("Custom");
+      this.selectedStrategyName = "Custom";
 
       setTimeout(() => {
-        this.customDrop = null;
-        this.customBuy = null;
-        this.customProfit = null;
-        this.customType = null;
-        this.editStep = null;
+        console.log("TEMP: ", temp);
+        this.customStyle.steps = [...temp];
+
+        this.customStyle.steps[this.editStep] = {
+          step: this.editStep,
+          drop_rate: this.customDrop,
+          multiplier: this.customBuy,
+          take_profit: this.customProfit,
+          type: this.customType,
+        };
+
+        this.strategy.style.steps = [...this.customStyle.steps];
+
+        setTimeout(() => {
+          this.customDrop = null;
+          this.customBuy = null;
+          this.customProfit = null;
+          this.customType = null;
+          this.editStep = null;
+        }, 100);
       }, 100);
     },
     addRowCustom(drop, multiplier, profit, type) {
@@ -621,6 +667,7 @@ export default {
         });
       } else {
         let strategy = {};
+        this.customStyle.steps = this.strategy.style.steps;
         strategy.step = this.customStyle.steps.length;
         strategy.drop_rate = parseFloat(drop);
         strategy.multiplier = parseFloat(multiplier);
@@ -631,7 +678,7 @@ export default {
         this.customBuy = null;
         this.customProfit = null;
         this.customType = null;
-        // this.styleList[4] = this.customStyle;
+        this.styleList[4] = this.customStyle;
       }
     },
     resetRowCustom() {
@@ -659,7 +706,7 @@ export default {
     },
     selectStyle(val) {
       console.log(val);
-      this.strategy.style = val;
+      this.strategy.style = { ...val };
       for (let i = 0; i < this.styleList.length; i++) {
         this.styleList[i].active = false;
       }
@@ -772,6 +819,8 @@ export default {
     selectedStrategyName: {
       handler(nv, ov) {
         this.recommendedMaxTradingPair = [0, ""];
+        this.isForceCustom = false;
+
         this.selectStyleByName(nv);
       },
     },

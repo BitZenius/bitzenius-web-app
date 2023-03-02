@@ -20,7 +20,7 @@ export default {
       {
         type: 'text/javascript',
         src: 'https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js',
-      },
+      }
 
     ]
   },
@@ -41,6 +41,8 @@ export default {
     '~/plugins/clipboard',
     '~/plugins/vue-qr-code',
     '~/plugins/mixin',
+    '~/plugins/vue-trading-view',
+    '~/plugins/filter',
   ],
   // Auto import components: https://go.nuxtjs.dev/config-components
   components: true,

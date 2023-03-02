@@ -1,6 +1,6 @@
 <template>
   <div
-    v-if="isMobile() == false"
+    v-if="checkMobile() == false"
     :class="$vuetify.theme.dark ? 'app dark ' : 'app'"
   >
     <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
@@ -450,7 +450,7 @@ export default {
     },
   },
   mounted() {
-    // alert(this.isMobile());
+    // alert(this.checkMobile());
   },
   methods: {
     validate() {

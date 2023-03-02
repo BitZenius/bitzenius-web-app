@@ -1,5 +1,5 @@
 <template>
-  <v-card v-if="isMobile() == false" flat class="no-padding">
+  <v-card v-if="checkMobile() == false" flat class="no-padding">
     <v-row no-gutters>
       <v-col cols="12" class="pa-0">
         <v-card class="pa-2 custom-card" flat>
@@ -248,12 +248,7 @@
                     fab
                     class="mb-2"
                   >
-                    <v-img
-                      max-width="25px"
-                      max-height="25px"
-                      :src="require('~/assets/images/wallet-icon.svg')"
-                      position="center"
-                    ></v-img>
+                    <v-icon color="primary">$vuetify.icons.DepositIcon</v-icon>
                   </v-btn>
 
                   Deposit
@@ -264,17 +259,12 @@
                 >
                   <v-btn
                     color="white"
-                    @click="showDeposit"
+                    @click="showWithdraw"
                     depressed
                     fab
                     class="mb-2"
                   >
-                    <v-img
-                      max-width="25px"
-                      max-height="25px"
-                      :src="require('~/assets/images/wallet-icon.svg')"
-                      position="center"
-                    ></v-img>
+                    <v-icon color="primary">$vuetify.icons.WithdrawIcon</v-icon>
                   </v-btn>
                   Withdraw
                 </v-col>
@@ -301,7 +291,7 @@
           </v-card-title>
           <v-card-text v-if="userData" class="mt-3">
             <v-row justify="center " align="center">
-              <v-col cols="12" md="4">
+              <v-col cols="12" md="4" class="d-flex justify-center">
                 <qr-code :text="userData.wallet_va"></qr-code>
               </v-col>
               <v-col cols="12" md="8">
@@ -354,6 +344,7 @@
       v-model="withdrawDialog"
       max-width="600"
       :fullscreen="$vuetify.breakpoint.mobile"
+      transition="dialog-bottom-transition"
     >
       <template>
         <v-card class="pa-3">
@@ -364,27 +355,46 @@
               <v-icon>mdi-close</v-icon>
             </v-btn>
           </v-card-title>
-          <v-card-text v-if="userData" class="mt-3">
-            To make deposit <b>USDT</b> to your account, please transfer amount
-            to your <b>Virtual Account Wallet</b> with the following
-            information. Minimum transfer amount is <b>$10</b> and <b>$1</b> of
-            admin fee will be applied. For example, if you transfer $100, so $99
-            will be added to your balance.
-            <div class="mt-5">
-              <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
-              <p>
-                Address<br /><strong>{{ userData.wallet_va }}</strong>
-              </p>
-            </div>
-          </v-card-text>
-          <v-card-text v-else class="mt-3">
-            You don't have an Virtual Account Wallet. Please contact our
-            customer service for further information.
+          <v-card-text class="mt-3">
+            <v-row>
+              <v-col cols="12">
+                <ol>
+                  <li>Minimum amount to withdraw is 1$</li>
+                  <li>
+                    If you withdraw all of your remaining balance, all of your
+                    running bots will be automatically stopped
+                  </li>
+                </ol>
+              </v-col>
+              <v-col cols="12">
+                <span class="text-body-1">Amount to withdraw (USDT)</span>
+                <v-text-field
+                  v-model="withdrawAmount"
+                  required
+                  placeholder="Amount"
+                  hide-details=""
+                  rounded
+                  type="number"
+                  class="my-2 custom-input text-body-1"
+                >
+                </v-text-field>
+                <v-btn
+                  class="mt-5"
+                  color="primary"
+                  flat
+                  rounded
+                  :disabled="withdrawAmount < 1 || withdrawAmount > balance"
+                  block
+                  @click="withdraw"
+                >
+                  Withdraw
+                </v-btn>
+              </v-col>
+            </v-row>
           </v-card-text>
         </v-card>
       </template>
     </v-dialog>
-
     <BaseModalMobile
       @close="withdrawModal = false"
       :parentModel="withdrawModal"

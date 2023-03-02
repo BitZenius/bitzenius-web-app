@@ -48,196 +48,6 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-col v-if="showExchangeCards" cols="12" class="d-flex px-0 pt-10">
-      <v-col
-        v-for="(exchange, index) in exchanges"
-        :key="index"
-        sm="6"
-        md="4"
-        lg="3"
-      >
-        <v-card
-          @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
-          style="position: relative; margin-bottom: 25px"
-          :class="
-            exchange.comingsoon
-              ? 'd-flex align-center justify-center exchange-card disabled'
-              : 'd-flex align-center justify-center exchange-card'
-          "
-          flat
-        >
-          <v-row justify="center" align="center" class="pa-5">
-            <v-col
-              cols="5"
-              class="d-flex justify-center"
-              style="position: relative"
-            >
-              <div class="custom-avatar off-white-3">
-                <v-img contain :src="exchange.image"></v-img>
-              </div>
-              <h4 class="text-body-1 font-weight-bold mt-5">
-                {{ exchange.name }}
-              </h4>
-            </v-col>
-            <v-col cols="7" class="d-flex justify-center align-center">
-              <template v-if="exchange.active">
-                <v-btn
-                  @click="_addBot(exchange)"
-                  class="mx-2"
-                  fab
-                  x-small
-                  outlined
-                  color="primary"
-                >
-                  <v-icon dark> mdi-pencil </v-icon>
-                </v-btn>
-                <v-btn
-                  @click="_deleteBot(exchange)"
-                  class="mx-2"
-                  fab
-                  x-small
-                  outlined
-                  color="danger"
-                >
-                  <v-icon dark> mdi-delete </v-icon>
-                </v-btn></template
-              >
-
-              <v-btn
-                v-else
-                :disabled="
-                  !user.subscription ||
-                  user.subscription == false ||
-                  exchange.comingsoon
-                "
-                @click="_addBot(exchange)"
-                class="mx-2"
-                fab
-                x-small
-                outlined
-                color="primary"
-              >
-                <v-icon dark> mdi-cog </v-icon>
-              </v-btn>
-            </v-col>
-            <v-col cols="12">
-              <v-row>
-                <v-col
-                  cols="12"
-                  v-for="(item, i) in exchange.summary"
-                  :key="`item-summary-${i}`"
-                >
-                  <v-card flat rounded color="off-white">
-                    <v-list-item>
-                      <v-icon size="20" class="mr-4" color="primary">
-                        {{ _determineIcon(item.title) }}
-                      </v-icon>
-
-                      <v-list-item-content>
-                        <v-list-item-title class="text-body-2">
-                          {{ item.title }}
-                        </v-list-item-title>
-
-                        <v-list-item-subtitle
-                          class="text-body-1 font-weight-bold basic-text--text"
-                        >
-                          <template v-if="i == 1 || i == 3">
-                            {{ item.value | toCurrency }}</template
-                          >
-                          <template v-else> {{ item.value }}</template>
-                        </v-list-item-subtitle>
-                      </v-list-item-content>
-                    </v-list-item>
-                  </v-card>
-                </v-col>
-              </v-row>
-            </v-col>
-          </v-row>
-          <!-- ORNAMENTS -->
-          <v-list-item-avatar
-            v-if="exchange.selected"
-            class="exchange-checkmark"
-            size="25"
-            color="#27D79E"
-          >
-            <v-icon color="white" small> mdi-check </v-icon>
-          </v-list-item-avatar>
-          <div class="ornament o1"></div>
-          <!-- ORNAMENTS END -->
-        </v-card>
-        <!-- <v-btn small @click="logger()">logger</v-btn> -->
-        <v-card
-          v-if="false"
-          @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
-          style="position: relative; height: 110px"
-          :class="{
-            'd-flex align-center justify-center exchange-active':
-              exchange.selected,
-            'd-flex align-center justify-center': !exchange.selected,
-          }"
-          elevation="3"
-        >
-          <div v-if="exchange.selected" class="exchange-selected">Selected</div>
-          <div v-if="exchange.active">
-            <v-btn
-              x-small
-              icon
-              fab
-              class="danger white--text delete-button"
-              @click="_deleteBot(exchange)"
-              >X</v-btn
-            >
-          </div>
-          <v-row>
-            <v-col sm="12" md="4" class="d-flex align-center justify-start">
-              <img
-                style="width: 100px; padding: 25px"
-                :src="exchange.image"
-                alt=""
-              />
-            </v-col>
-            <v-col
-              sm="12"
-              md="8"
-              class="d-flex flex-column justify-center align-center"
-            >
-              <h4>{{ exchange.name }}</h4>
-              <div v-if="exchange.active" class="d-flex justify-center">
-                <v-btn
-                  :disabled="!user.subscription || user.subscription == false"
-                  small
-                  outlined
-                  color="primary"
-                  class="mr-2"
-                  @click="_addBot(exchange)"
-                  >Edit Bot</v-btn
-                >
-              </div>
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-else
-                color="primary"
-                small
-                @click="_addBot(exchange)"
-                >Setup Bot</v-btn
-              >
-            </v-col>
-          </v-row>
-          <v-overlay
-            v-if="exchange.comingsoon"
-            z-index="1"
-            :absolute="true"
-            opacity="0.7"
-            overlay="true"
-          >
-            <h3 style="letter-spacing: 2px" class="customYellow--text">
-              Coming Soon!
-            </h3>
-          </v-overlay>
-        </v-card>
-      </v-col>
-    </v-col>
-
     <v-col cols="12">
       <v-btn
         rounded
@@ -247,6 +57,16 @@
         @click="test1 = true"
       >
         Learn how it works
+      </v-btn>
+      <v-btn
+        rounded
+        class="text-capitalize float-right"
+        color="primary"
+        depressed
+        @click="$router.push('/advanced-bots/dca/new')"
+      >
+        Create new bots
+        <v-icon x-small class="ml-2">$vuetify.icons.DepositIcon</v-icon>
       </v-btn>
     </v-col>
 
@@ -262,11 +82,23 @@
         <v-tabs-items v-model="currentItem">
           <v-tab-item key="Active Positions">
             <v-card :key="`${counter}-default`" class="pa-8" flat>
-              <v-row class="mb-3" justify="end" align="end">
-                <v-col cols="12" md="4">
+              <v-row class="mb-3">
+                <v-col cols="3">
                   <v-text-field
                     v-model="searchQuery"
                     placeholder="Search By Pair"
+                    rounded
+                    class="custom-input off-white mb-2"
+                  >
+                    <template v-slot:prepend-inner>
+                      <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+                    </template></v-text-field
+                  >
+                </v-col>
+                <v-col cols="4">
+                  <v-text-field
+                    v-model="searchQuery"
+                    placeholder="Search By Exchange"
                     rounded
                     class="custom-input off-white"
                   >
@@ -1055,6 +887,30 @@ export default {
       userExchanges: [],
       // END OF CARD EXCHANGE
       headers: [
+        { text: "Pair", value: "pair", align: "start" },
+        { text: "Exchange", value: "pair", align: "start" },
+        {
+          text: "Name",
+          value: "pair",
+          align: "start",
+        },
+        {
+          text: "Price/24H Change",
+          value: "price",
+          align: "start",
+        },
+        {
+          text: "Profit/Floating",
+          value: "profit",
+          align: "start",
+        },
+        {
+          text: "Status",
+          value: "status",
+          align: "start",
+        },
+      ],
+      headers_BAK: [
         {
           text: "Name / Qty",
           value: "pair",

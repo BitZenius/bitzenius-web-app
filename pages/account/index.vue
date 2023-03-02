@@ -109,6 +109,15 @@
         </v-col>
       </v-row>
     </v-col>
+    <v-col cols="12 mt-10">
+      <v-row justify="center">
+        <v-col cols="12" class="text-right">
+          <v-btn rounded block depressed @click="logout" color="primary"
+            >Logout</v-btn
+          >
+        </v-col>
+      </v-row>
+    </v-col>
   </v-row>
 </template>
 
@@ -128,6 +137,16 @@ export default {
     };
   },
   methods: {
+    logout() {
+      this.$fire.auth
+        .signOut()
+        .then(() => {
+          this.$router.push("/signin");
+        })
+        .catch((error) => {
+          // console.log(error)
+        });
+    },
     // FETCH API
     async _fetchUserCompletion() {
       this.isLoading = true;
@@ -161,7 +180,7 @@ export default {
     },
   },
   mounted() {
-    if (this.isMobile() == false) {
+    if (this.checkMobile() == false) {
       this.$router.push("/settings");
     }
     this._fetchUserCompletion();
