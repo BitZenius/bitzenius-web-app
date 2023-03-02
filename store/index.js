@@ -17,7 +17,7 @@ export const state = () => ({
     topMargin: 0
   },
   profileCompletion: {
-    step: 1,
+    step: 0,
     stepTotal: 1
   }
 })
