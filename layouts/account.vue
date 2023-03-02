@@ -185,25 +185,23 @@
             <v-icon>mdi-bell</v-icon>
           </v-btn>
         </template>
-        <v-list v-if="user" style="height: 200px" class="overflow-y-auto">
+        <v-list v-if="user && notifications.length > 0" style="height:200px; min-width:200px;" class="overflow-y-auto">
           <v-list-item v-for="(notification, i) in notifications" :key="i">
             <v-list-item-avatar>
               <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
               <v-list-item-title class="font-weight-bold"
-                >Notification {{ i + 1 }}</v-list-item-title
+                >{{notification.title ? notification.title : `Notification ${i+1}`}}</v-list-item-title
               >
               <v-list-item-subtitle>
                 {{ notification.message }}
               </v-list-item-subtitle>
             </v-list-item-content>
           </v-list-item>
-          <v-list-item class="float-right">
-            <v-btn outlined @click="readMore()" color="primary" rounded
-              >Read More</v-btn
-            >
-          </v-list-item>
+          <!-- <v-list-item class="float-right">
+            <v-btn outline @click="readMore()" color="primary" rounded>Read More</v-btn>
+          </v-list-item> -->
         </v-list>
       </v-menu>
     </v-app-bar>
@@ -396,7 +394,6 @@ export default {
     this.listener();
   },
   methods: {
-    // FETCH API
     async _fetchUserCompletion() {
       this.isLoading = true;
       try {
@@ -422,8 +419,7 @@ export default {
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     },
-    readMore() {
-      alert("hello world");
+    readMore(){
     },
     async writeIp(userIp) {
       console.log(navigator.userAgent);
@@ -575,17 +571,20 @@ export default {
       });
 
       this.socket.on("notification", (msg) => {
-        this.$store.commit("setShowSnackbar", {
-          show: true,
-          message: "You received new notification, please check!",
-          color: "customGreen",
-        });
-        this.getUserNotifications();
+        console.log('notification msg', msg);
+        console.log(this.user);
+        if(this.user.uid == msg.uid){
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: "You received new notification, please check!",
+            color: "primary",
+          });
+          this.getUserNotifications();
+        }
       });
 
-      this.socket.on("important-notification", (msg) => {
-        console.log("imporant msg", msg);
-        if (msg && msg.length > 0) {
+      this.socket.on("important-notification", (msg)=>{
+        if(msg && msg.length > 0){
           this.importantNotifications = msg;
           this.$refs.notification.show();
         }
@@ -684,4 +683,5 @@ export default {
     min-height: 120vh;
   }
 }
+
 </style>

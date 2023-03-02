@@ -333,6 +333,7 @@ export default {
     },
     async _fetchReport(sorting) {
       console.log('options', this.options);
+      console.log('this.dates', this.dates);
       const { page, itemsPerPage } = this.options;
       this.isLoadingMain = true;
 

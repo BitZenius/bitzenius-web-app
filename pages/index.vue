@@ -66,10 +66,13 @@
                 <v-row>
                   <v-col cols="3" class="d-flex justify-start align-center">
                     <v-btn-toggle rounded v-model="style" color="primary" group>
-                      <v-btn value="daily" @click="onStyleSelected(style)">
+                      <v-btn value="daily" @click="onStyleSelected('daily')">
                         Daily
                       </v-btn>
-                      <v-btn value="monthly" @click="onStyleSelected(style)">
+                      <v-btn
+                        value="monthly"
+                        @click="onStyleSelected('monthly')"
+                      >
                         Monthly
                       </v-btn>
                     </v-btn-toggle>
@@ -183,10 +186,13 @@
                   </v-col>
                   <v-col cols="6" class="d-flex justify-start align-center">
                     <v-btn-toggle rounded v-model="style" color="primary" group>
-                      <v-btn value="daily" @click="onStyleSelected(style)">
+                      <v-btn value="daily" @click="onStyleSelected('daily')">
                         Daily
                       </v-btn>
-                      <v-btn value="monthly" @click="onStyleSelected(style)">
+                      <v-btn
+                        value="monthly"
+                        @click="onStyleSelected('monthly')"
+                      >
                         Monthly
                       </v-btn>
                     </v-btn-toggle>
@@ -449,9 +455,6 @@ export default {
       this.$store.commit("setIsLoading", false);
     },
     async _fetchChart() {
-      console.log("fetchChart");
-      // console.log(this.startDate);
-      // console.log(this.endDate);
       this.showChart = false;
       var params = {
         exchange: this.exchange,
@@ -474,7 +477,6 @@ export default {
         .then((res) => {
           this.showChart = true;
           this.$store.commit("setIsLoading", false);
-          console.log("resChart", res);
           if (res.success) {
             if (res.series.length <= 0) {
               // IS EMPTY
@@ -485,7 +487,6 @@ export default {
                 var split = r.split("-");
                 return split[0] + "-" + split[1];
               });
-              console.log("resChart2", newCategories);
               this.chartData.options.xaxis.categories = newCategories;
               this.chartData.options.xaxis.min = 1;
               this.chartData.options.xaxis.max = 31;
@@ -542,6 +543,16 @@ export default {
     // TRIGGER
     onStyleSelected(style) {
       this.style = style;
+      let currentTime, y, m, d;
+      currentTime = new Date();
+      y = currentTime.getFullYear();
+      m = currentTime.getMonth();
+      d = currentTime.getDate();
+      if (style == "daily") {
+        this.styleValue = m;
+      } else {
+        this.styleValue = y;
+      }
     },
     onExchangeChanged() {
       console.log("onExchangeChanged: EXCHANGE CHANGED");
@@ -596,7 +607,6 @@ export default {
       this._fetchProfit();
     },
     styleValue(nv, ov) {
-      console.log("WATCH: styleValue", nv, ov);
       let current, y, m, d;
       current = new Date();
       y = current.getFullYear();
@@ -625,9 +635,6 @@ export default {
 </script>
 
 <style>
-.#SvgjsTspan1152 {
-}
-
 div.apexcharts-theme-dark > svg {
   background: #212434 !important;
 }
