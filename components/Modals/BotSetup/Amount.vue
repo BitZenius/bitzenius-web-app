@@ -5,7 +5,7 @@
       <v-col cols="12" class="d-flex flex-column justify-space-between">
         <div class="d-flex flex-column align-start">
           <v-row class="d-flex align-end" style="width: 100%">
-            <v-col cols="122" class="text-body-1 font-weight-bold">
+            <v-col cols="12" class="text-body-1 font-weight-bold">
               Total USDT To Apply
               <v-text-field
                 v-model="strategy.usdt_to_apply"
@@ -126,50 +126,19 @@
             >
               <i class="text-body-1">*{{ recommendedMaxTradingPair[1] }}</i>
             </v-col>
-            <v-col
-              v-if="false"
-              cols="12"
-              md="6"
-              class="text-body-1 font-weight-bold"
-            >
-              Total USDT To Apply
-              <v-text-field
-                required
-                placeholder="Total USDT To Apply"
-                hide-details=""
+            <v-col cols="12" md="6" class="text-body-1 font-weight-bold">
+              <v-btn
+                :disabled="selectedStrategyName == null"
+                color="primary"
                 rounded
-                class="my-2 custom-input text-body-1"
+                @click="recommendSettings"
               >
-                <template v-slot:append>
-                  <v-tooltip bottom color="primary">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-list-item-avatar
-                        v-bind="attrs"
-                        v-on="on"
-                        size="30"
-                        color="white"
-                        class="mx-0 my-1"
-                      >
-                        <v-img
-                          max-width="25px"
-                          max-height="25px"
-                          src="/token_logo/USDT.png"
-                          contain
-                          position="center"
-                        ></v-img>
-                        <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
-                      </v-list-item-avatar>
-                    </template>
-                    <span
-                      >The maximum amount of USDT to be spent for the bot</span
-                    >
-                  </v-tooltip>
-                </template>
-              </v-text-field>
+                Use Recommended Settings
+              </v-btn>
             </v-col>
           </v-row>
         </div>
-        <v-col cols="12" class="d-flex justify-end">
+        <v-col cols="12" class="d-flex justify-end mt-10">
           <slot> </slot>
         </v-col>
       </v-col>
