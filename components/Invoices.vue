@@ -331,14 +331,11 @@
               </v-col>
               <v-col cols="12">
                 <v-radio-group v-model="payment" column>
-                  <v-radio
+                  <!-- <v-radio
                     label="Pay using crypto currency (USDT)"
                     value="crypto"
-                  />
-                  <v-radio
-                    value="credit_balance"
-                    :disabled="balance < activeInvoice.totals.total"
-                  >
+                  /> -->
+                  <v-radio value="credit_balance">
                     <template v-slot:label>
                       <div>
                         Pay using credit balance
@@ -400,9 +397,24 @@
                     depressed
                     color="success"
                     :loading="isLoading"
+                    :disabled="balance < activeInvoice.totals.total"
                     @click="payInvoice"
                   >
-                    Pay Now
+                    {{
+                      balance < activeInvoice.totals.total
+                        ? "Insufficent balance"
+                        : "Pay Now"
+                    }}
+                  </v-btn>
+                  <v-btn
+                    v-if="balance < activeInvoice.totals.total"
+                    depressed
+                    color="success"
+                    exact
+                    to="/wallet"
+                    class="ml-3"
+                  >
+                    Top up balance
                   </v-btn>
                 </div>
               </v-col>
@@ -838,14 +850,11 @@
               </v-col>
               <v-col cols="12">
                 <v-radio-group v-model="payment" column>
-                  <v-radio
+                  <!-- <v-radio
                     label="Pay using crypto currency (USDT)"
                     value="crypto"
-                  />
-                  <v-radio
-                    value="credit_balance"
-                    :disabled="balance < activeInvoice.totals.total"
-                  >
+                  /> -->
+                  <v-radio value="credit_balance">
                     <template v-slot:label>
                       <div>
                         Pay using credit balance
@@ -907,9 +916,25 @@
                     depressed
                     color="success"
                     :loading="isLoading"
+                    :disabled="balance < activeInvoice.totals.total"
                     @click="payInvoice"
                   >
-                    Pay Now
+                    {{
+                      balance < activeInvoice.totals.total
+                        ? "Insufficent balance"
+                        : "Pay Now"
+                    }}
+                  </v-btn>
+
+                  <v-btn
+                    v-if="balance < activeInvoice.totals.total"
+                    depressed
+                    color="success"
+                    exact
+                    to="/wallet"
+                    class="ml-3"
+                  >
+                    Top up balance
                   </v-btn>
                 </div>
               </v-col>
@@ -985,7 +1010,7 @@ export default {
       invoiceDialog: false,
       activeInvoice: null,
       copied: false,
-      payment: "crypto",
+      payment: "credit_balance",
       balance: 0,
 
       // PROMO CODE
