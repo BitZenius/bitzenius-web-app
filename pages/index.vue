@@ -501,7 +501,6 @@ export default {
               });
               this.chartData.series[0].data = res.series;
             }
-            this.$refs.apexchart.zoomX(4, 5);
             this.$forceUpdate();
           } else {
             this.$store.commit("setShowSnackbar", {
