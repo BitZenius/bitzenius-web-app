@@ -329,6 +329,9 @@ export default {
         },
       ],
       chartData: {
+        zoom: {
+          enabled: true,
+        },
         options: {
           // colors: ["#F44336", "#E91E63", "#9C27B0"],
           chart: {
@@ -358,6 +361,7 @@ export default {
           },
           xaxis: {
             categories: [],
+            tickPlacement: "on",
           },
           theme: {
             mode: "dark",
@@ -368,6 +372,22 @@ export default {
               shadeTo: "light",
               shadeIntensity: 0.65,
             },
+          },
+          annotations: {
+            xaxis: [
+              {
+                x: "",
+                borderColor: "#3394F8",
+                label: {
+                  borderColor: "#3394F8",
+                  style: {
+                    color: "#fff",
+                    background: "#3394F8",
+                  },
+                  text: "NOW",
+                },
+              },
+            ],
           },
         },
         series: [
@@ -483,13 +503,28 @@ export default {
               this.chartData.options.xaxis.categories = [];
               this.chartData.series = [{ name: "P&L", data: [] }];
             } else {
+              console.log(res.categories);
               var newCategories = res.categories.map((r) => {
-                var split = r.split("-");
-                return split[0] + "-" + split[1];
+                if (r.includes("-")) {
+                  var date = this.$moment(r, "DD-MM-YYYY").format("D-M");
+                  var now = this.$moment().format("D-M");
+                  console.log(date);
+                  if (date == now) {
+                    this.chartData.options.annotations.xaxis[0].x = now;
+                  }
+                  return date;
+                } else {
+                  var date = this.$moment(r, "MMM").format("MMM");
+                  var now = this.$moment().format("MMM");
+                  if (date == now) {
+                    this.chartData.options.annotations.xaxis[0].x = now;
+                  }
+                  return date;
+                }
               });
               this.chartData.options.xaxis.categories = newCategories;
-              this.chartData.options.xaxis.min = 1;
-              this.chartData.options.xaxis.max = 31;
+              // this.chartData.options.xaxis.min = 1;
+              // this.chartData.options.xaxis.max = 31;
               let value = [];
               res.series.forEach((val) => {
                 let convert =
