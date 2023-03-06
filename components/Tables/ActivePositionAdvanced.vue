@@ -1,10 +1,5 @@
 <template>
   <v-row v-if="checkMobile() == false">
-    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
-      <ModalsLearnHowItWorks
-        @close-modal="test1 = false"
-      ></ModalsLearnHowItWorks>
-    </BaseModal>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
       <template>
         <ModalsBotSetup
@@ -54,7 +49,7 @@
         class="text-capitalize"
         color="primary"
         depressed
-        @click="test1 = true"
+        @click="$emit('showHowItWorksModal')"
       >
         Learn how it works
       </v-btn>
@@ -63,7 +58,7 @@
         class="text-capitalize float-right"
         color="primary"
         depressed
-        @click="$router.push('/advanced-bots/dca/new')"
+        @click="$router.push(nextRoute)"
       >
         Create new bots
         <v-icon x-small class="ml-2">$vuetify.icons.DepositIcon</v-icon>
@@ -345,11 +340,6 @@
     <v-col cols="12"> </v-col>
   </v-row>
   <v-row v-else>
-    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
-      <ModalsLearnHowItWorks
-        @close-modal="test1 = false"
-      ></ModalsLearnHowItWorks>
-    </BaseModal>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
       <template>
         <ModalsBotSetup
@@ -390,7 +380,7 @@
         class="text-capitalize"
         color="primary"
         depressed
-        @click="test1 = true"
+        @click="$emit('showHowItWorksModal')"
       >
         Learn how it works
       </v-btn>
@@ -399,7 +389,7 @@
         class="text-capitalize float-right"
         color="primary"
         depressed
-        @click="$router.push('/advanced-bots/dca/new')"
+        @click="$router.push(nextRoute)"
       >
         Create new bots
         <v-icon x-small class="ml-2">$vuetify.icons.DepositIcon</v-icon>
@@ -699,12 +689,6 @@ export default {
   data() {
     return {
       test1: false,
-
-      // ADVANCED BOTS PARAMS
-      defaultType: "DCA",
-      filterType: "DCA",
-      filterExchange: "",
-
       counter: 0,
       currentItem: "Active Bots",
       tables: ["Active Bots", "Inactive Bots"],
@@ -780,7 +764,7 @@ export default {
         },
         {
           text: "Status",
-          value: "active",
+          value: "status",
           align: "start",
         },
       ],
@@ -863,9 +847,31 @@ export default {
         return true;
       },
     },
+    defaultType: {
+      type: String,
+      default: () => {
+        return "ADVANCED";
+      },
+    },
   },
 
   computed: {
+     /**
+     * Determine new (edit) page for current bot type
+     */
+     nextRoute() {
+      switch (this.defaultType) {
+        case "DCA":
+          return "/advanced-bots/dca/new";
+        case "GRID":
+          return "/advanced-bots/grid/new";
+        case "DCA_GRID":
+          return "/advanced-bots/hybrid/new";
+
+        default:
+          return "/advanced-bots";
+      }
+    },
     formTitle() {
       return this.id === null ? "Add New" : "Edit";
     },
@@ -978,6 +984,7 @@ export default {
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
+
     getImgUrl(val) {
       try {
         let url = require("@/static/token_logo/" + val.toUpperCase() + ".png");
@@ -1110,13 +1117,13 @@ export default {
       this.$api
         .$get("/user/bot-user", {
           params: {
-            type: "DCA"
-          }
+            type: this.defaultType,
+          },
         })
         .then(async (res) => {
-          // this.activePosition = res.data;
-          // this.availablePair = res.pairs;
-          // await this.streamBinance(this.activePosition);
+          this.activePosition = res.data;
+          this.availablePair = res.pairs;
+          await this.streamBinance(this.activePosition);
         })
         .catch((err) => {})
         .finally(() => {
@@ -1332,6 +1339,8 @@ export default {
           return "$vuetify.icon.ProfitBarChartIcon";
       }
     },
+
+
 
     expandExchange(value) {
       if (this.expansionPanel == value) {

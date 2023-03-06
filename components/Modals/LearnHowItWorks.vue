@@ -1,12 +1,10 @@
 <template>
   <v-card flat rounded>
-    <v-card-title class="text-h6 font-weight-bold primary basic--text mb-5">
+    <v-card-title class="text-h6 font-weight-bold primary white--text mb-5">
       <v-row>
-        <v-col cols="6">
-            Learn how it works!
-        </v-col>
+        <v-col cols="6"> Learn how it works! </v-col>
         <v-col cols="6" class="d-flex justify-end">
-          <v-btn color="basic" icon @click="closeModal">
+          <v-btn color="white--text" icon @click="closeModal">
             <v-icon>mdi-close</v-icon>
           </v-btn>
         </v-col>
@@ -16,9 +14,9 @@
       <v-row class="pa-5">
         <v-col cols="12">
           <v-img
-              :src="'/animation/animation-bots.gif'"
-              @load="onGifLoaded"
-              style="width:100%;"
+            :src="'/animation/animation-bots.gif'"
+            @load="onGifLoaded"
+            style="width: 100%"
           />
           <lottie
             :width="256"
@@ -31,8 +29,11 @@
         </v-col>
         <v-col cols="12" class="d-flex flex-column align-center">
           <div>
-            <p style="text-align:justify;">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas est iusto facilis vel nisi, doloremque perferendis ad quasi repellat tempore recusandae quod aperiam, laboriosam quis nostrum veniam laudantium necessitatibus eius?
+            <p style="text-align: justify">
+              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas est
+              iusto facilis vel nisi, doloremque perferendis ad quasi repellat
+              tempore recusandae quod aperiam, laboriosam quis nostrum veniam
+              laudantium necessitatibus eius?
             </p>
             <ul>
               <li>Hello World</li>
@@ -58,7 +59,7 @@ export default {
   },
   data() {
     return {
-    isLoaded:false,
+      isLoaded: false,
       steps: [
         "Lorem ipsum dolor sit amet",
         "Lorem ipsum dolor sit amet",
@@ -76,16 +77,16 @@ export default {
     closeModal() {
       this.$emit("close-modal", false);
     },
-    onGifLoaded(){
-        this.isLoaded = true;
-    }
+    onGifLoaded() {
+      this.isLoaded = true;
+    },
   },
 };
 </script>
 
 <style>
-  .content{
-    height:400px;
-    overflow-y: scroll;
-  }
+.content {
+  height: 400px;
+  overflow-y: scroll;
+}
 </style>

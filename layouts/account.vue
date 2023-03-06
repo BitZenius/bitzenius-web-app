@@ -63,10 +63,16 @@
           :cardtitle="`Advanced Bots`"
         >
           <base-menu-item
-            :to="'/advanced-bots/grid/new'"
+            :to="'/advanced-bots/hybrid'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
-            :disabled="true"
+            :cardtitle="`Hybrid`"
+            class="ml-2"
+          ></base-menu-item>
+          <base-menu-item
+            :to="'/advanced-bots/grid'"
+            :icon="true"
+            :avatar="`$vuetify.icons.DailyProfitIcon`"
             :cardtitle="`Grid`"
             class="ml-2"
           ></base-menu-item>
@@ -78,11 +84,11 @@
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
-            :to="'/smart-trade'"
+            :to="'/advanced-bots/smart-trade'"
             :icon="true"
             :avatar="`$vuetify.icons.DailyProfitIcon`"
             :disabled="true"
-            :cardtitle="`Smart Trade`"
+            :cardtitle="`Smart Trade (Coming Soon)`"
             class="ml-2"
           ></base-menu-item>
         </base-menu-item-group>
@@ -185,15 +191,21 @@
             <v-icon>mdi-bell</v-icon>
           </v-btn>
         </template>
-        <v-list v-if="user && notifications.length > 0" style="height:200px; min-width:200px;" class="overflow-y-auto">
+        <v-list
+          v-if="user && notifications.length > 0"
+          style="height: 200px; min-width: 200px"
+          class="overflow-y-auto"
+        >
           <v-list-item v-for="(notification, i) in notifications" :key="i">
             <v-list-item-avatar>
               <v-icon class="customPink">mdi-alert-circle-outline</v-icon>
             </v-list-item-avatar>
             <v-list-item-content>
-              <v-list-item-title class="font-weight-bold"
-                >{{notification.title ? notification.title : `Notification ${i+1}`}}</v-list-item-title
-              >
+              <v-list-item-title class="font-weight-bold">{{
+                notification.title
+                  ? notification.title
+                  : `Notification ${i + 1}`
+              }}</v-list-item-title>
               <v-list-item-subtitle>
                 {{ notification.message }}
               </v-list-item-subtitle>
@@ -232,13 +244,20 @@
       height="72"
     >
       <div class="d-flex float-left">
-        <v-btn :ripple="false" active-class="active-icon" class="bottom-button-navigation" value="home" to="/">
+        <v-btn
+          :ripple="false"
+          active-class="active-icon"
+          class="bottom-button-navigation"
+          value="home"
+          to="/"
+        >
           <span>Home</span>
           <v-icon>$vuetify.icons.HomeIcon</v-icon>
         </v-btn>
         <v-btn
           :ripple="false"
-          active-class="active-icon" class="bottom-button-navigation"
+          active-class="active-icon"
+          class="bottom-button-navigation"
           value="exchange"
           to="/exchanges"
         >
@@ -256,7 +275,8 @@
       <div class="d-flex float-right">
         <v-btn
           :ripple="false"
-          active-class="active-icon" class="bottom-button-navigation"
+          active-class="active-icon"
+          class="bottom-button-navigation"
           value="trading"
           to="/advanced-bots"
         >
@@ -265,7 +285,8 @@
         </v-btn>
         <v-btn
           :ripple="false"
-          active-class="active-icon" class="bottom-button-navigation"
+          active-class="active-icon"
+          class="bottom-button-navigation"
           value="account"
           to="/account"
         >
@@ -419,8 +440,7 @@ export default {
       })(navigator.userAgent || navigator.vendor || window.opera);
       return check;
     },
-    readMore(){
-    },
+    readMore() {},
     async writeIp(userIp) {
       console.log(navigator.userAgent);
       this.$api
@@ -571,9 +591,9 @@ export default {
       });
 
       this.socket.on("notification", (msg) => {
-        console.log('notification msg', msg);
+        console.log("notification msg", msg);
         console.log(this.user);
-        if(this.user.uid == msg.uid){
+        if (this.user.uid == msg.uid) {
           this.$store.commit("setShowSnackbar", {
             show: true,
             message: "You received new notification, please check!",
@@ -583,8 +603,8 @@ export default {
         }
       });
 
-      this.socket.on("important-notification", (msg)=>{
-        if(msg && msg.length > 0){
+      this.socket.on("important-notification", (msg) => {
+        if (msg && msg.length > 0) {
           this.importantNotifications = msg;
           this.$refs.notification.show();
         }
@@ -673,7 +693,7 @@ export default {
   z-index: 20;
 }
 
-.bottom-button-navigation{
+.bottom-button-navigation {
   min-height: 80px !important;
   min-width: 70px !important;
 }
@@ -683,5 +703,4 @@ export default {
     min-height: 120vh;
   }
 }
-
 </style>

@@ -145,13 +145,29 @@
                 class="pt-5 pb-2 d-flex flex-column align-center justify-center"
               >
                 <v-btn
-                  v-if="!isTrial"
+                  v-if="subscription.id == i.id"
                   depressed
+                  color="primary"
+                  large
+                  disabled
+                >
+                  Subscribed
+                </v-btn>
+                <v-btn
+                  v-else-if="!isTrial"
+                  depressed
+                  :disabled="subscription.id > i.id"
                   color="primary"
                   large
                   @click="$emit('subscribeAction', i.id)"
                 >
-                  Subscribe
+                  {{
+                    subscription.id > i.id
+                      ? "Downgrade"
+                      : subscription.id == 0
+                      ? "Upgrade"
+                      : "Subscribe"
+                  }}
                 </v-btn>
                 <v-btn
                   v-else
@@ -176,6 +192,11 @@ export default {
   props: {
     pricings: Array,
     isTrial: Boolean,
+  },
+  computed: {
+    subscription() {
+      return this.$store.state.subscription || { trial: null, id: 0 };
+    },
   },
 };
 </script>

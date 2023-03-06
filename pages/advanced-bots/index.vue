@@ -73,7 +73,7 @@
             <v-icon color="primary">$vuetify.icons.SettingsIcon</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
-            <v-list-item-title> Smart Trade </v-list-item-title>
+            <v-list-item-title> Smart Trade (Coming Soon) </v-list-item-title>
             <v-list-item-subtitle>
               Make it easier for you to trade
             </v-list-item-subtitle>

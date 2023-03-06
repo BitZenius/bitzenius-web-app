@@ -800,6 +800,8 @@ export default {
       this.selectedStrategyName = this.strategy.style.name;
     }
     this.fetchFormula();
+    this.checkGridDCA()
+
   },
   watch: {
     strategy: {

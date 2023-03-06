@@ -12,7 +12,7 @@
     </v-col>
     <v-col cols="12">
       <TablesActivePositionAdvanced
-        :defaultType="'DCA'"
+        :defaultType="'GRID'"
         @showHowItWorksModal="
           (e) => {
             showHowItWorks = true;
@@ -38,7 +38,7 @@ export default {
   layout: "account",
   data() {
     return {
-      title: "Advanced Bots - DCA",
+      title: "Advanced Bots - Grid",
       showHowItWorks: false,
     };
   },
