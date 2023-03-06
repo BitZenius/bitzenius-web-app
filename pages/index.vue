@@ -344,6 +344,11 @@ export default {
               let val = value.toFixed(2).replace(/\d(?=(\d{3})+\.)/g, "$&,");
               return "$ " + val;
             },
+            textAnchor: "middle",
+            style: {
+              fontSize: "10px",
+              colors: undefined,
+            },
           },
           fill: {
             opacity: 1,

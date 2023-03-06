@@ -407,7 +407,6 @@
                     }}
                   </v-btn>
                   <v-btn
-                    v-if="balance < activeInvoice.totals.total"
                     depressed
                     color="success"
                     exact
@@ -416,6 +415,14 @@
                   >
                     Top up balance
                   </v-btn>
+                </div>
+
+                <div class="text-chip font-weight-bold off-white mt-5">
+                  It’s crucial to add extra funds ABOVE the billed amount when
+                  upgrading from a free trial, as these additional funds will be
+                  used for profit sharing. This will ensure that your bot
+                  continues to function smoothly without any interruptions,
+                  especially if you currently have any bots running
                 </div>
               </v-col>
             </v-row>
@@ -927,7 +934,6 @@
                   </v-btn>
 
                   <v-btn
-                    v-if="balance < activeInvoice.totals.total"
                     depressed
                     color="success"
                     exact
@@ -936,6 +942,14 @@
                   >
                     Top up balance
                   </v-btn>
+
+                  <div class="text-chip font-weight-bold off-white mt-5">
+                    It’s crucial to add extra funds ABOVE the billed amount when
+                    upgrading from a free trial, as these additional funds will
+                    be used for profit sharing. This will ensure that your bot
+                    continues to function smoothly without any interruptions,
+                    especially if you currently have any bots running
+                  </div>
                 </div>
               </v-col>
             </v-row>
@@ -1194,5 +1208,11 @@ table.invoice td {
 
 .rounded-row {
   border-radius: 10px;
+}
+
+.text-chip {
+  padding: 20px;
+  background-color: #f4f7fd;
+  border-radius: 20px;
 }
 </style>

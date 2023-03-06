@@ -942,11 +942,11 @@ export default {
         this.$store.commit("setHasTrial", res);
         if (res) {
           console.log(res);
-          this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "User has subscription, check console",
-            color: "success",
-          });
+          // this.$store.commit("setShowSnackbar", {
+          //   show: true,
+          //   message: "User has subscription, check console",
+          //   color: "success",
+          // });
         }
       } catch (error) {
         this.$store.commit("setShowSnackbar", {
