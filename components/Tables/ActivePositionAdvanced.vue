@@ -18,16 +18,7 @@
       @close-modal="closeModal"
       @close="showActivePosition = false"
     />
-    <!-- <v-dialog
-      persistent
-      v-if="showActivePosition"
-      v-model="showActivePosition"
-      max-width="600"
-    >
-      <template>
 
-      </template>
-    </v-dialog> -->
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -43,7 +34,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-col cols="12">
+    <v-col cols="12" v-if="!tableOnly">
       <v-btn
         rounded
         class="text-capitalize"
@@ -337,7 +328,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="12"> </v-col>
+
   </v-row>
   <v-row v-else>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
@@ -374,7 +365,7 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-col cols="12">
+    <v-col cols="12" v-if="!tableOnly">
       <v-btn
         rounded
         class="text-capitalize"
@@ -668,7 +659,6 @@
       </v-card>
     </v-col>
 
-    <v-col cols="12"> </v-col>
   </v-row>
 </template>
 
@@ -853,6 +843,12 @@ export default {
         return "ADVANCED";
       },
     },
+    tableOnly: {
+      type: Boolean,
+      default: () => {
+        return false
+      }
+    }
   },
 
   computed: {

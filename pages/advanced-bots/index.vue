@@ -81,12 +81,11 @@
         </v-list-item>
       </v-card>
     </v-col>
+
     <v-col cols="12">
-      <v-data-table
-        :headers="headers"
-        :items="bots"
-        :items-per-page="5"
-      ></v-data-table>
+      <TablesActivePositionAdvanced
+        :tableOnly="true"
+      ></TablesActivePositionAdvanced>
     </v-col>
   </v-row>
 </template>
