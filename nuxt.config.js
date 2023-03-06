@@ -122,7 +122,10 @@ export default {
     },
     meta: {
       nativeUI: true,
-      theme_color: "#3394F8"
+      theme_color: "#3394F8",
+      mobileAppIOS: 'yes',
+      appleStatusBarStyle: 'black-translucent'
+
     }
   },
 
