@@ -1614,12 +1614,12 @@ export default {
           return "$vuetify.icon.ExchangeIcon";
         case "Strategy":
           return "$vuetify.icon.ProfitBarChartIcon";
-        case "Total USDT":
-          return "$vuetify.icon.ProfitBarChartIcon";
+        case "Total Allocated USDT":
+          return "$vuetify.icon.CardWithdrawIcon";
         case "Technical Analysis":
           return "$vuetify.icon.ChartArrowUpIcon";
         case "Minimum Trading Volume":
-          return "$vuetify.icon.ProfitBarChartIcon";
+          return "$vuetify.icon.MinimumTradingVolumeIcon";
 
         default:
           return "$vuetify.icon.ProfitBarChartIcon";

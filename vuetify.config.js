@@ -28,6 +28,9 @@ import CameraSwitchIcon from "~/assets/custom-icons/CameraSwitch.vue";
 import DepositIcon from "~/assets/custom-icons/Deposit.vue";
 import WithdrawIcon from "~/assets/custom-icons/Withdraw.vue";
 
+import CardWithdrawIcon from "~/assets/custom-icons/CardWithdraw.vue";
+import MinimumTradingVolumeIcon from "~/assets/custom-icons/MinimumTradingVolume.vue";
+
 export default {
 
   icons: {
@@ -106,7 +109,14 @@ export default {
       },
       WithdrawIcon: {
         component: WithdrawIcon
+      },
+      CardWithdrawIcon: {
+        component: CardWithdrawIcon
+      },
+      MinimumTradingVolumeIcon: {
+        component: MinimumTradingVolumeIcon
       }
+
     },
   },
 
