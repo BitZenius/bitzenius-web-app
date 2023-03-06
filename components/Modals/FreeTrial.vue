@@ -25,10 +25,10 @@
         </v-col>
         <v-col cols="6" class="d-flex flex-column justify-start align-start">
           <h4 class="primary--text text-h5 font-weight-bold mb-3">
-            START YOUR FREE TRIAL
+            START YOUR FREE {{ planName.toUpperCase() }} PLAN
           </h4>
           <p class="font-weight-bold basic-text--text text-body-1">
-            Lorem ipsum dolor sit amet, consetetur sadipscing elitr.
+            {{ planDesc }}
           </p>
           <v-list>
             <v-list-item v-for="(step, i) in steps" :key="`step-${i}`">
@@ -56,6 +56,15 @@ import lottie from "vue-lottie/src/lottie.vue";
 import * as animationData from "~/assets/lottie/dashboard/Subs me Bot.json";
 
 export default {
+  props: {
+    planName: String,
+    planDesc: {
+      type: String,
+      default: () => {
+        return "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.";
+      },
+    },
+  },
   components: {
     lottie,
   },

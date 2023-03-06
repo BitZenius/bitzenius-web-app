@@ -145,12 +145,22 @@
                 class="pt-5 pb-2 d-flex flex-column align-center justify-center"
               >
                 <v-btn
+                  v-if="!isTrial"
                   depressed
                   color="primary"
                   large
                   @click="$emit('subscribeAction', i.id)"
                 >
                   Subscribe
+                </v-btn>
+                <v-btn
+                  v-else
+                  depressed
+                  color="primary"
+                  large
+                  @click="$emit('subscribeFreeAction', i)"
+                >
+                  Start Free Trial
                 </v-btn>
               </div>
             </v-card>
@@ -165,6 +175,7 @@
 export default {
   props: {
     pricings: Array,
+    isTrial: Boolean,
   },
 };
 </script>

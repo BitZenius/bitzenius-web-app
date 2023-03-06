@@ -116,7 +116,7 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
-                :items="activePositionFiltered"
+                :items="botsFiltered"
                 :loading="isLoading"
                 class="elevation-0"
                 loading-text="Loading... Please wait"
@@ -452,7 +452,7 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
-                :items="activePositionFiltered"
+                :items="botsFiltered"
                 :loading="isLoading"
                 class="elevation-0"
                 loading-text="Loading... Please wait"
@@ -699,6 +699,12 @@ export default {
   data() {
     return {
       test1: false,
+
+      // ADVANCED BOTS PARAMS
+      defaultType: "DCA",
+      filterType: "DCA",
+      filterExchange: "",
+
       counter: 0,
       currentItem: "Active Bots",
       tables: ["Active Bots", "Inactive Bots"],
@@ -755,11 +761,11 @@ export default {
       userExchanges: [],
       // END OF CARD EXCHANGE
       headers: [
-        { text: "Exchange", value: "pair", align: "start" },
-        { text: "Pair", value: "pair", align: "start" },
+        { text: "Exchange", value: "exchange", align: "start" },
+        { text: "Pair", value: "symbol", align: "start" },
         {
           text: "Name",
-          value: "pair",
+          value: "name",
           align: "start",
         },
         {
@@ -774,33 +780,10 @@ export default {
         },
         {
           text: "Status",
-          value: "status",
+          value: "active",
           align: "start",
         },
       ],
-      headers_BAK: [
-        {
-          text: "Name / Qty",
-          value: "pair",
-          align: "start",
-        },
-        {
-          text: "Price/24H Change",
-          value: "price",
-          align: "start",
-        },
-        {
-          text: "Profit/Floating",
-          value: "profit",
-          align: "start",
-        },
-        {
-          text: "Status",
-          value: "status",
-          align: "start",
-        },
-      ],
-
       items: [],
       id: null,
       editedItem: {
@@ -889,7 +872,7 @@ export default {
     user() {
       return this.$store.state.authUser;
     },
-    activePositionFiltered() {
+    botsFiltered() {
       let temp = this.activePosition;
       if (this.searchQuery != "" && this.searchQuery) {
         temp = temp.filter((position) => {
@@ -1008,7 +991,7 @@ export default {
       event.target.src = "/token_logo/default.png";
     },
     _sort() {
-      console.log(this.activePositionFiltered);
+      console.log(this.botsFiltered);
     },
     test() {
       this.activePosition.sort((a, b) => {
@@ -1125,15 +1108,11 @@ export default {
       if (this.socket) this.socket?.close();
 
       this.$api
-        .$get("/user/bot-user", {
-          params: {
-            exchange: exchangeName,
-          },
-        })
+        .$get("/user/advanced-bot")
         .then(async (res) => {
-          this.activePosition = res.data;
-          this.availablePair = res.pairs;
-          await this.streamBinance(this.activePosition);
+          // this.activePosition = res.data;
+          // this.availablePair = res.pairs;
+          // await this.streamBinance(this.activePosition);
         })
         .catch((err) => {})
         .finally(() => {

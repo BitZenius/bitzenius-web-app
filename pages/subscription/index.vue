@@ -7,272 +7,145 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12" v-if="isLoading">
-      <!-- <v-row>
-        <v-col cols="12">
-          <v-skeleton-loader class="mx-auto" type="text"></v-skeleton-loader>
-        </v-col>
-
-        <v-col cols="4">
-          <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
-        </v-col>
-
-        <v-col cols="4">
-          <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
-        </v-col>
-
-        <v-col cols="4">
-          <v-skeleton-loader class="mx-auto" type="card"></v-skeleton-loader>
-        </v-col>
-      </v-row> -->
+    <v-col cols="12">
+      <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
+        <v-tab :ripple="false" v-for="item in tables" :key="item">
+          <span class="text-body-1 text-capitalize">{{ item }}</span>
+        </v-tab>
+      </v-tabs>
     </v-col>
-    <v-col
-      cols="12"
-      v-else-if="(subscription == null || subscription.id == 0) && !hasTrial"
-    >
-      <div>
-        <v-card elevation="8" class="pa-8">
-          <v-row>
-            <v-col cols="12" class="align-center justify-center">
-              <v-card v-if="mainPlan" elevation="0">
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <div
-                      class="py-5 d-flex flex-column align-center justify-center"
+
+    <v-col cols="12" v-if="!isLoading">
+      <v-tabs-items
+        v-model="currentItem"
+        style="min-height: 1200px; background: unset !important"
+      >
+        <v-tab-item key="My Plan">
+          <div class="relative-container-subs">
+            <v-card
+              class="card-1 overflow-y-hidden overflow-x-hidden pa-2"
+              flat
+              color="primary"
+            >
+              <v-img
+                width="860"
+                class="background-image"
+                src="/images/signin-vector.svg"
+              >
+              </v-img>
+
+              <v-row class="pa-5 py-10" align="end">
+                <v-col cols="12" class="d-flex align-end justify-start">
+                </v-col>
+                <v-col cols="12">
+                  <div>
+                    <span class="text-h4 font-weight-bold primary-text--text"
+                      >Premium</span
                     >
-                      <h3 class="text-center mt-2 primary--text">
-                        {{ mainPlan.name }}
-                      </h3>
-                      <div
-                        v-if="mainPlan.config.profit_share > 0"
-                        class="text-center mt-5"
-                      >
-                        <span class="text-h2 font-weight-black"
-                          ><span class="text-h5">$</span>{{ mainPlan.price
-                          }}<span class="text-h5"
-                            >/{{ mainPlan.cicle == 1 ? "month" : "year" }}</span
-                          ></span
-                        ><br />
-                        <span class="text-h5">+</span><br />
-                        <span class="text-h5 font-weight-bold">15%</span><br />
-                        <span class="caption">profit share</span>
-                      </div>
-                      <div v-else class="text-center mt-5">
-                        <span class="text-h2 font-weight-black"
-                          ><span class="text-h5">$</span>{{ mainPlan.price
-                          }}<span class="text-h5"
-                            >/{{ mainPlan.cicle == 1 ? "month" : "year" }}</span
-                          ></span
-                        >
-                      </div>
-                      <v-btn
-                        v-if="hasTrial"
-                        depressed
-                        color="success"
-                        class="mt-5"
-                        rounded
-                        large
-                        @click="openOrderDialog(mainPlan.id)"
-                      >
-                        Subscribe Now
-                      </v-btn>
+                    <v-chip
+                      v-if="subscription.trial"
+                      color="customGreen"
+                      class="ml-2 primary-text--text"
+                      depressed
+                    >
+                      <strong>TRIAL</strong>
+                    </v-chip>
+                    <p class="primary-text--text">
+                      You're subscribed to our premium membership
+                    </p>
+                    <v-btn
+                      depressed
+                      :ripple="false"
+                      color="customPink primary-text--text"
+                      class="px-2 py-0"
+                    >
+                      until
+                      {{ $moment(subscription.end).format("DD MMM YYYY") }}
+                    </v-btn>
+                  </div>
+                </v-col>
+              </v-row>
+            </v-card>
 
-                      <v-btn
-                        v-else
-                        depressed
-                        color="success"
-                        class="mt-5"
-                        rounded
-                        large
-                        @click="freeTrialDialog = true"
-                      >
-                        Start your free trial
-                      </v-btn>
-                    </div>
-                  </v-col>
-                  <v-col cols="12" md="8">
-                    <v-list>
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Exchanges </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_exchange }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Fully Automated Bots
-                          </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.automated_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Smart Trade </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_smart_trade_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> DCA Bots </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_dca_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Grid Bots </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_grid_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Referral Support
-                          </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.referral }}
-                        </v-list-item-action>
-                      </v-list-item>
-                    </v-list>
-                  </v-col>
-                </v-row>
-              </v-card>
-            </v-col>
-          </v-row>
-        </v-card>
-
-        <v-alert
-          v-show="false"
-          icon="mdi-information-outline"
-          text
-          type="info"
-          class="pa-5 mt-10"
-        >
-          <strong>All plans are includes :</strong>
-          <ul>
-            <li>Telegram Notifications</li>
-            <li>24x7 Support</li>
-          </ul>
-        </v-alert>
-      </div>
-    </v-col>
-
-    <v-col
-      cols="12"
-      v-else-if="(subscription == null || subscription.id == 0) && hasTrial"
-    >
-      <TablesPricingPlans
-        :pricings="pricings"
-        @subscribeAction="
-          (id) => {
-            openOrderDialog(id);
-          }
-        "
-      ></TablesPricingPlans>
-      <Invoices
-        class="pa-2 mt-5"
-        ref="invoices"
-        :promoCodeData="promoCodeData"
-        :isValidatingPromoCode="isValidatingPromoCode"
-        @clearPromoCode="
-          (e) => {
-            clearPromoCode();
-          }
-        "
-        @validatePromoCode="
-          (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
-        "
-        :invoice_id.sync="invoiceId"
-      />
-    </v-col>
-    <v-col cols="12" v-else>
-      <div class="relative-container-subs">
-        <v-card class="card-1 overflow-y-hidden pa-2" flat color="primary">
-          <v-img
-            width="860"
-            class="background-image"
-            src="/images/signin-vector.svg"
-          >
-          </v-img>
-
-          <v-row class="pa-5 py-10" align="end">
-            <v-col cols="12" class="d-flex align-end justify-start"> </v-col>
-            <v-col cols="12">
-              <div>
-                <span class="text-h4 font-weight-bold primary-text--text"
-                  >Premium</span
-                >
-                <v-chip
-                  v-if="subscription.trial"
-                  color="customGreen"
-                  class="ml-2 primary-text--text"
-                  depressed
-                >
-                  <strong>TRIAL</strong>
-                </v-chip>
-                <p class="primary-text--text">
-                  You're subscribed to our premium membership
-                </p>
-                <v-btn
-                  depressed
-                  :ripple="false"
-                  color="customPink primary-text--text"
-                  class="px-2 py-0"
-                >
-                  until {{ $moment(subscription.end).format("DD MMM YYYY") }}
-                </v-btn>
-              </div>
-            </v-col>
-          </v-row>
-        </v-card>
-
-        <Invoices class="card-2 pa-2" :invoice_id.sync="invoiceId" />
-
-        <!-- ORNAMENT -->
-        <v-img
-          width="90"
-          class="ornament-1-subs"
-          :src="require('@/assets/images/ornament-green-arrow.svg')"
-        >
-        </v-img>
-        <v-img
-          width="60"
-          class="ornament-2-subs"
-          :src="require('@/assets/images/ornament-thunder.svg')"
-        >
-        </v-img>
-
-        <div class="lottie-container-subs">
-          <template>
-            <!-- width and height are optional -->
-            <lottie
-              :width="256"
-              :height="256"
-              :options="lottieOptions"
-              v-on:animCreated="handleAnimation"
+            <Invoices
+              class="card-2 pa-2"
+              :invoice_id.sync="invoiceId"
+              :promoCodeData="promoCodeData"
+              :isValidatingPromoCode="isValidatingPromoCode"
+              @clearPromoCode="
+                (e) => {
+                  clearPromoCode();
+                }
+              "
+              @validatePromoCode="
+                (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
+              "
             />
-          </template>
-        </div>
-        <!-- ORNAMENT ENDS -->
-      </div>
-    </v-col>
 
+            <!-- ORNAMENT -->
+            <v-img
+              width="90"
+              class="ornament-1-subs"
+              :src="require('@/assets/images/ornament-green-arrow.svg')"
+            >
+            </v-img>
+            <v-img
+              width="60"
+              class="ornament-2-subs"
+              :src="require('@/assets/images/ornament-thunder.svg')"
+            >
+            </v-img>
+
+            <div class="lottie-container-subs">
+              <template>
+                <!-- width and height are optional -->
+                <lottie
+                  :width="256"
+                  :height="256"
+                  :options="lottieOptions"
+                  v-on:animCreated="handleAnimation"
+                />
+              </template>
+            </div>
+            <!-- ORNAMENT ENDS -->
+          </div>
+        </v-tab-item>
+        <v-tab-item key="Other Plans">
+          <TablesPricingPlans
+            :pricings="pricings"
+            :isTrial="
+              (subscription == null || subscription.id == 0) && !hasTrial
+            "
+            @subscribeAction="
+              (id) => {
+                openOrderDialog(id);
+              }
+            "
+            @subscribeFreeAction="
+              (plan) => {
+                freePlan = plan;
+                freeTrialDialog = true;
+              }
+            "
+          ></TablesPricingPlans>
+          <Invoices
+            class="pa-2 mt-5"
+            ref="invoices"
+            :promoCodeData="promoCodeData"
+            :isValidatingPromoCode="isValidatingPromoCode"
+            @clearPromoCode="
+              (e) => {
+                clearPromoCode();
+              }
+            "
+            @validatePromoCode="
+              (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
+            "
+            :invoice_id.sync="invoiceId"
+          />
+        </v-tab-item>
+      </v-tabs-items>
+    </v-col>
     <v-dialog
       v-model="orderDialog"
       max-width="600"
@@ -347,11 +220,12 @@
     <BaseModal
       @close="freeTrialDialog = false"
       :parentModel="freeTrialDialog"
-      :maxWidth="'650'"
+      :maxWidth="'750'"
     >
       <ModalsFreeTrial
-        @main-event="purchaseSubscription(mainPlan.id)"
+        @main-event="purchaseSubscription(freePlan.id)"
         @close-modal="freeTrialDialog = false"
+        :planName="freePlan.name"
       ></ModalsFreeTrial>
     </BaseModal>
     <BaseModal
@@ -374,363 +248,119 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12" v-if="isLoading"></v-col>
-    <v-col
-      cols="12"
-      v-else-if="(subscription == null || subscription.id == 0) && !hasTrial"
-    >
-      <div>
-        <v-card elevation="8" class="pa-8">
+    <v-col cols="12">
+      <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
+        <v-tab :ripple="false" v-for="item in tables" :key="item">
+          <span class="text-body-1 text-capitalize">{{ item }}</span>
+        </v-tab>
+      </v-tabs>
+    </v-col>
+    <v-col cols="12" v-if="!isLoading">
+      <v-tabs-items
+        v-model="currentItem"
+        style="min-height: 1200px; background: unset !important"
+      >
+        <v-tab-item key="My Plan">
           <v-row>
-            <v-col cols="12" class="align-center justify-center">
-              <v-card v-if="mainPlan" elevation="0">
-                <v-row>
-                  <v-col cols="12" md="4">
-                    <div
-                      class="py-5 d-flex flex-column align-center justify-center"
-                    >
-                      <h3 class="text-center mt-2 primary--text">
-                        {{ mainPlan.name }}
-                      </h3>
-                      <div
-                        v-if="mainPlan.config.profit_share > 0"
-                        class="text-center mt-5"
+            <v-col cols="12">
+              <v-card flat color="primary">
+                <v-row align="center">
+                  <v-col cols="6" class="d-flex align-end justify-start">
+                    <template>
+                      <!-- width and height are optional -->
+                      <lottie
+                        :width="256"
+                        :height="256"
+                        :options="lottieOptions"
+                        v-on:animCreated="handleAnimation"
+                      />
+                    </template>
+                  </v-col>
+                  <v-col cols="6">
+                    <div>
+                      <span class="text-h4 font-weight-bold primary-text--text"
+                        >Premium</span
                       >
-                        <span class="text-h2 font-weight-black"
-                          ><span class="text-h5">$</span>{{ mainPlan.price
-                          }}<span class="text-h5"
-                            >/{{ mainPlan.cicle == 1 ? "month" : "year" }}</span
-                          ></span
-                        ><br />
-                        <span class="text-h5">+</span><br />
-                        <span class="text-h5 font-weight-bold">15%</span><br />
-                        <span class="caption">profit share</span>
-                      </div>
-                      <div v-else class="text-center mt-5">
-                        <span class="text-h2 font-weight-black"
-                          ><span class="text-h5">$</span>{{ mainPlan.price
-                          }}<span class="text-h5"
-                            >/{{ mainPlan.cicle == 1 ? "month" : "year" }}</span
-                          ></span
-                        >
-                      </div>
-                      <v-btn
-                        v-if="hasTrial"
+                      <v-chip
+                        v-if="subscription.trial"
+                        color="customGreen"
+                        class="ml-2 primary-text--text"
                         depressed
-                        color="success"
-                        class="mt-5"
-                        rounded
-                        large
-                        @click="openOrderDialog(mainPlan.id)"
                       >
-                        Subscribe Now
-                      </v-btn>
-
+                        <strong>TRIAL</strong>
+                      </v-chip>
+                      <p class="primary-text--text">
+                        You're subscribed to our premium membership
+                      </p>
                       <v-btn
-                        v-else
                         depressed
-                        color="success"
-                        class="mt-5"
-                        rounded
-                        large
-                        @click="freeTrialDialog = true"
+                        :ripple="false"
+                        color="customPink primary-text--text"
+                        class="px-2 py-0"
                       >
-                        Start your free trial
+                        until
+                        {{ $moment(subscription.end).format("DD MMM YYYY") }}
                       </v-btn>
                     </div>
-                  </v-col>
-                  <v-col cols="12" md="8">
-                    <v-list>
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Exchanges </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_exchange }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Fully Automated Bots
-                          </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.automated_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Smart Trade </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_smart_trade_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> DCA Bots </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_dca_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Grid Bots </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.max_grid_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Referral Support
-                          </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ mainPlan.config.referral }}
-                        </v-list-item-action>
-                      </v-list-item>
-                    </v-list>
                   </v-col>
                 </v-row>
               </v-card>
             </v-col>
-          </v-row>
-        </v-card>
-        <!-- Temporary to disable montly plans -->
-        <v-card elevation="8" class="pa-5 mt-10" v-if="false">
-          <v-row class="pt-8">
-            <v-col cols="12" class="d-flex justify-center">
-              <div
-                class="d-flex flex-column align-center justify-center"
-                style="max-width: 80%"
-              >
-                <h2>Need more plans?</h2>
-                <p class="text-center mt-2">
-                  Take a look of standard plans and select your choice
-                </p>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
-            <v-col cols="12" class="d-flex justify-center">
-              <div class="mb-5">
-                <v-btn
-                  depressed
-                  class="mr-1"
-                  large
-                  :color="monthly ? 'primary' : ''"
-                  rounded
-                  @click="switchCicle"
-                >
-                  Monthly
-                </v-btn>
-                <v-btn
-                  depressed
-                  large
-                  :color="monthly ? '' : 'primary'"
-                  rounded
-                  @click="switchCicle"
-                >
-                  Yearly
-                </v-btn>
-              </div>
-            </v-col>
-          </v-row>
-          <v-row>
             <v-col cols="12">
-              <v-row>
-                <v-col
-                  v-for="i in pricings"
-                  :key="i.id"
-                  cols="12"
-                  md="4"
-                  class="align-center justify-center"
-                >
-                  <v-card elevation="0" class="pa-8" outlined>
-                    <div
-                      class="py-8 d-flex flex-column align-center justify-center"
-                    >
-                      <h3 class="text-center primary--text">
-                        {{ i.name }}
-                      </h3>
-                      <span class="text-center mt-2 text-h3 font-weight-black"
-                        ><span class="text-h5">$</span>{{ i.price
-                        }}<span class="text-h5"
-                          >/{{ monthly ? "month" : "year" }}</span
-                        ></span
-                      >
-                    </div>
-                    <v-list>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Exchanges </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ i.config.max_exchange }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title>
-                            Fully Automated Bots
-                          </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ i.config.automated_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Smart Trade </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ i.config.max_smart_trade_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> DCA Bots </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ i.config.max_dca_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                      <v-list-item>
-                        <v-list-item-content>
-                          <v-list-item-title> Grid Bots </v-list-item-title>
-                        </v-list-item-content>
-                        <v-list-item-action>
-                          {{ i.config.max_grid_bot }}
-                        </v-list-item-action>
-                      </v-list-item>
-                      <v-divider />
-                    </v-list>
-                    <div
-                      class="pt-5 pb-2 d-flex flex-column align-center justify-center"
-                    >
-                      <v-btn
-                        depressed
-                        color="primary"
-                        large
-                        @click="openOrderDialog(i.id)"
-                      >
-                        Subscribe
-                      </v-btn>
-                    </div>
-                  </v-card>
-                </v-col>
-              </v-row>
+              <Invoices
+                class="pa-2"
+                :invoice_id.sync="invoiceId"
+                :promoCodeData="promoCodeData"
+                :isValidatingPromoCode="isValidatingPromoCode"
+                @clearPromoCode="
+                  (e) => {
+                    clearPromoCode();
+                  }
+                "
+                @validatePromoCode="
+                  (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
+                "
+              />
             </v-col>
           </v-row>
-        </v-card>
-        <v-alert
-          v-show="false"
-          icon="mdi-information-outline"
-          text
-          type="info"
-          class="pa-5 mt-10"
-        >
-          <strong>All plans are includes :</strong>
-          <ul>
-            <li>Telegram Notifications</li>
-            <li>24x7 Support</li>
-          </ul>
-        </v-alert>
-      </div>
+        </v-tab-item>
+        <v-tab-item key="Other Plans">
+          <TablesPricingPlans
+            :pricings="pricings"
+            :isTrial="
+              (subscription == null || subscription.id == 0) && !hasTrial
+            "
+            @subscribeAction="
+              (id) => {
+                openOrderDialog(id);
+              }
+            "
+            @subscribeFreeAction="
+              (plan) => {
+                freePlan = plan;
+                freeTrialDialog = true;
+              }
+            "
+          ></TablesPricingPlans>
+          <Invoices
+            class="pa-2 mt-5"
+            ref="invoices"
+            :promoCodeData="promoCodeData"
+            :isValidatingPromoCode="isValidatingPromoCode"
+            @clearPromoCode="
+              (e) => {
+                clearPromoCode();
+              }
+            "
+            @validatePromoCode="
+              (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
+            "
+            :invoice_id.sync="invoiceId"
+          />
+        </v-tab-item>
+      </v-tabs-items>
     </v-col>
-    <v-col
-      cols="12"
-      v-else-if="(subscription == null || subscription.id == 0) && hasTrial"
-    >
-      <TablesPricingPlans
-        :pricings="pricings"
-        @subscribeAction="
-          (id) => {
-            openOrderDialog(id);
-          }
-        "
-      ></TablesPricingPlans>
-      <Invoices
-        class="pa-2 mt-10"
-        :promoCodeData="promoCodeData"
-        :isValidatingPromoCode="isValidatingPromoCode"
-        @clearPromoCode="
-          (e) => {
-            clearPromoCode();
-          }
-        "
-        @validatePromoCode="
-          (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
-        "
-        :invoice_id.sync="invoiceId"
-      />
-    </v-col>
-    <v-col cols="12" v-else>
-      <v-row>
-        <v-col cols="12">
-          <v-card flat color="primary">
-            <v-row align="center">
-              <v-col cols="6" class="d-flex align-end justify-start">
-                <template>
-                  <!-- width and height are optional -->
-                  <lottie
-                    :width="256"
-                    :height="256"
-                    :options="lottieOptions"
-                    v-on:animCreated="handleAnimation"
-                  />
-                </template>
-              </v-col>
-              <v-col cols="6">
-                <div>
-                  <span class="text-h4 font-weight-bold primary-text--text"
-                    >Premium</span
-                  >
-                  <v-chip
-                    v-if="subscription.trial"
-                    color="customGreen"
-                    class="ml-2 primary-text--text"
-                    depressed
-                  >
-                    <strong>TRIAL</strong>
-                  </v-chip>
-                  <p class="primary-text--text">
-                    You're subscribed to our premium membership
-                  </p>
-                  <v-btn
-                    depressed
-                    :ripple="false"
-                    color="customPink primary-text--text"
-                    class="px-2 py-0"
-                  >
-                    until
-                    {{ $moment(subscription.end).format("DD MMM YYYY") }}
-                  </v-btn>
-                </div>
-              </v-col>
-            </v-row>
-          </v-card>
-        </v-col>
-        <v-col cols="12">
-          <Invoices class="pa-2" :invoice_id.sync="invoiceId" />
-        </v-col>
-      </v-row>
-    </v-col>
-    <v-col v-if="false" cols="12"> </v-col>
+
     <v-dialog
       v-model="orderDialog"
       max-width="600"
@@ -837,17 +467,17 @@
         </v-card>
       </template>
     </v-dialog>
-    <BaseModal
+    <BaseModalMobile
       @close="freeTrialDialog = false"
       :parentModel="freeTrialDialog"
       :maxWidth="'650'"
     >
       <ModalsFreeTrial
-        @main-event="purchaseSubscription(mainPlan.id)"
+        @main-event="purchaseSubscription(freePlan.id)"
         @close-modal="freeTrialDialog = false"
       ></ModalsFreeTrial>
-    </BaseModal>
-    <BaseModal
+    </BaseModalMobile>
+    <BaseModalMobile
       @close="successDialog = false"
       :parentModel="successDialog"
       :maxWidth="'450'"
@@ -856,7 +486,7 @@
         @main-event="successDialog = false"
         @close-modal="successDialog = false"
       ></ModalsSuccess>
-    </BaseModal>
+    </BaseModalMobile>
   </v-row>
 </template>
 
@@ -873,6 +503,8 @@ export default {
   },
   data() {
     return {
+      currentItem: "My Plan",
+      tables: ["My Plan", "Other Plans"],
       title: "Subscription",
       isLoading: false,
       plans: {
@@ -881,7 +513,10 @@ export default {
       },
       pricings: [],
       mainPlan: null,
-      freePlan: null,
+      freePlan: {
+        id: "1",
+        name: "DEFAULT",
+      },
       selectedPlan: null,
       monthly: false,
       invoiceId: null,
@@ -908,7 +543,7 @@ export default {
       return this.$store.state.authUser;
     },
     subscription() {
-      return this.$store.state.subscription;
+      return this.$store.state.subscription || { trial: null, id: 0 };
     },
     hasTrial() {
       return this.$store.state.hasTrial;
