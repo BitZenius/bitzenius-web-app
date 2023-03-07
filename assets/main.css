@@ -25,3 +25,9 @@ input:-webkit-autofill:active {
     -webkit-text-fill-color: gray !important;
   }
 }
+
+@media only screen and (max-width: 1023px) {
+  .row {
+    max-width: 100vw !important;
+  }
+}

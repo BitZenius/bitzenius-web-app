@@ -222,7 +222,7 @@
       </template>
     </v-snackbar>
   </v-row>
-  <v-row class="pa-5" v-else>
+  <v-row class="pa-1 ma-0" v-else>
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">

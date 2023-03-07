@@ -135,7 +135,7 @@
       </v-row>
     </v-col>
   </v-row>
-  <v-row class="px-4" v-else>
+  <v-row class="px-1 ma-0" v-else>
     <v-col cols="12">
       <v-row>
         <v-col cols="6">
