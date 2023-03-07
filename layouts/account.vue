@@ -65,7 +65,7 @@
           <base-menu-item
             :to="'/advanced-bots/hybrid'"
             :icon="true"
-            :avatar="`$vuetify.icons.GridIcon`"
+            :avatar="`$vuetify.icons.CardWithdrawIcon`"
             :cardtitle="`Hybrid`"
             class="ml-2"
           ></base-menu-item>
@@ -79,7 +79,7 @@
           <base-menu-item
             :to="'/advanced-bots/dca'"
             :icon="true"
-            :avatar="`$vuetify.icons.GridIcon`"
+            :avatar="`$vuetify.icons.CoinIcon`"
             :cardtitle="`DCA`"
             class="ml-2"
           ></base-menu-item>

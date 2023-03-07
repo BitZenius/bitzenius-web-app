@@ -104,7 +104,7 @@
                 :headers="headers"
                 :items="botsFiltered"
                 :loading="isLoading"
-                class="elevation-0"
+                class="elevation-0 no-scrollbar"
                 loading-text="Loading... Please wait"
               >
                 <template v-slot:header.pair="{ header }">
@@ -306,7 +306,7 @@
                 <template v-slot:no-data>
                   <BaseNoData
                     v-if="!selectedExchangeActive"
-                    :label="`No automated bots`"
+                    :label="`No advanced bots`"
                   ></BaseNoData>
                   <BaseNoDataAutomatedBots
                     v-else
@@ -314,6 +314,14 @@
                   ></BaseNoDataAutomatedBots>
                 </template>
               </v-data-table>
+              <v-card
+                class="pa-5 loading-bot-container off-white"
+                v-if="isBuildingBot"
+              >
+                <BaseBuildingBotLoading
+                  :label="`Assembling your bots...`"
+                ></BaseBuildingBotLoading>
+              </v-card>
             </v-card>
           </v-tab-item>
 
@@ -437,7 +445,7 @@
                 :headers="headers"
                 :items="botsFiltered"
                 :loading="isLoading"
-                class="elevation-0"
+                class="elevation-0 no-scrollbar"
                 loading-text="Loading... Please wait"
               >
                 <template v-slot:header.pair="{ header }">
@@ -647,6 +655,14 @@
                   ></BaseNoDataAutomatedBots>
                 </template>
               </v-data-table>
+              <v-card
+                class="pa-5 loading-bot-container off-white"
+                v-if="isBuildingBot"
+              >
+                <BaseBuildingBotLoading
+                  :label="`Assembling your bots...`"
+                ></BaseBuildingBotLoading>
+              </v-card>
             </v-card>
           </v-tab-item>
 
@@ -797,6 +813,7 @@ export default {
       // ACTIVE POSITION FROM STORE
       activePosition: [],
       socket: null,
+      isBuildingBot: false,
 
       // SELECT TO DELETE
       selectToDelete: null,
@@ -957,6 +974,7 @@ export default {
     exchange(val) {
       this.counter++;
       this._fetchBotsList(val);
+      this._fetchAutomatedSetup();
     },
   },
   async mounted() {
@@ -965,6 +983,7 @@ export default {
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
       this._fetchBotsList(this.exchange); // Fetch Bots List
+      this._fetchAutomatedSetup();
       this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
@@ -1007,6 +1026,27 @@ export default {
       this.$socket.removeAllListeners("position");
     },
     //FETCH API
+
+    async _fetchAutomatedSetup() {
+      this.isLoading = true;
+      this.isBuildingBot = false;
+      let res = await this.$api.$get("/user/advanced-bot", {
+        params: {
+          type: this.defaultType,
+        },
+      });
+      console.log("_fetchAutomatedSetup", res);
+      if (res.data.length > 0) {
+        res.data.forEach((setup) => {
+          if (setup.code == 0) {
+            this.isBuildingBot = true;
+            return;
+          }
+        });
+      } else {
+      }
+      this.isLoading = false;
+    },
     async _fetchUserExchange() {
       let res = await this.$api.$get("/user/bot", {});
       console.log("fetchUSerExchange", res);
@@ -1442,6 +1482,19 @@ export default {
   transform: translate(25%, -75%);
 }
 
+.loading-bot-container {
+  position: absolute;
+  right: 5%;
+  bottom: 5%;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  height: 180px;
+  width: 180px;
+  border-radius: 100% !important;
+}
+
 @media only screen and (max-width: 1023px) {
   .custom-avatar {
     box-shadow: unset;
@@ -1466,6 +1519,18 @@ export default {
     left: 25%;
     top: 100%;
     transform: translate(-50%, -50%);
+  }
+
+  .loading-bot-container {
+    position: absolute;
+    right: 2%;
+    bottom: 2%;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    height: 120px;
+    width: 120px;
   }
 }
 </style>
