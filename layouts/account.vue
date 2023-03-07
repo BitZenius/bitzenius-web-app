@@ -703,6 +703,7 @@ export default {
   min-width: unset !important;
   width: 20% !important;
   max-width: 20% !important;
+  min-height: 80px;
 }
 
 @media only screen and (min-width: 960px) {

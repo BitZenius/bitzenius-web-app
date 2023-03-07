@@ -529,7 +529,7 @@ export default {
                   if (date == now) {
                     this.chartData.options.annotations.xaxis[0].x = now;
                   }
-                  return "";
+                  return date;
                 } else {
                   var date = this.$moment(r, "MMM").format("MMM");
                   var now = this.$moment().format("MMM");

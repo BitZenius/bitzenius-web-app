@@ -8,7 +8,9 @@
     <v-card flat rounded>
       <v-card-title class="text-h6 font-weight-bold primary white--text">
         <v-row>
-          <v-col cols="6">Transaction</v-col>
+          <v-col cols="6">{{
+            detail.type != 'AUTOMATED' ? detail.name : "Transaction"
+          }}</v-col>
           <v-col cols="6" class="d-flex justify-end">
             <v-btn color="white" icon @click="closeModal">
               <v-icon>mdi-close</v-icon>
@@ -201,7 +203,11 @@
                   <v-list-item-avatar size="20">
                     <span
                       style="width: 10px; height: 10px; border-radius: 5px"
-                      :class="[item.value > 0 ? 'success' : 'grey']"
+                      :class="[
+                        item.value > 0 || item.value.length > 1
+                          ? 'success'
+                          : 'grey',
+                      ]"
                     ></span>
                   </v-list-item-avatar>
                   <v-list-item-content>
@@ -651,6 +657,11 @@ export default {
         {
           title: "Change",
           value: 0,
+        },
+        {
+          title: "Exchange",
+          key: "exchange",
+          value: "-",
         },
       ],
 
