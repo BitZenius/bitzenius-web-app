@@ -65,28 +65,28 @@
           <base-menu-item
             :to="'/advanced-bots/hybrid'"
             :icon="true"
-            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :avatar="`$vuetify.icons.GridIcon`"
             :cardtitle="`Hybrid`"
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
             :to="'/advanced-bots/grid'"
             :icon="true"
-            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :avatar="`$vuetify.icons.GridIcon`"
             :cardtitle="`Grid`"
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
             :to="'/advanced-bots/dca'"
             :icon="true"
-            :avatar="`$vuetify.icons.CoinIcon`"
+            :avatar="`$vuetify.icons.GridIcon`"
             :cardtitle="`DCA`"
             class="ml-2"
           ></base-menu-item>
           <base-menu-item
             :to="'/advanced-bots/smart-trade'"
             :icon="true"
-            :avatar="`$vuetify.icons.DailyProfitIcon`"
+            :avatar="`$vuetify.icons.CardWithdrawIcon`"
             :disabled="true"
             :cardtitle="`Smart Trade (Coming Soon)`"
             class="ml-2"

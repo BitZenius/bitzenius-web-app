@@ -455,7 +455,7 @@ export default {
           selected: false,
           active: false,
           image: "/exchange_logo/kucoin.png",
-          comingsoon: true,
+          comingsoon: false,
         },
         // {
         //   name: "Tokocrypto",

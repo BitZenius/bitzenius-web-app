@@ -30,6 +30,7 @@ import WithdrawIcon from "~/assets/custom-icons/Withdraw.vue";
 
 import CardWithdrawIcon from "~/assets/custom-icons/CardWithdraw.vue";
 import MinimumTradingVolumeIcon from "~/assets/custom-icons/MinimumTradingVolume.vue";
+import GridIcon from "~/assets/custom-icons/Grid.vue";
 
 export default {
 
@@ -115,6 +116,9 @@ export default {
       },
       MinimumTradingVolumeIcon: {
         component: MinimumTradingVolumeIcon
+      },
+      GridIcon: {
+        component: GridIcon
       }
 
     },

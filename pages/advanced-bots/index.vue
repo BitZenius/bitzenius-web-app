@@ -16,7 +16,7 @@
       >
         <v-list-item exact to="/advanced-bots/hybrid">
           <v-list-item-avatar>
-            <v-icon color="primary">$vuetify.icons.SettingsIcon</v-icon>
+            <v-icon color="primary">$vuetify.icons.GridIcon</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title> Hybrid Bots </v-list-item-title>
@@ -34,7 +34,7 @@
       >
         <v-list-item exact to="/advanced-bots/dca">
           <v-list-item-avatar>
-            <v-icon color="primary">$vuetify.icons.SettingsIcon</v-icon>
+            <v-icon color="primary">$vuetify.icons.GridIcon</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title> DCA Bots </v-list-item-title>
@@ -52,7 +52,7 @@
       >
         <v-list-item exact to="/advanced-bots/grid">
           <v-list-item-avatar>
-            <v-icon color="primary">$vuetify.icons.SettingsIcon</v-icon>
+            <v-icon color="primary">$vuetify.icons.GridIcon</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title> Grid Bots </v-list-item-title>
@@ -70,7 +70,7 @@
       >
         <v-list-item exact to="/advanced-bots/smart-trade">
           <v-list-item-avatar>
-            <v-icon color="primary">$vuetify.icons.SettingsIcon</v-icon>
+            <v-icon color="primary">$vuetify.icons.CardWithdrawIcon</v-icon>
           </v-list-item-avatar>
           <v-list-item-content>
             <v-list-item-title> Smart Trade (Coming Soon) </v-list-item-title>
