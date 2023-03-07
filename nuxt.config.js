@@ -124,7 +124,8 @@ export default {
       nativeUI: true,
       theme_color: "#3394F8",
       mobileAppIOS: 'yes',
-      appleStatusBarStyle: 'black-translucent'
+      appleStatusBarStyle: 'black',
+      viewport: 'width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0, minimal-ui'
 
     }
   },

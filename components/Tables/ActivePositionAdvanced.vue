@@ -328,7 +328,7 @@
       </v-card>
     </v-col>
   </v-row>
-  <v-row v-else>
+  <v-row class="pa-1 ma-0" v-else>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
       <template>
         <ModalsBotSetup

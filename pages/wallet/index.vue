@@ -229,7 +229,7 @@
       </v-row>
     </v-col>
   </v-row>
-  <v-row v-else class="pa-5">
+  <v-row v-else class="pa-1 ma-0">
     <v-dialog
       v-model="showDetailDialog"
       width="auto"

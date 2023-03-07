@@ -438,8 +438,7 @@
       ></ModalsSuccess>
     </BaseModal>
   </v-row>
-  <v-row v-else-if="userData && checkMobile() == true" class="pa-5">
-    <v-col cols="12">
+  <v-row v-else-if="userData && checkMobile() == true" class="pa-1 ma-0">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
           <v-icon @click="$router.push('/account')">mdi-arrow-left</v-icon>

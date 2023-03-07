@@ -234,7 +234,7 @@
       </v-card>
     </v-col>
   </v-row>
-  <v-row v-else class="pa-5">
+  <v-row v-else class="pa-1 ma-0">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">

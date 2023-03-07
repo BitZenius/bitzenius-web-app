@@ -512,7 +512,7 @@
 
     <v-col cols="12"> </v-col>
   </v-row>
-  <v-row v-else>
+  <v-row class="pa-1 ma-0" v-else>
     <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
       <ModalsLearnHowItWorks
         @close-modal="test1 = false"
