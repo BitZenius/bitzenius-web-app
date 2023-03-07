@@ -138,14 +138,14 @@
   <v-row class="px-4" v-else>
     <v-col cols="12">
       <v-row>
-        <v-col cols="7">
+        <v-col cols="6">
           <MenuProfile
             @click="showUserDetail = true"
             :dataMode="false"
             :userData="user"
           ></MenuProfile>
         </v-col>
-        <v-col cols="5">
+        <v-col cols="6">
           <GlobalsExchangeList @on-exchange-changed="onExchangeChanged" />
         </v-col>
         <v-col cols="12">
