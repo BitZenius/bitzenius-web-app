@@ -242,6 +242,7 @@
       app
       grow
       height="72"
+      style="z-index: 10000 !important"
     >
       <div class="d-flex float-left">
         <v-btn

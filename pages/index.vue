@@ -401,6 +401,18 @@ export default {
             data: [],
           },
         ],
+        responsive: [
+          {
+            breakpoint: 1000,
+            options: {
+              plotOptions: {
+                bar: {
+                  horizontal: true,
+                },
+              },
+            },
+          },
+        ],
       },
       profit: 0,
       balance: {},
