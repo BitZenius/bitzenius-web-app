@@ -11,6 +11,42 @@
             >{{ data ? "Edit" : "Add" }} {{ exchange.name }} As Your Exchange
           </span>
         </v-col>
+        <v-col cols="12">
+          <v-card
+            flat
+            rounded
+            color="primary2"
+            class="pa-3 primary-text--text text-body-2 mb-2"
+          >
+            Please be sure to whitelist the following IP address when creating
+            an API Key on your exchange. It is a required step!
+          </v-card>
+          <v-card
+            flat
+            rounded
+            color="primary2"
+            class="pa-3 primary-text--text text-body-2 custom-card"
+          >
+            {{ whitelistIp }}
+            <v-tooltip v-model="copied" top>
+              <template v-slot:activator="{ on, attrs }">
+                <v-btn
+                  icon
+                  v-bind="attrs"
+                  v-on="on"
+                  color="black"
+                  size="16"
+                  v-clipboard:copy="whitelistIp"
+                  v-clipboard:success="onCopy"
+                  v-clipboard:error="onError"
+                >
+                  <v-icon small color="primary-text"> mdi-content-copy </v-icon>
+                </v-btn>
+              </template>
+              {{ copied ? "Copy" : "Copied" }}
+            </v-tooltip>
+          </v-card>
+        </v-col>
       </v-row>
     </v-card-title>
     <v-card-text class="mt-3 pb-0">
@@ -99,6 +135,9 @@ export default {
       secret_key: null,
       passphrase: null,
       show1: false,
+      // COPY
+      whitelistIp: "108.61.117.32",
+      copied: false,
       // exchangeItems: ['Binance', 'Tokocrypto', 'MEXC', 'Coinstore'],
     };
   },
@@ -120,6 +159,13 @@ export default {
     },
   },
   methods: {
+    onCopy(e) {
+      console.log("onCopy", e.text);
+      this.copied = !this.copied;
+    },
+    onError: function (e) {
+      alert("Failed to copy: " + e.text);
+    },
     // TRIGGER
     closeModal() {
       this.$emit("close-modal", false);

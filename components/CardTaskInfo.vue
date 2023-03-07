@@ -3,7 +3,7 @@
     <v-row>
       <v-col cols="8" class="d-flex flex-column">
         <span class="basic-text--text font-weight-bold text-h6"
-          >Complete your profile</span
+          >Task completion</span
         >
         <span class="basic-text--text font-weight-bold my-2">
           <strong class="primary--text"
