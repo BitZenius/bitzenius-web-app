@@ -165,8 +165,8 @@
                     subscription.id > i.id
                       ? "Downgrade"
                       : subscription.id == 0
-                      ? "Upgrade"
-                      : "Subscribe"
+                      ? "Subscribe"
+                      : "Upgrade"
                   }}
                 </v-btn>
                 <v-btn
