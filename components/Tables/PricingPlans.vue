@@ -104,6 +104,15 @@
                 <v-divider />
                 <v-list-item>
                   <v-list-item-content>
+                    <v-list-item-title> Hybrid Bots </v-list-item-title>
+                  </v-list-item-content>
+                  <v-list-item-action>
+                    {{ i.config.max_grid_bot }}
+                  </v-list-item-action>
+                </v-list-item>
+                <v-divider />
+                <v-list-item>
+                  <v-list-item-content>
                     <v-list-item-title> DCA Bots </v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action>
@@ -120,6 +129,7 @@
                   </v-list-item-action>
                 </v-list-item>
                 <v-divider />
+
                 <v-list-item>
                   <v-list-item-content>
                     <v-list-item-title> Profit Share </v-list-item-title>
@@ -131,7 +141,7 @@
                 <v-divider />
                 <v-list-item>
                   <v-list-item-content>
-                    <v-list-item-title> Referral Bonus </v-list-item-title>
+                    <v-list-item-title> Referral Rewards </v-list-item-title>
                   </v-list-item-content>
                   <v-list-item-action v-if="i.config.referral == 'Yes'">
                     {{ i.config.referral_bonus }}%

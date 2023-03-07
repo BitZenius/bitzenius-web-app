@@ -523,13 +523,13 @@ export default {
               console.log(res.categories);
               var newCategories = res.categories.map((r) => {
                 if (r.includes("-")) {
-                  var date = this.$moment(r, "DD-MM-YYYY").format("D-M");
-                  var now = this.$moment().format("D-M");
+                  var date = this.$moment(r, "DD-MM-YYYY").format("D");
+                  var now = this.$moment().format("D");
                   console.log(date);
                   if (date == now) {
                     this.chartData.options.annotations.xaxis[0].x = now;
                   }
-                  return date;
+                  return "";
                 } else {
                   var date = this.$moment(r, "MMM").format("MMM");
                   var now = this.$moment().format("MMM");

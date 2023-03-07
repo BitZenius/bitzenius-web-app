@@ -58,13 +58,22 @@
                   <v-col cols="6" class="d-flex justify-start align-center">
                     <v-tooltip right>
                       <template v-slot:activator="{ on, attrs }">
-                        <v-icon class="mr-2" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                        <v-icon class="mr-2" v-bind="attrs" v-on="on"
+                          >mdi-information-outline</v-icon
+                        >
                         <strong>Floating P&L</strong>
                       </template>
-                      <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</span>
+                      <span
+                        >Lorem ipsum dolor sit amet consectetur, adipisicing
+                        elit.</span
+                      >
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" class="d-flex flex-column justify-center align-center">
+                  <v-col
+                    cols="6"
+                    class="d-flex flex-column justify-center align-center"
+                    v-if="pair.floatingProfit"
+                  >
                     <div class="d-flex flex-column align-start justify-center">
                       <strong
                         class="danger--text text-subtitle-2 font-weight-bold"
@@ -94,13 +103,22 @@
                   <v-col cols="6" class="d-flex justify-start align-center">
                     <v-tooltip right>
                       <template v-slot:activator="{ on, attrs }">
-                        <v-icon class="mr-2" v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
+                        <v-icon class="mr-2" v-bind="attrs" v-on="on"
+                          >mdi-information-outline</v-icon
+                        >
                         <strong>Realized P&L</strong>
                       </template>
-                      <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</span>
+                      <span
+                        >Lorem ipsum dolor sit amet consectetur, adipisicing
+                        elit.</span
+                      >
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" class="d-flex flex-column justify-center align-center">
+                  <v-col
+                    cols="6"
+                    class="d-flex flex-column justify-center align-center"
+                    v-if="pair.realizedProfit"
+                  >
                     <div class="d-flex flex-column align-start justify-center">
                       <strong
                         class="danger--text text-subtitle-2 font-weight-bold"
@@ -130,13 +148,22 @@
                   <v-col cols="6" class="d-flex justify-start align-center">
                     <v-tooltip right>
                       <template v-slot:activator="{ on, attrs }">
-                          <v-icon class="mr-2"  v-bind="attrs" v-on="on">mdi-information-outline</v-icon>
-                          <strong>Total P&L</strong>
-                        </template>
-                      <span>Lorem ipsum dolor sit amet consectetur, adipisicing elit.</span>
+                        <v-icon class="mr-2" v-bind="attrs" v-on="on"
+                          >mdi-information-outline</v-icon
+                        >
+                        <strong>Total P&L</strong>
+                      </template>
+                      <span
+                        >Lorem ipsum dolor sit amet consectetur, adipisicing
+                        elit.</span
+                      >
                     </v-tooltip>
                   </v-col>
-                  <v-col cols="6" class="d-flex flex-column justify-center align-center">
+                  <v-col
+                    v-if="pair.profit"
+                    cols="6"
+                    class="d-flex flex-column justify-center align-center"
+                  >
                     <div class="d-flex flex-column align-start justify-center">
                       <strong
                         class="danger--text text-subtitle-2 font-weight-bold"

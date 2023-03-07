@@ -72,7 +72,7 @@
                 >Take Profit</strong
               >
             </th>
-            <th>
+            <th v-if="advancedBotsType.length > 1">
               <strong class="text-body-1 font-weight-bold basic-text--text"
                 >Type</strong
               >
@@ -141,12 +141,8 @@
                   </v-icon>
                 </v-text-field>
               </td>
-              <td>
-                <v-select
-                  :items="types"
-                  v-model="customType"
-                  label="Type"
-                ></v-select>
+              <td v-if="advancedBotsType.length > 1">
+                <v-select :items="types" v-model="customType"></v-select>
               </td>
             </template>
             <template v-else>
@@ -186,7 +182,7 @@
                   </v-icon>
                 </div>
               </td>
-              <td class="text-body-1">
+              <td class="text-body-1" v-if="advancedBotsType.length > 1">
                 <span v-if="advancedBotsType.length == 1">{{
                   advancedBotsType[0]
                 }}</span>
@@ -250,7 +246,7 @@
                 </v-icon>
               </v-text-field>
             </td>
-            <td>
+            <td v-if="advancedBotsType.length > 1">
               <v-select
                 :items="types"
                 v-model="customType"
@@ -271,7 +267,7 @@
 export default {
   props: {
     advancedBotsType: {
-      type: String,
+      type: Array,
       default: () => {
         return [];
       },
@@ -309,7 +305,7 @@ export default {
         steps: [],
         key: "E",
       },
-      types: ["DCA", "GRID"],
+      types: [],
 
       // EDIT ROW
       editStep: null,
@@ -352,8 +348,16 @@ export default {
     checkGridDCA(step) {
       if (this.advancedBotsType !== []) {
         this.types = this.advancedBotsType;
+      }
+
+      if (this.types.length == 1) {
         return;
       }
+
+      if (!this.strategy.style || !this.strategy.style.steps) {
+        return;
+      }
+
       var stepsArray = this.strategy.style.steps.map((item) => {
         return item.type;
       });

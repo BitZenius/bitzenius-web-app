@@ -9,7 +9,12 @@
     </v-col>
     <v-col cols="12">
       <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
-        <v-tab :ripple="false" v-for="item in tables" :key="item">
+        <v-tab
+          :disabled="disabledTables.includes(item)"
+          :ripple="false"
+          v-for="item in tables"
+          :key="item"
+        >
           <span class="text-body-1 text-capitalize">{{ item }}</span>
         </v-tab>
       </v-tabs>
@@ -249,7 +254,12 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
+      <v-tabs
+        :disabled="disabledTables.includes(item)"
+        hide-slider
+        :show-arrows="true"
+        v-model="currentItem"
+      >
         <v-tab :ripple="false" v-for="item in tables" :key="item">
           <span class="text-body-1 text-capitalize">{{ item }}</span>
         </v-tab>
@@ -506,6 +516,7 @@ export default {
     return {
       currentItem: "My Plan",
       tables: ["My Plan", "Other Plans"],
+      disabledTables: ["My Plan", "Other Plans"],
       title: "Subscription",
       isLoading: false,
       plans: {
@@ -559,6 +570,16 @@ export default {
     await this._fetchUserSubscription();
     this.$store.commit("setTitle", this.title);
     this.initialize();
+
+    // Determine tabs
+    if (this.hasTrial) {
+      this.disabledTables = [];
+      this.currentItem = 0;
+    } else {
+      this.disabledTables = ["My Plan"];
+
+      this.currentItem = 1;
+    }
   },
   methods: {
     handleAnimation: function (anim) {

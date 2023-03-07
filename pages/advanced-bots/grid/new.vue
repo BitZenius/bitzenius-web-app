@@ -6,12 +6,12 @@
       style="position: relative"
       class="mb-5"
     >
-      <v-icon @click="$router.push('/advanced-bots/dca')">
+      <v-icon @click="$router.push('/advanced-bots/grid')">
         mdi-arrow-left
       </v-icon>
     </v-col>
     <v-col v-if="checkMobile()" cols="12" class="text-h5 font-weight-bold">
-      <v-icon @click="$router.push('/advanced-bots/dca')">
+      <v-icon @click="$router.push('/advanced-bots/grid')">
         mdi-arrow-left
       </v-icon>
       {{ title }} for {{ selectedExchange }}
