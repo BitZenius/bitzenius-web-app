@@ -23,7 +23,7 @@
             </v-tabs>
           </v-card>
           <v-card class="pa-3" flat rounded>
-            <v-tabs-items v-model="currentItem">
+            <v-tabs-items v-model="currentItem" :touchless="true">
               <v-tab-item v-for="item in tables" :key="item">
                 <ProfitHistory v-if="currentItem == 0" ref="profitRef" />
                 <TradingHistory v-if="currentItem == 1" ref="tradingRef" />

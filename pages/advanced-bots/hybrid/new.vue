@@ -122,6 +122,7 @@
             <v-col cols="12">
               <v-tabs-items
                 v-model="e1"
+                :touchless="true"
                 style="height: 100%; min-height: 500px; border-radius: 10px"
                 class="pa-3"
               >

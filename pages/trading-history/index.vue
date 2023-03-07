@@ -8,7 +8,7 @@
                         <h4>{{item}}</h4>
                     </v-tab>
                 </v-tabs>
-                <v-tabs-items v-model="currentItem">
+                <v-tabs-items v-model="currentItem" :touchless="true">
                     <v-tab-item v-for="item in tables" :key="item">
                         <v-row class="mt-1">
                             <v-col cols="12" md="3">

@@ -257,6 +257,7 @@
     </v-col>
     <v-col cols="12" v-if="!isLoading">
       <v-tabs-items
+        :touchless="true"
         v-model="currentItem"
         style="min-height: 1200px; background: unset !important"
       >

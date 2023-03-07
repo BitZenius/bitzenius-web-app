@@ -327,8 +327,6 @@
         </v-tabs-items>
       </v-card>
     </v-col>
-
-
   </v-row>
   <v-row v-else>
     <v-dialog persistent v-if="showAddBot" v-model="showAddBot" max-width="600">
@@ -396,7 +394,7 @@
         </v-tabs>
       </v-card>
       <v-card flat rounded>
-        <v-tabs-items v-model="currentItem">
+        <v-tabs-items v-model="currentItem" :touchless="true">
           <v-tab-item key="Active Positions">
             <v-card :key="`${counter}-default`" class="pa-8" flat>
               <v-row class="mb-3">
@@ -658,7 +656,6 @@
         </v-tabs-items>
       </v-card>
     </v-col>
-
   </v-row>
 </template>
 
@@ -846,16 +843,16 @@ export default {
     tableOnly: {
       type: Boolean,
       default: () => {
-        return false
-      }
-    }
+        return false;
+      },
+    },
   },
 
   computed: {
-     /**
+    /**
      * Determine new (edit) page for current bot type
      */
-     nextRoute() {
+    nextRoute() {
       switch (this.defaultType) {
         case "DCA":
           return "/advanced-bots/dca/new";
@@ -1335,8 +1332,6 @@ export default {
           return "$vuetify.icon.ProfitBarChartIcon";
       }
     },
-
-
 
     expandExchange(value) {
       if (this.expansionPanel == value) {

@@ -459,7 +459,12 @@
           <span class="text-body-1 text-capitalize">Settings</span>
         </v-tab>
       </v-tabs>
-      <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
+      <v-tabs-items
+        v-model="e1"
+        style="height: 100%"
+        class="pa-5"
+        :touchless="true"
+      >
         <v-tab-item key="0">
           <v-row>
             <v-col

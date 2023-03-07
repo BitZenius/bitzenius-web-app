@@ -727,7 +727,7 @@
         </v-tabs>
       </v-card>
       <v-card class="pa-3" flat rounded>
-        <v-tabs-items v-model="currentItem">
+        <v-tabs-items v-model="currentItem" :touchless="true">
           <v-tab-item key="Active Positions">
             <v-card :key="`${counter}-default`" flat>
               <v-row class="mb-3" justify="end" align="end">

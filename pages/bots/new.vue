@@ -528,7 +528,12 @@
         </v-col>
         <v-col cols="12" class="mt-5">
           <v-card flat rounded class="card-tab">
-            <v-tabs-items v-model="e1" style="height: 100%" class="pa-5">
+            <v-tabs-items
+              v-model="e1"
+              style="height: 100%"
+              class="pa-5"
+              :touchless="true"
+            >
               <v-tab-item key="0">
                 <ModalsBotSetupAmount
                   v-if="showStrategySetup"
