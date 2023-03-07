@@ -244,56 +244,66 @@
       height="72"
       style="z-index: 10000 !important"
     >
-      <div class="d-flex float-left">
-        <v-btn
-          :ripple="false"
-          active-class="active-icon"
-          class="bottom-button-navigation"
-          value="home"
-          to="/"
+      <div class="bottom-relative-container">
+        <div
+          :class="
+            $vuetify.theme.dark
+              ? 'bottom-svg-container dark'
+              : 'bottom-svg-container light'
+          "
         >
-          <span>Home</span>
-          <v-icon>$vuetify.icons.HomeIcon</v-icon>
-        </v-btn>
-        <v-btn
-          :ripple="false"
-          active-class="active-icon"
-          class="bottom-button-navigation"
-          value="exchange"
-          to="/exchanges"
-        >
-          <span>Exchanges</span>
-          <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
-        </v-btn>
-      </div>
+          <div class="d-flex float-left">
+            <v-btn
+              :ripple="false"
+              active-class="active-icon"
+              class="bottom-button-navigation"
+              value="home"
+              to="/"
+            >
+              <span>Home</span>
+              <v-icon>$vuetify.icons.HomeIcon</v-icon>
+            </v-btn>
+            <v-btn
+              :ripple="false"
+              active-class="active-icon"
+              class="bottom-button-navigation"
+              value="exchange"
+              to="/exchanges"
+            >
+              <span>Exchanges</span>
+              <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
+            </v-btn>
+          </div>
 
-      <div class="bot-button-container">
-        <v-btn class="bot-button" color="primary" value="bot" to="/bots">
-          <span class="white--text">Bots</span>
-          <v-icon color="white">$vuetify.icons.BotIcon</v-icon>
-        </v-btn>
-      </div>
-      <div class="d-flex float-right">
-        <v-btn
-          :ripple="false"
-          active-class="active-icon"
-          class="bottom-button-navigation"
-          value="trading"
-          to="/advanced-bots"
-        >
-          <span>Advanced</span>
-          <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
-        </v-btn>
-        <v-btn
-          :ripple="false"
-          active-class="active-icon"
-          class="bottom-button-navigation"
-          value="account"
-          to="/account"
-        >
-          <span>Account</span>
-          <v-icon>$vuetify.icons.SettingsIcon</v-icon>
-        </v-btn>
+          <div class="bot-button-container">
+            <v-btn class="bot-button" color="primary" value="bot" to="/bots">
+              <span class="white--text">Bots</span>
+              <v-icon size="28" color="white">$vuetify.icons.BotIcon</v-icon>
+            </v-btn>
+          </div>
+          <div class="d-flex float-right">
+            <v-btn
+              :ripple="false"
+              active-class="active-icon"
+              class="bottom-button-navigation"
+              value="trading"
+              to="/advanced-bots"
+            >
+              <span>Advanced</span>
+              <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
+            </v-btn>
+            <v-btn
+              :ripple="false"
+              active-class="active-icon"
+              class="bottom-button-navigation"
+              value="account"
+              to="/account"
+            >
+              <span>Account</span>
+              <v-icon>$vuetify.icons.SettingsIcon</v-icon>
+            </v-btn>
+          </div>
+        </div>
       </div>
     </v-bottom-navigation>
     <v-footer v-else fixed>
@@ -678,19 +688,19 @@ export default {
 
 .bot-button-container {
   position: relative;
-  min-width: 50px;
+  /* min-width: 75px; */
 }
 
 .bot-button {
   position: absolute;
-  top: 0%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 100% !important;
-  width: 80px !important;
-  height: 80px !important;
-  max-width: 80px !important;
-  max-height: 80px !important;
+  width: 70px !important;
+  height: 70px !important;
+  min-width: 70px !important;
+  min-height: 70px !important;
   z-index: 20;
 }
 
@@ -703,5 +713,31 @@ export default {
   .main-container {
     min-height: 120vh;
   }
+}
+
+.bottom-relative-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.bottom-svg-container {
+  width: 95%;
+  margin: auto;
+  height: 100%;
+  display: grid;
+  grid-template-columns: auto auto auto;
+  transform: translateY(-10px);
+}
+
+.bottom-svg-container.dark {
+  background: url("/images/main menu-bg-dark.svg") no-repeat;
+  background-position: center;
+  background-size: cover;
+}
+.bottom-svg-container.light {
+  background: url("/images/main menu-bg.svg") no-repeat;
+  background-position: center;
+  background-size: cover;
 }
 </style>
