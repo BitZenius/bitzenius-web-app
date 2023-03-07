@@ -7,7 +7,10 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12" class="my-5">
+    <v-col
+      cols="12"
+      :class="checkMobile() == false ? 'my-5' : ' my-5 pa-2 ma-0'"
+    >
       <v-card
         flat
         rounded
@@ -82,7 +85,7 @@
       </v-card>
     </v-col>
 
-    <v-col cols="12">
+    <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 ma-0'">
       <TablesActivePositionAdvanced
         :tableOnly="true"
       ></TablesActivePositionAdvanced>

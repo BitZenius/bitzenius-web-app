@@ -10,7 +10,7 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12">
+    <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 ma-0'">
       <TablesActivePositionAdvanced
         :defaultType="'DCA'"
         @showHowItWorksModal="

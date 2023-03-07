@@ -245,10 +245,10 @@
             <div class="custom-avatar off-white-3">
               <v-img contain :src="exchange.image"></v-img>
             </div>
-            <v-row class="pa-3 pt-10">
+            <v-row class="pa-1 ma-0 pt-10">
               <v-col
                 cols="12"
-                class="d-flex justify-space-between align-center pt-10 px-5"
+                class="d-flex justify-space-between align-center pt-10 px-2"
               >
                 <v-btn
                   @click="_addExchange(exchange)"

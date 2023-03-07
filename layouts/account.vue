@@ -252,57 +252,52 @@
               : 'bottom-svg-container light'
           "
         >
-          <div class="d-flex float-left">
-            <v-btn
-              :ripple="false"
-              active-class="active-icon"
-              class="bottom-button-navigation"
-              value="home"
-              to="/"
-            >
-              <span>Home</span>
-              <v-icon>$vuetify.icons.HomeIcon</v-icon>
-            </v-btn>
-            <v-btn
-              :ripple="false"
-              active-class="active-icon"
-              class="bottom-button-navigation"
-              value="exchange"
-              to="/exchanges"
-            >
-              <span>Exchanges</span>
-              <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
-            </v-btn>
-          </div>
-
-          <div class="bot-button-container">
+          <v-btn
+            :ripple="false"
+            active-class="active-icon"
+            class="bottom-button-navigation"
+            value="home"
+            to="/"
+          >
+            <span>Home</span>
+            <v-icon>$vuetify.icons.HomeIcon</v-icon>
+          </v-btn>
+          <v-btn
+            :ripple="false"
+            active-class="active-icon"
+            class="bottom-button-navigation"
+            value="exchange"
+            to="/exchanges"
+          >
+            <span>Exchanges</span>
+            <v-icon>$vuetify.icons.ExchangeIcon</v-icon>
+          </v-btn>
+          <div class="bot-button-container bottom-button-navigation">
             <v-btn class="bot-button" color="primary" value="bot" to="/bots">
               <span class="white--text">Bots</span>
               <v-icon size="28" color="white">$vuetify.icons.BotIcon</v-icon>
             </v-btn>
           </div>
-          <div class="d-flex float-right">
-            <v-btn
-              :ripple="false"
-              active-class="active-icon"
-              class="bottom-button-navigation"
-              value="trading"
-              to="/advanced-bots"
-            >
-              <span>Advanced</span>
-              <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
-            </v-btn>
-            <v-btn
-              :ripple="false"
-              active-class="active-icon"
-              class="bottom-button-navigation"
-              value="account"
-              to="/account"
-            >
-              <span>Account</span>
-              <v-icon>$vuetify.icons.SettingsIcon</v-icon>
-            </v-btn>
-          </div>
+          <v-btn
+            :ripple="false"
+            active-class="active-icon"
+            class="bottom-button-navigation"
+            value="trading"
+            to="/advanced-bots"
+          >
+            <span>Advanced</span>
+            <v-icon>$vuetify.icons.AdvancedBotIcon</v-icon>
+          </v-btn>
+          <v-btn
+            :ripple="false"
+            active-class="active-icon"
+            class="bottom-button-navigation"
+            value="account"
+            to="/account"
+          >
+            <span>Account</span>
+            <v-icon>$vuetify.icons.SettingsIcon</v-icon>
+          </v-btn>
         </div>
       </div>
     </v-bottom-navigation>
@@ -693,7 +688,7 @@ export default {
 
 .bot-button {
   position: absolute;
-  top: 10%;
+  top: 5%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 100% !important;
@@ -705,8 +700,9 @@ export default {
 }
 
 .bottom-button-navigation {
-  min-height: 80px !important;
-  min-width: 70px !important;
+  min-width: unset !important;
+  width: 20% !important;
+  max-width: 20% !important;
 }
 
 @media only screen and (min-width: 960px) {
@@ -722,11 +718,10 @@ export default {
 }
 
 .bottom-svg-container {
-  width: 95%;
+  width: 96%;
   margin: auto;
   height: 100%;
-  display: grid;
-  grid-template-columns: auto auto auto;
+  display: flex;
   transform: translateY(-10px);
 }
 

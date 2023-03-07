@@ -363,7 +363,11 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-col cols="12" v-if="!tableOnly">
+    <v-col
+      cols="12"
+      :class="checkMobile() == false ? '' : 'pa-0 my-2'"
+      v-if="!tableOnly"
+    >
       <v-btn
         rounded
         class="text-capitalize"
@@ -385,7 +389,7 @@
       </v-btn>
     </v-col>
 
-    <v-col cols="12">
+    <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 my-2'">
       <v-card v-show="showTabs" class="mb-5" flat rounded>
         <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
           <v-tab :ripple="false" v-for="item in tables" :key="item">
@@ -393,10 +397,10 @@
           </v-tab>
         </v-tabs>
       </v-card>
-      <v-card flat rounded>
+      <v-card class="pa-3" flat rounded>
         <v-tabs-items v-model="currentItem" :touchless="true">
           <v-tab-item key="Active Positions">
-            <v-card :key="`${counter}-default`" class="pa-8" flat>
+            <v-card :key="`${counter}-default`" flat>
               <v-row class="mb-3">
                 <v-col cols="12">
                   <v-text-field

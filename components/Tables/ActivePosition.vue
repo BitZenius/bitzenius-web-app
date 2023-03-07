@@ -718,7 +718,7 @@
       Bots for {{ exchange }}
     </v-col>
 
-    <v-col cols="12">
+    <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 ma-0'">
       <v-card v-show="showTabs" class="mb-5" flat rounded>
         <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
           <v-tab :ripple="false" v-for="item in tables" :key="item">
