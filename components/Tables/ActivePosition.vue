@@ -563,7 +563,7 @@
           "
           flat
         >
-          <v-row justify="center" align="center" class="pa-5">
+          <v-row justify="center" align="center" class="pa-1 ma-0">
             <v-col
               @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
               cols="5"
