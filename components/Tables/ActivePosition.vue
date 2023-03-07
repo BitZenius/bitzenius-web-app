@@ -268,6 +268,7 @@
                     v-model="searchQuery"
                     placeholder="Search By Pair"
                     rounded
+                    :hide-details="true"
                     class="custom-input off-white"
                   >
                     <template v-slot:prepend-inner>
@@ -736,6 +737,7 @@
                     v-model="searchQuery"
                     placeholder="Search By Pair"
                     rounded
+                    :hide-details="true"
                     class="custom-input off-white"
                   >
                     <template v-slot:prepend-inner>

@@ -1,5 +1,8 @@
 <template>
-  <div :class="$vuetify.theme.dark ? 'app dark ' : 'app'">
+  <div
+    v-if="checkMobile() == false"
+    :class="$vuetify.theme.dark ? 'app dark ' : 'app'"
+  >
     <v-overlay absolute v-if="isLoading" opacity="0.8" class="text-center">
       <v-progress-circular
         indeterminate
@@ -155,6 +158,91 @@
     </div>
     <!-- ORNAMENTS END -->
   </div>
+  <div v-else :class="$vuetify.theme.dark ? 'mobileApp dark ' : 'mobileApp'">
+    <v-overlay absolute :value="isLoading" opacity="0.8" class="text-center">
+      <v-progress-circular
+        indeterminate
+        color="customGreen"
+        size="50"
+        width="7"
+      />
+      <p v-if="loadingText" class="mt-3">{{ loadingText }}</p>
+    </v-overlay>
+
+    <v-row class="pa-4">
+      <v-col cols="12" class="mt-10">
+        <v-icon @click="$router.push('/')"> mdi-arrow-left </v-icon>
+        Back to Sign in
+      </v-col>
+
+      <v-col cols="12" style="max-width: 100%" class="mb-8">
+        <div class="text-h4 font-weight-bold decorated-text">
+          Reset your password.
+        </div>
+      </v-col>
+
+      <v-col cols="12">
+        <v-form ref="form" v-model="valid" lazy-validation>
+          <v-row class="basic-text--text">
+            <v-col cols="12">
+              <v-text-field
+                v-model="email"
+                :rules="emailRules"
+                required
+                placeholder="Email"
+                dense
+                rounded
+                class="mb-2 custom-input py-2"
+                prepend-inner-icon="$vuetify.icons.MailIcon"
+              >
+              </v-text-field>
+
+              <base-button-animated
+                :loading="isLoading"
+                :disabled="isLoading"
+                style="width: 100%"
+                color="customGreen"
+                depressed
+                @click.native="sendRequest"
+                class="mt-5"
+                :text="'Send Request'"
+              ></base-button-animated>
+              <base-button-animated
+                :loading="isLoading"
+                :disabled="isLoading"
+                style="width: 100%"
+                color="customGreen"
+                depressed
+                @click.native="$router.go(-1)"
+                class="mt-5"
+                :text="'Back'"
+              ></base-button-animated>
+            </v-col>
+          </v-row>
+        </v-form>
+      </v-col>
+
+      <v-col cols="12" v-if="message">
+        <v-alert
+          transition="slide-y-transition"
+          rounded
+          v-show="message"
+          :color="message.color"
+        >
+          <v-row>
+            <v-col class="grow d-flex justify-center align-center white--text">
+              {{ message.text }}
+            </v-col>
+            <v-col class="shrink">
+              <v-btn icon @click.stop="message = null">
+                <v-icon>mdi-close</v-icon>
+              </v-btn>
+            </v-col>
+          </v-row>
+        </v-alert>
+      </v-col>
+    </v-row>
+  </div>
 </template>
 
 <script>
@@ -163,7 +251,7 @@ export default {
   components: { BaseButtonAnimated },
   layout: "default",
   data: () => ({
-    loadingText:null,
+    loadingText: null,
     valid: true,
     email: "",
     emailRules: [
@@ -181,7 +269,6 @@ export default {
       const valid = this.$refs.form.validate();
       this.isLoading = true;
 
-
       if (valid) {
         this.isLoading = true;
         this.$api
@@ -189,16 +276,16 @@ export default {
             email: this.email,
           })
           .then((result) => {
-            console.log('result', result);
+            console.log("result", result);
             this.isLoading = false;
-            this.loadingText = "Your reset-password email has been sent!"
+            this.loadingText = "Your reset-password email has been sent!";
             this.message = {
               text: result.message,
               color: "success",
             };
           })
           .catch((err) => {
-            console.log('err',err);
+            console.log("err", err);
             this.message = {
               text: err.response.data.message,
               color: "error",
