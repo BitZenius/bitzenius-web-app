@@ -465,7 +465,6 @@ export default {
           });
         });
     },
-
     async getUserNotifications() {
       this.$api
         .$get("/user/user-notifications")

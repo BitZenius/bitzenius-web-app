@@ -599,7 +599,6 @@ export default {
         strategy: false,
         formula: false,
       },
-
       // AVERAGING STEPS
       customDrop: null,
       customBuy: null,

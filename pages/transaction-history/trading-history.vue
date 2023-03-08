@@ -373,7 +373,7 @@ export default {
       if(this.searchPair){
         tempParams.search = this.search;
       }
-
+      
       if (this.dates.length > 0) {
         tempParams.dates = [];
         this.dates.forEach((date, id) => {
