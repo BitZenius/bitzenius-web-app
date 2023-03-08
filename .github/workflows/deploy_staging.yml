@@ -56,11 +56,11 @@ jobs:
         with:
           args: use bitzenius-staging
         env:
-          FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+          FIREBASE_TOKEN: ${{secrets.STAGING_FIREBASE_TOKEN}}
       - name: Deploy to Firebase
         uses: w9jds/firebase-action@master
         with:
-          args: deploy --only hosting:bitzenius-staging-a9d27
+          args: deploy --only hosting:bitzenius-staging
           path: dist
         env:
-          FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
+          FIREBASE_TOKEN: ${{secrets.STAGING_FIREBASE_TOKEN}}
