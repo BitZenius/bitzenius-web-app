@@ -14,8 +14,8 @@ on:
  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  SERVER: ${{ secrets.SERVER }}
-  BOT_ID: ${{ secrets.BOT_ID }}
+  SERVER: ${{ secrets.DEV_SERVER }}
+  BOT_ID: ${{ secrets.DEV_BOT_ID }}
 jobs:
   build:
     name: Build
@@ -37,8 +37,8 @@ jobs:
           name: dist
           path: dist
         env:
-          API_URL: ${{secrets.API_URL}}
-          SOCKET_URL: ${{secrets.SOCKET_URL}}
+          API_URL: ${{secrets.DEV_API_URL}}
+          SOCKET_URL: ${{secrets.DEV_SOCKET_URL}}
   deploy:
     name: Deploy
     needs: build
