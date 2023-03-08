@@ -1,0 +1,15 @@
+<template>
+  <svg
+    id="plus"
+    xmlns="http://www.w3.org/2000/svg"
+    width="16"
+    height="16"
+    viewBox="0 0 16 16"
+  >
+    <path
+      id="Vector"
+      d="M6,14a2,2,0,0,0,4,0V10h4a2,2,0,0,0,0-4H10V2A2,2,0,0,0,6,2V6H2a2,2,0,0,0,0,4H6Z"
+      fill="currentColor"
+    />
+  </svg>
+</template>

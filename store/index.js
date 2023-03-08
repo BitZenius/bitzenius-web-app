@@ -1,7 +1,10 @@
+export const strict = false
+
 export const state = () => ({
   title: 'BitZenius',
   authUser: null,
   subscription: null,
+  hasTrial: false,
   token: null,
   theme: 'dark',
   isLoading: false,
@@ -12,6 +15,10 @@ export const state = () => ({
   },
   globalCss: {
     topMargin: 0
+  },
+  profileCompletion: {
+    step: 0,
+    stepTotal: 1
   }
 })
 
@@ -39,13 +46,13 @@ export const mutations = {
   setToken(state, token) {
     state.token = token;
   },
-  setUser (state, user) {
+  setUser(state, user) {
     state.authUser = {
       ...state.authUser,
       ...user
     }
   },
-  setTitle (state, title) {
+  setTitle(state, title) {
     state.title = title
   },
   setTheme(state, theme) {
@@ -65,6 +72,15 @@ export const mutations = {
       ...state.globalCss,
       ...globalCss
     }
+  },
+  setHasTrial(state, trial) {
+    state.hasTrial = trial
+  },
+  setProfileCompletion(state, data) {
+    state.profileCompletion = {
+      step: data.step,
+      stepTotal: data.step_total
+    }
   }
 }
 
@@ -72,6 +88,13 @@ export const getters = {
   isLoggedIn: (state) => {
     try {
       return state.authUser.uid !== null
+    } catch {
+      return false
+    }
+  },
+  getToken: (state) => {
+    try {
+      return state.token
     } catch {
       return false
     }
@@ -91,5 +114,15 @@ export const getters = {
   },
   snackbar: (state) => {
     return state.snackbar
+  },
+  profileCompletion: (state) => {
+    try {
+      return state.profileCompletion
+    } catch (error) {
+      return {
+        step: 0,
+        stepTotal: 1
+      }
+    }
   }
 }

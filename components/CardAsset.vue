@@ -1,78 +1,165 @@
 <template>
-  <v-card class="pa-2" elevation="8">
+  <v-card v-if="checkMobile() == false" class="pa-2 custom-card" flat>
     <v-list-item two-line>
-      <v-list-item-avatar size="60" color="primary">
-        <v-icon large dark>
-          mdi-currency-btc
-        </v-icon>
+      <v-list-item-avatar size="40" color="off-white-2">
+        <v-img
+          max-width="25px"
+          max-height="25px"
+          :src="require('~/assets/images/box-icon.svg')"
+          position="center"
+        ></v-img>
       </v-list-item-avatar>
       <v-list-item-content>
-        <v-list-item-subtitle>
+        <v-list-item-subtitle
+          class="basic-text--text font-weight-bold text-body-1 mb-1"
+        >
           Crypto Assets
-          <v-tooltip top>
-            <template v-slot:activator="{ on, attrs }">
-              <v-icon
-                v-bind="attrs"
-                v-on="on"
-                size="18"
-              >
-                mdi-help-circle
-              </v-icon>
-            </template>
-            <span>All crypto assets in your exchange equivalent to USDT</span>
-          </v-tooltip>
         </v-list-item-subtitle>
-        <v-list-item-title class="text-h5 font-weight-bold indigo--text text--lighten-2">
-          <v-skeleton-loader
-            v-if="loading"
-            loading
-            type="heading"
-          />
+        <v-list-item-title
+          class="text-h5 font-weight-bold basic-text--text text--lighten-2"
+        >
+          <v-skeleton-loader v-if="loading" loading type="heading" />
           <div v-else>
             <!-- {{balance.equivalent_usdt | currency('$', 2)}} -->
-            <span v-if="convertFinished">${{value.first}}<small>.{{value.second}}</small></span>                
+            <span v-if="convertFinished"
+              >${{ value.first }}.{{ value.second }}</span
+            >
           </div>
         </v-list-item-title>
       </v-list-item-content>
     </v-list-item>
+
+    <v-tooltip top color="primary">
+      <template v-slot:activator="{ on, attrs }">
+        <v-icon
+          v-bind="attrs"
+          v-on="on"
+          size="18"
+          color="primary"
+          class="absolute-tooltip"
+        >
+          mdi-help-circle
+        </v-icon>
+      </template>
+      <span>All crypto assets in your exchange equivalent to USDT</span>
+    </v-tooltip>
+
+    <!-- ORNAMENTS -->
+    <div class="ornament-1"></div>
+    <!-- ORNAMENTS END -->
+  </v-card>
+  <v-card v-else class="pa-2 custom-card" flat>
+    <v-row align="center">
+      <v-col cols="12" class="d-flex flex-column align-left">
+        <v-list-item-avatar
+          size="40"
+          color="#F4F7FD"
+          class="ma-0"
+          style="align-self: start !important"
+        >
+          <v-img
+            max-width="25px"
+            max-height="25px"
+            :src="require('~/assets/images/box-icon.svg')"
+            position="center"
+          ></v-img>
+        </v-list-item-avatar>
+        <span class="basic-text--text font-weight-bold text-body-1 mt-3">
+          Crypto Assets
+        </span>
+        <span class="text-h6 font-weight-black basic-text--text">
+          <v-skeleton-loader v-if="loading" loading type="heading" />
+          <div v-else>
+            <!-- {{balance.equivalent_usdt | currency('$', 2)}} -->
+            <span v-if="convertFinished"
+              >${{ value.first }}.{{ value.second }}</span
+            >
+          </div>
+        </span>
+      </v-col>
+    </v-row>
+
+    <v-tooltip top color="primary">
+      <template v-slot:activator="{ on, attrs }">
+        <v-icon
+          v-bind="attrs"
+          v-on="on"
+          size="18"
+          color="primary"
+          class="absolute-tooltip"
+        >
+          mdi-help-circle
+        </v-icon>
+      </template>
+      <span>All crypto assets in your exchange equivalent to USDT</span>
+    </v-tooltip>
+
+    <!-- ORNAMENTS -->
+    <div class="ornament-1"></div>
+    <!-- ORNAMENTS END -->
   </v-card>
 </template>
 
 <script>
 export default {
-  props:['balance', 'loading'],
+  props: ["balance", "loading"],
   data() {
-      return {
-          value: 0,
-          convertFinished:false
-      }
+    return {
+      value: 0,
+      convertFinished: false,
+    };
   },
-  computed: {
-  },
-  mounted(){
-    if(this.balance.equivalent_usdt <= 0){
-      this.value = {first:0, second:'0000'};
+  computed: {},
+  mounted() {
+    if (this.balance.equivalent_usdt <= 0) {
+      this.value = { first: 0, second: "0000" };
       this.convertFinished = true;
     }
   },
-  methods:{
-    processValue(){
+  methods: {
+    processValue() {
       let value = {};
-      if(this.balance.equivalent_usdt > 0){
-        let string = String(parseFloat(this.balance.equivalent_usdt).toFixed(2)).split(".");
+      if (this.balance.equivalent_usdt > 0) {
+        let string = String(
+          parseFloat(this.balance.equivalent_usdt).toFixed(2)
+        ).split(".");
         value.first = parseFloat(string[0]);
-        value.second = parseFloat(string[1]);
+        value.second = string[1];
         this.value = value;
         this.convertFinished = true;
-      }else{
-        this.value = {first:0, second:'0000'};
+      } else {
+        this.value = { first: 0, second: "0000" };
+        this.convertFinished = true;
       }
-    }
+    },
   },
-  watch:{
-    balance(ov,nv){
+  watch: {
+    balance(ov, nv) {
       this.processValue();
-    }
-  }
-}
+    },
+  },
+};
 </script>
+
+<style scoped>
+.custom-card {
+  position: relative;
+}
+.absolute-tooltip {
+  position: absolute;
+  top: 10%;
+  right: 5%;
+}
+
+.ornament-1 {
+  position: absolute;
+  width: 50%;
+  height: 4px;
+  border-radius: 8px;
+  background: var(--primary);
+
+  left: 50%;
+  top: 100%;
+  transform: translate(-50%, -50%);
+}
+</style>

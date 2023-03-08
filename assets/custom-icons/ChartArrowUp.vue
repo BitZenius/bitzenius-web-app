@@ -1,0 +1,44 @@
+<template>
+  <svg
+    id="chart-arrow-up_01"
+    data-name="chart-arrow-up 01"
+    xmlns="http://www.w3.org/2000/svg"
+    width="31.476"
+    height="30.333"
+    viewBox="0 0 31.476 30.333"
+  >
+    <g id="chart">
+      <path
+        id="Rectangle_407"
+        data-name="Rectangle 407"
+        d="M2.928,0A2.926,2.926,0,0,1,5.856,2.924V17.542a2.928,2.928,0,0,1-5.856,0V2.924A2.926,2.926,0,0,1,2.928,0Z"
+        transform="translate(24.522 9.868)"
+        fill="currentColor"
+        opacity="0.4"
+      />
+      <path
+        id="Rectangle_408"
+        data-name="Rectangle 408"
+        d="M2.928,0A2.926,2.926,0,0,1,5.856,2.924V5.847A2.928,2.928,0,0,1,0,5.847V2.924A2.926,2.926,0,0,1,2.928,0Z"
+        transform="translate(1.098 21.562)"
+        fill="currentColor"
+        opacity="0.4"
+      />
+      <path
+        id="Rectangle_409"
+        data-name="Rectangle 409"
+        d="M2.928,0A2.926,2.926,0,0,1,5.856,2.924v8.771a2.928,2.928,0,0,1-5.856,0V2.924A2.926,2.926,0,0,1,2.928,0Z"
+        transform="translate(12.81 15.715)"
+        fill="currentColor"
+        opacity="0.4"
+      />
+      <path
+        id="Vector_Stroke_"
+        data-name="Vector (Stroke)"
+        d="M24.888,1.1a1.1,1.1,0,0,1,1.1-1.1h2.928a2.56,2.56,0,0,1,2.562,2.558V5.482a1.1,1.1,0,0,1-2.2,0V3.671c-5.685,4.547-10.093,7.5-14.361,9.478A44.219,44.219,0,0,1,1.237,16.8a1.1,1.1,0,1,1-.278-2.175A42.045,42.045,0,0,0,14,11.159c3.966-1.837,8.138-4.6,13.619-8.967H25.986A1.1,1.1,0,0,1,24.888,1.1Z"
+        transform="translate(0 0)"
+        fill="currentColor"
+      />
+    </g>
+  </svg>
+</template>

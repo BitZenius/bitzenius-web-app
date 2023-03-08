@@ -1,0 +1,35 @@
+<template>
+  <svg
+    id="gift"
+    xmlns="http://www.w3.org/2000/svg"
+    width="29"
+    height="29"
+    viewBox="0 0 29 29"
+  >
+    <g id="gift-2" data-name="gift">
+      <path
+        id="Union"
+        d="M9.788,3.171A6.882,6.882,0,0,0,3.987,0a3.988,3.988,0,0,0,0,7.975h11.6a3.988,3.988,0,0,0,0-7.975A6.882,6.882,0,0,0,9.788,3.171ZM3.987,5.8H8.574A4.714,4.714,0,0,0,3.987,2.175a1.813,1.813,0,0,0,0,3.625Zm11.6,0H11a4.714,4.714,0,0,1,4.586-3.625,1.812,1.812,0,1,1,0,3.625Z"
+        transform="translate(4.712 0)"
+        fill="currentColor"
+        fill-rule="evenodd"
+        opacity="0.4"
+      />
+      <path
+        id="Rectangle_118"
+        data-name="Rectangle 118"
+        d="M0,2.9A2.9,2.9,0,0,1,2.9,0H26.1A2.9,2.9,0,0,1,29,2.9V5.8a2.9,2.9,0,0,1-2.9,2.9H2.9A2.9,2.9,0,0,1,0,5.8Z"
+        transform="translate(0 5.8)"
+        fill="currentColor"
+      />
+      <path
+        id="Rectangle_119"
+        data-name="Rectangle 119"
+        d="M0,0H23.2V11.6a2.9,2.9,0,0,1-2.9,2.9H2.9A2.9,2.9,0,0,1,0,11.6Z"
+        transform="translate(2.9 14.5)"
+        fill="currentColor"
+        opacity="0.4"
+      />
+    </g>
+  </svg>
+</template>

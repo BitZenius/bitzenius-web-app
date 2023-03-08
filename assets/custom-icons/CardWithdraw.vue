@@ -1,0 +1,39 @@
+<template>
+  <svg
+    id="card_withdraw"
+    data-name="card withdraw"
+    xmlns="http://www.w3.org/2000/svg"
+    width="19.002"
+    height="18.166"
+    viewBox="0 0 19.002 18.166"
+  >
+    <path
+      id="Rectangle_923"
+      data-name="Rectangle 923"
+      d="M0,2.073A2.282,2.282,0,0,1,2.445,0h11a2.282,2.282,0,0,1,2.445,2.073,2.282,2.282,0,0,1-2.445,2.073h-11A2.282,2.282,0,0,1,0,2.073Z"
+      transform="translate(0 5.73)"
+      fill="currentColor"
+      opacity="0.4"
+    />
+    <path
+      id="Vector"
+      d="M13.448,0H2.649A2.414,2.414,0,0,0,0,2.073,2.414,2.414,0,0,0,2.649,4.145h10.8a2.282,2.282,0,0,0,2.445-2.073A2.282,2.282,0,0,0,13.448,0Z"
+      transform="translate(0 11.459)"
+      fill="currentColor"
+    />
+    <path
+      id="Vector-2"
+      data-name="Vector"
+      d="M13.448,0H2.649A2.414,2.414,0,0,0,0,2.073,2.414,2.414,0,0,0,2.649,4.145h10.8a2.282,2.282,0,0,0,2.445-2.073A2.282,2.282,0,0,0,13.448,0Z"
+      fill="currentColor"
+    />
+    <path
+      id="Vector-3"
+      data-name="Vector"
+      d="M8.291,4.145A4.145,4.145,0,1,0,4.145,8.291,4.145,4.145,0,0,0,8.291,4.145Z"
+      transform="translate(10.712 9.875)"
+      fill="currentColor"
+      opacity="0.4"
+    />
+  </svg>
+</template>
