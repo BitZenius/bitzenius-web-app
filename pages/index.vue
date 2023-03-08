@@ -110,9 +110,7 @@
                 ></apexchart>
 
                 <template v-else>
-                  <BaseNoData
-                    :label="`No Statistic for this Selected Exchange`"
-                  ></BaseNoData>
+                  <BaseNoData :label="`No Statistic Available`"></BaseNoData>
                 </template>
               </v-card>
             </v-col>
@@ -226,9 +224,7 @@
                 ></apexchart>
 
                 <template v-else>
-                  <BaseNoData
-                    :label="`No Statistic for this Selected Exchange`"
-                  ></BaseNoData>
+                  <BaseNoData :label="`No Statistic Available`"></BaseNoData>
                 </template>
               </v-card>
             </v-col>
@@ -366,7 +362,9 @@ export default {
           },
           xaxis: {
             categories: [],
-            tickPlacement: "on",
+            labels: {
+              show: false,
+            },
           },
           theme: {
             mode: "dark",
@@ -393,6 +391,11 @@ export default {
                 },
               },
             ],
+            tooltip: {
+              x: {
+                format: "dd MMM yyyy",
+              },
+            },
           },
         },
         series: [
@@ -520,19 +523,29 @@ export default {
               this.chartData.options.xaxis.categories = [];
               this.chartData.series = [{ name: "P&L", data: [] }];
             } else {
-              console.log(res.categories);
+              // MOBILE AND DESKTOP FORMAT
+              var isMobile = this.checkMobile();
+              var dailyFormat = isMobile ? "DD-MM-YYYY" : "DD";
+              var monthlyFormat = isMobile ? "MMM" : "MMM";
+
+              if (isMobile) {
+                this.chartData.options.xaxis.labels.show = false;
+              } else {
+                this.chartData.options.xaxis.labels.show = true;
+
+              }
+
               var newCategories = res.categories.map((r) => {
                 if (r.includes("-")) {
-                  var date = this.$moment(r, "DD-MM-YYYY").format("D");
-                  var now = this.$moment().format("D");
-                  console.log(date);
+                  var date = this.$moment(r, "DD-MM-YYYY").format(dailyFormat);
+                  var now = this.$moment().format(dailyFormat);
                   if (date == now) {
                     this.chartData.options.annotations.xaxis[0].x = now;
                   }
                   return date;
                 } else {
-                  var date = this.$moment(r, "MMM").format("MMM");
-                  var now = this.$moment().format("MMM");
+                  var date = this.$moment(r, "MMM").format(monthlyFormat);
+                  var now = this.$moment().format(monthlyFormat);
                   if (date == now) {
                     this.chartData.options.annotations.xaxis[0].x = now;
                   }
@@ -552,6 +565,10 @@ export default {
                 value.push(convert);
               });
               this.chartData.series[0].data = res.series;
+              console.log(
+                "this.chartData.series[0].data",
+                this.chartData.series[0].data
+              );
             }
             this.$forceUpdate();
           } else {
