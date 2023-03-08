@@ -9,13 +9,6 @@
           "bitzenius-dev"
         ]
       }
-    },
-    "bitzenius-staging": {
-      "hosting": {
-        "bitzenius-staging": [
-          "bitzenius-staging"
-        ]
-      }
     }
   }
 }
