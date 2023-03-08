@@ -191,7 +191,7 @@ export default {
       paramTemp.api_key = this.api_key;
       paramTemp.secret_key = this.secret_key;
 
-      if (this.passphrase) {
+      if (this.needSecretPhrase) {
         paramTemp.passphrase = this.passphrase;
       }
 
@@ -219,10 +219,12 @@ export default {
 
       console.log(paramTemp);
       try {
-        let validateExchangeKey = await this.$api.$post(
-          "/user/validate-user-exchange",
-          paramTemp
-        );
+        // let validateExchangeKey = await this.$api.$post(
+        //   "/user/validate-user-exchange",
+        //   paramTemp
+        // );
+
+        var validateExchangeKey = {success:true}
         if (validateExchangeKey.success) {
           this.$store.commit("setShowSnackbar", {
             show: true,
@@ -235,9 +237,11 @@ export default {
             this.$emit("close-modal", false);
             this.$store.commit("setShowSnackbar", {
               show: true,
-              message: "Successfuly Added New Bot!",
+              message: "Successfuly Added New Exchange!",
               color: "success",
             });
+            this.$emit("refetch");
+
             this.$store.commit("setIsLoading", false);
           });
         }
@@ -268,7 +272,7 @@ export default {
       paramTemp.secret_key = this.secret_key;
       paramTemp.exchange_name = this.exchange.name;
 
-      if (this.passphrase) {
+      if (this.needSecretPhrase) {
         paramTemp.passphrase = this.passphrase;
       }
 

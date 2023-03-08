@@ -1,5 +1,5 @@
 <template>
-  <v-row class="pa-5" v-if="checkMobile() == false">
+  <v-row class="pa-5" :key="divKey" v-if="checkMobile() == false">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -120,6 +120,7 @@
                       <v-icon> mdi-pencil </v-icon>
                     </v-btn>
                     <v-btn
+                      @click="_deleteExchange(exchange)"
                       class="mx-2"
                       fab
                       x-small
@@ -179,16 +180,6 @@
               </v-card>
             </div>
           </v-col>
-          <v-col v-if="false" cols="12" class="d-flex px-0 pt-0">
-            <v-col
-              v-for="(exchange, index) in exchanges"
-              :key="index"
-              sm="6"
-              md="4"
-              lg="3"
-            >
-            </v-col>
-          </v-col>
         </v-row>
       </v-card>
     </v-col>
@@ -203,6 +194,7 @@
         :data="data"
         :exchange="selectedExchange"
         @close-modal="closeModal"
+        @refetch="refetch"
       />
     </BaseModal>
 
@@ -222,7 +214,7 @@
       </template>
     </v-snackbar>
   </v-row>
-  <v-row class="pa-1 ma-0" v-else>
+  <v-row class="pa-1 ma-0" :key="divKey" v-else>
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -283,6 +275,7 @@
                   <v-icon> mdi-pencil </v-icon>
                 </v-btn>
                 <v-btn
+                  @click="_deleteExchange(exchange)"
                   class="mx-2"
                   fab
                   x-small
@@ -388,6 +381,7 @@
         :data="data"
         :exchange="selectedExchange"
         @close-modal="closeModal"
+        @refetch="refetch"
       />
     </BaseModalMobile>
 
@@ -429,6 +423,7 @@ export default {
   },
   data() {
     return {
+      divKey: 0,
       title: "My Exchanges",
       dialog: false,
       dialogDelete: false,
@@ -465,6 +460,7 @@ export default {
         //   comingsoon: true,
         // },
       ],
+
       // END OF CARD EXCHANGE
 
       // MODAL EXCHANGE
@@ -564,12 +560,58 @@ export default {
   },
   beforeDestroy() {},
   methods: {
+    resetExchanges() {
+      console.log("BEFORE resetExchanges", this.exchanges);
+      this.exchanges = [
+        {
+          name: "Binance",
+          selected: false,
+          active: false,
+          image: "/exchange_logo/binance.png",
+          comingsoon: false,
+        },
+        // {
+        //   name: "Bybit",
+        //   selected: false,
+        //   active: false,
+        //   image: "/exchange_logo/bybit.png",
+        //   comingsoon: false,
+        // },
+        {
+          name: "Kucoin",
+          selected: false,
+          active: false,
+          image: "/exchange_logo/kucoin.png",
+          comingsoon: false,
+        },
+        // {
+        //   name: "Tokocrypto",
+        //   selected: false,
+        //   active: false,
+        //   image: "/exchange_logo/tokocrypto.png",
+        //   comingsoon: true,
+        // },
+      ];
+
+      for (let index = 0; index < this.exchanges.length; index++) {
+        const element = this.exchanges[index];
+        element.active = false;
+      }
+
+      console.log("AFTER resetExchanges", this.exchanges);
+    },
+    refetch() {
+      setTimeout(() => {
+        this.$router.go();
+      }, 1000);
+    },
     handleAnimation: function (anim) {
       this.anim = anim;
     },
     // FETCH API
     async _fetchExchanges() {
       console.log("FETCHING DATA EXCHANGES");
+      this.resetExchanges();
       let res = await this.$api.$get("/user/exchange");
       this.clientExchanges = res.data;
       console.log("DATA EXCHANGES", res.data);
@@ -578,6 +620,10 @@ export default {
           console.log(exchange.exchange_name);
           for (let i = 0; i < this.exchanges.length; i++) {
             let currentExchange = this.exchanges[i];
+            if (currentExchange.active == true) {
+              continue;
+            }
+
             console.log(
               `comparing ${currentExchange.name} & ${exchange.exchange_name} ==`
             );
@@ -618,6 +664,36 @@ export default {
       await this._fetchExchanges();
       console.log(this.clientExchanges);
       console.log(this.exchanges);
+    },
+    async _deleteExchange(exchange) {
+      this.$store.commit("setIsLoading", true);
+
+      try {
+        let res = await this.$api.$delete("/user/exchange", {
+          params: {
+            id: exchange.id,
+          },
+        });
+
+        if (res.success) {
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: `Successfuly deleted ${exchange.name}`,
+            color: "success",
+          });
+
+          this.refetch();
+        }
+      } catch (error) {
+        console.log("_deleteExchange", error);
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Deleting exchange fails",
+          color: "danger",
+        });
+      }
+
+      this.$store.commit("setIsLoading", false);
     },
     _addExchange(exchange) {
       this.data = null;

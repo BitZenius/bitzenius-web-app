@@ -306,14 +306,14 @@
                   </v-chip>
                 </template>
                 <template v-slot:no-data>
-                  <BaseNoData
-                    v-if="!selectedExchangeActive"
-                    :label="`No advanced bots`"
-                  ></BaseNoData>
-                  <BaseNoDataAutomatedBots
-                    v-else
-                    :label="`Assembling automated bots`"
-                  ></BaseNoDataAutomatedBots>
+                  <template v-if="!isBuildingBot">
+                    <BaseNoData :label="`No automated bots`"></BaseNoData>
+                  </template>
+                  <v-row v-else>
+                    <v-col cols="12" class="text-center">
+                      Creating your bots, this might take a while...
+                    </v-col>
+                  </v-row>
                 </template>
               </v-data-table>
               <v-card
@@ -321,7 +321,7 @@
                 v-if="isBuildingBot"
               >
                 <BaseBuildingBotLoading
-                  :label="`Assembling your bots...`"
+                  :label="`Assembling bots...`"
                 ></BaseBuildingBotLoading>
               </v-card>
             </v-card>
@@ -649,14 +649,14 @@
                   </v-chip>
                 </template>
                 <template v-slot:no-data>
-                  <BaseNoData
-                    v-if="!selectedExchangeActive"
-                    :label="`No automated bots`"
-                  ></BaseNoData>
-                  <BaseNoDataAutomatedBots
-                    v-else
-                    :label="`Assembling automated bots`"
-                  ></BaseNoDataAutomatedBots>
+                  <template v-if="!isBuildingBot">
+                    <BaseNoData :label="`No automated bots`"></BaseNoData>
+                  </template>
+                  <v-row v-else>
+                    <v-col cols="12" class="text-center">
+                      Creating your bots, this might take a while...
+                    </v-col>
+                  </v-row>
                 </template>
               </v-data-table>
               <v-card
@@ -664,7 +664,7 @@
                 v-if="isBuildingBot"
               >
                 <BaseBuildingBotLoading
-                  :label="`Assembling your bots...`"
+                  :label="`Assembling bots...`"
                 ></BaseBuildingBotLoading>
               </v-card>
             </v-card>
@@ -978,7 +978,7 @@ export default {
     exchange(val) {
       this.counter++;
       this._fetchBotsList(val);
-      this._fetchAutomatedSetup();
+      this._fetchAdvancedSetup();
     },
   },
   async mounted() {
@@ -987,7 +987,7 @@ export default {
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
       this._fetchBotsList(this.exchange); // Fetch Bots List
-      this._fetchAutomatedSetup();
+      this._fetchAdvancedSetup();
       this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
@@ -1031,15 +1031,14 @@ export default {
     },
     //FETCH API
 
-    async _fetchAutomatedSetup() {
-      this.isLoading = true;
+    async _fetchAdvancedSetup() {
       this.isBuildingBot = false;
       let res = await this.$api.$get("/user/advanced-bot", {
         params: {
           type: this.defaultType,
         },
       });
-      console.log("_fetchAutomatedSetup", res);
+      console.log("_fetchAdvancedSetup", res);
       if (res.data.length > 0) {
         res.data.forEach((setup) => {
           if (setup.code == 0) {
@@ -1047,9 +1046,7 @@ export default {
             return;
           }
         });
-      } else {
       }
-      this.isLoading = false;
     },
     async _fetchUserExchange() {
       let res = await this.$api.$get("/user/bot", {});
