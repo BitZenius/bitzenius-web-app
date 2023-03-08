@@ -19,7 +19,7 @@
       ]
     },
     {
-      "site": "bitzenius-staging",
+      "site": "bitzenius-staging-2306a",
       "public": "dist",
       "ignore": [
         "firebase.json",
