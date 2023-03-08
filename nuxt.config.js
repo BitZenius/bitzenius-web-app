@@ -1,3 +1,5 @@
+const firebaseConfig = JSON.parse(process.env.FIREBASE_CONFIG)
+
 export default {
   // Disable server-side rendering: https://go.nuxtjs.dev/ssr-mode
   ssr: false,
@@ -69,15 +71,7 @@ export default {
     [
       '@nuxtjs/firebase',
       {
-        config: {
-          apiKey: "AIzaSyDKrjb-Epw_u_iZ_uxS7u4Uc6ptBzxheeI",
-          authDomain: "bitzenius-dev.firebaseapp.com",
-          projectId: "bitzenius-dev",
-          storageBucket: "bitzenius-dev.appspot.com",
-          messagingSenderId: "504024137179",
-          appId: "1:504024137179:web:1ea51f3c23b571fbcafbfe"
-          // measurementId: 'G-QF8GLLXCM6'
-        },
+        config: firebaseConfig,
         services: {
           auth: {
             persistence: 'local',
