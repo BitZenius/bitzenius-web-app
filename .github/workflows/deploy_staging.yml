@@ -16,6 +16,7 @@ on:
 env:
   SERVER: ${{ secrets.STAGING_SERVER }}
   BOT_ID: ${{ secrets.STAGING_BOT_ID }}
+  FIREBASE_CONFIG: ${{ secrets.STAGING_FIREBASE_CONFIG }}
 jobs:
   build:
     name: Build
