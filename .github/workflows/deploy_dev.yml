@@ -6,7 +6,7 @@ name: Build And Deploy Dev
 on:
   # Triggers the workflow on push or pull request events but only for the master branch
   push:
-    branches: [ main ]
+    branches: [ dev ]
  
  
   # Allows you to run this workflow manually from the Actions tab
@@ -14,18 +14,15 @@ on:
  
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  SERVER: ${{ secrets.SERVER }}
-  BOT_ID: ${{ secrets.BOT_ID }}
+  SERVER: ${{ secrets.DEV_SERVER }}
+  BOT_ID: ${{ secrets.DEV_BOT_ID }}
 jobs:
   build:
     name: Build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
-        with:
-          repository: ${{github.repository}}
-          ref: main
+        uses: actions/checkout@v3
       - uses: actions/setup-node@v3
         with:
           node-version: 16.16.0
@@ -35,22 +32,22 @@ jobs:
       - name: Build dependencies
         run: npm run build
       - name: Archive production artifact
-        uses: actions/upload-artifact@main
+        uses: actions/upload-artifact@v3
         with:
           name: dist
           path: dist
         env:
-          API_URL: ${{secrets.API_URL}}
-          SOCKET_URL: ${{secrets.SOCKET_URL}}
+          API_URL: ${{secrets.DEV_API_URL}}
+          SOCKET_URL: ${{secrets.DEV_SOCKET_URL}}
   deploy:
     name: Deploy
     needs: build
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repository
-        uses: actions/checkout@main
+        uses: actions/checkout@v3
       - name: Download artifact
-        uses: actions/download-artifact@main
+        uses: actions/download-artifact@v3
         with:
           name: dist
           path: dist

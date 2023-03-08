@@ -1,37 +1,93 @@
 <template>
-<v-card>
-    <v-card-title class="text-h5 lighten-2">
-        <slot name="title"></slot>
-    </v-card-title>
-    <v-card-text class="mt-3 mb-0 pb-0">
-        <slot name="body"></slot>
-    </v-card-text>
-    <v-card-actions class="my-2" >
-        <v-spacer></v-spacer>
-        <slot name="button"></slot>
-    </v-card-actions>
-</v-card>
+  <v-dialog
+    v-model="showDialog"
+    :max-width="maxWidth"
+    :fullscreen="$vuetify.breakpoint.mobile"
+    :persistent="persistent"
+  >
+    <slot></slot>
+  </v-dialog>
 </template>
 
 <script>
 export default {
-    data() {
-        return {}
+  props: {
+    parentModel: false,
+    maxWidth: String,
+    persistent: {
+      type: Boolean,
+      default: () => {
+        return false;
+      },
     },
-    methods: {}
-}
+  },
+  data() {
+    return {
+      showDialog: false,
+      styleElement: null,
+    };
+  },
+  mounted() {},
+  methods: {
+    // CSS HIJACK
+    applyStyle(styleDef) {
+      let styleElement = document.createElement("style");
+      styleElement.type = "text/css";
+      document.head.appendChild(styleElement);
+      styleElement.innerHTML = styleDef;
+      return styleElement;
+    },
+  },
+  computed: {
+    style() {
+      if (this.showDialog) {
+        return `
+        .v-overlay--active {
+          background: #1a202c4d 0% 0% no-repeat padding-box;
+          opacity: 1;
+          backdrop-filter: blur(4px);
+        }
+        `;
+      }
+      return "";
+    },
+  },
+  watch: {
+    style: function (style) {
+      if (this.styleElement) {
+        this.styleElement.parentNode.removeChild(this.styleElement);
+      }
+      this.styleElement = this.applyStyle(style);
+    },
+    parentModel: {
+      handler(nv, ov) {
+        this.showDialog = nv;
+      },
+      immediate: true,
+    },
+    showDialog: {
+      handler(nv, ov) {
+        if (nv == false) {
+          this.$emit("close");
+        }
+      },
+    },
+  },
+};
 </script>
 
 <style scoped>
-.balance-container {
-    padding: 5px 15px;
-    border-radius: 5px;
-    position: relative;
+.custom-card {
+  position: relative;
+  background-color: var(--primary);
+}
+.no-padding {
+  padding: 0px !important;
 }
 
-.balance-container .v-btn {
-    position: absolute;
-    width: 150px;
-    right: 15px;
+.text-chip {
+  padding: 20px;
+  background-color: #f4f7fd;
+  border-radius: 20px;
 }
 </style>

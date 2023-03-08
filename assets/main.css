@@ -1,0 +1,97 @@
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  transition: background-color 0s ease-in-out 50000s;
+  -webkit-text-fill-color: black !important;
+}
+
+.v-card:not(.no-shadow).theme--light {
+  box-shadow: 0px 20px 25px #3394F80D !important;
+}
+
+.v-card.theme--dark {
+  box-shadow: unset !important;
+}
+
+@media (prefers-color-scheme: dark) {
+
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  input:-webkit-autofill:active {
+    transition: background-color 0s ease-in-out 50000s;
+    -webkit-text-fill-color: gray !important;
+  }
+}
+
+@media only screen and (max-width: 1023px) {
+  .row {
+    max-width: 100vw !important;
+  }
+
+  body {
+    overflow: hidden !important;
+    touch-action:none;
+  }
+
+  html {
+    overflow: hidden !important;
+  }
+
+  #__nuxt {
+    height: 100vh;
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch !important;
+  }
+
+  #__nuxt::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+/* prevent pull-to-refresh for Safari 16+ */
+@media screen and (pointer: coarse) {
+  @supports (-webkit-backdrop-filter: blur(1px) and (overscroll-behavior-y: none)  {
+    html {
+      min-height: 100.3%;
+      overscroll-behavior-y: none;
+    }
+  }
+}
+
+/* prevent pull-to-refresh for Safari 9~15 */
+@media screen and (pointer: coarse) {
+  @supports (-webkit-backdrop-filter: blur(1px)) and (not (overscroll-behavior-y: none))  {
+    html {
+      height: 100%;
+      overflow: hidden;
+    }
+    body {
+      margin: 0px;
+      max-height: 100%; /* or `height: calc(100% - 16px);` if body has default margin */
+      overflow: auto;
+      -webkit-overflow-scrolling: touch;
+    }
+    /* in this case to disable pinch-zoom, set `touch-action: pan-x pan-y;` on `body` instead of `html` */
+  }
+}
+
+/* prevent pull-to-refresh for Chrome 63+ */
+body{
+  overscroll-behavior-y: none;
+}
+
+.no-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.custom-input {
+  margin-top: 0px !important;
+  padding: 0px !important;
+}
+
+.no-margin-input * .v-input__slot {
+  margin: 0 !important;
+}

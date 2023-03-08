@@ -1,0 +1,626 @@
+<template>
+  <v-card flat rounded class="pa-3">
+    <h3 class="text-h6 font-weight-bold">Choose the Strategy</h3>
+    <v-row
+      class="d-flex align-center justify-center pt-0 mt-0"
+      style="width: 100%"
+    >
+      <v-col cols="12">
+        <v-radio-group v-model="selectedStrategyName">
+          <v-row
+            class="d-flex align-start justify-start pt-0 mt-0"
+            style="width: 100%"
+          >
+            <v-col
+              cols="12"
+              md="4"
+              class="pt-0"
+              v-for="(item, i) in styleList"
+              :key="i"
+            >
+              <v-radio :value="item.name">
+                <template v-slot:label>
+                  <strong class="text-body-2 font-weight-bold">{{
+                    item.name
+                  }}</strong>
+                </template>
+              </v-radio>
+            </v-col>
+          </v-row>
+        </v-radio-group>
+      </v-col>
+    </v-row>
+    <v-list-item class="mb-5" v-if="strategy.style.steps">
+      <!-- <v-list-item-avatar> -->
+      <v-icon size="30" class="primary--text mr-3">
+        $vuetify.icons.ProfitBarChartIcon
+      </v-icon>
+      <!-- </v-list-item-avatar> -->
+      <v-list-item-content>
+        <v-list-item-title class="text-h5 font-weight-bold">{{
+          isForceCustom ? "Custom" : selectedStrategyName
+        }}</v-list-item-title>
+      </v-list-item-content>
+    </v-list-item>
+
+    <v-simple-table
+      v-if="strategy.style.steps"
+      :key="`${strategy.style.name}`"
+      dense
+      style="overflow-y: auto; max-height: 400px"
+    >
+      <template>
+        <thead>
+          <tr>
+            <th>
+              <strong class="text-body-1 font-weight-bold basic-text--text"
+                >Step</strong
+              >
+            </th>
+            <th>
+              <strong class="text-body-1 font-weight-bold basic-text--text"
+                >Drop Rate</strong
+              >
+            </th>
+            <th>
+              <strong class="text-body-1 font-weight-bold basic-text--text"
+                >Buy Multiplier</strong
+              >
+            </th>
+            <th>
+              <strong class="text-body-1 font-weight-bold basic-text--text"
+                >Take Profit</strong
+              >
+            </th>
+            <th v-if="advancedBotsType.length > 1">
+              <strong class="text-body-1 font-weight-bold basic-text--text"
+                >Type</strong
+              >
+            </th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr
+            class="text-center"
+            v-for="(child, y, key) in strategy.style.steps"
+            :key="key"
+            @click="selectRow(child, y)"
+          >
+            <template v-if="editStep == y">
+              <td class="text-body-1">
+                {{ y + 1 }}
+                <div class="d-flex">
+                  <v-btn
+                    @click="saveRowChanges"
+                    x-small
+                    class="mx-1"
+                    color="success"
+                  >
+                    <v-icon small>mdi-check</v-icon>
+                  </v-btn>
+                  <v-btn
+                    @click="cancelRowChanges"
+                    x-small
+                    class="mx-1"
+                    color="danger"
+                  >
+                    <v-icon small>mdi-cancel</v-icon>
+                  </v-btn>
+                </div>
+              </td>
+              <td>
+                <v-text-field
+                  class="text-body-1"
+                  v-model="customDrop"
+                  placeholder="1.2"
+                >
+                  <v-icon x-small slot="append" color="primary">
+                    mdi-percent
+                  </v-icon>
+                </v-text-field>
+              </td>
+              <td>
+                <v-text-field
+                  class="text-body-1"
+                  v-model="customBuy"
+                  placeholder="2"
+                >
+                  <v-icon x-small slot="append" color="primary">
+                    mdi-close
+                  </v-icon>
+                </v-text-field>
+              </td>
+              <td>
+                <v-text-field
+                  class="text-body-1"
+                  v-model="customProfit"
+                  placeholder="1.1"
+                >
+                  <v-icon x-small slot="append" color="primary">
+                    mdi-percent
+                  </v-icon>
+                </v-text-field>
+              </td>
+              <td v-if="advancedBotsType.length > 1">
+                <v-select :items="types" v-model="customType"></v-select>
+              </td>
+            </template>
+            <template v-else>
+              <td class="text-body-1 d-flex align-center justify-center">
+                <v-btn
+                  v-if="y + 1 == strategy.style.steps.length"
+                  @click="deleteRow(y)"
+                  x-small
+                  class="mx-1"
+                  color="danger"
+                >
+                  <v-icon small>mdi-delete</v-icon>
+                </v-btn>
+                {{ y + 1 }}
+              </td>
+              <td class="text-body-1">
+                <div class="d-flex align-center">
+                  <span>{{ child.drop_rate }}</span>
+                  <v-icon x-small slot="append" color="primary">
+                    mdi-percent
+                  </v-icon>
+                </div>
+              </td>
+              <td class="text-body-1">
+                <div class="d-flex align-center">
+                  <span>{{ child.multiplier }}</span>
+                  <v-icon x-small slot="append" color="primary">
+                    mdi-close
+                  </v-icon>
+                </div>
+              </td>
+              <td class="text-body-1">
+                <div class="d-flex align-center">
+                  <span>{{ child.take_profit }}</span>
+                  <v-icon x-small slot="append" color="primary">
+                    mdi-percent
+                  </v-icon>
+                </div>
+              </td>
+              <td class="text-body-1" v-if="advancedBotsType.length > 1">
+                <span v-if="advancedBotsType.length == 1">{{
+                  advancedBotsType[0]
+                }}</span>
+                <span v-else>{{ child.type }}</span>
+              </td>
+            </template>
+          </tr>
+          <tr
+            v-if="
+              selectedStrategyName == 'Custom' &&
+              strategy.style.steps.length > 0
+            "
+          >
+            <td style="text-align: center" colspan="5">
+              <v-btn x-small @click="resetRowCustom" class="danger--text"
+                >RESET CUSTOM STRATEGY</v-btn
+              >
+            </td>
+          </tr>
+          <tr v-if="selectedStrategyName == 'Custom'">
+            <td v-if="selectedStrategyName == 'Custom'">
+              <v-btn
+                class="primary basic-text--text"
+                small
+                @click="
+                  addRowCustom(customDrop, customBuy, customProfit, customType)
+                "
+                >+</v-btn
+              >
+            </td>
+            <td>
+              <v-text-field
+                class="text-body-1"
+                v-model="customDrop"
+                placeholder="1.2"
+              >
+                <v-icon x-small slot="append" color="primary">
+                  mdi-percent
+                </v-icon>
+              </v-text-field>
+            </td>
+            <td>
+              <v-text-field
+                class="text-body-1"
+                v-model="customBuy"
+                placeholder="2"
+              >
+                <v-icon x-small slot="append" color="primary">
+                  mdi-close
+                </v-icon>
+              </v-text-field>
+            </td>
+            <td>
+              <v-text-field
+                class="text-body-1"
+                v-model="customProfit"
+                placeholder="1.1"
+              >
+                <v-icon x-small slot="append" color="primary">
+                  mdi-percent
+                </v-icon>
+              </v-text-field>
+            </td>
+            <td v-if="advancedBotsType.length > 1">
+              <v-select
+                :items="types"
+                v-model="customType"
+                label="Type"
+              ></v-select>
+            </td>
+          </tr>
+        </tbody>
+      </template>
+    </v-simple-table>
+    <v-col cols="12" class="d-flex justify-end">
+      <slot> </slot>
+    </v-col>
+  </v-card>
+</template>
+
+<script>
+export default {
+  props: {
+    advancedBotsType: {
+      type: Array,
+      default: () => {
+        return [];
+      },
+    },
+    selectedStrategy: {
+      type: Object,
+      default: () => {
+        return {};
+      },
+    },
+  },
+  data() {
+    return {
+      selectedStrategyName: null,
+      isForceCustom: false,
+      strategy: {
+        usdt_to_apply: 0,
+        usdt_per_order: 0,
+        max_concurrent_trading_pair: 0,
+        style: {
+          name: null,
+        },
+      },
+      applyBalance: 100,
+      selectedItem: 1,
+      styleList: [],
+      // CUSTOM STRATEGY
+      customDrop: null,
+      customBuy: null,
+      customProfit: null,
+      customType: null,
+      customStyle: {
+        name: "Custom",
+        active: false,
+        steps: [],
+        key: "E",
+      },
+      types: [],
+
+      // EDIT ROW
+      editStep: null,
+
+      // RECOMMENDED
+      recommendedMaxTradingPair: [0, ""],
+    };
+  },
+  methods: {
+    // FETCH API
+    async fetchFormula() {
+      console.log("FETCHING DATA USER BOT");
+      let res = await this.$api.$get("/user/formula");
+      this.styleList = res.data;
+      this.styleList.push(this.customStyle);
+      console.log("styleList", this.styleList);
+    },
+
+    // TRIGGER
+    onUsdtPerOrderChanged(value) {
+      let usdtValue = parseFloat(value);
+      if (usdtValue < 15) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "USDT Per Order Cannot Be Under 15!",
+          color: "customPink",
+        });
+
+        setTimeout(() => {
+          this.strategy.usdt_per_order = 15;
+          this.$refs.usdt_per_order.focus();
+        });
+      }
+
+      this.resetRecommendedSettings();
+    },
+    onUsdtToApplyChanged(value) {
+      this.resetRecommendedSettings();
+    },
+    checkGridDCA(step) {
+      if (this.advancedBotsType !== []) {
+        this.types = this.advancedBotsType;
+      }
+
+      if (this.types.length == 1) {
+        return;
+      }
+
+      if (!this.strategy.style || !this.strategy.style.steps) {
+        return;
+      }
+
+      var stepsArray = this.strategy.style.steps.map((item) => {
+        return item.type;
+      });
+      var stepsBefore = stepsArray.slice(0, step);
+      var stepsAfter = stepsArray.slice(step + 1, stepsArray.length - step);
+
+      var isDCABefore = stepsBefore.includes("DCA");
+      var isGridBefore = stepsBefore.includes("GRID");
+      var isDCAAfter = stepsAfter.includes("DCA");
+
+      if (isDCABefore && isGridBefore) {
+        this.types = ["GRID"];
+      } else if (isDCABefore && !isGridBefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCAAfter) {
+        this.types = ["DCA"];
+      } else if (isDCAAfter && !isDCABefore) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCABefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else {
+        this.types = ["DCA", "GRID"];
+      }
+    },
+    selectRow(child, step) {
+      this.checkGridDCA(step);
+      if (this.editStep == step) {
+        return;
+      }
+      this.customDrop = child.drop_rate;
+      this.customBuy = child.multiplier;
+      this.customProfit = child.take_profit;
+      this.customType = child.type;
+
+      this.editStep = step;
+    },
+    deleteRow(step) {
+      // ACCOMMODATE ONLY THE LAST ITEM ON ARRAY
+      this.customStyle.steps = [...this.strategy.style.steps];
+      this.customStyle.steps.pop();
+
+      this.isForceCustom = true;
+      this.selectedStrategyName = "Custom";
+    },
+    cancelRowChanges() {
+      setTimeout(() => {
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        this.editStep = null;
+      }, 100);
+    },
+    saveRowChanges() {
+      this.isForceCustom = true;
+      var temp = [...this.strategy.style.steps];
+
+      console.log("TEMP: ", temp);
+
+      // this.selectStyleByName("Custom");
+      this.selectedStrategyName = "Custom";
+
+      setTimeout(() => {
+        console.log("TEMP: ", temp);
+        this.customStyle.steps = [...temp];
+
+        this.customStyle.steps[this.editStep] = {
+          step: this.editStep,
+          drop_rate: this.customDrop,
+          multiplier: this.customBuy,
+          take_profit: this.customProfit,
+          type: this.customType,
+        };
+
+        this.strategy.style.steps = [...this.customStyle.steps];
+
+        setTimeout(() => {
+          this.customDrop = null;
+          this.customBuy = null;
+          this.customProfit = null;
+          this.customType = null;
+          this.editStep = null;
+        }, 100);
+      }, 100);
+    },
+    addRowCustom(drop, multiplier, profit, type) {
+      // if GRID selected, don't allow to select DCA;
+      if (type == "GRID") {
+        this.types = ["GRID"];
+      }
+
+      if (!drop || !multiplier || !profit) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Please don't leave any strategy input empty!",
+          color: "customPink",
+        });
+      } else {
+        let strategy = {};
+        strategy.step = this.customStyle.steps.length;
+        strategy.drop_rate = parseFloat(drop);
+        strategy.multiplier = parseFloat(multiplier);
+        strategy.take_profit = parseFloat(profit);
+        strategy.type = type;
+        this.customStyle.steps.push(strategy);
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        // this.styleList[4] = this.customStyle;
+      }
+    },
+    resetRowCustom() {
+      this.types = ["DCA", "GRID"];
+      this.customStyle = {
+        name: "Custom",
+        active: true,
+        steps: [],
+        key: "E",
+      };
+      this.styleList[4] = this.customStyle;
+      this.strategy.style = this.customStyle;
+      this.$forceUpdate();
+    },
+    removeRowCustom(index) {
+      this.customStyle.steps[index];
+    },
+    selectStyleByName(val) {
+      for (let i = 0; i < this.styleList.length; i++) {
+        if (this.styleList[i].name == val) {
+          this.selectStyle(this.styleList[i]);
+          break;
+        }
+      }
+    },
+    selectStyle(val) {
+      console.log(val);
+      this.strategy.style = { ...val };
+      for (let i = 0; i < this.styleList.length; i++) {
+        this.styleList[i].active = false;
+      }
+    },
+
+    clearData() {
+      alert("TESTREF");
+      this.strategy = {
+        usdt_to_apply: 0,
+        usdt_per_order: 0,
+        max_concurrent_trading_pair: 0,
+        style: {
+          name: null,
+        },
+      };
+      this.styleList = [];
+      this.fetchFormula();
+    },
+
+    async _logger() {
+      console.log("strategy", this.strategy);
+      console.log("styleList", this.styleList);
+      console.log(this.customStyle);
+
+      // await this.fetchFormula
+    },
+
+    // RECOMMENDED SETTINGS
+    resetRecommendedSettings() {
+      this.recommendedMaxTradingPair = [0, ""];
+    },
+    recommendSettings() {
+      if (!this.selectedStrategyName) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Please select strategy",
+          color: "customPink",
+        });
+        return false;
+      } else if (this.strategy.usdt_per_order < 15) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "USDT Per Order Cannot Be Under 15!",
+          color: "customPink",
+        });
+        return false;
+      }
+
+      this.recommendedMaxTradingPair = this.recommendMaxTradingPairs(
+        this.strategy.style.steps,
+        this.strategy.usdt_to_apply,
+        this.strategy.usdt_per_order
+      );
+      this.strategy.max_concurrent_trading_pair = Math.floor(
+        this.recommendedMaxTradingPair[0]
+      );
+    },
+
+    /**
+     *
+     * @param {*} array Array of steps
+     * @param {*} usdt_to_apply
+     * @param {*} usdt_per_order
+     * @returns Array[recommended value, text: recommended value ex: between x - x]
+     * Calculate recommended max trading pairs by user's total usdt to apply and usdt per order
+     */
+    recommendMaxTradingPairs(array, usdt_to_apply, usdt_per_order) {
+      console.log(array);
+      var total_usdt_per_pair = 0;
+
+      if (array.length < 1) {
+        return [0, ""];
+      }
+
+      for (let index = 0; index < array.length; index++) {
+        const element = array[index];
+        total_usdt_per_pair += usdt_per_order * element.multiplier;
+      }
+
+      var recommended_pair = usdt_to_apply / total_usdt_per_pair;
+      var recommended_pair_text = `Recommended max trading pairs: ${Math.floor(
+        recommended_pair
+      )} - ${Math.ceil(recommended_pair)}`;
+
+      return [recommended_pair, recommended_pair_text];
+    },
+  },
+  mounted() {
+    if (this.selectedStrategy) {
+      this.strategy = { ...this.selectedStrategy };
+      this.selectedStrategyName = this.strategy.style.name;
+    }
+    this.fetchFormula();
+    this.checkGridDCA();
+  },
+  watch: {
+    strategy: {
+      handler(nv, ov) {
+        nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
+        nv.usdt_per_order = nv.usdt_per_order
+          ? parseFloat(nv.usdt_per_order)
+          : 1;
+        nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair
+          ? parseFloat(nv.max_concurrent_trading_pair)
+          : 1;
+
+        this.$emit("onSelected", nv);
+      },
+      deep: true,
+    },
+    selectedStrategyName: {
+      handler(nv, ov) {
+        this.recommendedMaxTradingPair = [0, ""];
+        this.isForceCustom = false;
+
+        this.selectStyleByName(nv);
+      },
+    },
+  },
+};
+</script>
+
+<style>
+.custom-input {
+  margin-top: 0px !important;
+  padding: 0px !important;
+}
+</style>

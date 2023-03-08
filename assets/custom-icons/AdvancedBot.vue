@@ -1,0 +1,37 @@
+<template>
+  <svg
+    id="Huge-icon_interface_bulk_cpu"
+    data-name="Huge-icon/interface/bulk/cpu"
+    xmlns="http://www.w3.org/2000/svg"
+    width="21.5"
+    height="21.5"
+    viewBox="0 0 21.5 21.5"
+  >
+    <g id="cpu">
+      <path
+        id="Vector_479_Stroke_"
+        data-name="Vector 479 (Stroke)"
+        d="M8.75,0A.75.75,0,0,1,9.5.75v2H8v-2A.75.75,0,0,1,8.75,0Zm4,0a.75.75,0,0,1,.75.75v2H12v-2A.75.75,0,0,1,12.75,0ZM0,8.75A.75.75,0,0,1,.75,8h2V9.5h-2A.75.75,0,0,1,0,8.75ZM18.75,8h2a.75.75,0,0,1,0,1.5h-2ZM0,12.75A.75.75,0,0,1,.75,12h2v1.5h-2A.75.75,0,0,1,0,12.75ZM18.75,12h2a.75.75,0,0,1,0,1.5h-2ZM9.5,18.75v2a.75.75,0,0,1-1.5,0v-2Zm4,0v2a.75.75,0,0,1-1.5,0v-2Z"
+        fill="currentColor"
+        fill-rule="evenodd"
+      />
+      <path
+        id="Rectangle_127"
+        data-name="Rectangle 127"
+        d="M0,4A4,4,0,0,1,4,0h8a4,4,0,0,1,4,4v8a4,4,0,0,1-4,4H4a4,4,0,0,1-4-4Z"
+        transform="translate(2.75 2.75)"
+        fill="currentColor"
+        opacity="0.3"
+      />
+      <rect
+        id="Rectangle_128"
+        data-name="Rectangle 128"
+        width="6"
+        height="6"
+        rx="2"
+        transform="translate(7.75 7.75)"
+        fill="currentColor"
+      />
+    </g>
+  </svg>
+</template>

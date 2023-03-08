@@ -1,33 +1,107 @@
 // Ref: https://github.com/nuxt-community/vuetify-module#customvariables
+:root {
+  --primary: #3394F8;
+  --primary-grey: #F4F7FD;
+  --text: #000000;
+}
+
+
+
+
+/* width */
+::-webkit-scrollbar {
+  height: 4px;
+  width: 5px;
+  margin-right: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  box-shadow: inset 0 0 5px var(--primary-grey);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 10px;
+}
+
+body::-webkit-scrollbar {
+  width: 0px;
+}
+
+// @font-face {
+//   font-family: 'Nunito';
+//   src: url('~assets/fonts/Nunito-ExtraLight.ttf') format('truetype');
+//   font-weight: 100;
+// }
+
+// @font-face {
+//   font-family: 'Nunito';
+//   src: url('~assets/fonts/Nunito-Light.ttf') format('truetype');
+//   font-weight: 300;
+// }
+
+// @font-face {
+//   font-family: 'Nunito';
+//   src: url('~assets/fonts/Nunito-Regular.ttf') format('truetype');
+//   font-weight: 400;
+// }
+
+// @font-face {
+//   font-family: 'Nunito';
+//   src: url('~assets/fonts/Nunito-Bold.ttf') format('truetype');
+//   font-weight: 600;
+// }
+
+// @font-face {
+//   font-family: 'Nunito';
+//   src: url('~assets/fonts/Nunito-ExtraBold.ttf') format('truetype');
+//   font-weight: 700;
+// }
+
+// @font-face {
+//   font-family: 'Nunito';
+//   src: url('~assets/fonts/Nunito-Black.ttf') format('truetype');
+//   font-weight: 900;
+// }
+
+
+
 
 $body-font-family: 'Nunito';
-$font-size-root: 16px;
-$input-font-size: 16px;
-$list-item-title-font-size: 16px;
-$list-item-subtitle-font-size: 16px;
-$list-item-dense-title-font-size: 16px;
-$list-item-dense-subtitle-font-size: 16px;
-$data-table-regular-header-font-size: 16px;
-$data-table-regular-row-font-size: 16px;
+$font-size-root: 13.5px;
+$input-font-size: 13.5px;
+$list-item-title-font-size: 13.5px;
+$list-item-subtitle-font-size: 13.5px;
+$list-item-dense-title-font-size: 13.5px;
+$list-item-dense-subtitle-font-size: 13.5px;
+$data-table-regular-header-font-size: 13.5px;
+$data-table-regular-row-font-size: 13.5px;
 $btn-letter-spacing: 0;
 $btn-font-weight: 700;
+$btn-text-transform: unset;
 $border-radius-root: 10px;
 $shadow-key-umbra-opacity: rgba(#222222, 0.1);
 $shadow-key-penumbra-opacity: rgba(#222222, 0.07);
 $shadow-key-ambient-opacity: rgba(#222222, 0.06);
 $navigation-drawer-border-width: 0;
 $material-dark: (
-  app-bar: #222222,
-  navigation-drawer: #222222,
-  bottom-navigation: #222222,
-  background: #222222,
-  cards: #2B2B2B
+  app-bar: #212434,
+  navigation-drawer: #212434,
+  bottom-navigation: #1D1F2B,
+  background: #1D1F2B,
+  cards: #212434
 );
 
 $material-light: (
-  app-bar: #F5F5F5,
-  navigation-drawer: #F5F5F5,
-  bottom-navigation: #F5F5F5,
-  background: #F5F5F5,
+  app-bar: #FFFFFF,
+  navigation-drawer: #FFFFFF,
+  bottom-navigation: #F4F7FD,
+  background: #F4F7FD,
   cards: #FFFFFF
 );
+
+.v-data-table>.v-data-table__wrapper>table>tbody>tr>td {
+  border: none !important;
+}
