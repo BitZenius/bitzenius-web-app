@@ -14,8 +14,8 @@ on:
 
 # A workflow run is made up of one or more jobs that can run sequentially or in parallel
 env:
-  SERVER: ${{ secrets.SERVER }}
-  BOT_ID: ${{ secrets.BOT_ID }}
+  SERVER: ${{ secrets.STAGING_SERVER }}
+  BOT_ID: ${{ secrets.STAGING_BOT_ID }}
 jobs:
   build:
     name: Build
@@ -37,8 +37,8 @@ jobs:
           name: dist
           path: dist
         env:
-          API_URL: ${{secrets.API_URL}}
-          SOCKET_URL: ${{secrets.SOCKET_URL}}
+          API_URL: ${{secrets.STAGING_API_URL}}
+          SOCKET_URL: ${{secrets.STAGING_SOCKET_URL}}
   deploy:
     name: Deploy
     needs: build
@@ -54,7 +54,7 @@ jobs:
       - name: Change to project Bitzenius Dev
         uses: w9jds/firebase-action@master
         with:
-          args: use bitzenius-dev
+          args: use bitzenius-staging
         env:
           FIREBASE_TOKEN: ${{secrets.FIREBASE_TOKEN}}
       - name: Deploy to Firebase
