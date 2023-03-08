@@ -1037,7 +1037,7 @@ export default {
           selected: false,
           active: false,
           image: "/exchange_logo/kucoin.png",
-          comingsoon: true,
+          comingsoon: false,
           summary: [
             { value: "-", title: "Strategy" },
             { value: "-", title: "Total Allocated USDT" },

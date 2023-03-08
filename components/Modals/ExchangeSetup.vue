@@ -219,12 +219,11 @@ export default {
 
       console.log(paramTemp);
       try {
-        // let validateExchangeKey = await this.$api.$post(
-        //   "/user/validate-user-exchange",
-        //   paramTemp
-        // );
+        let validateExchangeKey = await this.$api.$post(
+          "/user/validate-user-exchange",
+          paramTemp
+        );
 
-        var validateExchangeKey = {success:true}
         if (validateExchangeKey.success) {
           this.$store.commit("setShowSnackbar", {
             show: true,
@@ -240,7 +239,6 @@ export default {
               message: "Successfuly Added New Exchange!",
               color: "success",
             });
-            this.$emit("refetch");
 
             this.$store.commit("setIsLoading", false);
           });
@@ -249,7 +247,9 @@ export default {
         console.log(error.message);
         this.$store.commit("setShowSnackbar", {
           show: true,
-          message: "Please insert valid api key and secret key",
+          message: this.needSecretPhrase
+            ? "Please insert valid api key, secret key, and passphrase"
+            : "Please insert valid api key and secret key",
           color: "customPink",
         });
         this.$store.commit("setIsLoading", false);
@@ -332,7 +332,9 @@ export default {
         console.log(error.message);
         this.$store.commit("setShowSnackbar", {
           show: true,
-          message: "Please insert valid api key and secret key",
+          message: this.needSecretPhrase
+            ? "Please insert valid api key, secret key, and passphrase"
+            : "Please insert valid api key and secret key",
           color: "customPink",
         });
         this.$store.commit("setIsLoading", false);

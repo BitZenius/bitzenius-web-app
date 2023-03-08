@@ -361,6 +361,9 @@ export default {
     },
 
     checkGridDCA(step) {
+      if (!this.strategy.style.steps) {
+        return;
+      }
       var stepsArray = this.strategy.style.steps.map((item) => {
         return item.type;
       });

@@ -567,6 +567,9 @@ export default {
       this.resetRecommendedSettings();
     },
     checkGridDCA(step) {
+      if (!this.strategy.style.steps) {
+        return;
+      }
       var stepsArray = this.strategy.style.steps.map((item) => {
         return item.type;
       });
@@ -800,8 +803,7 @@ export default {
       this.selectedStrategyName = this.strategy.style.name;
     }
     this.fetchFormula();
-    this.checkGridDCA()
-
+    this.checkGridDCA();
   },
   watch: {
     strategy: {
