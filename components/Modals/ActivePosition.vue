@@ -208,7 +208,7 @@
                     <span
                       style="width: 10px; height: 10px; border-radius: 5px"
                       :class="[
-                        item.value > 0 || item.value.length > 1
+                        item.value && (item.value > 0 || item.value.length > 1)
                           ? 'success'
                           : 'grey',
                       ]"
@@ -239,7 +239,7 @@
               </v-col>
             </v-row>
 
-            <v-row v-show="tab == 1">
+            <v-row v-show="tab == 1" v-if="conditionItems">
               <v-col
                 v-for="(item, i) in conditionItems"
                 :key="`conditionItems-${i}`"
@@ -295,10 +295,10 @@
             </v-row>
           </v-col>
         </v-row>
-        <v-row>
+        <v-row v-if="conditionItems">
           <v-col cols="12">
             <v-data-table
-              v-show="tab == 10"
+              v-show="tab == 1"
               :headers="tableTitle"
               :items="conditionItems"
               hide-default-header
@@ -351,9 +351,8 @@
                         <th>Type</th>
                       </tr>
                     </thead>
-                    <tbody>
+                    <tbody v-if="steps">
                       <tr
-                        v-if="steps[0]"
                         class="text-center"
                         v-for="(child, y, key) in steps"
                         :key="child.key"
@@ -447,7 +446,7 @@
             <!-- END OF FORMULA -->
           </v-col>
         </v-row>
-        <v-row v-if="tab != 2">
+        <v-row v-if="tab != 2 && detail.positions">
           <v-col cols="12" md="4">
             <v-btn
               color="customPink white--text"
@@ -760,7 +759,7 @@ export default {
         });
       } else {
         let strategy = {};
-        strategy.step = this.steps.length;
+        strategy.step = this.steps ? this.steps.length : 0;
         strategy.drop_rate = parseFloat(drop);
         strategy.multiplier = parseFloat(multiplier);
         strategy.take_profit = parseFloat(profit);

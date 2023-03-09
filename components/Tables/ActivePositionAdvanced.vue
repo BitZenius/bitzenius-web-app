@@ -992,8 +992,12 @@ export default {
       // END OF CONNECT TO SOCKET IO
     } else {
       // this._fetchBotsList("Binance");
+      this._fetchAdvancedSetup();
       this._fetchUserExchange(); // Fetch User Exchang
     }
+
+    // BOTS SOCKET
+    this.initialStream(this.listenStream);
   },
   unmounted() {},
   beforeDestroy() {
@@ -1004,7 +1008,38 @@ export default {
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
+    listenStream() {
+      // BOTS STREAM
+      this.realtimeUpdateSocket.on("bots-insert", (data) => {
+        console.log("LISTEN bots insert", data);
+        this.activePosition.push(data);
+      });
+      this.realtimeUpdateSocket.on("bots-update", (data) => {
+        console.log("LISTEN bots update", data);
+        let index = this.activePosition.findIndex(
+          (b) => b.symbol == data.symbol
+        );
+        if (index < 0) return;
+        this.activePosition[index] = data;
+      });
+      this.realtimeUpdateSocket.on("bots-delete", (data) => {
+        console.log("LISTEN bots delete", data);
+        let index = this.activePosition.findIndex((b) => b._id == data);
+        if (index < 0) return;
+        this.activePosition.splice(index, 1);
+      });
 
+      // ADVANCED SETUPS STREAM
+      this.realtimeUpdateSocket.on("advanced-setups-insert", (data) => {
+        this._fetchAdvancedSetup()
+      });
+      this.realtimeUpdateSocket.on("advanced-setups-update", (data) => {
+        this._fetchAdvancedSetup()
+      });
+      this.realtimeUpdateSocket.on("advanced-setups-delete", (data) => {
+       this._fetchAdvancedSetup()
+      });
+    },
     getImgUrl(val) {
       try {
         let url = require("@/static/token_logo/" + val.toUpperCase() + ".png");
@@ -1032,7 +1067,6 @@ export default {
     //FETCH API
 
     async _fetchAdvancedSetup() {
-      this.isBuildingBot = false;
       let res = await this.$api.$get("/user/advanced-bot", {
         params: {
           type: this.defaultType,
@@ -1044,6 +1078,8 @@ export default {
           if (setup.code == 0) {
             this.isBuildingBot = true;
             return;
+          } else {
+            this.isBuildingBot = false;
           }
         });
       }

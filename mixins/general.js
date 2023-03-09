@@ -1,7 +1,10 @@
+import io from "socket.io-client";
+
 export default {
   data() {
     return {
-      tawkToInitialized: false
+      tawkToInitialized: false,
+      realtimeUpdateSocket: null,
     }
   },
   computed: {
@@ -11,6 +14,10 @@ export default {
     subscription() {
       return this.$store.state.subscription;
     },
+    currentUser() {
+      return this.$store.$fire.auth.currentUser;
+    },
+
   },
   watch: {
     tawkToInitialized(val) {
@@ -59,5 +66,22 @@ export default {
         this.tawkToInitialized = true
       }, 5000)
     },
+
+    // REALTIME DATA STREAM
+    async initialStream(cb) {
+      let token = await this.currentUser.getIdToken();
+      this.realtimeUpdateSocket = io(process.env.SERVER, {
+        path: "/realtime-update",
+        auth: { token },
+      });
+
+      await cb()
+    },
+  },
+  beforeDestroy() {
+    if (this.realtimeUpdateSocket) {
+      console.log("DISCONNECTING realtimeUpdateSocket")
+      this.realtimeUpdateSocket?.close();
+    }
   }
 }

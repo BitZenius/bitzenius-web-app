@@ -985,7 +985,6 @@
 </template>
 
 <script>
-import io from "socket.io-client";
 import { mapActions } from "vuex";
 
 import Form from "~/pages/bots/form.vue";
@@ -1167,6 +1166,9 @@ export default {
     user() {
       return this.$store.state.authUser;
     },
+    currentUser() {
+      return this.$store.$fire.auth.currentUser;
+    },
     activePositionFiltered() {
       let temp = this.activePosition;
       if (this.searchQuery != "" && this.searchQuery) {
@@ -1263,16 +1265,40 @@ export default {
       // this._fetchBotsList("Binance");
       this._fetchUserExchange(); // Fetch User Exchang
     }
+
+    // BOTS SOCKET
+    this.initialStream(this.listenStream);
   },
   unmounted() {},
   beforeDestroy() {
     this.socket?.close();
+
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
     // });
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
+    listenStream() {
+      this.realtimeUpdateSocket.on("bots-insert", (data) => {
+        console.log("LISTEN bots insert", data);
+        this.activePosition.push(data);
+      });
+      this.realtimeUpdateSocket.on("bots-update", (data) => {
+        console.log("LISTEN bots update", data);
+        let index = this.activePosition.findIndex(
+          (b) => b.symbol == data.symbol
+        );
+        if (index < 0) return;
+        this.activePosition[index] = data;
+      });
+      this.realtimeUpdateSocket.on("bots-delete", (data) => {
+        console.log("LISTEN bots delete", data);
+        let index = this.activePosition.findIndex((b) => b._id == data);
+        if (index < 0) return;
+        this.activePosition.splice(index, 1);
+      });
+    },
     refetch() {
       for (let index = 0; index < this.exchanges.length; index++) {
         this.exchanges[index].selected = false;
@@ -1356,51 +1382,52 @@ export default {
         });
       }
     },
-    streamBinance(activePosition) {
-      console.log(activePosition);
+    streamBinance() {
+      console.log(this.activePosition);
       this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
-      this.socket.onmessage = function (event) {
+      this.socket.onmessage = (event) => {
         let data = JSON.parse(event.data);
-        let index = activePosition.findIndex((b) => b.symbol == data.s);
+        let index = this.activePosition.findIndex((b) => b.symbol == data.s);
         if (index < 0) return;
-        activePosition[index].price.value = data.c;
-        activePosition[index].price.percentage = data.P;
+        this.activePosition[index].price.value = data.c;
+        this.activePosition[index].price.percentage = data.P;
 
         // PNL CALCULATION
-        if (activePosition[index].quantity > 0) {
+        if (this.activePosition[index].quantity > 0) {
           // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
           // data.c   = Current Price (from binance stream)
-          let average = parseFloat(activePosition[index].average);
+          let average = parseFloat(this.activePosition[index].average);
           let percentage =
             average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-          let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
+          let pnl =
+            parseFloat(this.activePosition[index].amountUsd) * percentage;
 
-          percentage = pnl / activePosition[index].amountUsd;
+          percentage = pnl / this.activePosition[index].amountUsd;
 
           // Floating P&L
-          activePosition[index].floatingProfit = {};
-          activePosition[index].floatingProfit.value = pnl.toFixed(3);
-          activePosition[index].floatingProfit.percentage = (
+          this.activePosition[index].floatingProfit = {};
+          this.activePosition[index].floatingProfit.value = pnl.toFixed(3);
+          this.activePosition[index].floatingProfit.percentage = (
             percentage * 100
           ).toFixed(3);
 
           // Realized P&L
-          activePosition[index].realizedProfit = {};
-          activePosition[index].realizedProfit.value =
-            activePosition[index].grid_profit.toFixed(3);
-          activePosition[index].realizedProfit.percentage =
-            activePosition[index].amountUsd > 0
+          this.activePosition[index].realizedProfit = {};
+          this.activePosition[index].realizedProfit.value =
+            this.activePosition[index].grid_profit.toFixed(3);
+          this.activePosition[index].realizedProfit.percentage =
+            this.activePosition[index].amountUsd > 0
               ? (
-                  (activePosition[index].grid_profit /
-                    activePosition[index].amountUsd) *
+                  (this.activePosition[index].grid_profit /
+                    this.activePosition[index].amountUsd) *
                   100
                 ).toFixed(3)
               : 0;
 
           // Total P&L
-          pnl += activePosition[index].grid_profit;
-          percentage = pnl / activePosition[index].amountUsd;
-          activePosition[index].profit.value = pnl.toFixed(3);
+          pnl += this.activePosition[index].grid_profit;
+          percentage = pnl / this.activePosition[index].amountUsd;
+          this.activePosition[index].profit.value = pnl.toFixed(3);
 
           /**
            * 1. Floating P&L  ()
@@ -1409,7 +1436,7 @@ export default {
            */
 
           let convertPercentage = percentage * 100;
-          activePosition[index].profit.percentage =
+          this.activePosition[index].profit.percentage =
             convertPercentage.toFixed(3);
         }
       };
@@ -1427,7 +1454,7 @@ export default {
         .then(async (res) => {
           this.activePosition = res.data;
           this.availablePair = res.pairs;
-          await this.streamBinance(this.activePosition);
+          await this.streamBinance();
         })
         .catch((err) => {})
         .finally(() => {
