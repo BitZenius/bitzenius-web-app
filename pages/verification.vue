@@ -11,7 +11,7 @@
           :options="lottieOptions"
           v-on:animCreated="handleAnimation"
         />
-        <h3 class="basic--text">
+        <h3 class="basic-text--text">
           {{ message }}
         </h3>
         <div class="d-flex justify-center align-center mt-4">
@@ -19,7 +19,7 @@
             :loading="isLoading"
             depressed
             rounded
-            class="primary basic-text--text text-capitalize"
+            class="primary white--text text-capitalize"
             @click.stop="sendEmailVerification"
           >
             {{ buttonText }}
@@ -79,7 +79,7 @@ export default {
   },
   mounted() {
     setTimeout(() => {
-      console.log('user', this.user);
+      console.log("user", this.user);
       if (this.user.emailVerified) {
         return this.$router.push("/");
       } else {

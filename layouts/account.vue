@@ -254,6 +254,7 @@
         >
           <v-btn
             :ripple="false"
+            plain
             active-class="active-icon"
             class="bottom-button-navigation"
             value="home"
@@ -264,6 +265,7 @@
           </v-btn>
           <v-btn
             :ripple="false"
+            plain
             active-class="active-icon"
             class="bottom-button-navigation"
             value="exchange"
@@ -280,6 +282,7 @@
           </div>
           <v-btn
             :ripple="false"
+            plain
             active-class="active-icon"
             class="bottom-button-navigation"
             value="trading"
@@ -290,6 +293,7 @@
           </v-btn>
           <v-btn
             :ripple="false"
+            plain
             active-class="active-icon"
             class="bottom-button-navigation"
             value="account"
@@ -687,14 +691,14 @@ export default {
 
 .bot-button {
   position: absolute;
-  top: 5%;
+  top: 10%;
   left: 50%;
   transform: translate(-50%, -50%);
   border-radius: 100% !important;
-  width: 70px !important;
-  height: 70px !important;
-  min-width: 70px !important;
-  min-height: 70px !important;
+  width: 62px !important;
+  height: 62px !important;
+  min-width: 62px !important;
+  min-height: 62px !important;
   z-index: 20;
 }
 
