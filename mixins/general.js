@@ -64,7 +64,7 @@ export default {
 
       setTimeout(() => {
         this.tawkToInitialized = true
-      }, 5000)
+      }, 8000)
     },
 
     // REALTIME DATA STREAM

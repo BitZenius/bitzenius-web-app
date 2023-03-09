@@ -162,7 +162,7 @@
           >
             <v-icon color="white" small> mdi-check </v-icon>
           </v-list-item-avatar>
-          <div class="ornament o1"></div>
+          <div v-if="exchange.selected" class="ornament o1"></div>
           <!-- ORNAMENTS END -->
         </v-card>
         <!-- <v-btn small @click="logger()">logger</v-btn> -->

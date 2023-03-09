@@ -29,7 +29,7 @@
             />
           </v-list-item-content>
         </v-list-item>
-        <menu-profile :userData="user"></menu-profile>
+        <menu-profile :showNextTask="true" :userData="user"></menu-profile>
         <base-menu-item
           :to="'/'"
           :icon="true"

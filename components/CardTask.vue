@@ -2,11 +2,15 @@
   <v-card
     v-if="checkMobile() == false"
     class="pa-5"
-    style="width: 95%; margin-left: auto"
+    style="margin-left: auto"
     flat
   >
     <v-row class="pa-3">
-      <v-col cols="1" style="position: relative">
+      <v-col
+        cols="12"
+        style="position: relative; padding-left: 60px"
+        class="py-5 basic-text--text font-weight-bold text-body-1"
+      >
         <div class="custom-avatar off-white-2">
           <lottie
             :width="50"
@@ -15,11 +19,6 @@
             v-on:animCreated="handleAnimation"
           />
         </div>
-      </v-col>
-      <v-col
-        cols="11"
-        class="py-5 basic-text--text font-weight-bold text-body-1"
-      >
         Task Overview
       </v-col>
       <v-col cols="12" class="task-item-container no-scrollbar pa-3">
@@ -119,8 +118,8 @@ export default {
   height: 80px;
   border-radius: 100%;
   border: 4px solid var(--primary);
-  top: -30%;
-  left: -50%;
+  top: -40%;
+  left: -3%;
 }
 
 .custom-avatar-2 {

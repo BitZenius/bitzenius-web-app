@@ -78,6 +78,7 @@ export const mutations = {
   },
   setProfileCompletion(state, data) {
     state.profileCompletion = {
+      data: data.data,
       step: data.step,
       stepTotal: data.step_total
     }

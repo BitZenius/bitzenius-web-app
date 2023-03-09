@@ -1,8 +1,8 @@
 <template>
   <v-row v-if="checkMobile() == false" class="py-5 mb-10">
     <!-- TEST -->
-    <template v-if="false">
-      <v-btn class="mr-2 mb-2" @click="test1 = true">FREE TRIAL MODAL</v-btn>
+    <template v-if="true">
+      <v-btn class="mr-2 mb-2" @click="test1 = true">TASK MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test2 = true"
         >CREATE BOT FINISH MODAL</v-btn
       >
@@ -17,7 +17,7 @@
       <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
 
       <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
-        <ModalsFreeTrial @close-modal="test1 = false"></ModalsFreeTrial>
+        <ModalsTask @close-modal="test1 = false"></ModalsTask>
       </BaseModal>
 
       <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="'450'">
@@ -35,8 +35,9 @@
       </BaseModal>
     </template>
     <!-- TEST -->
+
     <v-col cols="12">
-      <v-row>
+      <v-row class="mb-5">
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
           {{ title }}
         </v-col>
@@ -45,6 +46,12 @@
         </v-col>
       </v-row>
       <v-row>
+        <v-col cols="5">
+          <CardCreateNewBots></CardCreateNewBots>
+        </v-col>
+        <v-col cols="12">
+          <CardTask :taskData="profileCompletionTasks" />
+        </v-col>
         <v-col cols="12" md="6" lg="3">
           <CardCredit :balance="balance" :loading="isLoading" />
         </v-col>
@@ -114,21 +121,12 @@
                 </template>
               </v-card>
             </v-col>
-            <v-col cols="12" v-show="false">
-              <TablesActivePosition
-                :showTabs="false"
-                :showExchangeCards="false"
-              />
-            </v-col>
           </v-row>
         </v-col>
       </v-row>
       <v-row justify="space-between">
         <v-col cols="3" class="mb-10">
           <CardBalance class="px-2 py-5" />
-        </v-col>
-        <v-col cols="9">
-          <CardTask :taskData="profileCompletionTasks" class="px-2 py-5" />
         </v-col>
       </v-row>
     </v-col>
@@ -145,6 +143,9 @@
         </v-col>
         <v-col cols="6">
           <GlobalsExchangeList @on-exchange-changed="onExchangeChanged" />
+        </v-col>
+        <v-col cols="12" class="mb-5 mt-10 pt-5">
+          <CardCreateNewBots></CardCreateNewBots>
         </v-col>
         <v-col cols="12">
           <CardBalanceWallet class="mb-6" />
@@ -532,7 +533,6 @@ export default {
                 this.chartData.options.xaxis.labels.show = false;
               } else {
                 this.chartData.options.xaxis.labels.show = true;
-
               }
 
               var newCategories = res.categories.map((r) => {
