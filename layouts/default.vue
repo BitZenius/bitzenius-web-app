@@ -14,6 +14,7 @@ export default {
     },
   },
   mounted() {
+    this.initiateTawkTo();
     // this.$vuetify.theme.dark = true
   },
 };

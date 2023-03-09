@@ -4,6 +4,8 @@
     :ripple="false"
     color="primary"
     :to="to"
+    :target="target"
+    :href="href"
     exact
     dense
     class="custom-menu mb-2"
@@ -30,6 +32,18 @@ export default {
       type: String | Object,
       default: () => {
         return undefined;
+      },
+    },
+    href: {
+      type: String | Object,
+      default: () => {
+        return "";
+      },
+    },
+    target: {
+      type: String | Object,
+      default: () => {
+        return "";
       },
     },
     icon: {

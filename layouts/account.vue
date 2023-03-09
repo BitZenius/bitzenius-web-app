@@ -110,8 +110,8 @@
         ></base-menu-item>
 
         <base-menu-item
-          :disabled="true"
-          :to="'/revamp_'"
+          :href="'https://bitzenius.tawk.help/'"
+          :target="'_blank'"
           :icon="true"
           :avatar="`$vuetify.icons.TutorialIcon`"
           :cardtitle="`Tutorial`"
@@ -314,7 +314,11 @@
         >
           &copy;{{ new Date().getFullYear() }} - BitZenius
         </v-col>
-        <v-col class="d-flex align-center justify-end" cols="6">
+        <v-col
+          class="d-flex align-center justify-end"
+          style="padding-right: 7%"
+          cols="6"
+        >
           Download our app
           <v-tooltip color="primary" top>
             <template v-slot:activator="{ on, attrs }">
@@ -411,8 +415,7 @@ export default {
     }
   },
   mounted() {
-    // this.$store.commit("setIsLoading", true);
-
+    this.initiateTawkTo();
     if (!this.$vuetify.breakpoint.mobile) {
       this.drawer = true;
     }

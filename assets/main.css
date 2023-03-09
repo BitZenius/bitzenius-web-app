@@ -49,6 +49,8 @@ input:-webkit-autofill:active {
   #__nuxt::-webkit-scrollbar {
     display: none;
   }
+
+
 }
 
 /* prevent pull-to-refresh for Safari 16+ */
