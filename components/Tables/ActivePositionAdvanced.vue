@@ -1010,11 +1010,15 @@ export default {
     ...mapActions("position", ["fetchPosition"]),
     listenStream() {
       // BOTS STREAM
-      this.realtimeUpdateSocket.on("bots-insert", (data) => {
+      this.realtimeUpdateSocket.on("advanced-bots-insert", (data) => {
+        if (data.type != this.defaultType && this.defaultType != "ADVANCED")
+          return;
         console.log("LISTEN bots insert", data);
         this.activePosition.push(data);
       });
-      this.realtimeUpdateSocket.on("bots-update", (data) => {
+      this.realtimeUpdateSocket.on("advanced-bots-update", (data) => {
+        if (data.type != this.defaultType && this.defaultType != "ADVANCED")
+          return;
         console.log("LISTEN bots update", data);
         let index = this.activePosition.findIndex(
           (b) => b.symbol == data.symbol
@@ -1031,13 +1035,13 @@ export default {
 
       // ADVANCED SETUPS STREAM
       this.realtimeUpdateSocket.on("advanced-setups-insert", (data) => {
-        this._fetchAdvancedSetup()
+        this._fetchAdvancedSetup();
       });
       this.realtimeUpdateSocket.on("advanced-setups-update", (data) => {
-        this._fetchAdvancedSetup()
+        this._fetchAdvancedSetup();
       });
       this.realtimeUpdateSocket.on("advanced-setups-delete", (data) => {
-       this._fetchAdvancedSetup()
+        this._fetchAdvancedSetup();
       });
     },
     getImgUrl(val) {
