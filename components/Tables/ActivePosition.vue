@@ -1327,7 +1327,17 @@ export default {
                 exchange,
                 exchangeIndex
               );
+            } else {
+              if (this.exchange == exchange.name) {
+                this.selectExchangeCard(
+                  `${exchange.name}`,
+                  exchange,
+                  exchangeIndex
+                );
+              }
             }
+          } else {
+            exchange.active = false;
           }
         });
 
@@ -1443,6 +1453,14 @@ export default {
     },
     selectExchangeCard(val, exchange, index) {
       if (exchange.comingsoon) return;
+
+      if (!exchange.active) {
+        return this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Setup not found. Please setup bots for this exchange",
+          color: "customPink",
+        });
+      }
 
       this.$store.commit("exchange/setSelectedExchange", val);
 

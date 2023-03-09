@@ -1,5 +1,5 @@
 export const state = () => ({
-  selectedExchange: "Binance",
+  selectedExchange: null,
 });
 
 export const mutations = {
