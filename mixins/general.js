@@ -77,6 +77,37 @@ export default {
 
       await cb()
     },
+
+    // CHECK COMPLETION
+    checkCompletion(cb = function () { return }) {
+      this.$store.commit("setForceLoading", true);
+      this.$store.commit("setIsLoading", true);
+      this.$api
+        .$get("/user/profile/completion")
+        .then((res) => {
+          this.$store.commit("setProfileCompletion", res);
+          var step = res.step;
+          var stepTotal = res.step_total;
+
+          if (step == stepTotal) {
+            cb()
+          } else {
+            this.$store.commit("setShowTaskModal", true);
+          }
+        })
+        .catch((err) => {
+          console.log("checkCompletion", err);
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: "Check completion error",
+            color: "customPink",
+          });
+        })
+        .finally(() => {
+          this.$store.commit("setIsLoading", false);
+          this.$store.commit("setForceLoading", false);
+        });
+    },
   },
   beforeDestroy() {
     if (this.realtimeUpdateSocket) {

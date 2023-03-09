@@ -4,7 +4,7 @@
       color="off-white"
       exact
       dense
-      class="custom-menu-2 mb-2"
+      class="custom-menu-2 mb-1"
       two-line
     >
       <v-progress-circular
@@ -87,7 +87,6 @@
         <div class="d-flex justify-start mt-2">
           <v-btn
             x-small
-            flat
             rounded
             dense
             color="success"

@@ -2,7 +2,9 @@
   <v-row v-if="checkMobile() == false" class="py-5 mb-10">
     <!-- TEST -->
     <template v-if="true">
-      <v-btn class="mr-2 mb-2" @click="test1 = true">TASK MODAL</v-btn>
+      <v-btn class="mr-2 mb-2" @click="$store.commit('setShowTaskModal', true)"
+        >TASK MODAL</v-btn
+      >
       <v-btn class="mr-2 mb-2" @click="test2 = true"
         >CREATE BOT FINISH MODAL</v-btn
       >
@@ -15,10 +17,6 @@
       <v-btn class="mr-2 mb-2" @click="test5 = true">VERIFY CODE MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test6 = true">VERIFIED MODAL</v-btn>
       <v-btn class="mr-2 mb-2" @click="test7 = true">SUCCESS MODAL MODAL</v-btn>
-
-      <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
-        <ModalsTask @close-modal="test1 = false"></ModalsTask>
-      </BaseModal>
 
       <BaseModal @close="test2 = false" :parentModel="test2" :maxWidth="'450'">
         <ModalsBotSetupFinished
@@ -444,6 +442,7 @@ export default {
     exchange() {
       return this.$store.state.exchange.selectedExchange;
     },
+
   },
   methods: {
     // FETCH API
@@ -698,6 +697,7 @@ export default {
       }
       this._fetchChart();
     },
+
   },
 };
 </script>

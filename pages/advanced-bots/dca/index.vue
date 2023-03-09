@@ -48,6 +48,8 @@ export default {
     };
   },
   mounted() {
+    this.checkCompletion();
+
     this.$store.commit("setTitle", this.title);
   },
 };

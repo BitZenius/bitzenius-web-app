@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="checkMobile() == false">
+  <v-row v-if="checkMobile() == false && this.user">
     <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
       <ModalsLearnHowItWorks
         @close-modal="test1 = false"
@@ -513,7 +513,7 @@
 
     <v-col cols="12"> </v-col>
   </v-row>
-  <v-row class="pa-1 ma-0" v-else>
+  <v-row class="pa-1 ma-0" v-else-if="this.user">
     <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
       <ModalsLearnHowItWorks
         @close-modal="test1 = false"
@@ -1256,14 +1256,14 @@ export default {
   async mounted() {
     console.log("USER!!", this.user);
 
-    let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
-      this._fetchBotsList(this.exchange); // Fetch Bots List
+      await this._fetchBotsList(this.exchange); // Fetch Bots List
       this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
       // this._fetchBotsList("Binance");
-      this._fetchUserExchange(); // Fetch User Exchang
+      await this._fetchUserExchange(); // Fetch User Exchang
+      await this._fetchBotsList(this.exchange); // Fetch Bots List
     }
 
     // BOTS SOCKET

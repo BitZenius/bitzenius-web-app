@@ -986,14 +986,14 @@ export default {
 
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
-      this._fetchBotsList(this.exchange); // Fetch Bots List
-      this._fetchAdvancedSetup();
-      this._fetchUserExchange(); // Fetch User Exchang
+      await this._fetchBotsList(this.exchange); // Fetch Bots List
+      await this._fetchAdvancedSetup();
+      await this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
       // this._fetchBotsList("Binance");
-      this._fetchAdvancedSetup();
-      this._fetchUserExchange(); // Fetch User Exchang
+      await this._fetchAdvancedSetup();
+      await this._fetchUserExchange(); // Fetch User Exchang
     }
 
     // BOTS SOCKET

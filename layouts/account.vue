@@ -6,6 +6,7 @@
       :notifications="importantNotifications"
       ref="notification"
     />
+
     <v-navigation-drawer
       v-if="checkMobile() == false"
       class="main-nav"
@@ -359,6 +360,16 @@
       </v-row>
     </v-footer>
     <EmailVerification />
+
+    <!-- GLOBAL MODAL -->
+    <BaseModal
+        @close="showTaskModal = false"
+        :parentModel="showTaskModal"
+        :maxWidth="'650'"
+      >
+        <ModalsTask @close-modal="showTaskModal = false"></ModalsTask>
+      </BaseModal>
+    <!-- GLOBAL MODAL ENDS -->
   </v-app>
 </template>
 <style scoped>
@@ -386,7 +397,17 @@ export default {
       showNotification: false,
       notifications: [],
       importantNotifications: [],
+
+      showTaskModal: false
     };
+  },
+  watch:{
+    showTaskModal(nv, ov) {
+      this.$store.commit("setShowTaskModal", nv);
+    },
+    showTaskModalStore(nv, ov) {
+      this.showTaskModal = nv;
+    },
   },
   computed: {
     title() {
@@ -403,6 +424,9 @@ export default {
     },
     topMargin() {
       return this.$store.state.globalCss.topMargin;
+    },
+    showTaskModalStore() {
+      return this.$store.state.showTaskModal;
     },
   },
   beforeCreate() {},

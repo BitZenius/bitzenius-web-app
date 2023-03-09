@@ -8,6 +8,7 @@ export const state = () => ({
   token: null,
   theme: 'dark',
   isLoading: false,
+  forceLoading: false,
   snackbar: {
     show: false,
     message: null,
@@ -19,7 +20,8 @@ export const state = () => ({
   profileCompletion: {
     step: 0,
     stepTotal: 1
-  }
+  },
+  showTaskModal: false
 })
 
 export const actions = {
@@ -59,7 +61,13 @@ export const mutations = {
     state.theme = theme
   },
   setIsLoading(state, cond) {
-    state.isLoading = cond;
+    if (!state.forceLoading) {
+      state.isLoading = cond;
+    }
+  },
+  setForceLoading(state, cond) {
+    state.forceLoading = cond
+    state.isLoading = cond
   },
   setShowSnackbar(state, cond) {
     state.snackbar = cond;
@@ -82,6 +90,9 @@ export const mutations = {
       step: data.step,
       stepTotal: data.step_total
     }
+  },
+  setShowTaskModal(state, data) {
+    state.showTaskModal = data
   }
 }
 

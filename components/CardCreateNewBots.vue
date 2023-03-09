@@ -10,7 +10,17 @@
         </v-img>
       </v-col>
       <v-col cols="6" class="d-flex justify-center">
-        <v-btn x-large rounded dense flat color="primary">
+        <v-btn
+          x-large
+          rounded
+          dense
+          color="primary"
+          @click="
+            checkCompletion(() => {
+              $router.push('/bots');
+            })
+          "
+        >
           Create your first bot
         </v-btn>
       </v-col>
@@ -39,7 +49,9 @@
 </template>
 
 <script>
-export default {};
+export default {
+  methods: {},
+};
 </script>
 
 <style scoped>

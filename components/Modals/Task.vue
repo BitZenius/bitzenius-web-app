@@ -32,7 +32,7 @@
                   dense
                   color="success"
                   exact
-                  :to="item.path"
+                  @click="openPath(item.path)"
                   style="max-width: min-content"
                 >
                   {{ item.title }}
@@ -52,6 +52,12 @@ export default {
   methods: {
     closeModal() {
       this.$emit("close-modal", false);
+    },
+    openPath(path) {
+      this.$router.push(path);
+      setTimeout(() => {
+        this.closeModal();
+      }, 2000);
     },
   },
   computed: {
@@ -78,6 +84,9 @@ export default {
         (this.profileCompletion.step / this.profileCompletion.stepTotal) * 100
       );
     },
+  },
+  beforeDestroy() {
+    this.$store.commit("setShowTaskModal", false);
   },
 };
 </script>
