@@ -1273,6 +1273,12 @@ export default {
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
+    refetch() {
+      for (let index = 0; index < this.exchanges.length; index++) {
+        this.exchanges[index].selected = false;
+      }
+      this._fetchUserExchange();
+    },
     getImgUrl(val) {
       try {
         let url = require("@/static/token_logo/" + val.toUpperCase() + ".png");
@@ -1574,6 +1580,7 @@ export default {
         .finally(() => {
           this.dialogDelete = false;
           this.$store.commit("setIsLoading", false);
+          this.refetch();
         });
     },
     close() {

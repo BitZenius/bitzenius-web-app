@@ -565,6 +565,9 @@ export default {
     monthly(val) {
       this.switchCicleData(val);
     },
+    isLoading(val) {
+      this.$store.commit("setIsLoading", val);
+    },
   },
   async mounted() {
     await this._fetchUserSubscription();
@@ -582,6 +585,21 @@ export default {
     }
   },
   methods: {
+    async refetch() {
+      await this._fetchUserSubscription();
+
+      this.initialize();
+
+      // Determine tabs
+      if (this.hasTrial) {
+        this.disabledTables = [];
+        this.currentItem = 0;
+      } else {
+        this.disabledTables = ["My Plan"];
+
+        this.currentItem = 1;
+      }
+    },
     handleAnimation: function (anim) {
       this.anim = anim;
     },
@@ -716,6 +734,7 @@ export default {
           this.isLoading = false;
         })
         .finally(() => {
+          this.refetch();
           this.isLoading = false;
         });
     },

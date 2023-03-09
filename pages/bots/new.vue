@@ -1230,6 +1230,10 @@ export default {
             color: "success",
           });
         });
+
+        setTimeout(() => {
+          this.$router.push("/bots");
+        }, 1000);
       } else {
         // ON INSERT
         let res = await this.$api.$post("/user/bot", paramTemp);
@@ -1240,13 +1244,19 @@ export default {
             color: "success",
           });
         });
+
+        setTimeout(() => {
+          this.$router.push("/bots");
+        }, 1000);
       }
 
       setTimeout(() => {
         this.$emit("close-modal", false);
         this.$store.commit("setIsLoading", false);
-        this.resetModalState();
+        // this.resetModalState();
       });
+
+
     },
     async _fetchTokenList() {
       console.log("fetch token");

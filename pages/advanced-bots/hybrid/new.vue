@@ -723,6 +723,10 @@ export default {
             color: "success",
           });
         });
+
+        setTimeout(() => {
+          this.$router.push("/advanced-bots/hybrid");
+        }, 1000);
       } else {
         // ON INSERT
         let res = await this.$api.$post("/user/advanced-bot", paramTemp);
@@ -733,6 +737,10 @@ export default {
             color: "success",
           });
         });
+
+        setTimeout(() => {
+          this.$router.push("/advanced-bots/hybrid");
+        }, 1000);
       }
 
       setTimeout(() => {

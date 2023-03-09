@@ -43,8 +43,9 @@
                 </v-col>
               </v-row>
             </v-form>
-            <v-form v-else ref="form" v-model="valid" lazy-validation>
+            <v-form v-else ref="form">
               <v-row class="basic-text--text">
+                <v-col cols="12"> </v-col>
                 <v-col cols="12">
                   <v-text-field
                     v-model="email"
@@ -54,6 +55,7 @@
                     dense
                     rounded
                     class="mb-2 custom-input py-2"
+                    hide-details="auto"
                     prepend-inner-icon="$vuetify.icons.MailIcon"
                   >
                   </v-text-field>
