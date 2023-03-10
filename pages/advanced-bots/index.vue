@@ -71,7 +71,7 @@
         color="off-white-3"
         class="pa-3 primary-text--text text-body-2 mb-2"
       >
-        <v-list-item exact to="/advanced-bots/smart-trade">
+        <v-list-item disabled exact to="/advanced-bots/smart-trade">
           <v-list-item-avatar>
             <v-icon color="primary">$vuetify.icons.SmartTradeIcon</v-icon>
           </v-list-item-avatar>
