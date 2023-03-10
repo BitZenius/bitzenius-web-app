@@ -302,16 +302,44 @@
                   >
                 </template>
                 <template v-slot:header.profit="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
+                  <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on, attrs }">
+                      <strong
+                        v-bind="attrs"
+                        v-on="on"
+                        class="basic-text--text text-body-1 font-weight-bold"
+                      >
+                        {{ header.text }}
+                      </strong>
+                    </template>
+                    <div style="max-width: 200px">
+                      Please note that the data provided below represents the
+                      total of both realized and floating profit and losses
+                      (PNL). It is important to keep in mind that the floating
+                      PNL is not finalized and will remain subject to change.
+                    </div>
+                  </v-tooltip>
                 </template>
                 <template v-slot:header.status="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
+                  <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on, attrs }">
+                      <strong
+                        v-bind="attrs"
+                        v-on="on"
+                        class="basic-text--text text-body-1 font-weight-bold"
+                      >
+                        {{ header.text }}
+                      </strong>
+                    </template>
+                    <div>
+                      <ol>
+                        <li>ACTIVE - Lorem ipsum</li>
+                        <li>WAITING FOR POSITION - Lorem ipsum</li>
+                        <li>INACTIVE - Lorem ipsum</li>
+                        <li>BLACKLISTED - Lorem ipsum</li>
+                      </ol>
+                    </div>
+                  </v-tooltip>
                 </template>
 
                 <!-- hide-default-footer disable-pagination -->
