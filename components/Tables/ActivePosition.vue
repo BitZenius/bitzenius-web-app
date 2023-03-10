@@ -696,7 +696,7 @@
           </v-row>
           <!-- ORNAMENTS -->
 
-          <div class="ornament o1"></div>
+          <div v-if="exchange.selected" class="ornament o1"></div>
           <!-- ORNAMENTS END -->
         </v-card>
       </v-col>

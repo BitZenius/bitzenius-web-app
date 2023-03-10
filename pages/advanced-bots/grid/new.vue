@@ -661,9 +661,11 @@ export default {
 
       // MAP PARAM SELECTED TOKEN
       var split_token = this.bot.selected_token.split(":");
-      if (split_token.length > 0) {
+      if (split_token.length > 1) {
         this.bot.selected_token = split_token[1];
       }
+
+      this.bot.symbol = this.bot.selected_token;
 
       // MAP PARAM STRATEGY
       this.bot.strategy.steps = this.bot.strategy.style.steps;
