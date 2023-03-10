@@ -741,8 +741,10 @@
       </v-btn>
     </v-col>
 
-    <v-col cols="12" class="mb-4 text-center text-h6">
-      Bots for {{ exchange }}
+    <v-col cols="12" class="mb-4 text-center">
+      <v-chip color="success" class="text-h6 font-weight-bold">
+        Bots on {{ exchange }}
+      </v-chip>
     </v-col>
 
     <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 ma-0'">

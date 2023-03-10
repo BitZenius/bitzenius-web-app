@@ -5,7 +5,7 @@
     max-width="500"
     :fullscreen="$vuetify.breakpoint.mobile"
   >
-    <v-card flat rounded>
+    <v-card flat rounded style="padding-bottom: 80px">
       <v-card-title class="text-h6 font-weight-bold primary white--text">
         <v-row>
           <v-col cols="8">{{
@@ -42,7 +42,14 @@
             </v-list-item>
           </v-col>
           <v-col cols="12">
-            <v-tabs v-model="tab" color="primary" height="40px" class="px-2">
+            <v-tabs
+              hide-slider
+              :show-arrows="true"
+              v-model="tab"
+              color="primary"
+              height="40px"
+              class="px-2"
+            >
               <v-tab
                 :ripple="false"
                 v-for="item in availableOptions"
@@ -293,223 +300,6 @@
                 />
               </v-col>
             </v-row>
-          </v-col>
-        </v-row>
-        <v-row v-if="conditionItems">
-          <v-col cols="12">
-            <v-data-table
-              v-show="tab == 1"
-              :headers="tableTitle"
-              :items="conditionItems"
-              hide-default-header
-              hide-default-footer
-              class="elevation-2 ma-2"
-            >
-              <template v-slot:item.title="{ item }">
-                <v-icon>
-                  {{ item.icon }}
-                </v-icon>
-                <span>{{ item.title }}</span>
-              </template>
-              <template v-slot:item.value="{ item }">
-                <span
-                  v-if="
-                    item.key == 'take_profit_price' ||
-                    item.key == 'next_step_price'
-                  "
-                >
-                  {{ item.value | currency("$", 6) }}
-                </span>
-                <span v-else>
-                  {{ item.value }}
-                </span>
-              </template>
-            </v-data-table>
-
-            <!-- START OF FORMULA -->
-            <div v-show="tab == 2" class="pt-0">
-              <v-row>
-                <v-col cols="12" class="d-flex justify-center">
-                  <v-btn
-                    color="primary"
-                    @click="showAveragingFormula = !showAveragingFormula"
-                  >
-                    <v-icon small class="mr-1"> mdi-cog </v-icon>
-                    Averaging Configuration
-                  </v-btn>
-                </v-col>
-              </v-row>
-              <v-card flat rounded class="ma-3" v-show="showAveragingFormula">
-                <v-simple-table dense>
-                  <template>
-                    <thead>
-                      <tr>
-                        <th>Step</th>
-                        <th>Drop Rate</th>
-                        <th>Buy Multiplier</th>
-                        <th>Take Profit</th>
-                        <th>Type</th>
-                      </tr>
-                    </thead>
-                    <tbody v-if="steps">
-                      <tr
-                        class="text-center"
-                        v-for="(child, y, key) in steps"
-                        :key="child.key"
-                        @click="selectRow(child, y)"
-                      >
-                        <template v-if="editStep == y">
-                          <td class="text-body-1">
-                            {{ y + 1 }}
-                            <div class="d-flex">
-                              <v-btn
-                                @click="saveRowChanges"
-                                x-small
-                                class="mx-1"
-                                color="success"
-                              >
-                                <v-icon small>mdi-check</v-icon>
-                              </v-btn>
-                              <v-btn
-                                @click="cancelRowChanges"
-                                x-small
-                                class="mx-1"
-                                color="danger"
-                              >
-                                <v-icon small>mdi-cancel</v-icon>
-                              </v-btn>
-                            </div>
-                          </td>
-                          <td>
-                            <v-text-field
-                              class="text-body-1"
-                              v-model="customDrop"
-                              placeholder="1.2"
-                            >
-                              <v-icon x-small slot="append" color="primary">
-                                mdi-percent
-                              </v-icon>
-                            </v-text-field>
-                          </td>
-                          <td>
-                            <v-text-field
-                              class="text-body-1"
-                              v-model="customBuy"
-                              placeholder="2"
-                            >
-                              <v-icon x-small slot="append" color="primary">
-                                mdi-close
-                              </v-icon>
-                            </v-text-field>
-                          </td>
-                          <td>
-                            <v-text-field
-                              class="text-body-1"
-                              v-model="customProfit"
-                              placeholder="1.1"
-                            >
-                              <v-icon x-small slot="append" color="primary">
-                                mdi-percent
-                              </v-icon>
-                            </v-text-field>
-                          </td>
-                          <td>
-                            <v-select
-                              :items="types"
-                              v-model="customType"
-                              label="Type"
-                            ></v-select>
-                          </td>
-                        </template>
-                        <template v-else>
-                          <td>{{ y + 1 }}</td>
-                          <td>
-                            <span>{{ child.drop_rate }}</span>
-                            <v-icon small slot="append" color="primary">
-                              mdi-percent
-                            </v-icon>
-                          </td>
-                          <td>
-                            <span>{{ child.multiplier }}</span>
-                            <v-icon small slot="append" color="primary">
-                              mdi-close
-                            </v-icon>
-                          </td>
-                          <td>
-                            <span>{{ child.take_profit }}</span>
-                            <v-icon small slot="append" color="primary">
-                              mdi-percent
-                            </v-icon>
-                          </td>
-                          <td>
-                            <span>{{ child.type }}</span>
-                          </td>
-                        </template>
-                      </tr>
-                      <tr v-if="steps.length > 0">
-                        <td style="text-align: center" colspan="5">
-                          <v-btn
-                            x-small
-                            @click="resetRowCustom"
-                            class="danger--text"
-                            >RESET CUSTOM STRATEGY</v-btn
-                          >
-                        </td>
-                      </tr>
-                      <tr>
-                        <td>
-                          <v-btn
-                            class="customGreen"
-                            small
-                            @click="
-                              addRowCustom(
-                                customDrop,
-                                customBuy,
-                                customProfit,
-                                customType
-                              )
-                            "
-                            >+</v-btn
-                          >
-                        </td>
-                        <td>
-                          <v-text-field v-model="customDrop" placeholder="1.2">
-                            <v-icon small slot="append" color="primary">
-                              mdi-percent
-                            </v-icon>
-                          </v-text-field>
-                        </td>
-                        <td>
-                          <v-text-field v-model="customBuy" placeholder="2">
-                            <v-icon small slot="append" color="primary">
-                              mdi-close
-                            </v-icon>
-                          </v-text-field>
-                        </td>
-                        <td>
-                          <v-text-field
-                            v-model="customProfit"
-                            placeholder="1.1"
-                          >
-                            <v-icon small slot="append" color="primary">
-                              mdi-percent
-                            </v-icon>
-                          </v-text-field>
-                        </td>
-                        <td>
-                          <v-select
-                            :items="types"
-                            v-model="customType"
-                            label="Type"
-                          ></v-select>
-                        </td>
-                      </tr>
-                    </tbody>
-                  </template>
-                </v-simple-table>
-              </v-card>
-            </div>
-            <!-- END OF FORMULA -->
           </v-col>
         </v-row>
         <v-row v-if="tab != 2 && detail.positions">
@@ -1095,17 +885,17 @@ export default {
       this.editStep = step;
     },
     checkGridDCA(step) {
-      this.types = ['DCA', 'GRID']
-      if (this.detail.type !== 'AUTOMATED') {
+      this.types = ["DCA", "GRID"];
+      if (this.detail.type !== "AUTOMATED") {
         switch (this.detail.type) {
-          case 'DCA':
-            this.types = ['DCA'];
+          case "DCA":
+            this.types = ["DCA"];
             break;
-          case 'DCA_GRID':
-            this.types = ['DCA', 'GRID'];
+          case "DCA_GRID":
+            this.types = ["DCA", "GRID"];
             break;
-          case 'GRID':
-            this.types = ['GRID'];
+          case "GRID":
+            this.types = ["GRID"];
             break;
           default:
             break;

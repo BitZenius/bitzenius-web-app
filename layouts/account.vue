@@ -461,6 +461,13 @@ export default {
     this.streamNotification();
     this.getUserNotifications();
     this._fetchUserCompletion();
+
+    if (this.checkMobile()) {
+      window.addEventListener("scroll", (e) => {
+        e.preventDefault();
+        window.scrollTo(0, 0);
+      });
+    }
   },
   beforeDestroy() {
     this.listener();
