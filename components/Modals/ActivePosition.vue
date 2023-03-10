@@ -356,29 +356,95 @@
                         class="text-center"
                         v-for="(child, y, key) in steps"
                         :key="child.key"
+                        @click="selectRow(child, y)"
                       >
-                        <td>{{ y + 1 }}</td>
-                        <td>
-                          <span>{{ child.drop_rate }}</span>
-                          <v-icon small slot="append" color="primary">
-                            mdi-percent
-                          </v-icon>
-                        </td>
-                        <td>
-                          <span>{{ child.multiplier }}</span>
-                          <v-icon small slot="append" color="primary">
-                            mdi-close
-                          </v-icon>
-                        </td>
-                        <td>
-                          <span>{{ child.take_profit }}</span>
-                          <v-icon small slot="append" color="primary">
-                            mdi-percent
-                          </v-icon>
-                        </td>
-                        <td>
-                          <span>{{ child.type }}</span>
-                        </td>
+                        <template v-if="editStep == y">
+                          <td class="text-body-1">
+                            {{ y + 1 }}
+                            <div class="d-flex">
+                              <v-btn
+                                @click="saveRowChanges"
+                                x-small
+                                class="mx-1"
+                                color="success"
+                              >
+                                <v-icon small>mdi-check</v-icon>
+                              </v-btn>
+                              <v-btn
+                                @click="cancelRowChanges"
+                                x-small
+                                class="mx-1"
+                                color="danger"
+                              >
+                                <v-icon small>mdi-cancel</v-icon>
+                              </v-btn>
+                            </div>
+                          </td>
+                          <td>
+                            <v-text-field
+                              class="text-body-1"
+                              v-model="customDrop"
+                              placeholder="1.2"
+                            >
+                              <v-icon x-small slot="append" color="primary">
+                                mdi-percent
+                              </v-icon>
+                            </v-text-field>
+                          </td>
+                          <td>
+                            <v-text-field
+                              class="text-body-1"
+                              v-model="customBuy"
+                              placeholder="2"
+                            >
+                              <v-icon x-small slot="append" color="primary">
+                                mdi-close
+                              </v-icon>
+                            </v-text-field>
+                          </td>
+                          <td>
+                            <v-text-field
+                              class="text-body-1"
+                              v-model="customProfit"
+                              placeholder="1.1"
+                            >
+                              <v-icon x-small slot="append" color="primary">
+                                mdi-percent
+                              </v-icon>
+                            </v-text-field>
+                          </td>
+                          <td>
+                            <v-select
+                              :items="types"
+                              v-model="customType"
+                              label="Type"
+                            ></v-select>
+                          </td>
+                        </template>
+                        <template v-else>
+                          <td>{{ y + 1 }}</td>
+                          <td>
+                            <span>{{ child.drop_rate }}</span>
+                            <v-icon small slot="append" color="primary">
+                              mdi-percent
+                            </v-icon>
+                          </td>
+                          <td>
+                            <span>{{ child.multiplier }}</span>
+                            <v-icon small slot="append" color="primary">
+                              mdi-close
+                            </v-icon>
+                          </td>
+                          <td>
+                            <span>{{ child.take_profit }}</span>
+                            <v-icon small slot="append" color="primary">
+                              mdi-percent
+                            </v-icon>
+                          </td>
+                          <td>
+                            <span>{{ child.type }}</span>
+                          </td>
+                        </template>
                       </tr>
                       <tr v-if="steps.length > 0">
                         <td style="text-align: center" colspan="5">
@@ -720,6 +786,8 @@ export default {
           value: 0,
         },
       ],
+      // EDIT ROW
+      editStep: null,
     };
   },
   methods: {
@@ -745,37 +813,6 @@ export default {
       this.$emit("close-modal", false);
     },
 
-    addRowCustom(drop, multiplier, profit, type) {
-      // if GRID selected, don't allow to select DCA;
-      if (type == "GRID") {
-        this.types = ["GRID"];
-      }
-
-      if (!drop || !multiplier || !profit) {
-        this.$store.commit("setShowSnackbar", {
-          show: true,
-          message: "Please don't leave any strategy input empty!",
-          color: "customPink",
-        });
-      } else {
-        let strategy = {};
-        strategy.step = this.steps ? this.steps.length : 0;
-        strategy.drop_rate = parseFloat(drop);
-        strategy.multiplier = parseFloat(multiplier);
-        strategy.take_profit = parseFloat(profit);
-        strategy.type = type;
-        this.steps.push(strategy);
-        this.customDrop = null;
-        this.customBuy = null;
-        this.customProfit = null;
-        this.customType = null;
-      }
-    },
-    resetRowCustom() {
-      this.types = ["DCA", "GRID"];
-      this.steps = [];
-      this.$forceUpdate();
-    },
     async _startTrading() {},
     async _stopTrading() {
       let query = { id: this.pair._id };
@@ -976,6 +1013,136 @@ export default {
 
       console.log("tempAnalysis", analysis);
       this.analysis = analysis;
+    },
+
+    // DCA GRID EDIT
+    addRowCustom(drop, multiplier, profit, type) {
+      // if GRID selected, don't allow to select DCA;
+      if (type == "GRID") {
+        this.types = ["GRID"];
+      }
+
+      if (!drop || !multiplier || !profit) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Please don't leave any strategy input empty!",
+          color: "customPink",
+        });
+      } else {
+        let strategy = {};
+        strategy.step = this.steps ? this.steps.length : 0;
+        strategy.drop_rate = parseFloat(drop);
+        strategy.multiplier = parseFloat(multiplier);
+        strategy.take_profit = parseFloat(profit);
+        strategy.type = type;
+        this.steps.push(strategy);
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+      }
+    },
+    resetRowCustom() {
+      this.types = ["DCA", "GRID"];
+      this.steps = [];
+      this.$forceUpdate();
+    },
+    cancelRowChanges() {
+      setTimeout(() => {
+        this.customDrop = null;
+        this.customBuy = null;
+        this.customProfit = null;
+        this.customType = null;
+        this.editStep = null;
+      }, 100);
+    },
+    saveRowChanges() {
+      var temp = [...this.steps];
+
+      console.log("TEMP: ", temp);
+
+      setTimeout(() => {
+        console.log("TEMP: ", temp);
+        this.steps = [...temp];
+
+        this.steps[this.editStep] = {
+          step: this.editStep,
+          drop_rate: this.customDrop,
+          multiplier: this.customBuy,
+          take_profit: this.customProfit,
+          type: this.customType,
+        };
+
+        setTimeout(() => {
+          this.customDrop = null;
+          this.customBuy = null;
+          this.customProfit = null;
+          this.customType = null;
+          this.editStep = null;
+        }, 100);
+      }, 100);
+    },
+    selectRow(child, step) {
+      this.checkGridDCA(step);
+      if (this.editStep == step) {
+        return;
+      }
+      this.customDrop = child.drop_rate;
+      this.customBuy = child.multiplier;
+      this.customProfit = child.take_profit;
+      this.customType = child.type;
+
+      this.editStep = step;
+    },
+    checkGridDCA(step) {
+      this.types = ['DCA', 'GRID']
+      if (this.detail.type !== 'AUTOMATED') {
+        switch (this.detail.type) {
+          case 'DCA':
+            this.types = ['DCA'];
+            break;
+          case 'DCA_GRID':
+            this.types = ['DCA', 'GRID'];
+            break;
+          case 'GRID':
+            this.types = ['GRID'];
+            break;
+          default:
+            break;
+        }
+      }
+
+      if (this.types.length == 1) {
+        return;
+      }
+
+      if (!this.steps) {
+        return;
+      }
+      var stepsArray = this.steps.map((item) => {
+        return item.type;
+      });
+
+      var stepsBefore = stepsArray.slice(0, step);
+      var stepsAfter = stepsArray.slice(step + 1, stepsArray.length - step);
+
+      var isDCABefore = stepsBefore.includes("DCA");
+      var isGridBefore = stepsBefore.includes("GRID");
+      var isDCAAfter = stepsAfter.includes("DCA");
+
+      if (isDCABefore && isGridBefore) {
+        this.types = ["GRID"];
+      } else if (isDCABefore && !isGridBefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCAAfter) {
+        this.types = ["DCA"];
+      } else if (isDCAAfter && !isDCABefore) {
+        this.types = ["DCA", "GRID"];
+      } else if (isDCABefore && !isDCAAfter) {
+        this.types = ["DCA", "GRID"];
+      } else {
+        this.types = ["DCA", "GRID"];
+      }
     },
   },
   async mounted() {

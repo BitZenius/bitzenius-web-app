@@ -986,14 +986,14 @@ export default {
 
     let userId = this.$store.state.authUser.uid;
     if (this.exchange) {
-      this._fetchBotsList(this.exchange); // Fetch Bots List
-      this._fetchAdvancedSetup();
-      this._fetchUserExchange(); // Fetch User Exchang
+      await this._fetchBotsList(this.exchange); // Fetch Bots List
+      await this._fetchAdvancedSetup();
+      await this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
       // this._fetchBotsList("Binance");
-      this._fetchAdvancedSetup();
-      this._fetchUserExchange(); // Fetch User Exchang
+      await this._fetchAdvancedSetup();
+      await this._fetchUserExchange(); // Fetch User Exchang
     }
 
     // BOTS SOCKET
@@ -1130,51 +1130,51 @@ export default {
         // });
       }
     },
-    streamBinance(activePosition) {
+    streamBinance() {
       console.log(activePosition);
       this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
-      this.socket.onmessage = function (event) {
+      this.socket.onmessage = (event) => {
         let data = JSON.parse(event.data);
-        let index = activePosition.findIndex((b) => b.symbol == data.s);
+        let index = this.activePosition.findIndex((b) => b.symbol == data.s);
         if (index < 0) return;
-        activePosition[index].price.value = data.c;
-        activePosition[index].price.percentage = data.P;
+        this.activePosition[index].price.value = data.c;
+        this.activePosition[index].price.percentage = data.P;
 
         // PNL CALCULATION
-        if (activePosition[index].quantity > 0) {
+        if (this.activePosition[index].quantity > 0) {
           // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
           // data.c   = Current Price (from binance stream)
-          let average = parseFloat(activePosition[index].average);
+          let average = parseFloat(this.activePosition[index].average);
           let percentage =
             average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-          let pnl = parseFloat(activePosition[index].amountUsd) * percentage;
+          let pnl = parseFloat(this.activePosition[index].amountUsd) * percentage;
 
-          percentage = pnl / activePosition[index].amountUsd;
+          percentage = pnl / this.activePosition[index].amountUsd;
 
           // Floating P&L
-          activePosition[index].floatingProfit = {};
-          activePosition[index].floatingProfit.value = pnl.toFixed(3);
-          activePosition[index].floatingProfit.percentage = (
+          this.activePosition[index].floatingProfit = {};
+          this.activePosition[index].floatingProfit.value = pnl.toFixed(3);
+          this.activePosition[index].floatingProfit.percentage = (
             percentage * 100
           ).toFixed(3);
 
           // Realized P&L
-          activePosition[index].realizedProfit = {};
-          activePosition[index].realizedProfit.value =
-            activePosition[index].grid_profit.toFixed(3);
-          activePosition[index].realizedProfit.percentage =
-            activePosition[index].amountUsd > 0
+          this.activePosition[index].realizedProfit = {};
+          this.activePosition[index].realizedProfit.value =
+            this.activePosition[index].grid_profit.toFixed(3);
+          this.activePosition[index].realizedProfit.percentage =
+            this.activePosition[index].amountUsd > 0
               ? (
-                  (activePosition[index].grid_profit /
-                    activePosition[index].amountUsd) *
+                  (this.activePosition[index].grid_profit /
+                    this.activePosition[index].amountUsd) *
                   100
                 ).toFixed(3)
               : 0;
 
           // Total P&L
-          pnl += activePosition[index].grid_profit;
-          percentage = pnl / activePosition[index].amountUsd;
-          activePosition[index].profit.value = pnl.toFixed(3);
+          pnl += this.activePosition[index].grid_profit;
+          percentage = pnl / this.activePosition[index].amountUsd;
+          this.activePosition[index].profit.value = pnl.toFixed(3);
 
           /**
            * 1. Floating P&L  ()
@@ -1183,7 +1183,7 @@ export default {
            */
 
           let convertPercentage = percentage * 100;
-          activePosition[index].profit.percentage =
+          this.activePosition[index].profit.percentage =
             convertPercentage.toFixed(3);
         }
       };
@@ -1201,7 +1201,7 @@ export default {
         .then(async (res) => {
           this.activePosition = res.data;
           this.availablePair = res.pairs;
-          await this.streamBinance(this.activePosition);
+          await this.streamBinance();
         })
         .catch((err) => {})
         .finally(() => {

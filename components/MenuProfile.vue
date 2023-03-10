@@ -1,67 +1,105 @@
 <template>
-  <v-list-item
-    color="off-white"
-    exact
-    dense
-    class="custom-menu-2 mb-2"
-    two-line
-  >
-    <v-progress-circular
-      v-if="dataMode"
-      :rotate="270"
-      :value="profileCompletionProgress"
-      color="primary"
-      class="d-flex align-center justify-center mr-2"
+  <div>
+    <v-list-item
+      color="off-white"
+      exact
+      dense
+      class="custom-menu-2 mb-1"
+      two-line
     >
-      <v-list-item-avatar size="25" class="ma-0">
+      <v-progress-circular
+        v-if="dataMode"
+        :rotate="270"
+        :value="profileCompletionProgress"
+        color="primary"
+        class="d-flex align-center justify-center mr-2"
+      >
+        <v-list-item-avatar size="25" class="ma-0">
+          <v-img
+            :src="userData.photoURL"
+            :alt="userData.displayName"
+            contain
+          ></v-img>
+        </v-list-item-avatar>
+      </v-progress-circular>
+
+      <v-list-item-avatar v-else size="25" class="mr-2">
         <v-img
           :src="userData.photoURL"
           :alt="userData.displayName"
           contain
         ></v-img>
       </v-list-item-avatar>
-    </v-progress-circular>
 
-    <v-list-item-avatar v-else size="25" class="mr-2">
-      <v-img
-        :src="userData.photoURL"
-        :alt="userData.displayName"
-        contain
-      ></v-img>
-    </v-list-item-avatar>
+      <v-list-item-content>
+        <template v-if="dataMode">
+          <v-list-item-title
+            class="basic-text--text text-body-1 font-weight-bold"
+          >
+            {{ userData.displayName }}
+          </v-list-item-title>
+          <v-list-item-subtitle class="basic-text--text text-body-2">
+            <strong class="primary--text font-weight-bold"
+              >{{ profileCompletionProgress }}%</strong
+            >
+            Task completion
+          </v-list-item-subtitle>
+        </template>
+        <template v-else>
+          <v-list-item-subttitle class="basic-text--text text-body-2">
+            Welcome
+          </v-list-item-subttitle>
+          <v-list-item-title
+            class="basic-text--text text-body-1 font-weight-bold"
+          >
+            {{ userData.displayName }}
+          </v-list-item-title>
+        </template>
+      </v-list-item-content>
 
-    <v-list-item-content>
-      <template v-if="dataMode">
+      <v-chip v-if="dataMode" class="custom-chip-2" small color="primary">
+        {{
+          userData.subscription
+            ? "Active"
+            : userData.trial
+            ? "Trial"
+            : "Inactive"
+        }}
+      </v-chip>
+    </v-list-item>
+    <v-list-item
+      v-if="nextTask && showNextTask"
+      color="off-white"
+      exact
+      dense
+      class="custom-menu-2 mb-3"
+      three-line
+    >
+      <v-list-item-content class="pa-3">
         <v-list-item-title
           class="basic-text--text text-body-1 font-weight-bold"
         >
-          {{ userData.displayName }}
+          Next task:
         </v-list-item-title>
         <v-list-item-subtitle class="basic-text--text text-body-2">
-          <strong class="primary--text font-weight-bold"
-            >{{ profileCompletionProgress }}%</strong
-          >
-          Task completion
+          {{ nextTask.description }}
         </v-list-item-subtitle>
-      </template>
-      <template v-else>
-        <v-list-item-subttitle class="basic-text--text text-body-2">
-          Welcome
-        </v-list-item-subttitle>
-        <v-list-item-title
-          class="basic-text--text text-body-1 font-weight-bold"
-        >
-          {{ userData.displayName }}
-        </v-list-item-title>
-      </template>
-    </v-list-item-content>
-
-    <v-chip v-if="dataMode" class="custom-chip-2" small color="primary">
-      {{
-        userData.subscription ? "Active" : userData.trial ? "Trial" : "Inactive"
-      }}
-    </v-chip>
-  </v-list-item>
+        <div class="d-flex justify-start mt-2">
+          <v-btn
+            x-small
+            rounded
+            dense
+            color="success"
+            exact
+            :to="nextTask.path"
+          >
+            {{ nextTask.title }}
+            <v-icon small class="ml-1"> mdi-arrow-right </v-icon>
+          </v-btn>
+        </div>
+      </v-list-item-content>
+    </v-list-item>
+  </div>
 </template>
 
 <script>
@@ -71,6 +109,12 @@ export default {
       type: Boolean,
       default: () => {
         return true;
+      },
+    },
+    showNextTask: {
+      type: Boolean,
+      default: () => {
+        return false;
       },
     },
     userData: {
@@ -93,6 +137,21 @@ export default {
   computed: {
     profileCompletion() {
       return this.$store.state.profileCompletion;
+    },
+    nextTask() {
+      var result = null;
+
+      if (!this.profileCompletion.data) return result;
+
+      for (let index = 0; index < this.profileCompletion.data.length; index++) {
+        const task = this.profileCompletion.data[index];
+        if (!task.completed) {
+          result = task;
+          break;
+        }
+      }
+
+      return result;
     },
     profileCompletionProgress() {
       return (

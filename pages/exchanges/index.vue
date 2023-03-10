@@ -554,9 +554,12 @@ export default {
       val || this.closeDelete();
     },
   },
-  mounted() {
+  async mounted() {
     console.log("USER!!", this.user);
     this.$store.commit("setIsLoading", true);
+    if (!this.$store.state.showTaskModal){
+      this.checkCompletion();
+    }
     this._fetchExchanges();
     this.$store.commit("setTitle", this.title);
     // this.listener = this.$fire.firestore.collection('user_exchanges').orderBy('created_at', 'desc').onSnapshot((onResult, onError) => {
