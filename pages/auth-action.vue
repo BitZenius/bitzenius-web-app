@@ -255,7 +255,7 @@ export default {
             .then((result) => {
               console.log(result);
               this.message =
-                "Email verification success. Redirecting to home...";
+                "Email verification success. Redirecting to sign in page...";
               this.goToHome(this.config.continueUrl);
             })
             .catch((err) => {
@@ -303,7 +303,7 @@ export default {
     goToHome(url) {
       setTimeout(() => {
         window.location = url;
-      }, 2000);
+      }, 3000);
     },
   },
 };

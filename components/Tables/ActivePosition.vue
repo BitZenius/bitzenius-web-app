@@ -112,12 +112,11 @@
                 "
                 @click="_addBot(exchange)"
                 class="mx-2"
-                fab
-                x-small
-                outlined
+                small
                 color="primary"
               >
-                <v-icon dark> mdi-cog </v-icon>
+                <!-- <v-icon dark> mdi-cog </v-icon> -->
+                <span>Create your bot</span>
               </v-btn>
             </v-col>
             <v-col cols="12">
@@ -1375,11 +1374,11 @@ export default {
 
         console.log(this.exchanges);
       } else {
-        this.$store.commit("setShowSnackbar", {
-          show: true,
-          message: "You don't have any active bot, please create one!",
-          color: "customPink",
-        });
+        // this.$store.commit("setShowSnackbar", {
+        //   show: true,
+        //   message: "You don't have any active bot, please create one!",
+        //   color: "customPink",
+        // });
       }
     },
     streamBinance() {

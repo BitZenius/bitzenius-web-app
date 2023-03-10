@@ -85,9 +85,9 @@
                 <v-row class="pa-3 pt-10">
                   <v-col
                     cols="12"
-                    class="d-flex justify-space-between align-center pt-10 px-5"
+                    class="d-flex justify-center align-center pt-10 px-5"
                   >
-                    <v-btn
+                    <!-- <v-btn
                       @click="_addExchange(exchange)"
                       class="mx-2"
                       fab
@@ -102,7 +102,7 @@
                       color="primary"
                     >
                       <v-icon> mdi-cog </v-icon>
-                    </v-btn>
+                    </v-btn> -->
                     <v-btn
                       @click="_addExchange(exchange)"
                       class="mx-2"
@@ -148,10 +148,10 @@
                         exchange.comingsoon
                           ? 'white'
                           : exchange.active
-                          ? 'primary'
-                          : 'success'
+                          ? 'success'
+                          : 'primary'
                       "
-                      class="pr-0"
+                      class="pr-0 d-flex align-center justify-center"
                     >
                       <span
                         class="text-caption font-weight-bold"
@@ -168,9 +168,24 @@
                       >
                         Coming soon
                       </span>
-                      <span class="text-caption font-weight-bold" v-else>
-                        Setup exchange
-                      </span>
+                      <v-btn
+                      @click="_addExchange(exchange)"
+                      class="d-flex align-center justify-center"
+                      depressed
+                      rounded
+                      :disabled="
+                        exchange.active ||
+                        !user.subscription ||
+                        user.subscription == false ||
+                        exchange.comingsoon
+                      "
+                      color="primary"
+                      v-else
+                      >
+                        <span class="text-caption font-weight-bold">
+                          Connect {{exchange.name}}
+                        </span>
+                      </v-btn>
                     </v-alert>
                   </v-col>
                 </v-row>

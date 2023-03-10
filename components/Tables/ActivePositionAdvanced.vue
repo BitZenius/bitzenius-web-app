@@ -1123,11 +1123,11 @@ export default {
 
         console.log(this.exchanges);
       } else {
-        this.$store.commit("setShowSnackbar", {
-          show: true,
-          message: "You don't have any active bot, please create one!",
-          color: "customPink",
-        });
+        // this.$store.commit("setShowSnackbar", {
+        //   show: true,
+        //   message: "You don't have any active bot, please create one!",
+        //   color: "customPink",
+        // });
       }
     },
     streamBinance(activePosition) {

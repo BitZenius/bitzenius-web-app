@@ -53,7 +53,7 @@ export default {
     emailSent: false,
     message:
       "A verification link has been sent to your inbox. Please ensure to check your spam folder as well",
-    buttonText: "Resend Email",
+    buttonText: "Send Email",
     // LOTTIE
     anim: null, // for saving the reference to the animation
     lottieOptions: { animationData: animationData.default },
@@ -81,9 +81,12 @@ export default {
     setTimeout(() => {
       console.log("user", this.user);
       if (this.user.emailVerified) {
-        return this.$router.push("/");
+        // return this.$router.push("/");
       } else {
-        this.sendEmailVerification();
+        console.log("user-email", this.user.email);
+        // setTimeout(()=>{
+        //   // this.sendEmailVerification();
+        // },1000)
       }
     });
   },
@@ -102,22 +105,25 @@ export default {
     handleAnimation: function (anim) {
       this.anim = anim;
     },
-    sendEmailVerification() {
+    async sendEmailVerification() {
       this.isLoading = true;
       this.$api
         .$post("/user/auth/verify", {
           email: this.user.email,
         })
         .then((result) => {
+          alert('then')
           console.log(result);
           this.emailSent = true;
           this.message = `We have sent a verification email to ${this.user.email}`;
           this.buttonText = "Resend Email";
         })
         .catch((err) => {
+          alert('err')
           console.log(err);
         })
         .finally(() => {
+          alert('finally')
           this.isLoading = false;
         });
     },
