@@ -4,7 +4,6 @@ export default function ({ store, route, redirect }) {
   path = path.split('/')[1]
 
   const excludePaths = ['signin', 'signup', 'auth-action', 'forgot-password']
-
   if (store.getters.isLoggedIn) {
     if (excludePaths.includes(path)) {
       if (path != 'auth-action') {

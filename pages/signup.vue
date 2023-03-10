@@ -567,9 +567,10 @@ export default {
     },
     signUp() {
       this.loadingText = "Please wait...";
-      this.isLoading = true;
       const valid = this.$refs.form.validate();
+      console.log('signup Valid', valid);
       if (valid) {
+        this.isLoading = true;
         var hearAboutDict = {
           value: this.hearAboutModel,
           description: this.findHearAboutDesc(this.hearAboutModel),
@@ -603,6 +604,11 @@ export default {
           .finally(() => {
             this.isLoading = true;
           });
+      }else{
+        this.message = {
+          text:"Please make sure you have filled the form properly",
+          color:"danger"
+        }
       }
     },
     async googleSignin() {

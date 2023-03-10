@@ -16,6 +16,7 @@
         </h3>
         <div class="d-flex justify-center align-center mt-4">
           <v-btn
+            :disabled="onDisabled"
             :loading="isLoading"
             depressed
             rounded
@@ -24,7 +25,7 @@
           >
             {{ buttonText }}
           </v-btn>
-          <!-- <v-btn
+          <v-btn
             @click="logout"
             depressed
             rounded
@@ -32,7 +33,10 @@
             class="text-capitalize ml-2"
           >
             Logout
-          </v-btn> -->
+          </v-btn>
+        </div>
+        <div v-if="onError" class="d-flex justify-center align-center mt-4">
+            <span class="danger--text">Too many request attempt, please try again in 30 seconds!</span>
         </div>
       </v-card-text>
     </v-card>
@@ -50,7 +54,9 @@ export default {
   },
   data: () => ({
     isLoading: false,
+    onError:false,
     emailSent: false,
+    onDisabled:false,
     message:
       "A verification link has been sent to your inbox. Please ensure to check your spam folder as well",
     buttonText: "Send Email",
@@ -114,16 +120,20 @@ export default {
         .then((result) => {
           alert('then')
           console.log(result);
-          this.emailSent = true;
-          this.message = `We have sent a verification email to ${this.user.email}`;
+          this.emailSent  = true;
+          this.message    = `We have sent a verification email to ${this.user.email}`;
           this.buttonText = "Resend Email";
         })
         .catch((err) => {
-          alert('err')
-          console.log(err);
+          this.onDisabled = true;
+          this.onError = true;
+          setTimeout(()=>{
+            this.onError = false;
+            this.isLoading = false;
+            this.onDisabled = false;
+          },30000)
         })
         .finally(() => {
-          alert('finally')
           this.isLoading = false;
         });
     },
