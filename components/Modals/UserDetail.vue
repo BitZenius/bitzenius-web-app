@@ -13,7 +13,7 @@
     <v-card-text>
       <v-row>
         <v-col cols="12">
-          <MenuProfile :userData="user"></MenuProfile>
+          <MenuProfile :showNextTask="true" :userData="user"></MenuProfile>
         </v-col>
         <v-col cols="12">
           <CardTask :taskData="taskData"></CardTask>

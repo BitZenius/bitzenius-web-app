@@ -357,7 +357,10 @@
                               <v-list-item-subtitle
                                 class="text-body-1 font-weight-bold basic-text--text"
                               >
-                                {{ item.value }}
+                                <template v-if="i == 2 || i == 4">
+                              {{ item.value | toCurrency }}</template
+                            >
+                            <template v-else> {{ item.value }}</template>
                               </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>

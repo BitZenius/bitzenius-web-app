@@ -146,6 +146,12 @@
           <CardCreateNewBots></CardCreateNewBots>
         </v-col>
         <v-col cols="12">
+          <CardTaskInfo
+            @show-task="showUserDetail = true"
+            :taskData="profileCompletionTasks"
+          ></CardTaskInfo>
+        </v-col>
+        <v-col cols="12">
           <CardBalanceWallet class="mb-6" />
         </v-col>
         <v-col cols="12" style="overflow-x: auto" class="no-scrollbar">
@@ -164,12 +170,7 @@
             </v-col>
           </v-row>
         </v-col>
-        <v-col cols="12">
-          <CardTaskInfo
-            @show-task="showUserDetail = true"
-            :taskData="profileCompletionTasks"
-          ></CardTaskInfo>
-        </v-col>
+
         <v-col cols="12" md="12">
           <v-row>
             <v-col cols="12">
@@ -442,7 +443,6 @@ export default {
     exchange() {
       return this.$store.state.exchange.selectedExchange;
     },
-
   },
   methods: {
     // FETCH API
@@ -697,7 +697,6 @@ export default {
       }
       this._fetchChart();
     },
-
   },
 };
 </script>

@@ -1281,15 +1281,23 @@ export default {
     listenStream() {
       this.realtimeUpdateSocket.on("bots-insert", (data) => {
         console.log("LISTEN bots insert", data);
-        this.activePosition.push(data);
+
+        if (data.exchange == this.exchange) {
+          console.log("SAME EXCHANGE bots insert", this.exchange);
+          this.activePosition.push(data);
+        }
       });
       this.realtimeUpdateSocket.on("bots-update", (data) => {
         console.log("LISTEN bots update", data);
-        let index = this.activePosition.findIndex(
-          (b) => b.symbol == data.symbol
-        );
-        if (index < 0) return;
-        this.activePosition[index] = data;
+
+        if (data.exchange == this.exchange) {
+          console.log("SAME EXCHANGE bots update", this.exchange);
+          let index = this.activePosition.findIndex(
+            (b) => b.symbol == data.symbol
+          );
+          if (index < 0) return;
+          this.activePosition[index] = data;
+        }
       });
       this.realtimeUpdateSocket.on("bots-delete", (data) => {
         console.log("LISTEN bots delete", data);
