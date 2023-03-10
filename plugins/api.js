@@ -34,7 +34,7 @@ export default function ({ $axios, store, error: nuxtError }, inject) {
     api.onError((error) => {
       const config = error.response.config
       const data = error.response.data
-      
+
       if (store.getters.isLoggedIn && config && data.code) {
         if (data.code == 'auth/id-token-expired') {
           return store.$fire.auth.currentUser.getIdToken(true).then((newToken) => {
@@ -45,11 +45,13 @@ export default function ({ $axios, store, error: nuxtError }, inject) {
             console.log(err)
           })
         } else {
-          store.$fire.auth.signOut().then(() => {
-            store.$router.push('/signin')
-          }).catch((err) => {
-            console.log(err)
-          })
+          if (config.url != "/user/auth/verify") {
+            store.$fire.auth.signOut().then(() => {
+              store.$router.push('/signin')
+            }).catch((err) => {
+              console.log(err)
+            }) 
+          }
         }
       }
 
