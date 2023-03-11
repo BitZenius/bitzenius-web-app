@@ -16,7 +16,6 @@
           color="primary"
           style="width: 50%"
           rounded
-          flat
           depressed
         >
           All Tasks

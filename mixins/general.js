@@ -23,6 +23,16 @@ export default {
     tawkToInitialized(val) {
       if (val && this.checkMobile()) {
         var tawkToElement = document.getElementsByClassName("widget-visible")[0]
+
+        // Recheck every 3 seconds
+        if (!tawkToElement) {
+          this.tawkToInitialized = false
+          setTimeout(() => {
+            this.tawkToInitialized = true
+          }, 3000)
+          return
+        }
+
         var firstIframe = tawkToElement.childNodes[0]
         firstIframe.style.setProperty('bottom', '11vh', 'important')
         firstIframe.style.setProperty('right', '10px', 'important')
@@ -62,9 +72,7 @@ export default {
         s0.parentNode.insertBefore(s1, s0);
       })();
 
-      setTimeout(() => {
-        this.tawkToInitialized = true
-      }, 8000)
+      this.tawkToInitialized = true
     },
 
     // REALTIME DATA STREAM

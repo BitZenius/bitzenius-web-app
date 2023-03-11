@@ -72,7 +72,7 @@
             </v-btn>
           </v-card-title>
           <v-card-text v-if="userData" class="mt-3">
-            <v-row justify="center " align="center">
+            <v-row justify="center" align="center">
               <v-col cols="12" md="4">
                 <qr-code :text="userData.wallet_va"></qr-code>
               </v-col>
@@ -290,7 +290,7 @@
             </v-btn>
           </v-card-title>
           <v-card-text v-if="userData" class="mt-3">
-            <v-row justify="center " align="center">
+            <v-row justify="center" align="center">
               <v-col cols="12" md="4" class="d-flex justify-center">
                 <qr-code :text="userData.wallet_va"></qr-code>
               </v-col>

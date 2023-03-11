@@ -19,7 +19,7 @@
         </div>
         <v-row class="pa-5">
           <v-col cols="12" class="d-flex">
-            <div class="lottie-container">
+            <div class="lottie-container-exchange">
               <lottie
                 :width="50"
                 :height="50"
@@ -169,21 +169,21 @@
                         Coming soon
                       </span>
                       <v-btn
-                      @click="_addExchange(exchange)"
-                      class="d-flex align-center justify-center"
-                      depressed
-                      rounded
-                      :disabled="
-                        exchange.active ||
-                        !user.subscription ||
-                        user.subscription == false ||
-                        exchange.comingsoon
-                      "
-                      color="primary"
-                      v-else
+                        @click="_addExchange(exchange)"
+                        class="d-flex align-center justify-center"
+                        depressed
+                        rounded
+                        :disabled="
+                          exchange.active ||
+                          !user.subscription ||
+                          user.subscription == false ||
+                          exchange.comingsoon
+                        "
+                        color="primary"
+                        v-else
                       >
                         <span class="text-caption font-weight-bold">
-                          Connect {{exchange.name}}
+                          Connect {{ exchange.name }}
                         </span>
                       </v-btn>
                     </v-alert>
@@ -557,7 +557,7 @@ export default {
   async mounted() {
     console.log("USER!!", this.user);
     this.$store.commit("setIsLoading", true);
-    if (!this.$store.state.showTaskModal){
+    if (!this.$store.state.showTaskModal) {
       this.checkCompletion();
     }
     this._fetchExchanges();

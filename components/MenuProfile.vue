@@ -46,9 +46,9 @@
           </v-list-item-subtitle>
         </template>
         <template v-else>
-          <v-list-item-subttitle class="basic-text--text text-body-2">
+          <v-list-item-subtitle class="basic-text--text text-body-2">
             Welcome
-          </v-list-item-subttitle>
+          </v-list-item-subtitle>
           <v-list-item-title
             class="basic-text--text text-body-1 font-weight-bold"
           >

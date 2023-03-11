@@ -1041,7 +1041,7 @@ export default {
       exchanges: [
         {
           name: "Binance",
-          selected: true,
+          selected: false,
           active: false,
           image: "/exchange_logo/binance.png",
           comingsoon: false,
@@ -1532,6 +1532,7 @@ export default {
         //   message: "Setup not found. Please setup bots for this exchange",
         //   color: "customPink",
         // });
+        return
       }
 
       this.$store.commit("exchange/setSelectedExchange", val);
@@ -1540,6 +1541,7 @@ export default {
       for (let i = 0; i < this.exchanges.length; i++) {
         this.exchanges[i].selected = false;
       }
+
       this.exchanges[index].selected = true;
       this.selectedExchangeActive = this.exchanges[index].active;
 
