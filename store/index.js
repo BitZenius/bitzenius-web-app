@@ -24,7 +24,7 @@ export const state = () => ({
     step: 0,
     stepTotal: 1
   },
-  profileCompletionLoading: false,
+  profileCompletionLoading: true,
   showTaskModal: false
 })
 

@@ -93,9 +93,6 @@ export default {
 
     // CHECK COMPLETION
     async checkCompletion(cb = function () { }) {
-
-
-
       var data = this.profileCompletion
       if (data.step == data.stepTotal) {
         cb()
@@ -104,7 +101,15 @@ export default {
         if (this.$route.query.c) {
           return
         }
-        this.$store.commit("setShowTaskModal", true);
+
+        // Wait for fetch loading completed
+        if (this.profileCompletionLoading) {
+          setTimeout(() => {
+            this.checkCompletion()
+          }, 2000)
+        } else {
+          this.$store.commit("setShowTaskModal", true);
+        }
       }
     },
     fetchCompletion(loading = false) {
