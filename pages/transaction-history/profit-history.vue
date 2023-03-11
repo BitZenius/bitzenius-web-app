@@ -216,7 +216,7 @@ export default {
     return {
       title: "Transaction Report",
       isLoading: true,
-      isLoadingMain:true,
+      isLoadingMain: true,
       // ID, Type, Date, Profit, Price, Qty
       options: {},
       totalItems: 0,
@@ -332,16 +332,16 @@ export default {
       this._fetchReport(null);
     },
     async _fetchReport(sorting) {
-      console.log('options', this.options);
-      console.log('this.dates', this.dates);
+      console.log("options", this.options);
+      console.log("this.dates", this.dates);
       const { page, itemsPerPage } = this.options;
       this.isLoadingMain = true;
 
       let tempParams = {};
       tempParams.exchange = this.exchange;
       tempParams.onlyUser = true;
-      tempParams.limit = itemsPerPage == -1 ? this.totalItems : itemsPerPage,
-      tempParams.page = page;
+      (tempParams.limit = itemsPerPage == -1 ? this.totalItems : itemsPerPage),
+        (tempParams.page = page);
 
       if (sorting) {
         tempParams.sorting = sorting;
@@ -356,7 +356,7 @@ export default {
           params: tempParams,
         })
         .then((res) => {
-          console.log('res on profit report', res);
+          console.log("res on profit report", res);
           this.$store.commit("setIsLoading", false);
           if (res.success) {
             this.totalItems = res.count;
@@ -368,7 +368,7 @@ export default {
               val._profit.second = string[1];
             });
             this.profitItems = res.data;
-            console.log('profitItems', this.profitItems);
+            console.log("profitItems", this.profitItems);
             this.isLoadingMain = false;
           } else {
             this.$store.commit("setIsLoading", false);
@@ -381,7 +381,7 @@ export default {
           }
         })
         .catch((err) => {
-          console.log('err',err)
+          console.log("err", err);
           his.$store.commit("setIsLoading", false);
           this.$store.commit("setShowSnackbar", {
             show: true,
@@ -439,7 +439,7 @@ export default {
   },
   watch: {
     exchange(nv, ov) {
-      this._fetchReport(null);
+      // this._fetchReport(null);
       this.$store.commit("setIsLoading", true);
     },
     options: {

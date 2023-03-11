@@ -977,7 +977,7 @@ export default {
     },
     exchange(val) {
       this.counter++;
-      this._fetchBotsList(val);
+      // this._fetchBotsList();
       this._fetchAdvancedSetup();
     },
   },
@@ -988,12 +988,12 @@ export default {
     if (this.exchange) {
       await this._fetchBotsList(this.exchange); // Fetch Bots List
       await this._fetchAdvancedSetup();
-      await this._fetchUserExchange(); // Fetch User Exchang
+      // await this._fetchUserExchange(); // Fetch User Exchang
       // END OF CONNECT TO SOCKET IO
     } else {
       // this._fetchBotsList("Binance");
       await this._fetchAdvancedSetup();
-      await this._fetchUserExchange(); // Fetch User Exchang
+      // await this._fetchUserExchange(); // Fetch User Exchang
     }
 
     // BOTS SOCKET
@@ -1147,7 +1147,8 @@ export default {
           let average = parseFloat(this.activePosition[index].average);
           let percentage =
             average == 0 ? 0 : (parseFloat(data.c) - average) / average;
-          let pnl = parseFloat(this.activePosition[index].amountUsd) * percentage;
+          let pnl =
+            parseFloat(this.activePosition[index].amountUsd) * percentage;
 
           percentage = pnl / this.activePosition[index].amountUsd;
 
@@ -1188,7 +1189,7 @@ export default {
         }
       };
     },
-    async _fetchBotsList(exchangeName) {
+    async _fetchBotsList() {
       this.isLoading = true;
       if (this.socket) this.socket?.close();
 
@@ -1244,7 +1245,7 @@ export default {
       this.selectedExchangeActive = this.exchanges[index].active;
 
       // RE-FETCH LIST
-      this._fetchBotsList(val);
+      this._fetchBotsList();
     },
     async _onSelectPair(val) {
       console.log("selectedPair", val);

@@ -1037,6 +1037,8 @@ export default {
       // START OF CARD EXCHANGE
       selectedExchange: null,
       selectedExchangeReport: null,
+      fetchingExchange: null,
+      fetchedExchange: null,
       exchangeName: "Binance",
       exchanges: [
         {
@@ -1278,20 +1280,18 @@ export default {
     },
     exchange(val) {
       this.counter++;
-      this._fetchBotsList(val);
+      // this._fetchBotsList(val);
     },
   },
   async mounted() {
     console.log("USER!!", this.user);
 
     if (this.exchange) {
-      await this._fetchBotsList(this.exchange); // Fetch Bots List
-      this._fetchUserExchange(); // Fetch User Exchang
-      // END OF CONNECT TO SOCKET IO
-    } else {
-      // this._fetchBotsList("Binance");
+      // await this._fetchBotsList(this.exchange); // Fetch Bots List
       await this._fetchUserExchange(); // Fetch User Exchang
-      await this._fetchBotsList(this.exchange); // Fetch Bots List
+    } else {
+      await this._fetchUserExchange(); // Fetch User Exchang
+      // await this._fetchBotsList(this.exchange); // Fetch Bots List
     }
 
     // BOTS SOCKET
@@ -1419,7 +1419,6 @@ export default {
       }
     },
     streamBinance() {
-      console.log(this.activePosition);
       this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
       this.socket.onmessage = (event) => {
         let data = JSON.parse(event.data);
@@ -1478,9 +1477,27 @@ export default {
       };
     },
     async _fetchBotsList(exchangeName) {
+      console.log(
+        "!!! BEGINNING OF _fetchBotsList: Exchange comparison",
+        " FETCHING: ",
+        this.fetchingExchange,
+        " FETCHED: ",
+        this.fetchedExchange,
+        " ASKED: ",
+        exchangeName
+      );
+      if (
+        this.fetchedExchange == exchangeName ||
+        this.fetchingExchange == exchangeName
+      ) {
+        return;
+      }
+
       this.isLoading = true;
+
       if (this.socket) this.socket?.close();
 
+      this.fetchingExchange = exchangeName
       this.$api
         .$get("/user/bot-user", {
           params: {
@@ -1488,16 +1505,26 @@ export default {
           },
         })
         .then(async (res) => {
-          if (res.data.length < 1 || res.data[0].exchange != this.exchange) {
+          console.log(
+            "RESULT OF _fetchBotsList: Exchange comparison",
+            this.selectedExchangeReport,
+            exchangeName
+          );
+          if (this.selectedExchangeReport != exchangeName) {
             return;
           }
           this.activePosition = res.data;
           this.availablePair = res.pairs;
           await this.streamBinance();
+
+          this.fetchedExchange = exchangeName;
         })
-        .catch((err) => {})
+        .catch((err) => {
+          this.fetchedExchange = null;
+        })
         .finally(() => {
           this.isLoading = false;
+          this.fetchingExchange = null
         });
     },
     async _fetchPosition(sorting) {
@@ -1532,7 +1559,7 @@ export default {
         //   message: "Setup not found. Please setup bots for this exchange",
         //   color: "customPink",
         // });
-        return
+        return;
       }
 
       this.$store.commit("exchange/setSelectedExchange", val);
