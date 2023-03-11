@@ -141,6 +141,7 @@
                   >
                     <v-btn
                       width="120"
+                      :disabled="tokens.length < 1"
                       rounded
                       color="primary"
                       @click="_continue(2)"

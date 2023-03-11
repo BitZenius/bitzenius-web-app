@@ -60,14 +60,10 @@
                 </template>
               </v-text-field>
             </v-col>
-            <v-col
-              v-if="tokens.length > 0"
-              cols="12"
-              md="12"
-              class="text-body-1 font-weight-bold"
-            >
+            <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
               Select Token
               <v-select
+                v-if="tokens.length > 0"
                 dense
                 class="mt-3 px-3"
                 v-model="selected_token"
@@ -86,6 +82,11 @@
                   </v-list-item>
                 </template>
               </v-select>
+              <v-skeleton-loader
+                v-else
+                type="heading"
+                class="my-2"
+              ></v-skeleton-loader>
             </v-col>
           </v-row>
         </div>
