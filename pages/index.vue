@@ -628,7 +628,7 @@ export default {
     },
   },
   beforeMount() {
-    this.$store.commit("setIsLoading", true);
+    // this.$store.commit("setIsLoading", true);
   },
   async mounted() {
     this.$store.commit("setTitle", this.title);
@@ -637,9 +637,9 @@ export default {
     this._fetchDailyDeals();
     this._fetchUserBalance();
     this._fetchProfit();
-    setTimeout(() => {
-      this.$store.commit("setIsLoading", false);
-    }, 500);
+    // setTimeout(() => {
+    //   this.$store.commit("setIsLoading", false);
+    // }, 500);
   },
   watch: {
     "$vuetify.theme.dark": {

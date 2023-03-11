@@ -67,7 +67,10 @@
             </v-card>
           </v-col>
           <v-col cols="9" class="relative-container">
-            <div class="exchange-card-container">
+            <div
+              class="exchange-card-container"
+              v-if="clientExchanges.length > 0"
+            >
               <v-card
                 v-for="(exchange, index) in exchanges"
                 :key="index"
@@ -194,6 +197,26 @@
                 <!-- ORNAMENTS END -->
               </v-card>
             </div>
+            <div class="exchange-card-container" v-else>
+              <v-card
+                class="pa-3"
+                v-for="(exchange, index) in exchanges"
+                :key="index"
+              >
+                <div class="custom-avatar off-white-3">
+                  <v-skeleton-loader type="avatar"></v-skeleton-loader>
+                </div>
+
+                <v-skeleton-loader
+                  type="actions"
+                  class="mt-10"
+                ></v-skeleton-loader>
+                <v-skeleton-loader
+                  type="sentences"
+                  class="mt-10 mb-3"
+                ></v-skeleton-loader>
+              </v-card>
+            </div>
           </v-col>
         </v-row>
       </v-card>
@@ -238,7 +261,7 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-row class="mt-10">
+      <v-row class="mt-10" v-if="clientExchanges.length > 0">
         <v-col cols="6" v-for="(exchange, index) in exchanges" :key="index">
           <v-card
             style="position: relative; margin-bottom: 25px"
@@ -345,6 +368,25 @@
             <!-- ORNAMENTS -->
             <div v-if="false" class="ornament o1"></div>
             <!-- ORNAMENTS END -->
+          </v-card>
+        </v-col>
+      </v-row>
+      <v-row class="mt-10" v-else>
+        <v-col cols="6" v-for="(exchange, index) in exchanges" :key="index">
+          <v-card
+            class="pa-3"
+            style="position: relative; margin-bottom: 25px"
+            s
+          >
+            <div class="custom-avatar off-white-3">
+              <v-skeleton-loader type="avatar"></v-skeleton-loader>
+            </div>
+
+            <v-skeleton-loader type="button" class="mt-10"></v-skeleton-loader>
+            <v-skeleton-loader
+              type="sentences"
+              class="mt-10 mb-3"
+            ></v-skeleton-loader>
           </v-card>
         </v-col>
       </v-row>
@@ -515,7 +557,7 @@ export default {
         api_key: "",
         secret_key: "",
       },
-      isLoading: false,
+      isLoading: true,
       listener: null,
       snackbar: false,
       snackbarText: "My timeout is set to 2000.",
@@ -556,10 +598,7 @@ export default {
   },
   async mounted() {
     console.log("USER!!", this.user);
-    this.$store.commit("setIsLoading", true);
-    if (!this.$store.state.showTaskModal) {
-      this.checkCompletion();
-    }
+    this.checkCompletion();
     this._fetchExchanges();
     this.$store.commit("setTitle", this.title);
     // this.listener = this.$fire.firestore.collection('user_exchanges').orderBy('created_at', 'desc').onSnapshot((onResult, onError) => {
@@ -653,14 +692,12 @@ export default {
             }
           }
         }
-        this.$store.commit("setIsLoading", false);
       } else {
         this.$store.commit("setShowSnackbar", {
           show: true,
           message: "Unable to fetch user exchanges!",
           color: "customPink",
         });
-        this.$store.commit("setIsLoading", false);
       }
     },
 
@@ -894,6 +931,7 @@ export default {
   top: 0%;
   left: 0%;
   transform: translate(50%, -50%);
+  z-index: 10;
 }
 </style>
 
