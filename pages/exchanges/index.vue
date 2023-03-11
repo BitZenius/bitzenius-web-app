@@ -67,10 +67,7 @@
             </v-card>
           </v-col>
           <v-col cols="9" class="relative-container">
-            <div
-              class="exchange-card-container"
-              v-if="clientExchanges.length > 0"
-            >
+            <div class="exchange-card-container" v-if="clientExchangesLoaded">
               <v-card
                 v-for="(exchange, index) in exchanges"
                 :key="index"
@@ -261,7 +258,7 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-row class="mt-10" v-if="clientExchanges.length > 0">
+      <v-row class="mt-10" v-if="clientExchangesLoaded">
         <v-col cols="6" v-for="(exchange, index) in exchanges" :key="index">
           <v-card
             style="position: relative; margin-bottom: 25px"
@@ -544,6 +541,7 @@ export default {
         },
       ],
       clientExchanges: [],
+      clientExchangesLoaded: false,
       id: null,
       editedItem: {
         name: "",
@@ -597,9 +595,8 @@ export default {
     },
   },
   async mounted() {
-    console.log("USER!!", this.user);
+    this.clientExchangesLoaded = false;
     this.checkCompletion();
-    this._fetchExchanges();
     this.$store.commit("setTitle", this.title);
     // this.listener = this.$fire.firestore.collection('user_exchanges').orderBy('created_at', 'desc').onSnapshot((onResult, onError) => {
     //     if (onResult.size > 0) {
@@ -614,6 +611,8 @@ export default {
     //         this.items = exchanges
     //     }
     // })
+    await this._fetchExchanges();
+    this.clientExchangesLoaded = true;
   },
   beforeDestroy() {},
   methods: {

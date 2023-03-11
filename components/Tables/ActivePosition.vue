@@ -48,7 +48,11 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-col v-if="showExchangeCards" cols="12" class="d-flex px-0 pt-10">
+    <v-col
+      v-if="showExchangeCards && userExchangesLoaded"
+      cols="12"
+      class="d-flex px-0 pt-10"
+    >
       <v-col
         v-for="(exchange, index) in exchanges"
         :key="index"
@@ -164,75 +168,59 @@
           <div v-if="exchange.selected" class="ornament o1"></div>
           <!-- ORNAMENTS END -->
         </v-card>
-        <!-- <v-btn small @click="logger()">logger</v-btn> -->
+      </v-col>
+    </v-col>
+
+    <v-col
+      v-else-if="showExchangeCards && !userExchangesLoaded"
+      cols="12"
+      class="d-flex px-0 pt-10"
+    >
+      <v-col
+        v-for="(exchange, index) in exchanges"
+        :key="index"
+        sm="6"
+        md="4"
+        lg="3"
+      >
         <v-card
-          v-if="false"
-          @click="selectExchangeCard(`${exchange.name}`, exchange, index)"
-          style="position: relative; height: 110px"
-          :class="{
-            'd-flex align-center justify-center exchange-active':
-              exchange.selected,
-            'd-flex align-center justify-center': !exchange.selected,
-          }"
-          elevation="3"
+          style="position: relative; margin-bottom: 25px"
+          :class="
+            exchange.comingsoon
+              ? 'd-flex align-center justify-center exchange-card disabled'
+              : 'd-flex align-center justify-center exchange-card'
+          "
+          flat
         >
-          <div v-if="exchange.selected" class="exchange-selected">Selected</div>
-          <div v-if="exchange.active">
-            <v-btn
-              x-small
-              icon
-              fab
-              class="danger white--text delete-button"
-              @click="_deleteBot(exchange)"
-              >X</v-btn
-            >
-          </div>
-          <v-row>
-            <v-col sm="12" md="4" class="d-flex align-center justify-start">
-              <img
-                style="width: 100px; padding: 25px"
-                :src="exchange.image"
-                alt=""
-              />
-            </v-col>
+          <v-row justify="center" align="center" class="pa-5">
             <v-col
-              sm="12"
-              md="8"
-              class="d-flex flex-column justify-center align-center"
+              cols="5"
+              class="d-flex justify-center"
+              style="position: relative"
             >
-              <h4>{{ exchange.name }}</h4>
-              <div v-if="exchange.active" class="d-flex justify-center">
-                <v-btn
-                  :disabled="!user.subscription || user.subscription == false"
-                  small
-                  outlined
-                  color="primary"
-                  class="mr-2"
-                  @click="_addBot(exchange)"
-                  >Edit Bot</v-btn
-                >
+              <div class="custom-avatar off-white-3">
+                <v-skeleton-loader type="avatar"></v-skeleton-loader>
               </div>
-              <v-btn
-                :disabled="!user.subscription || user.subscription == false"
-                v-else
-                color="primary"
-                small
-                @click="_addBot(exchange)"
-                >Setup Bot</v-btn
-              >
+              <v-skeleton-loader type="heading"></v-skeleton-loader>
+            </v-col>
+            <v-col cols="7" class="d-flex justify-center align-center">
+              <v-skeleton-loader type="button"></v-skeleton-loader>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col
+                  cols="12"
+                  v-for="(item, i) in exchange.summary"
+                  :key="`item-summary-${i}`"
+                >
+                  <v-skeleton-loader
+                    max-height="50px"
+                    type="list-item-two-line"
+                  ></v-skeleton-loader>
+                </v-col>
+              </v-row>
             </v-col>
           </v-row>
-          <v-overlay
-            v-if="exchange.comingsoon"
-            z-index="1"
-            :absolute="true"
-            opacity="0.7"
-            overlay="true"
-          >
-            <h3 style="letter-spacing: 2px" class="customYellow--text">
-              Coming Soon!
-            </h3>
-          </v-overlay>
         </v-card>
       </v-col>
     </v-col>
@@ -580,7 +568,11 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-row v-if="showExchangeCards" cols="12" class="px-0">
+    <v-row
+      v-if="showExchangeCards && userExchangesLoaded"
+      cols="12"
+      class="px-0"
+    >
       <v-col v-for="(exchange, index) in exchanges" :key="index" cols="12">
         <v-card
           style="position: relative"
@@ -724,6 +716,33 @@
 
           <div v-if="exchange.selected" class="ornament o1"></div>
           <!-- ORNAMENTS END -->
+        </v-card>
+      </v-col>
+    </v-row>
+
+    <v-row
+      v-else-if="showExchangeCards && !userExchangesLoaded"
+      cols="12"
+      class="px-0"
+    >
+      <v-col v-for="(exchange, index) in exchanges" :key="index" cols="12">
+        <v-card
+          style="position: relative"
+          :class="
+            exchange.comingsoon
+              ? 'd-flex align-center justify-center exchange-card disabled'
+              : 'd-flex align-center justify-center exchange-card'
+          "
+          flat
+        >
+          <v-row class="pa-1 ma-0">
+            <v-col cols="8">
+              <v-skeleton-loader type="list-item-avatar"></v-skeleton-loader>
+            </v-col>
+            <v-col cols="4">
+              <v-skeleton-loader type="button"> </v-skeleton-loader>
+            </v-col>
+          </v-row>
         </v-card>
       </v-col>
     </v-row>
@@ -1084,6 +1103,7 @@ export default {
       ],
       selectedBot: null,
       userExchanges: [],
+      userExchangesLoaded: false,
       // END OF CARD EXCHANGE
       headers: [
         {
@@ -1285,6 +1305,7 @@ export default {
   },
   async mounted() {
     console.log("USER!!", this.user);
+    this.userExchangesLoaded = false;
 
     if (this.exchange) {
       // await this._fetchBotsList(this.exchange); // Fetch Bots List
@@ -1293,6 +1314,8 @@ export default {
       await this._fetchUserExchange(); // Fetch User Exchang
       // await this._fetchBotsList(this.exchange); // Fetch Bots List
     }
+
+    this.userExchangesLoaded = true;
 
     // BOTS SOCKET
     this.initialStream(this.listenStream);
