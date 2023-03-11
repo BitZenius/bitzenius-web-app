@@ -462,6 +462,9 @@ export default {
     this.getUserNotifications();
     this.fetchCompletion();
 
+    // stream
+    this.streamBinance();
+
     if (this.checkMobile()) {
       window.addEventListener("scroll", (e) => {
         e.preventDefault();
@@ -632,31 +635,72 @@ export default {
       // const currentUser = await store.$fire.auth.currentUser
       let token = await this.currentUser.getIdToken();
       // console.log('currentUser', this.currentUser.getIdToken());
-      this.socket = io(process.env.SERVER, {
-        path: "/cron-notification",
-        auth: { token },
-      });
+      // this.socket = io(process.env.SERVER, {
+      //   path: "/cron-notification",
+      //   auth: { token },
+      // });
 
-      this.socket.on("notification", (msg) => {
-        console.log("notification msg", msg);
-        console.log(this.user);
-        if (this.user.uid == msg.uid) {
-          this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "You received new notification, please check!",
-            color: "primary",
-          });
-          this.getUserNotifications();
-        }
-      });
+      // this.socket.on("notification", (msg) => {
+      //   console.log("notification msg", msg);
+      //   console.log(this.user);
+      //   if (this.user.uid == msg.uid) {
+      //     this.$store.commit("setShowSnackbar", {
+      //       show: true,
+      //       message: "You received new notification, please check!",
+      //       color: "primary",
+      //     });
+      //     this.getUserNotifications();
+      //   }
+      // });
 
-      this.socket.on("important-notification", (msg) => {
-        if (msg && msg.length > 0) {
-          this.importantNotifications = msg;
-          this.$refs.notification.show();
-        }
-      });
+      // this.socket.on("important-notification", (msg) => {
+      //   if (msg && msg.length > 0) {
+      //     this.importantNotifications = msg;
+      //     this.$refs.notification.show();
+      //   }
+      // });
     },
+
+    // STREAM TICKER BINANCE
+    streamBinance() {
+      console.log('streamBinanceFrom Account.vue');
+      let streamStatus = this.$store.state.position.streaming;
+      if(streamStatus){
+        return;
+      }
+      this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
+      this.socket.onmessage = (event) => {
+        let data = JSON.parse(event.data);
+        let dataStore = this.$store.state.position.activePositions;
+        let index = dataStore.findIndex((b) => b.symbol == data.s);
+        let c = { 
+          "grid_profit": 0,
+          "_id": null,
+          "bot_id": null,
+          "pair_from": data.s.substr(0, data.s.length - 4),
+          "pair_to": data.s.substr(-4),
+          "symbol": data.s,
+          "exchange": "Binance",
+          "name": "This is coming from Binance stream!",
+          "type": null,
+          "price": {
+              "value": data.c,
+              "percentage": data.P
+          },
+          "quantity": 0,
+          "profit": {
+              "value": 0,
+              "percentage": 0
+          },
+          "average": 0,
+          "logo": "/default.png",
+          "status": null,
+          "amountUsd": 0
+        }
+        this.$store.commit("position/upsert",{index, data:c})
+      }
+      this.$store.commit("position/setStreaming", true);
+    }
   },
 };
 </script>

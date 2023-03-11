@@ -272,7 +272,7 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
-                :items="activePositionFiltered"
+                :items="dataStreamFromState"
                 :loading="isLoading"
                 class="elevation-0"
                 loading-text="Loading... Please wait"
@@ -801,7 +801,7 @@
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
-                :items="activePositionFiltered"
+                :items="dataStreamFromState"
                 :loading="isLoading"
                 class="elevation-0"
                 loading-text="Loading... Please wait"
@@ -1219,8 +1219,11 @@ export default {
     currentUser() {
       return this.$store.$fire.auth.currentUser;
     },
+    dataStreamFromState(){
+      return this.$store.state.position.activePositions
+    },
     activePositionFiltered() {
-      let temp = this.activePosition;
+      let temp = this.$store.state.position.activePositions;
       if (this.searchQuery != "" && this.searchQuery) {
         temp = temp.filter((position) => {
           return position.symbol
@@ -1441,6 +1444,62 @@ export default {
         // });
       }
     },
+    normalizeDataFromApi(data){
+      let currentStateOfStore = this.$store.state.position.activePositions;
+      data.forEach((val) => {
+        let index = currentStateOfStore.findIndex((d)=>d.symbol == val.symbol);
+
+        // PNL CALCULATION
+        if (val.quantity > 0) {
+          // AVERAGE  = TOTAL AMOUNT USD / TOTAL QUANTITY (depends on the positions array);
+          // data.c   = Current Price (from binance stream)
+          let average = parseFloat(val.average);
+          let percentage =
+            average == 0 ? 0 : (parseFloat(data.c) - average) / average;
+          let pnl =
+            parseFloat(val.amountUsd) * percentage;
+
+          percentage = pnl / val.amountUsd;
+
+          // Floating P&L
+          val.floatingProfit = {};
+          val.floatingProfit.value = pnl.toFixed(3);
+          val.floatingProfit.percentage = (
+            percentage * 100
+          ).toFixed(3);
+
+          // Realized P&L
+          val.realizedProfit = {};
+          val.realizedProfit.value =
+            val.grid_profit.toFixed(3);
+          val.realizedProfit.percentage =
+            val.amountUsd > 0
+              ? (
+                  (val.grid_profit /
+                    val.amountUsd) *
+                  100
+                ).toFixed(3)
+              : 0;
+
+          // Total P&L
+          pnl += val.grid_profit;
+          percentage = pnl / val.amountUsd;
+          val.profit.value = pnl.toFixed(3);
+
+          /**
+           * 1. Floating P&L  ()
+           * 2. Realized P&L  ()
+           * 3. Total P&L     ()
+           */
+
+          let convertPercentage = percentage * 100;
+          val.profit.percentage =
+            convertPercentage.toFixed(3);
+
+          this.$store.commit("position/upsert", {data:val, index});
+        }
+      })  
+    },
     streamBinance() {
       this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
       this.socket.onmessage = (event) => {
@@ -1538,9 +1597,11 @@ export default {
           }
           this.activePosition = res.data;
           this.availablePair = res.pairs;
-          await this.streamBinance();
 
+          console.log('this.activePosition', res.data);
+          // await this.streamBinance();
           this.fetchedExchange = exchangeName;
+          // this.normalizeDataFromApi(res.data);
         })
         .catch((err) => {
           this.fetchedExchange = null;

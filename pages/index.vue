@@ -1,7 +1,10 @@
 <template>
   <v-row v-if="checkMobile() == false" class="py-5 mb-10">
     <!-- TEST -->
-    <template v-if="false">
+    <template v-if="true">
+      <v-btn class="mr-2 mb-2" @click="testicle"
+        >STREAM DATA CONSOLE</v-btn
+      >
       <v-btn class="mr-2 mb-2" @click="$store.commit('setShowTaskModal', true)"
         >TASK MODAL</v-btn
       >
@@ -442,6 +445,10 @@ export default {
     },
   },
   methods: {
+    // TEST OYROawdawdd
+    testicle(){
+      console.log(this.$store.state.position.activePositions)
+    },
     // FETCH API
     async _fetchUserBalance() {
       this.isLoading = true;
