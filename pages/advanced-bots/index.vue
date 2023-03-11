@@ -205,7 +205,7 @@ export default {
 
   mounted() {
     if (this.checkMobile() == false) {
-      this.$router.push("/settings");
+      this.$router.push("/");
     }
   },
 };
