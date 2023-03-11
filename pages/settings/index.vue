@@ -1,5 +1,5 @@
 <template>
-  <v-row v-if="userData && checkMobile() == false" class="pa-5">
+  <v-row v-if="checkMobile() == false" class="pa-5">
     <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
@@ -8,7 +8,7 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-row no-gutters justify="center" style="min-height: 500px">
+      <v-row v-if="userData" no-gutters justify="center" style="min-height: 500px">
         <v-col cols="3" class="d-flex align-end justify-end pt-10">
           <!-- CUSTOM STEPPER -->
           <v-card flat class="custom-stepper-container" style="height: 100%">
@@ -403,8 +403,73 @@
           </v-stepper>
         </v-col>
       </v-row>
+      <v-row v-else no-gutters justify="center" style="min-height: 500px">
+        <v-col cols="3" class="pt-10">
+          <v-card flat class="custom-stepper-container-loader" style="height: 100%">
+            <v-skeleton-loader type="list-item-avatar" class="mb-2"></v-skeleton-loader>
+            <v-skeleton-loader type="list-item-avatar" class="mb-2"></v-skeleton-loader>
+            <v-skeleton-loader type="list-item-avatar" class="mb-2"></v-skeleton-loader>
+          </v-card>
+          </v-col>
+        <v-col cols="9">
+          <v-tabs-items v-model="e1" vertical style="height: 100%" class="pa-5">
+            <v-tab-item key="0">
+              <v-row>
+                <v-col cols="12">
+                  <v-alert
+                        border="left"
+                        dense
+                        class=" custom-alert"
+                        ><v-skeleton-loader type="heading"></v-skeleton-loader></v-alert
+                      >
 
-      <v-dialog v-model="progressDialog" max-width="480px" persistent>
+                </v-col>
+                <v-col cols="2">
+                  <v-avatar size="100">
+                    <v-skeleton-loader type="avatar"></v-skeleton-loader>
+                  </v-avatar>
+                </v-col>
+                <v-col cols="10">
+                  <v-row>
+                    <v-col cols="12" class="d-flex align-center mt-8">
+                    <v-skeleton-loader type="button"></v-skeleton-loader>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-skeleton-loader type="text"></v-skeleton-loader>
+                      <v-skeleton-loader type="button" class="mt-5"></v-skeleton-loader>
+                    </v-col>
+                    <v-col cols="6">
+                      <v-skeleton-loader type="text"></v-skeleton-loader>
+                      <v-skeleton-loader type="button" class="mt-5"></v-skeleton-loader>
+                    </v-col>
+
+                    <v-col cols="12">
+                      <v-skeleton-loader type="paragraph"></v-skeleton-loader>
+                    </v-col>
+                    <v-col cols="12" class="mt-10">
+                      <v-skeleton-loader type="button"></v-skeleton-loader>
+                    </v-col>
+                  </v-row>
+                </v-col>
+              </v-row>
+            </v-tab-item>
+          </v-tabs-items>
+        </v-col>
+      </v-row>
+
+
+    </v-col>
+    <BaseModal
+      @close="successModal = false"
+      :parentModel="successModal"
+      :maxWidth="'450'"
+    >
+      <ModalsSuccess
+        @close-modal="successModal = false"
+        @main-event="successModal = false"
+      ></ModalsSuccess>
+    </BaseModal>
+    <v-dialog v-model="progressDialog" max-width="480px" persistent>
         <v-card>
           <v-card-text class="pt-5">
             <p>Uploading progress</p>
@@ -426,19 +491,8 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
-    </v-col>
-    <BaseModal
-      @close="successModal = false"
-      :parentModel="successModal"
-      :maxWidth="'450'"
-    >
-      <ModalsSuccess
-        @close-modal="successModal = false"
-        @main-event="successModal = false"
-      ></ModalsSuccess>
-    </BaseModal>
   </v-row>
-  <v-row v-else-if="userData && checkMobile() == true" class="pa-1 ma-0">
+  <v-row v-else-if="checkMobile() == true" class="pa-1 ma-0">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
           <v-icon @click="$router.push('/account')">mdi-arrow-left</v-icon>
@@ -938,6 +992,15 @@ export default {
   flex-wrap: wrap;
   flex-direction: column;
   justify-content: space-between;
+  padding: 25px;
+  border-radius: 10px 0px 0px 10px;
+}
+.custom-stepper-container-loader {
+  min-width: 100%;
+  min-height: 100%;
+  display: flex;
+  flex-wrap: wrap;
+  flex-direction: column;
   padding: 25px;
   border-radius: 10px 0px 0px 10px;
 }
