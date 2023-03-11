@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-height: 400px">
     <v-row class="mt-1" justify="end">
       <v-col cols="12" md="3">
         <v-menu
@@ -204,6 +204,9 @@
         >
         <!-- </br><code>{{item._qty}}</code> -->
       </template>
+      <template v-slot:no-data>
+        <BaseNoData :label="`No profit history found`"></BaseNoData>
+      </template>
     </v-data-table>
   </div>
 </template>
@@ -288,8 +291,8 @@ export default {
       modal: false,
       menu2: false,
       // SEARCHING
-      search:{},
-      searchPair:null,
+      search: {},
+      searchPair: null,
       searchQuery: null,
       // SORTING PURPOSE
       availablePair: [],
@@ -345,9 +348,9 @@ export default {
     if (!this.sortSelected) {
       this.sortSelected = this.availableSorting[1].id;
       this.descending = true;
-      this._fetchReport({
-        created_at: "descending",
-      });
+      // this._fetchReport({
+      //   created_at: "descending",
+      // });
     }
   },
   methods: {
@@ -370,10 +373,10 @@ export default {
         tempParams.sorting = sorting;
       }
 
-      if(this.searchPair){
+      if (this.searchPair) {
         tempParams.search = this.search;
       }
-      
+
       if (this.dates.length > 0) {
         tempParams.dates = [];
         this.dates.forEach((date, id) => {
@@ -399,7 +402,9 @@ export default {
         res.data.forEach((val) => {
           // PRICE TO SMALLER AFTER COMMA
           val._price = {};
-          let stringPrice = String(parseFloat(val.average_fill_price).toFixed(4)).split(".");
+          let stringPrice = String(
+            parseFloat(val.average_fill_price).toFixed(4)
+          ).split(".");
           // let stringPrice = String(val.price).split(".");
           val._price.first = parseFloat(stringPrice[0]);
           val._price.second = stringPrice[1];
@@ -436,11 +441,11 @@ export default {
       }
     },
     // TRIGGER
-    findPair(e){
+    findPair(e) {
       e.preventDefault();
       console.log(this.searchPair);
-      if(this.searchPair){
-        let query = {symbol:this.searchPair};
+      if (this.searchPair) {
+        let query = { symbol: this.searchPair };
         this.search = query;
       }
       this._fetchReport();
@@ -485,11 +490,12 @@ export default {
   },
   watch: {
     exchange(nv, ov) {
-      this._fetchReport(null);
+      // this._fetchReport(null);
       this.$store.commit("setIsLoading", true);
     },
     options: {
-      handler() {
+      handler(nv, ov) {
+        console.log("TRADING-HISTORY options handler", nv, ov);
         this._fetchReport({
           created_at: "descending",
         });

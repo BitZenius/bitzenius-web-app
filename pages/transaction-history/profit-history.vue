@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="min-height: 400px">
     <v-row class="mt-1" justify="end">
       <v-col cols="12" md="3">
         <v-menu
@@ -148,6 +148,9 @@
                   item.amount_coin_filled.toFixed(4)
                 }}</span>
               </template>
+              <template v-slot:no-data>
+                <BaseNoData :label="`No profit history found`"></BaseNoData>
+              </template>
             </v-data-table>
           </v-card-text>
         </v-card>
@@ -205,6 +208,9 @@
         <v-btn icon color="primary" depressed>
           <v-icon>mdi-eye</v-icon>
         </v-btn>
+      </template>
+      <template v-slot:no-data>
+        <BaseNoData :label="`No profit history found`"></BaseNoData>
       </template>
     </v-data-table>
   </div>
@@ -325,13 +331,14 @@ export default {
   },
   mounted() {
     this.$store.commit("setTitle", this.title);
-    this._fetchReport(null);
+    // this._fetchReport(null);
   },
   methods: {
     logger() {
       this._fetchReport(null);
     },
     async _fetchReport(sorting) {
+      console.log("FETCHING: _fetchReport");
       console.log("options", this.options);
       console.log("this.dates", this.dates);
       const { page, itemsPerPage } = this.options;
@@ -382,7 +389,7 @@ export default {
         })
         .catch((err) => {
           console.log("err", err);
-          his.$store.commit("setIsLoading", false);
+          this.$store.commit("setIsLoading", false);
           this.$store.commit("setShowSnackbar", {
             show: true,
             message: err.message,
@@ -443,7 +450,8 @@ export default {
       this.$store.commit("setIsLoading", true);
     },
     options: {
-      handler() {
+      handler(nv, ov) {
+        console.log("PROFIT-HISTORY options handler", nv, ov);
         this._fetchReport();
       },
       deep: true,

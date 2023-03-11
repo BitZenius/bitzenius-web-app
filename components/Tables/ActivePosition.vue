@@ -1497,7 +1497,7 @@ export default {
 
       if (this.socket) this.socket?.close();
 
-      this.fetchingExchange = exchangeName
+      this.fetchingExchange = exchangeName;
       this.$api
         .$get("/user/bot-user", {
           params: {
@@ -1524,7 +1524,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
-          this.fetchingExchange = null
+          this.fetchingExchange = null;
         });
     },
     async _fetchPosition(sorting) {
