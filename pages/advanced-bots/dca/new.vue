@@ -759,20 +759,37 @@ export default {
       let paramTemp = {
         exchange: this.selectedExchange,
       };
-      let execute = await this.$api.$get("/user/available-tokens", {
-        params: paramTemp,
-      });
-      if (!execute.success) {
+      try {
+        let execute = await this.$api.$get("/user/available-tokens", {
+          params: paramTemp,
+        });
+
+        if (!execute.success) {
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: "Failed To Fetch Token List! Refetching in one second",
+            color: "customPink",
+          });
+          setTimeout(() => {
+            this._fetchTokenList();
+          }, 1000);
+
+          return;
+        }
+        this.tokens = execute.data.result;
+        this.tokensCopy = this.tokens;
+        console.log("tokenlist", execute.data.result);
+        // this.tokensCopy = [...this.tokens];
+      } catch (error) {
         this.$store.commit("setShowSnackbar", {
           show: true,
-          message: "Failed To Fetch Token List!",
+          message: "Failed To Fetch Token List! Refetching in one second",
           color: "customPink",
         });
+        setTimeout(() => {
+          this._fetchTokenList();
+        }, 1000);
       }
-      this.tokens = execute.data.result;
-      this.tokensCopy = this.tokens;
-      console.log("tokenlist", execute.data.result);
-      // this.tokensCopy = [...this.tokens];
     },
     toggleTokenException(val) {
       if (this.tokenException.includes(val)) {
