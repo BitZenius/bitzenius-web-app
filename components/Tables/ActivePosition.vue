@@ -1523,11 +1523,11 @@ export default {
       if (exchange.comingsoon) return;
 
       if (!exchange.active) {
-        return this.$store.commit("setShowSnackbar", {
-          show: true,
-          message: "Setup not found. Please setup bots for this exchange",
-          color: "customPink",
-        });
+        // return this.$store.commit("setShowSnackbar", {
+        //   show: true,
+        //   message: "Setup not found. Please setup bots for this exchange",
+        //   color: "customPink",
+        // });
       }
 
       this.$store.commit("exchange/setSelectedExchange", val);
