@@ -10,10 +10,10 @@
     <v-col cols="12">
       <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
         <v-tab
-          :disabled="disabledTables.includes(item)"
           :ripple="false"
           v-for="item in tables"
           :key="item"
+          :disabled="disabledTables.includes(item)"
         >
           <span class="text-body-1 text-capitalize">{{ item }}</span>
         </v-tab>
@@ -151,6 +151,36 @@
         </v-tab-item>
       </v-tabs-items>
     </v-col>
+    <v-col cols="12" v-else>
+      <div class="relative-container-subs">
+        <v-card class="card-1 overflow-y-hidden overflow-x-hidden pa-2" flat>
+          <v-row class="pa-5 py-10" align="end">
+            <v-col cols="8">
+              <div>
+                <v-skeleton-loader
+                  type="image"
+                  max-width="150px"
+                  max-height="100px"
+                  class="mb-4"
+                ></v-skeleton-loader>
+                <v-skeleton-loader
+                  type="heading"
+                  class="mb-4"
+                ></v-skeleton-loader>
+                <v-skeleton-loader type="chip" class="mb-4"></v-skeleton-loader>
+                <v-skeleton-loader type="button"></v-skeleton-loader>
+              </div>
+            </v-col>
+          </v-row>
+        </v-card>
+
+        <v-skeleton-loader
+          class="card-2 pa-2"
+          style="transform: translateY(50px)"
+          type="table"
+        ></v-skeleton-loader>
+      </div>
+    </v-col>
     <v-dialog
       v-model="orderDialog"
       max-width="600"
@@ -254,13 +284,13 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-tabs
-        :disabled="disabledTables.includes(item)"
-        hide-slider
-        :show-arrows="true"
-        v-model="currentItem"
-      >
-        <v-tab :ripple="false" v-for="item in tables" :key="item">
+      <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
+        <v-tab
+          :ripple="false"
+          v-for="item in tables"
+          :key="item"
+          :disabled="disabledTables.includes(item)"
+        >
           <span class="text-body-1 text-capitalize">{{ item }}</span>
         </v-tab>
       </v-tabs>
@@ -370,6 +400,37 @@
           />
         </v-tab-item>
       </v-tabs-items>
+    </v-col>
+    <v-col cols="12" v-else>
+      <v-row>
+        <v-col cols="12">
+          <v-card flat>
+            <v-row align="center">
+              <v-col cols="6">
+                <v-skeleton-loader type="image"></v-skeleton-loader>
+              </v-col>
+              <v-col cols="6">
+                <v-skeleton-loader
+                  class="mb-3"
+                  type="heading"
+                ></v-skeleton-loader>
+                <v-skeleton-loader class="mb-3" type="chip"></v-skeleton-loader>
+                <v-skeleton-loader
+                  class="mb-3"
+                  type="sentences"
+                ></v-skeleton-loader>
+                <v-skeleton-loader
+                  class="mb-3"
+                  type="button"
+                ></v-skeleton-loader>
+              </v-col>
+            </v-row>
+          </v-card>
+        </v-col>
+        <v-col cols="12">
+          <v-skeleton-loader type="table"></v-skeleton-loader>
+        </v-col>
+      </v-row>
     </v-col>
 
     <v-dialog
@@ -566,7 +627,7 @@ export default {
       this.switchCicleData(val);
     },
     isLoading(val) {
-      this.$store.commit("setIsLoading", val);
+      // this.$store.commit("setIsLoading", val);
     },
   },
   async mounted() {
