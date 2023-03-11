@@ -87,7 +87,7 @@
           <base-menu-item
             :to="'/advanced-bots/smart-trade'"
             :icon="true"
-            :avatar="`$vuetify.icons.CardWithdrawIcon`"
+            :avatar="`$vuetify.icons.SmartTradeIcon`"
             :disabled="true"
             :cardtitle="`Smart Trade (Coming Soon)`"
             class="ml-2"
@@ -161,9 +161,12 @@
       > -->
     </v-navigation-drawer>
     <v-app-bar
-      v-if="checkMobile() == false"
       :class="$vuetify.theme.dark ? 'custom-app-bar-dark' : 'custom-app-bar'"
-      :style="`top:${topMargin}px`"
+      :style="
+        checkMobile() == false
+          ? `top:${topMargin}px`
+          : `height:0px !important; visibility:hidden; top:${topMargin}px`
+      "
       fixed
       flat
       app
@@ -218,8 +221,14 @@
         </v-list>
       </v-menu>
     </v-app-bar>
-    <ThemeToggle v-else style="display: none !important"></ThemeToggle>
-    <v-main class="main-container off-white">
+    <ThemeToggle
+      v-if="checkMobile() == true"
+      style="display: none !important"
+    ></ThemeToggle>
+    <v-main
+      class="main-container off-white"
+      :style="checkMobile() == true ? 'padding-top:10px !important' : ''"
+    >
       <v-container
         v-if="checkMobile() == false"
         class="main-container off-white"
@@ -232,7 +241,12 @@
         <v-img class="ornament-2" src="/images/dot-ornament.svg"></v-img>
         <!-- ORNAMENTS END -->
       </v-container>
-      <v-container v-else fluid class="off-white pa-0">
+      <v-container
+        v-else
+        fluid
+        class="off-white pa-0"
+        style="padding-bottom: 80px !important"
+      >
         <nuxt class="pa-0" />
       </v-container>
     </v-main>
@@ -363,12 +377,12 @@
 
     <!-- GLOBAL MODAL -->
     <BaseModal
-        @close="showTaskModal = false"
-        :parentModel="showTaskModal"
-        :maxWidth="'650'"
-      >
-        <ModalsTask @close-modal="showTaskModal = false"></ModalsTask>
-      </BaseModal>
+      @close="showTaskModal = false"
+      :parentModel="showTaskModal"
+      :maxWidth="'650'"
+    >
+      <ModalsTask @close-modal="showTaskModal = false"></ModalsTask>
+    </BaseModal>
     <!-- GLOBAL MODAL ENDS -->
   </v-app>
 </template>
@@ -398,10 +412,10 @@ export default {
       notifications: [],
       importantNotifications: [],
 
-      showTaskModal: false
+      showTaskModal: false,
     };
   },
-  watch:{
+  watch: {
     showTaskModal(nv, ov) {
       this.$store.commit("setShowTaskModal", nv);
     },
@@ -447,6 +461,13 @@ export default {
     this.streamNotification();
     this.getUserNotifications();
     this._fetchUserCompletion();
+
+    if (this.checkMobile()) {
+      window.addEventListener("scroll", (e) => {
+        e.preventDefault();
+        window.scrollTo(0, 0);
+      });
+    }
   },
   beforeDestroy() {
     this.listener();

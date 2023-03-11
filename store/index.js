@@ -12,7 +12,9 @@ export const state = () => ({
   snackbar: {
     show: false,
     message: null,
-    color: null
+    color: null,
+    buttonMessage: null,
+    buttonPath: null
   },
   globalCss: {
     topMargin: 0
@@ -70,7 +72,14 @@ export const mutations = {
     state.isLoading = cond
   },
   setShowSnackbar(state, cond) {
-    state.snackbar = cond;
+    let defaultParam = {
+      show: false,
+      message: null,
+      color: null,
+      buttonMessage: null,
+      buttonPath: null
+    }
+    state.snackbar = { ...defaultParam, ...cond };
   },
   setSubscription(state, subscription) {
     state.subscription = subscription;

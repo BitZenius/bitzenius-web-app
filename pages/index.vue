@@ -44,8 +44,11 @@
         </v-col>
       </v-row>
       <v-row>
-        <v-col cols="5">
+        <v-col cols="9">
           <CardCreateNewBots></CardCreateNewBots>
+        </v-col>
+        <v-col cols="3">
+          <CardBalance class="px-2 py-5" />
         </v-col>
         <v-col cols="12">
           <CardTask :taskData="profileCompletionTasks" />
@@ -122,11 +125,6 @@
           </v-row>
         </v-col>
       </v-row>
-      <v-row justify="space-between">
-        <v-col cols="3" class="mb-10">
-          <CardBalance class="px-2 py-5" />
-        </v-col>
-      </v-row>
     </v-col>
   </v-row>
   <v-row class="px-1 ma-0" v-else>
@@ -142,7 +140,7 @@
         <v-col cols="6">
           <GlobalsExchangeList @on-exchange-changed="onExchangeChanged" />
         </v-col>
-        <v-col cols="12" class="mb-5 mt-10 pt-5">
+        <v-col cols="12">
           <CardCreateNewBots></CardCreateNewBots>
         </v-col>
         <v-col cols="12">

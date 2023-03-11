@@ -642,12 +642,11 @@
                 "
                 @click="_addBot(exchange)"
                 class="mx-2"
-                fab
-                x-small
-                outlined
+                small
                 color="primary"
               >
-                <v-icon dark> mdi-cog </v-icon>
+                <!-- <v-icon dark> mdi-cog </v-icon> -->
+                <span>Create your bot</span>
               </v-btn>
               <v-btn
                 @click="expandExchange(exchange.name)"
@@ -742,8 +741,10 @@
       </v-btn>
     </v-col>
 
-    <v-col cols="12" class="mb-4 text-center text-h6">
-      Bots for {{ exchange }}
+    <v-col cols="12" class="mb-4 text-center">
+      <v-chip color="success" class="text-h6 font-weight-bold">
+        Bots on {{ exchange }}
+      </v-chip>
     </v-col>
 
     <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 ma-0'">
@@ -1487,6 +1488,9 @@ export default {
           },
         })
         .then(async (res) => {
+          if (res.data.length < 1 || res.data[0].exchange != this.exchange) {
+            return;
+          }
           this.activePosition = res.data;
           this.availablePair = res.pairs;
           await this.streamBinance();
@@ -1566,7 +1570,39 @@ export default {
         });
       }
     },
-    _addBot(val) {
+    async _addBot(val) {
+      // CHECK IF EXCHANGE EXISTS
+      this.$store.commit("setIsLoading", true);
+      try {
+        let res = await this.$api.$get("/user/exchange");
+        let valid = false;
+        for (let index = 0; index < res.data.length; index++) {
+          const exchange = res.data[index];
+          if (exchange.exchange_name == val.name) {
+            valid = true;
+            break;
+          }
+        }
+
+        if (!valid) {
+          this.$store.commit("setIsLoading", false);
+          return this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: "Setup for " + val.name + " exchange not found",
+            color: "danger",
+            buttonMessage: "Setup " + val.name,
+            buttonPath: "/exchanges",
+          });
+        }
+      } catch (error) {
+        this.$store.commit("setIsLoading", false);
+        return this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "Exchange checking error",
+          color: "danger",
+        });
+      }
+
       console.log("addBot", val);
       this.$store.commit("exchange/setSelectedExchange", val.name);
       this.selectedExchange = val.name;
@@ -1577,6 +1613,7 @@ export default {
       }
 
       this.$store.commit("bot/setSelectedBot", this.selectedBot);
+      this.$store.commit("setIsLoading", false);
       this.$router.push("/bots/new");
       // this.showAddBot = true;
     },

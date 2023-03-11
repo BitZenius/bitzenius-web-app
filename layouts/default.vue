@@ -15,7 +15,13 @@ export default {
   },
   mounted() {
     this.initiateTawkTo();
-    // this.$vuetify.theme.dark = true
+
+    if (this.checkMobile()) {
+      window.addEventListener("scroll", (e) => {
+        e.preventDefault();
+        window.scrollTo(0, 0);
+      });
+    }
   },
 };
 </script>
