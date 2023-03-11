@@ -8,7 +8,12 @@
       </v-row>
     </v-col>
     <v-col cols="12">
-      <v-row v-if="userData" no-gutters justify="center" style="min-height: 500px">
+      <v-row
+        v-if="userData"
+        no-gutters
+        justify="center"
+        style="min-height: 500px"
+      >
         <v-col cols="3" class="d-flex align-end justify-end pt-10">
           <!-- CUSTOM STEPPER -->
           <v-card flat class="custom-stepper-container" style="height: 100%">
@@ -405,24 +410,33 @@
       </v-row>
       <v-row v-else no-gutters justify="center" style="min-height: 500px">
         <v-col cols="3" class="pt-10">
-          <v-card flat class="custom-stepper-container-loader" style="height: 100%">
-            <v-skeleton-loader type="list-item-avatar" class="mb-2"></v-skeleton-loader>
-            <v-skeleton-loader type="list-item-avatar" class="mb-2"></v-skeleton-loader>
-            <v-skeleton-loader type="list-item-avatar" class="mb-2"></v-skeleton-loader>
+          <v-card
+            flat
+            class="custom-stepper-container-loader"
+            style="height: 100%"
+          >
+            <v-skeleton-loader
+              type="list-item-avatar"
+              class="mb-2"
+            ></v-skeleton-loader>
+            <v-skeleton-loader
+              type="list-item-avatar"
+              class="mb-2"
+            ></v-skeleton-loader>
+            <v-skeleton-loader
+              type="list-item-avatar"
+              class="mb-2"
+            ></v-skeleton-loader>
           </v-card>
-          </v-col>
+        </v-col>
         <v-col cols="9">
           <v-tabs-items v-model="e1" vertical style="height: 100%" class="pa-5">
             <v-tab-item key="0">
               <v-row>
                 <v-col cols="12">
-                  <v-alert
-                        border="left"
-                        dense
-                        class=" custom-alert"
-                        ><v-skeleton-loader type="heading"></v-skeleton-loader></v-alert
-                      >
-
+                  <v-alert border="left" dense class="custom-alert"
+                    ><v-skeleton-loader type="heading"></v-skeleton-loader
+                  ></v-alert>
                 </v-col>
                 <v-col cols="2">
                   <v-avatar size="100">
@@ -432,15 +446,21 @@
                 <v-col cols="10">
                   <v-row>
                     <v-col cols="12" class="d-flex align-center mt-8">
-                    <v-skeleton-loader type="button"></v-skeleton-loader>
+                      <v-skeleton-loader type="button"></v-skeleton-loader>
                     </v-col>
                     <v-col cols="6">
                       <v-skeleton-loader type="text"></v-skeleton-loader>
-                      <v-skeleton-loader type="button" class="mt-5"></v-skeleton-loader>
+                      <v-skeleton-loader
+                        type="button"
+                        class="mt-5"
+                      ></v-skeleton-loader>
                     </v-col>
                     <v-col cols="6">
                       <v-skeleton-loader type="text"></v-skeleton-loader>
-                      <v-skeleton-loader type="button" class="mt-5"></v-skeleton-loader>
+                      <v-skeleton-loader
+                        type="button"
+                        class="mt-5"
+                      ></v-skeleton-loader>
                     </v-col>
 
                     <v-col cols="12">
@@ -456,8 +476,6 @@
           </v-tabs-items>
         </v-col>
       </v-row>
-
-
     </v-col>
     <BaseModal
       @close="successModal = false"
@@ -470,29 +488,30 @@
       ></ModalsSuccess>
     </BaseModal>
     <v-dialog v-model="progressDialog" max-width="480px" persistent>
-        <v-card>
-          <v-card-text class="pt-5">
-            <p>Uploading progress</p>
-            <v-progress-linear
-              v-if="uploadProgress"
-              v-model="uploadProgress"
-              color="light-blue"
-              striped
-              height="25"
-            >
-              <div class="subtitle">{{ uploadProgress }}%</div>
-            </v-progress-linear>
-          </v-card-text>
-          <v-card-actions v-if="uploadProgress === 100">
-            <v-btn color="blue darken-1" text @click="closeDialog">
-              Finish
-            </v-btn>
-            <v-spacer />
-          </v-card-actions>
-        </v-card>
-      </v-dialog>
+      <v-card>
+        <v-card-text class="pt-5">
+          <p>Uploading progress</p>
+          <v-progress-linear
+            v-if="uploadProgress"
+            v-model="uploadProgress"
+            color="light-blue"
+            striped
+            height="25"
+          >
+            <div class="subtitle">{{ uploadProgress }}%</div>
+          </v-progress-linear>
+        </v-card-text>
+        <v-card-actions v-if="uploadProgress === 100">
+          <v-btn color="blue darken-1" text @click="closeDialog">
+            Finish
+          </v-btn>
+          <v-spacer />
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
   </v-row>
   <v-row v-else-if="checkMobile() == true" class="pa-1 ma-0">
+    <v-col cols="12">
       <v-row>
         <v-col cols="12" md="8" class="text-h5 font-weight-bold pl-3">
           <v-icon @click="$router.push('/account')">mdi-arrow-left</v-icon>
@@ -500,7 +519,7 @@
         </v-col>
       </v-row>
     </v-col>
-    <v-col cols="12">
+    <v-col v-if="userData" cols="12">
       <v-tabs class="pa-2" v-model="e1">
         <v-tab :ripple="false" key="0">
           <span class="text-body-1 text-capitalize">Basic</span>
@@ -725,6 +744,64 @@
           </v-card-actions>
         </v-card>
       </v-dialog>
+    </v-col>
+    <v-col v-else cols="12">
+      <v-tabs class="pa-2" v-model="e1">
+        <v-tab :ripple="false" disabled key="0">
+          <span class="text-body-1 text-capitalize">Basic</span>
+        </v-tab>
+        <v-tab :ripple="false" disabled key="1">
+          <span class="text-body-1 text-capitalize">Wallet</span>
+        </v-tab>
+        <v-tab :ripple="false" disabled key="2">
+          <span class="text-body-1 text-capitalize">Settings</span>
+        </v-tab>
+      </v-tabs>
+      <v-tabs-items
+        v-model="e1"
+        style="height: 100%"
+        class="pa-5"
+        :touchless="true"
+      >
+        <v-tab-item key="0">
+          <v-row>
+            <v-col
+              cols="12"
+              class="d-flex justify-center align-center"
+              style="position: relative"
+            >
+              <v-avatar size="125">
+                <v-skeleton-loader type="avatar"></v-skeleton-loader>
+              </v-avatar>
+
+              <v-skeleton-loader type="button" class="floating-upload-icon">
+              </v-skeleton-loader>
+            </v-col>
+            <v-col cols="12">
+              <v-row>
+                <v-col cols="12" class="mb-3">
+                  <v-skeleton-loader type="heading" class="mb-2">
+                  </v-skeleton-loader>
+                  <v-skeleton-loader type="text" class="mb-2">
+                  </v-skeleton-loader>
+                </v-col>
+                <v-col cols="12" class="mb-3">
+                  <v-skeleton-loader type="heading" class="mb-2">
+                  </v-skeleton-loader>
+                  <v-skeleton-loader type="text" class="mb-2">
+                  </v-skeleton-loader>
+                </v-col>
+                <v-col cols="12" class="mb-3">
+                  <v-skeleton-loader type="paragraph"> </v-skeleton-loader>
+                </v-col>
+                <v-col cols="12" class="mt-10">
+                  <v-skeleton-loader type="button"> </v-skeleton-loader>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-tab-item>
+      </v-tabs-items>
     </v-col>
     <BaseModal
       @close="successModal = false"
