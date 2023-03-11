@@ -203,7 +203,7 @@
       v-if="showAddExchange"
       @close="showAddExchange = false"
       :parentModel="showAddExchange"
-      :maxWidth="450"
+      :maxWidth="'450'"
     >
       <ModalsExchangeSetup
         :data="data"
@@ -390,7 +390,7 @@
       v-if="showAddExchange"
       @close="showAddExchange = false"
       :parentModel="showAddExchange"
-      :maxWidth="450"
+      :maxWidth="'450'"
     >
       <ModalsExchangeSetup
         :data="data"

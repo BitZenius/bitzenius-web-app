@@ -147,18 +147,6 @@ export default {
           // console.log(error)
         });
     },
-    // FETCH API
-    async _fetchUserCompletion() {
-      this.isLoading = true;
-      try {
-        let res = await this.$api.$get("/user/profile/completion");
-        this.profileCompletionTasks = res.data;
-        this.$store.commit("setProfileCompletion", res);
-      } catch (error) {
-        console.log(error);
-      }
-      this.$store.commit("setIsLoading", false);
-    },
   },
   computed: {
     userToken() {
@@ -183,7 +171,6 @@ export default {
     if (this.checkMobile() == false) {
       this.$router.push("/settings");
     }
-    this._fetchUserCompletion();
   },
 };
 </script>

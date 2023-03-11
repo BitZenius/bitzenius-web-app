@@ -1256,6 +1256,7 @@ export default {
       setTimeout(() => {
         this.$emit("close-modal", false);
         this.$store.commit("setIsLoading", false);
+        this.fetchCompletion()
         // this.resetModalState();
       });
 

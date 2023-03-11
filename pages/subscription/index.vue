@@ -735,6 +735,7 @@ export default {
         })
         .finally(() => {
           this.refetch();
+          this.fetchCompletion();
           this.isLoading = false;
         });
     },

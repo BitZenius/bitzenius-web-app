@@ -748,7 +748,8 @@ export default {
       setTimeout(() => {
         this.$emit("close-modal", false);
         this.$store.commit("setIsLoading", false);
-        this.resetModalState();
+        this.fetchCompletion();
+        // this.resetModalState();
       });
     },
     async _fetchTokenList() {

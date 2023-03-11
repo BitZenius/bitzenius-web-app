@@ -10,8 +10,8 @@
         </v-col>
       </v-row>
     </v-card-title>
-    <v-card-text v-if="profileCompletion.data" class="py-5">
-      <v-expansion-panels accordion>
+    <v-card-text class="py-5">
+      <v-expansion-panels accordion v-if="!profileCompletionLoading">
         <v-expansion-panel v-for="(item, i) in profileCompletion.data" :key="i">
           <v-expansion-panel-header
             :disable-icon-rotate="item.completed"
@@ -27,7 +27,6 @@
               {{ item.description }}
               <div class="d-flex justify-end" v-if="!item.completed">
                 <v-btn
-                  flat
                   rounded
                   dense
                   color="success"
@@ -43,6 +42,16 @@
           </v-expansion-panel-content>
         </v-expansion-panel>
       </v-expansion-panels>
+      <v-expansion-panels accordion v-else>
+        <v-expansion-panel v-for="i in 4" :key="`skeleton-task-${i}`">
+          <v-expansion-panel-header class="text-h6 font-weight-bold">
+            <v-skeleton-loader type="heading"></v-skeleton-loader>
+            <template v-slot:actions>
+              <v-skeleton-loader type="chip"></v-skeleton-loader>
+            </template>
+          </v-expansion-panel-header>
+        </v-expansion-panel>
+      </v-expansion-panels>
     </v-card-text>
   </v-card>
 </template>
@@ -54,10 +63,8 @@ export default {
       this.$emit("close-modal", false);
     },
     openPath(path) {
-      this.$router.push(path);
-      setTimeout(() => {
-        this.closeModal();
-      }, 2000);
+      this.$router.push(path + "?c=1");
+      this.closeModal();
     },
   },
   computed: {

@@ -217,7 +217,6 @@ export default {
         }
       }
 
-      console.log(paramTemp);
       try {
         let validateExchangeKey = await this.$api.$post(
           "/user/validate-user-exchange",
@@ -241,6 +240,7 @@ export default {
             });
 
             this.$store.commit("setIsLoading", false);
+            this.fetchCompletion();
           });
         }
       } catch (error) {

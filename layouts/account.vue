@@ -460,7 +460,7 @@ export default {
     this.listenSubscription();
     this.streamNotification();
     this.getUserNotifications();
-    this._fetchUserCompletion();
+    this.fetchCompletion();
 
     if (this.checkMobile()) {
       window.addEventListener("scroll", (e) => {
@@ -473,16 +473,6 @@ export default {
     this.listener();
   },
   methods: {
-    async _fetchUserCompletion() {
-      this.isLoading = true;
-      try {
-        let res = await this.$api.$get("/user/profile/completion");
-        this.$store.commit("setProfileCompletion", res);
-      } catch (error) {
-        console.log(error);
-      }
-      this.$store.commit("setIsLoading", false);
-    },
     checkMobile() {
       var check = false;
       (function (a) {

@@ -17,7 +17,12 @@ export default {
     currentUser() {
       return this.$store.$fire.auth.currentUser;
     },
-
+    profileCompletion() {
+      return this.$store.state.profileCompletion;
+    },
+    profileCompletionLoading() {
+      return this.$store.state.profileCompletionLoading
+    }
   },
   watch: {
     tawkToInitialized(val) {
@@ -87,21 +92,41 @@ export default {
     },
 
     // CHECK COMPLETION
-    checkCompletion(cb = function () { return }) {
-      this.$store.commit("setForceLoading", true);
-      this.$store.commit("setIsLoading", true);
+    async checkCompletion(cb = function () { }) {
+
+
+
+      var data = this.profileCompletion
+      if (data.step == data.stepTotal) {
+        cb()
+      } else {
+        // Don't open task modal if from completion redirect
+        if (this.$route.query.c) {
+          return
+        }
+        this.$store.commit("setShowTaskModal", true);
+      }
+    },
+    fetchCompletion(loading = false) {
+      this.$store.commit('setProfileCompletionLoading', true)
+
+      // IF ALREADY 100% DONT FETCH
+      if (this.profileCompletion.data.length > 0) {
+        var data = this.profileCompletion
+        if (data.step == data.stepTotal) {
+          return this.$store.commit('setProfileCompletionLoading', false)
+        }
+      }
+
+      if (loading) {
+        this.$store.commit("setForceLoading", true);
+        this.$store.commit("setIsLoading", true);
+      }
+
       this.$api
         .$get("/user/profile/completion")
         .then((res) => {
           this.$store.commit("setProfileCompletion", res);
-          var step = res.step;
-          var stepTotal = res.step_total;
-
-          if (step == stepTotal) {
-            cb()
-          } else {
-            this.$store.commit("setShowTaskModal", true);
-          }
         })
         .catch((err) => {
           console.log("checkCompletion", err);
@@ -112,10 +137,16 @@ export default {
           });
         })
         .finally(() => {
-          this.$store.commit("setIsLoading", false);
-          this.$store.commit("setForceLoading", false);
+          if (loading) {
+            this.$store.commit("setIsLoading", false);
+            this.$store.commit("setForceLoading", false);
+          }
+          this.$store.commit('setProfileCompletionLoading', false)
+
         });
-    },
+
+
+    }
   },
   beforeDestroy() {
     if (this.realtimeUpdateSocket) {

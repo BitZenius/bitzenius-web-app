@@ -20,9 +20,11 @@ export const state = () => ({
     topMargin: 0
   },
   profileCompletion: {
+    data: [],
     step: 0,
     stepTotal: 1
   },
+  profileCompletionLoading: false,
   showTaskModal: false
 })
 
@@ -67,6 +69,10 @@ export const mutations = {
       state.isLoading = cond;
     }
   },
+  setProfileCompletionLoading(state, cond) {
+    state.profileCompletionLoading = cond;
+  },
+
   setForceLoading(state, cond) {
     state.forceLoading = cond
     state.isLoading = cond
@@ -141,6 +147,7 @@ export const getters = {
       return state.profileCompletion
     } catch (error) {
       return {
+        data: [],
         step: 0,
         stepTotal: 1
       }

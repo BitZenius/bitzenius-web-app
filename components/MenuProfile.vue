@@ -38,11 +38,18 @@
           >
             {{ userData.displayName }}
           </v-list-item-title>
-          <v-list-item-subtitle class="basic-text--text text-body-2">
+          <v-list-item-subtitle
+            class="basic-text--text text-body-2"
+            v-if="!profileCompletionLoading"
+          >
             <strong class="primary--text font-weight-bold"
               >{{ profileCompletionProgress }}%</strong
             >
+
             Task completion
+          </v-list-item-subtitle>
+          <v-list-item-subtitle v-else>
+            <v-skeleton-loader type="text"></v-skeleton-loader>
           </v-list-item-subtitle>
         </template>
         <template v-else>
@@ -91,7 +98,7 @@
             dense
             color="success"
             exact
-            :to="nextTask.path"
+            :to="nextTask.path + '?c=1'"
           >
             {{ nextTask.title }}
             <v-icon small class="ml-1"> mdi-arrow-right </v-icon>

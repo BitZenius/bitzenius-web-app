@@ -21,7 +21,11 @@
         </div>
         Task Overview
       </v-col>
-      <v-col cols="12" class="task-item-container no-scrollbar pa-3">
+      <v-col
+        cols="12"
+        v-if="!profileCompletionLoading"
+        class="task-item-container no-scrollbar pa-3"
+      >
         <CardTaskItem
           v-for="(data, i) in taskData"
           class="task-item"
@@ -31,6 +35,19 @@
           :path="data.path"
           :completed="data.completed"
         ></CardTaskItem>
+      </v-col>
+      <v-col cols="12" v-else>
+        <v-row>
+          <v-col
+            cols="3"
+            v-for="i in 4"
+            :key="`skeleton-loader-card-task-${i}`"
+            class="pr-5"
+          >
+            <v-skeleton-loader type="heading" class="mb-4"> </v-skeleton-loader>
+            <v-skeleton-loader type="sentences"> </v-skeleton-loader>
+          </v-col>
+        </v-row>
       </v-col>
     </v-row>
   </v-card>
@@ -52,7 +69,11 @@
       >
         Task Overview
       </v-col>
-      <v-col cols="12" class="task-item-container no-scrollbar">
+      <v-col
+        v-if="!profileCompletionLoading"
+        cols="12"
+        class="task-item-container no-scrollbar"
+      >
         <v-row>
           <v-col cols="12" v-for="(data, i) in taskData" :key="`task-${i}`">
             <CardTaskItem
@@ -61,6 +82,18 @@
               :path="data.path"
               :completed="data.completed"
             ></CardTaskItem>
+          </v-col>
+        </v-row>
+      </v-col>
+      <v-col cols="12" v-else>
+        <v-row>
+          <v-col
+            cols="12"
+            v-for="i in 4"
+            :key="`skeleton-loader-card-task-${i}`"
+          >
+            <v-skeleton-loader type="heading" class="mb-2"> </v-skeleton-loader>
+            <v-skeleton-loader type="sentences"> </v-skeleton-loader>
           </v-col>
         </v-row>
       </v-col>

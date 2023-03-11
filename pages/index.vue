@@ -51,7 +51,7 @@
           <CardBalance class="px-2 py-5" />
         </v-col>
         <v-col cols="12">
-          <CardTask :taskData="profileCompletionTasks" />
+          <CardTask :taskData="profileCompletion.data" />
         </v-col>
         <v-col cols="12" md="6" lg="3">
           <CardCredit :balance="balance" :loading="isLoading" />
@@ -146,7 +146,7 @@
         <v-col cols="12">
           <CardTaskInfo
             @show-task="showUserDetail = true"
-            :taskData="profileCompletionTasks"
+            :taskData="profileCompletion.data"
           ></CardTaskInfo>
         </v-col>
         <v-col cols="12">
@@ -243,7 +243,7 @@
       :maxWidth="'650'"
     >
       <ModalsUserDetail
-        :taskData="profileCompletionTasks"
+        :taskData="profileCompletion.data"
         @close-modal="showUserDetail = false"
       ></ModalsUserDetail>
     </BaseModalMobile>
@@ -417,7 +417,6 @@ export default {
       },
       profit: 0,
       balance: {},
-      profileCompletionTasks: [],
 
       isLoading: false,
       isLoadingProfit: false,
@@ -444,17 +443,6 @@ export default {
   },
   methods: {
     // FETCH API
-    async _fetchUserCompletion() {
-      this.isLoading = true;
-      try {
-        let res = await this.$api.$get("/user/profile/completion");
-        this.profileCompletionTasks = res.data;
-        this.$store.commit("setProfileCompletion", res);
-      } catch (error) {
-        console.log(error);
-      }
-      this.$store.commit("setIsLoading", false);
-    },
     async _fetchUserBalance() {
       this.isLoading = true;
       let res = await this.$api.$get("/user/user-exchange-balance", {
@@ -649,7 +637,6 @@ export default {
     this._fetchDailyDeals();
     this._fetchUserBalance();
     this._fetchProfit();
-    this._fetchUserCompletion();
     setTimeout(() => {
       this.$store.commit("setIsLoading", false);
     }, 500);

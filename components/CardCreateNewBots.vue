@@ -35,6 +35,7 @@
           large
           rounded
           dense
+          :disabled="profileCompletionLoading"
           color="primary"
           class="float-right"
           @click="
@@ -44,7 +45,9 @@
           "
         >
           {{
-            profileCompletionProgress == 100
+            profileCompletionLoading
+              ? "Loading..."
+              : profileCompletionProgress == 100
               ? "Create bot"
               : "Create your first bot"
           }}
@@ -91,6 +94,7 @@
           large
           rounded
           dense
+          :disabled="profileCompletionLoading"
           color="primary"
           class="float-right"
           @click="
@@ -100,7 +104,9 @@
           "
         >
           {{
-            profileCompletionProgress == 100
+            profileCompletionLoading
+              ? "Loading..."
+              : profileCompletionProgress == 100
               ? "Create bot"
               : "Create your first bot"
           }}
