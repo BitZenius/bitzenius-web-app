@@ -99,8 +99,6 @@
               <v-data-table
                 style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
                 @click:row="_onSelectPair"
-                disable-pagination
-                :hide-default-footer="true"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
@@ -442,8 +440,6 @@
               <v-data-table
                 style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
                 @click:row="_onSelectPair"
-                disable-pagination
-                :hide-default-footer="true"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
@@ -993,7 +989,7 @@ export default {
   },
   unmounted() {},
   beforeDestroy() {
-    this.socket?.close();
+    // this.socket?.close();
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
     // });
@@ -1182,7 +1178,7 @@ export default {
     },
     async _fetchBotsList() {
       this.isLoading = true;
-      if (this.socket) this.socket?.close();
+      // if (this.socket) this.socket?.close();
 
       this.$api
         .$get("/user/bot-user", {

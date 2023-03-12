@@ -1459,6 +1459,10 @@ export default {
     this.botProp = this.selectedBot;
     this.exchange = this.selectedExchange;
 
+    if (!this.exchange) {
+      return this.$router.push("/bots");
+    }
+
     this.bot.selected_exchange = this.exchange;
     if (this.botProp) {
       this.isUpdateMode = true;

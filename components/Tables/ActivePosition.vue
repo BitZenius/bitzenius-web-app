@@ -23,16 +23,21 @@
       @close-modal="closeModal"
       @close="showActivePosition = false"
     />
-    <!-- <v-dialog
-      persistent
-      v-if="showActivePosition"
-      v-model="showActivePosition"
-      max-width="600"
-    >
-      <template>
-
-      </template>
-    </v-dialog> -->
+    <v-dialog v-model="dialogDelete" max-width="400px" persistent>
+      <v-card>
+        <v-card-title class="headline"> Delete Bot Confirmation </v-card-title>
+        <v-card-text>
+          Are you sure you want to delete this bot setup?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="blue darken-1" text @click="closeDelete">
+            Cancel
+          </v-btn>
+          <v-btn color="primary" @click="deleteItemConfirm"> OK </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -264,11 +269,10 @@
                   >
                 </v-col>
               </v-row>
+
               <v-data-table
                 style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
                 @click:row="_onSelectPair"
-                disable-pagination
-                :hide-default-footer="true"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
@@ -330,47 +334,6 @@
                   </v-tooltip>
                 </template>
 
-                <!-- hide-default-footer disable-pagination -->
-                <template v-slot:top>
-                  <div>
-                    <v-dialog
-                      v-model="dialogDelete"
-                      max-width="400px"
-                      persistent
-                    >
-                      <v-card>
-                        <v-card-title class="headline">
-                          Delete Bot Confirmation
-                        </v-card-title>
-                        <v-card-text>
-                          Are you sure you want to delete this bot setup?
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer />
-                          <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="closeDelete"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn color="primary" @click="deleteItemConfirm">
-                            OK
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </div>
-                  <!-- <div>
-                        <v-row>
-                            <v-col cols="12">
-                                <span v-if="selectedExchangeReport" class="exchange-table-selected">
-                                    {{selectedExchangeReport}} Active Positions
-                                </span>
-                            </v-col>
-                        </v-row>
-                    </div> -->
-                </template>
                 <template v-slot:item.pair="{ item }">
                   <v-row class="py-2">
                     <v-col cols="12" class="d-flex align-center justify-start">
@@ -552,7 +515,21 @@
       @close-modal="closeModal"
       @close="showActivePosition = false"
     />
-
+    <v-dialog v-model="dialogDelete" max-width="400px" persistent>
+      <v-card>
+        <v-card-title class="headline"> Delete Bot Confirmation </v-card-title>
+        <v-card-text>
+          Are you sure you want to delete this bot setup?
+        </v-card-text>
+        <v-card-actions>
+          <v-spacer />
+          <v-btn color="blue darken-1" text @click="closeDelete">
+            Cancel
+          </v-btn>
+          <v-btn color="primary" @click="deleteItemConfirm"> OK </v-btn>
+        </v-card-actions>
+      </v-card>
+    </v-dialog>
     <v-snackbar
       v-model="snackbar"
       :timeout="snackbarTimeout"
@@ -796,8 +773,6 @@
               <v-data-table
                 style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
                 @click:row="_onSelectPair"
-                disable-pagination
-                :hide-default-footer="true"
                 :sort-by.sync="sortBy"
                 :sort-desc.sync="sortDesc"
                 :headers="headers"
@@ -832,46 +807,7 @@
                 </template>
 
                 <!-- hide-default-footer disable-pagination -->
-                <template v-slot:top>
-                  <div>
-                    <v-dialog
-                      v-model="dialogDelete"
-                      max-width="400px"
-                      persistent
-                    >
-                      <v-card>
-                        <v-card-title class="headline">
-                          Delete Bot Confirmation
-                        </v-card-title>
-                        <v-card-text>
-                          Are you sure you want to delete this bot setup?
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer />
-                          <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="closeDelete"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn color="primary" @click="deleteItemConfirm">
-                            OK
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </div>
-                  <!-- <div>
-                        <v-row>
-                            <v-col cols="12">
-                                <span v-if="selectedExchangeReport" class="exchange-table-selected">
-                                    {{selectedExchangeReport}} Active Positions
-                                </span>
-                            </v-col>
-                        </v-row>
-                    </div> -->
-                </template>
+
                 <template v-slot:item.pair="{ item }">
                   <v-row class="py-2">
                     <v-col cols="12" class="d-flex align-center justify-start">
@@ -1323,7 +1259,6 @@ export default {
   unmounted() {},
   beforeDestroy() {
     // this.socket?.close();
-
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
     // });
@@ -1443,9 +1378,9 @@ export default {
     },
     streamBinance() {
       let stateStream = this.$store.state.socket.streamTicker;
-      console.log('stateStream', stateStream);
-      if(!stateStream){
-        return alert('no stream data detected')
+      console.log("stateStream", stateStream);
+      if (!stateStream) {
+        return alert("no stream data detected");
       }
       this.socket = stateStream;
       this.socket.onmessage = (event) => {
@@ -1523,7 +1458,7 @@ export default {
 
       this.isLoading = true;
 
-      if (this.socket) this.socket?.close();
+      // if (this.socket) this.socket?.close();
 
       this.fetchingExchange = exchangeName;
       this.$api
@@ -1532,7 +1467,7 @@ export default {
             exchange: exchangeName,
           },
         })
-        .then(async (res) => {
+        .then((res) => {
           console.log(
             "RESULT OF _fetchBotsList: Exchange comparison",
             this.selectedExchangeReport,
@@ -1543,7 +1478,7 @@ export default {
           }
           this.activePosition = res.data;
           this.availablePair = res.pairs;
-          await this.streamBinance();
+          this.streamBinance();
 
           this.fetchedExchange = exchangeName;
         })
