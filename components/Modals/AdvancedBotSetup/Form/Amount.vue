@@ -1,100 +1,103 @@
 <template>
   <v-card flat rounded class="pa-3 no-shadow">
     <h3 class="mb-4 text-h6 font-weight-bold">Initial setup</h3>
-    <v-row align="center" justify="center">
-      <v-col cols="12">
-        <div class="d-flex flex-column align-start">
-          <v-row class="d-flex align-end" style="width: 100%">
-            <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
-              Name
-              <v-text-field
-                ref="bot_name"
-                v-model="bot_name"
-                required
-                placeholder="Bot Name"
-                hide-details=""
-                rounded
-                class="my-2 custom-input text-body-1"
-              >
-              </v-text-field>
-            </v-col>
-            <v-col cols="12">
-              Exchange
-              <GlobalsExchangeList></GlobalsExchangeList>
-            </v-col>
-            <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
-              USDT Per Order
-              <v-text-field
-                ref="usdt_per_order"
-                @blur="onUsdtPerOrderChanged(strategy.usdt_per_order)"
-                v-model="strategy.usdt_per_order"
-                required
-                placeholder="USDT Per Order"
-                hide-details=""
-                rounded
-                type="number"
-                class="my-2 custom-input text-body-1"
-              >
-                <template v-slot:append>
-                  <v-tooltip bottom color="primary">
-                    <template v-slot:activator="{ on, attrs }">
-                      <v-list-item-avatar
-                        v-bind="attrs"
-                        v-on="on"
-                        size="30"
-                        color="white"
-                        class="mx-0 my-1"
-                      >
-                        <v-img
-                          max-width="25px"
-                          max-height="25px"
-                          src="/token_logo/USDT.png"
-                          contain
-                          position="center"
-                        ></v-img>
-                        <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
-                      </v-list-item-avatar>
-                    </template>
-                    <span>The amount of USDT purchase per order</span>
-                  </v-tooltip>
-                </template>
-              </v-text-field>
-            </v-col>
-            <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
-              Select Token
-              <v-select
-                v-if="tokens.length > 0"
-                dense
-                class="mt-3 px-3"
-                v-model="selected_token"
-                :items="tokensCopy"
-                rounded
-              >
-                <template v-slot:prepend-item>
-                  <v-list-item>
-                    <v-list-item-content>
-                      <v-text-field
-                        v-model="searchTerm"
-                        placeholder="Search"
-                        @input="searchTokens"
-                      ></v-text-field>
-                    </v-list-item-content>
-                  </v-list-item>
-                </template>
-              </v-select>
-              <v-skeleton-loader
-                v-else
-                type="heading"
-                class="my-2"
-              ></v-skeleton-loader>
-            </v-col>
-          </v-row>
-        </div>
-        <v-col cols="12" class="d-flex justify-end">
-          <slot> </slot>
+    <v-form ref="form" lazy-validation>
+      <v-row align="center" justify="center">
+        <v-col cols="12">
+          <div class="d-flex flex-column align-start">
+            <v-row class="d-flex align-end" style="width: 100%">
+              <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
+                Name
+                <v-text-field
+                  ref="bot_name"
+                  v-model="bot_name"
+                  :rules="rules.name"
+                  required
+                  placeholder="Bot Name"
+                  rounded
+                  class="my-2 custom-input text-body-1"
+                >
+                </v-text-field>
+              </v-col>
+              <v-col cols="12">
+                Exchange
+                <GlobalsExchangeList></GlobalsExchangeList>
+              </v-col>
+              <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
+                USDT Per Order
+                <v-text-field
+                  ref="usdt_per_order"
+                  @blur="onUsdtPerOrderChanged(strategy.usdt_per_order)"
+                  v-model="strategy.usdt_per_order"
+                  required
+                  placeholder="USDT Per Order"
+                  :rules="rules.usdt_per_order"
+                  rounded
+                  type="number"
+                  class="my-2 custom-input text-body-1"
+                >
+                  <template v-slot:append>
+                    <v-tooltip bottom color="primary">
+                      <template v-slot:activator="{ on, attrs }">
+                        <v-list-item-avatar
+                          v-bind="attrs"
+                          v-on="on"
+                          size="30"
+                          color="white"
+                          class="mx-0 my-1"
+                        >
+                          <v-img
+                            max-width="25px"
+                            max-height="25px"
+                            src="/token_logo/USDT.png"
+                            contain
+                            position="center"
+                          ></v-img>
+                          <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
+                        </v-list-item-avatar>
+                      </template>
+                      <span>The amount of USDT purchase per order</span>
+                    </v-tooltip>
+                  </template>
+                </v-text-field>
+              </v-col>
+              <v-col cols="12" md="12" class="text-body-1 font-weight-bold">
+                Select Token
+                <v-select
+                  v-if="tokens.length > 0"
+                  dense
+                  class="mt-3 px-3"
+                  v-model="selected_token"
+                  :items="tokensCopy"
+                  :rules="rules.token"
+                  rounded
+                >
+                  <template v-slot:prepend-item>
+                    <v-list-item>
+                      <v-list-item-content>
+                        <v-text-field
+                          v-model="searchTerm"
+                          placeholder="Search"
+                          @input="searchTokens"
+                        ></v-text-field>
+                      </v-list-item-content>
+                    </v-list-item>
+                  </template>
+                </v-select>
+                <v-skeleton-loader
+                  v-else
+                  type="heading"
+                  class="my-2"
+                ></v-skeleton-loader>
+              </v-col>
+            </v-row>
+          </div>
+          <v-col cols="12" class="d-flex justify-end">
+            <slot> </slot>
+          </v-col>
         </v-col>
-      </v-col>
-    </v-row>
+      </v-row>
+    </v-form>
   </v-card>
 </template>
 
@@ -111,6 +114,25 @@ export default {
   },
   data() {
     return {
+      // RULES
+      rules: {
+        name: [(v) => !!v || "Name is required"],
+        token: [(v) => !!v || "Token is required"],
+        usdt_to_apply: [
+          (v) => !!v || "USDT to apply is required",
+          (v) => (v && v > 0) || "USDT to apply must be more than 0",
+        ],
+        usdt_per_order: [
+          (v) => !!v || "USDT to order is required",
+          (v) => (v && v > 14) || "Min USDT to order is 15",
+        ],
+        max_concurrent_trading_pair: [
+          (v) => !!v || "Max concurrent trading pair is required",
+          (v) => (v && v > 0) || "Min concurrent trading pair is 1",
+        ],
+        selectedStrategyName: [(v) => !!v || "Strategy required"],
+      },
+
       selectedStrategyName: null,
       strategy: {
         usdt_to_apply: 0,
@@ -122,6 +144,7 @@ export default {
         },
       },
       bot_name: "",
+
       applyBalance: 100,
       selectedItem: 1,
       styleList: [],
@@ -151,6 +174,12 @@ export default {
     };
   },
   methods: {
+    validateForm() {
+      let valid = this.$refs.form.validate();
+      console.log("VALIDATE FORM STRATEGY AND AMOUNT", valid);
+
+      return [valid, null];
+    },
     searchTokens(e) {
       console.log(e);
       console.log(this.searchTerm);
@@ -388,15 +417,7 @@ export default {
   watch: {
     strategy: {
       handler(nv, ov) {
-        nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
-        nv.usdt_per_order = nv.usdt_per_order
-          ? parseFloat(nv.usdt_per_order)
-          : 1;
-        nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair
-          ? parseFloat(nv.max_concurrent_trading_pair)
-          : 1;
-
-        this.$emit("onSelected", nv);
+        this.$emit("onSelected", { usdt_per_order: nv.usdt_per_order });
       },
       deep: true,
     },

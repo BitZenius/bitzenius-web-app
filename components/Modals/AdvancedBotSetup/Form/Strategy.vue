@@ -1,35 +1,41 @@
 <template>
   <v-card flat rounded class="pa-3">
     <h3 class="text-h6 font-weight-bold">Choose the Strategy</h3>
-    <v-row
-      class="d-flex align-center justify-center pt-0 mt-0"
-      style="width: 100%"
-    >
-      <v-col cols="12">
-        <v-radio-group v-model="selectedStrategyName">
-          <v-row
-            class="d-flex align-start justify-start pt-0 mt-0"
-            style="width: 100%"
+    <v-form ref="form" lazy-validation>
+      <v-row
+        class="d-flex align-center justify-center pt-0 mt-0"
+        style="width: 100%"
+      >
+        <v-col cols="12">
+          <v-radio-group
+            :rules="rules.selectedStrategyName"
+            v-model="selectedStrategyName"
           >
-            <v-col
-              cols="12"
-              md="4"
-              class="pt-0"
-              v-for="(item, i) in styleList"
-              :key="i"
+            <v-row
+              class="d-flex align-start justify-start pt-0 mt-0"
+              style="width: 100%"
             >
-              <v-radio :value="item.name">
-                <template v-slot:label>
-                  <strong class="text-body-2 font-weight-bold">{{
-                    item.name
-                  }}</strong>
-                </template>
-              </v-radio>
-            </v-col>
-          </v-row>
-        </v-radio-group>
-      </v-col>
-    </v-row>
+              <v-col
+                cols="12"
+                md="4"
+                class="pt-0"
+                v-for="(item, i) in styleList"
+                :key="i"
+              >
+                <v-radio :value="item.name">
+                  <template v-slot:label>
+                    <strong class="text-body-2 font-weight-bold">{{
+                      item.name
+                    }}</strong>
+                  </template>
+                </v-radio>
+              </v-col>
+            </v-row>
+          </v-radio-group>
+        </v-col>
+      </v-row>
+    </v-form>
+
     <v-list-item class="mb-5" v-if="strategy.style.steps">
       <!-- <v-list-item-avatar> -->
       <v-icon size="30" class="primary--text mr-3">
@@ -281,6 +287,25 @@ export default {
   },
   data() {
     return {
+      // RULES
+      rules: {
+        name: [(v) => !!v || "Name is required"],
+        token: [(v) => !!v || "Token is required"],
+        usdt_to_apply: [
+          (v) => !!v || "USDT to apply is required",
+          (v) => (v && v > 0) || "USDT to apply must be more than 0",
+        ],
+        usdt_per_order: [
+          (v) => !!v || "USDT to order is required",
+          (v) => (v && v > 14) || "Min USDT to order is 15",
+        ],
+        max_concurrent_trading_pair: [
+          (v) => !!v || "Max concurrent trading pair is required",
+          (v) => (v && v > 0) || "Min concurrent trading pair is 1",
+        ],
+        selectedStrategyName: [(v) => !!v || "Strategy required"],
+      },
+
       selectedStrategyName: null,
       isForceCustom: false,
       strategy: {
@@ -315,6 +340,12 @@ export default {
     };
   },
   methods: {
+    validateForm() {
+      let valid = this.$refs.form.validate();
+      console.log("VALIDATE FORM STRATEGY AND AMOUNT", valid);
+
+      return [valid, null];
+    },
     // FETCH API
     async fetchFormula() {
       console.log("FETCHING DATA USER BOT");
@@ -594,15 +625,9 @@ export default {
   watch: {
     strategy: {
       handler(nv, ov) {
-        nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
-        nv.usdt_per_order = nv.usdt_per_order
-          ? parseFloat(nv.usdt_per_order)
-          : 1;
-        nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair
-          ? parseFloat(nv.max_concurrent_trading_pair)
-          : 1;
-
-        this.$emit("onSelected", nv);
+        this.$emit("onSelected", {
+          style: nv.style,
+        });
       },
       deep: true,
     },

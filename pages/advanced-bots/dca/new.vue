@@ -48,6 +48,7 @@
                       color="primary"
                       class="d-flex align-center justify-center step-button"
                       @click="e1 = 0"
+                      :disabled="!isUpdateMode && !updateMode.a"
                     >
                       <v-icon
                         size="20"
@@ -68,6 +69,7 @@
                       color="primary"
                       class="d-flex align-center justify-center step-button"
                       @click="e1 = 1"
+                      :disabled="!isUpdateMode && !updateMode.b"
                     >
                       <v-icon
                         size="20"
@@ -88,6 +90,7 @@
                       color="primary"
                       class="d-flex align-center justify-center step-button"
                       @click="e1 = 2"
+                      :disabled="!isUpdateMode && !updateMode.c"
                     >
                       <v-icon
                         size="20"
@@ -108,6 +111,7 @@
                       color="primary"
                       class="d-flex align-center justify-center step-button"
                       @click="e1 = 3"
+                      :disabled="!isUpdateMode && !updateMode.d"
                     >
                       <v-icon
                         size="20"
@@ -130,7 +134,7 @@
                   <ModalsAdvancedBotSetupFormAmount
                     v-if="showStrategySetup"
                     :selected-strategy="bot.strategy"
-                    ref="amountRef"
+                    ref="SetupAmount"
                     @onSelected="onStrategySelected"
                     @changedSelectedToken="
                       (token) => {
@@ -154,7 +158,7 @@
                     v-if="showStrategySetup"
                     :advancedBotsType="['DCA']"
                     :selected-strategy="bot.strategy"
-                    ref="strategyRef"
+                    ref="SetupStrategy"
                     @onSelected="onStrategySelected"
                   >
                     <v-row justify="center">
@@ -189,7 +193,7 @@
                   <ModalsAdvancedBotSetupFormTechnicalAnalysis
                     v-if="showTechnicalAnalysis"
                     :selected-technical="bot.analysis"
-                    ref="analysisRef"
+                    ref="SetupAnalysis"
                     @onAnalysisSelected="onAnalysisSelected"
                   >
                     <v-row>
@@ -347,13 +351,20 @@ export default {
   layout: "account",
   data() {
     return {
-      title: "Create new bots",
+      title: "Create DCA bots",
       // STORE PARAM
       botProp: {},
       exchange: "",
 
       // STATE
       isUpdateMode: false,
+      updateMode: {
+        a: false,
+        b: false,
+        c: false,
+        d: false,
+        e: false,
+      },
 
       tokens: [],
       shownTokens: [],
@@ -485,68 +496,112 @@ export default {
       this.tvKey++;
     },
     // TRIGGER
-    _continue(target) {
+    _continue(target, from_watch = false, new_target = 0) {
       console.log(target);
-      if (target == 2) {
-        let allowed = false;
-        if (
-          this.bot.strategy.usdt_per_order &&
-          this.bot.strategy.usdt_per_order != 0 &&
-          this.selected_token != "" &&
-          this.$refs.amountRef.bot_name != "" &&
-          this.selectedExchange != ""
-        ) {
+      let allowed = true;
+      let message = null;
+      switch (target) {
+        case 2:
+          [allowed, message] = this.$refs.SetupAmount.validateForm();
+          this.bot.strategy = this.$refs.SetupAmount.strategy;
           this.bot.selected_token = this.selected_token;
-          this.bot.name = this.$refs.amountRef.bot_name;
+          this.bot.name = this.$refs.SetupAmount.bot_name;
           this.bot.exchange = this.selectedExchange;
-          allowed = true;
-        }
-        if (allowed) {
-          return (this.e1 = target - 1);
-        } else {
-          return this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "Please fill all requirements needed!",
-            color: "customPink",
-          });
-        }
-      } else if (target == 3) {
-        let allowed = false;
 
-        if (this.bot.strategy.style.name && this.bot.strategy.style.name != 0) {
-          allowed = true;
-        }
-        if (allowed) {
-          return (this.e1 = target - 1);
-        } else {
-          return this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "Please fill all requirements needed!",
-            color: "customPink",
-          });
-        }
-      } else if (target == 4) {
-        let allowed = false;
-
-        if (
-          this.bot.analysis.first_analysis.analysis &&
-          this.bot.analysis.second_analysis.analysis &&
-          this.bot.analysis.condition
-        ) {
-          allowed = true;
-        }
-        if (allowed) {
-          return (this.e1 = target - 1);
-        } else {
-          return this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "Please fill all requirements needed!",
-            color: "customPink",
-          });
-        }
+          console.log("THIS BOT STRATEGY ", this.bot.strategy);
+          if (
+            this.bot.strategy.usdt_per_order &&
+            this.bot.strategy.usdt_per_order != 0 &&
+            this.selected_token != "" &&
+            this.$refs.SetupAmount.bot_name != "" &&
+            this.selectedExchange != ""
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.a = true;
+          } else {
+            this.updateMode.a = false;
+            this.updateMode.b = false;
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          break;
+        case 3:
+          [allowed, message] = this.$refs.SetupStrategy.validateForm();
+          this.bot.strategy.style = this.$refs.SetupStrategy.strategy.style;
+          console.log("THIS BOT STRATEGY ", this.bot.strategy);
+          if (
+            this.bot.strategy.style.name &&
+            this.bot.strategy.style.name != 0
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.b = true;
+          } else {
+            this.updateMode.b = false;
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.updateMode.e = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          break;
+        case 4:
+          [allowed, message] = this.$refs.SetupAnalysis.validateForm();
+          if (
+            this.bot.analysis.first_analysis.analysis &&
+            this.bot.analysis.second_analysis.analysis &&
+            this.bot.analysis.condition
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.c = true;
+            this.updateMode.d = true;
+            this.updateMode.e = true;
+          } else {
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.updateMode.e = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          console.log(this.bot.analysis);
+          break;
+        default:
+          break;
       }
 
-      this.e1 = target - 1;
+      // If allowed go to designated tab
+      // if its a checking from watch, use new target instead (nv from watch)
+      if (allowed) {
+        if (from_watch) {
+          this.e1 = new_target;
+        } else {
+          this.e1 = target - 1;
+        }
+      } else if (from_watch) {
+        this.e1 = target - 2;
+      }
     },
     loggerContinue() {
       console.log("loggerContinue", this.bot);
@@ -556,7 +611,7 @@ export default {
     },
     onStrategySelected(val) {
       console.log("onStrategySelected", val);
-      this.bot.strategy = val;
+      this.bot.strategy = { ...this.bot.strategy, ...val };
     },
     onAnalysisSelected(val) {
       console.log("onAnalysisSelected");
@@ -567,7 +622,7 @@ export default {
       console.log("botProp", this.botProp);
       console.log("bot", this.bot);
       console.log("end-of logger");
-      this.$refs.strategyRef.clearData();
+      this.$refs.SetupStrategy.clearData();
     },
     snackbar() {
       console.log("snackbar");
@@ -829,6 +884,12 @@ export default {
     this.bot.selected_exchange = this.exchange;
     if (this.botProp) {
       this.isUpdateMode = true;
+      this.title = "Update DCA bots";
+      this.updateMode.a = true;
+      this.updateMode.b = true;
+      this.updateMode.c = true;
+      this.updateMode.d = true;
+      this.updateMode.e = true;
       this.bot.id = this.botProp._id;
       this.bot.strategy = this.botProp.strategy;
       this.bot.analysis.condition = this.botProp.analysis.condition;
@@ -877,6 +938,15 @@ export default {
         } ${nv.analysis.second_analysis.analysis}`;
       },
       deep: true,
+    },
+    e1: {
+      handler(nv, ov) {
+        console.log("CHANGE TO TAB ", nv, ov);
+
+        if (nv !== ov && nv > ov) {
+          this._continue(ov + 2, true, nv);
+        }
+      },
     },
   },
 };

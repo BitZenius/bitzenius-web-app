@@ -911,7 +911,7 @@ export default {
   layout: "account",
   data() {
     return {
-      title: "Create new bots",
+      title: "Create automated bots",
       // STORE PARAM
       botProp: {},
       exchange: "",
@@ -1462,7 +1462,7 @@ export default {
     this.bot.selected_exchange = this.exchange;
     if (this.botProp) {
       this.isUpdateMode = true;
-      this.title = "Update bots";
+      this.title = "Update automated bots";
       this.updateMode.a = true;
       this.updateMode.b = true;
       this.updateMode.c = true;

@@ -14,7 +14,6 @@
                   @blur="onUsdtToApplyChanged(strategy.usdt_to_apply)"
                   required
                   placeholder="Total USDT To Apply"
-                  hide-details=""
                   rounded
                   type="number"
                   class="my-2 custom-input text-body-1"
@@ -56,7 +55,6 @@
                   v-model="strategy.usdt_per_order"
                   required
                   placeholder="USDT Per Order"
-                  hide-details=""
                   rounded
                   type="number"
                   class="my-2 custom-input text-body-1"

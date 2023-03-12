@@ -1,107 +1,117 @@
 <template>
   <v-card flat rounded class="pa-3 no-shadow">
-    <v-row align="center" justify="center">
-      <v-col cols="12" :class="wide ? '' : 'pa-5 mt-2'">
-        <div class="d-flex flex-column align-start">
-          <h3 v-if="!wide" class="mb-4 text-h6 font-weight-bold">
-            Choose First Analysis
-          </h3>
-          <strong
-            v-else
-            class="text-body-1 font-weight-bold basic-text--text my-3"
-          >
-            Choose First Analysis
-          </strong>
-          <!-- <v-btn small @click="logger">logger</v-btn> -->
-          <v-row style="width: 100%">
-            <v-col cols="12" md="6">
-              <v-select
-                v-model="technical.first_analysis.analysis"
-                item-value="id"
-                item-text="name"
-                :items="analysisList"
-                placeholder="Choose Analysis"
-                class="custom-input text-body-1"
-                rounded
-              >
-              </v-select>
-            </v-col>
-            <v-col cols="12" md="6" class="mx-0">
-              <v-select
-                v-model="technical.first_analysis.time"
-                :items="timeList"
-                placeholder="Timeframe"
-                class="custom-input text-body-1"
-                rounded
-              ></v-select>
-            </v-col>
-          </v-row>
-          <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">Condition</h3>
-          <strong
-            v-else
-            class="text-body-1 font-weight-bold basic-text--text my-3"
-          >
-            Condition
-          </strong>
-          <v-row style="width: 100%">
-            <v-col class="d-flex justify-center" cols="12">
-              <v-btn
-                @click.native="technical.condition = 'AND'"
-                style="width: 45%"
-                class="mx-2"
-                rounded
-                depressed
-                :color="technical.condition == 'AND' ? 'primary' : 'off-white'"
-              >
-                AND
-              </v-btn>
-              <v-btn
-                @click.native="technical.condition = 'OR'"
-                style="width: 45%"
-                class="mx-2"
-                rounded
-                depressed
-                :color="technical.condition == 'OR' ? 'primary' : 'off-white'"
-              >
-                OR
-              </v-btn>
-            </v-col>
-          </v-row>
-          <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
-            Choose Second Analysis
-          </h3>
-          <strong
-            v-else
-            class="text-body-1 font-weight-bold basic-text--text my-3"
-          >
-            Choose Second Analysis
-          </strong>
-          <v-row style="width: 100%">
-            <v-col cols="12" md="6">
-              <v-select
-                v-model="technical.second_analysis.analysis"
-                item-value="id"
-                item-text="name"
-                :items="analysisList"
-                placeholder="Choose Analysis"
-                class="custom-input text-body-1"
-                rounded
-              ></v-select>
-            </v-col>
-            <v-col cols="12" md="6" class="mx-0">
-              <v-select
-                v-model="technical.second_analysis.time"
-                :items="timeList"
-                placeholder="Timeframe"
-                class="custom-input text-body-1"
-                rounded
-              ></v-select>
-            </v-col>
-          </v-row>
-        </div>
-        <slot></slot>
-      </v-col>
-    </v-row>
+    <v-form ref="form" lazy-validation>
+      <v-row align="center" justify="center">
+        <v-col cols="12" :class="wide ? '' : 'pa-5 mt-2'">
+          <div class="d-flex flex-column align-start">
+            <h3 v-if="!wide" class="mb-4 text-h6 font-weight-bold">
+              Choose First Analysis
+            </h3>
+            <strong
+              v-else
+              class="text-body-1 font-weight-bold basic-text--text my-3"
+            >
+              Choose First Analysis
+            </strong>
+            <!-- <v-btn small @click="logger">logger</v-btn> -->
+            <v-row style="width: 100%">
+              <v-col cols="12" md="6">
+                <v-select
+                  v-model="technical.first_analysis.analysis"
+                  :rules="rules.technical.first_analysis.analysis"
+                  item-value="id"
+                  item-text="name"
+                  :items="analysisList"
+                  placeholder="Choose Analysis"
+                  class="custom-input text-body-1"
+                  rounded
+                >
+                </v-select>
+              </v-col>
+              <v-col cols="12" md="6" class="mx-0">
+                <v-select
+                  v-model="technical.first_analysis.time"
+                  :rules="rules.technical.first_analysis.time"
+                  :items="timeList"
+                  placeholder="Timeframe"
+                  class="custom-input text-body-1"
+                  rounded
+                ></v-select>
+              </v-col>
+            </v-row>
+            <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
+              Condition
+            </h3>
+            <strong
+              v-else
+              class="text-body-1 font-weight-bold basic-text--text my-3"
+            >
+              Condition
+            </strong>
+            <v-row style="width: 100%">
+              <v-col class="d-flex justify-center" cols="12">
+                <v-btn
+                  @click.native="technical.condition = 'AND'"
+                  style="width: 45%"
+                  class="mx-2"
+                  rounded
+                  depressed
+                  :color="
+                    technical.condition == 'AND' ? 'primary' : 'off-white'
+                  "
+                >
+                  AND
+                </v-btn>
+                <v-btn
+                  @click.native="technical.condition = 'OR'"
+                  style="width: 45%"
+                  class="mx-2"
+                  rounded
+                  depressed
+                  :color="technical.condition == 'OR' ? 'primary' : 'off-white'"
+                >
+                  OR
+                </v-btn>
+              </v-col>
+            </v-row>
+            <h3 v-if="!wide" class="my-4 text-h6 font-weight-bold">
+              Choose Second Analysis
+            </h3>
+            <strong
+              v-else
+              class="text-body-1 font-weight-bold basic-text--text my-3"
+            >
+              Choose Second Analysis
+            </strong>
+            <v-row style="width: 100%">
+              <v-col cols="12" md="6">
+                <v-select
+                  v-model="technical.second_analysis.analysis"
+                  item-value="id"
+                  :rules="rules.technical.second_analysis.analysis"
+                  item-text="name"
+                  :items="analysisList"
+                  placeholder="Choose Analysis"
+                  class="custom-input text-body-1"
+                  rounded
+                ></v-select>
+              </v-col>
+              <v-col cols="12" md="6" class="mx-0">
+                <v-select
+                  v-model="technical.second_analysis.time"
+                  :items="timeList"
+                  :rules="rules.technical.second_analysis.time"
+                  placeholder="Timeframe"
+                  class="custom-input text-body-1"
+                  rounded
+                ></v-select>
+              </v-col>
+            </v-row>
+          </div>
+          <slot></slot>
+        </v-col>
+      </v-row>
+    </v-form>
   </v-card>
 </template>
 
@@ -113,6 +123,21 @@ export default {
   },
   data() {
     return {
+      rules: {
+        technical: {
+          minimum_trading_volume: [
+            (v) => !!v || "Minimum trading volume is required",
+          ],
+          first_analysis: {
+            analysis: [(v) => !!v || "First analysis is required"],
+            time: [(v) => !!v || "First analysis time period is required"],
+          },
+          second_analysis: {
+            analysis: [(v) => !!v || "Second analysis is required"],
+            time: [(v) => !!v || "Second analysis time period is required"],
+          },
+        },
+      },
       technical: {
         first_analysis: {
           analysis: null,
@@ -198,6 +223,16 @@ export default {
     };
   },
   methods: {
+    validateForm() {
+      let valid = this.$refs.form.validate();
+      console.log("VALIDATE FORM TECHNICAL ANALYSIS", valid);
+
+      if (!this.technical.condition) {
+        return [false, "Please choose technical condition"];
+      }
+
+      return [valid, null];
+    },
     logger() {
       console.log(this.technical);
     },
