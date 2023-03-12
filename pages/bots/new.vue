@@ -1049,7 +1049,7 @@ export default {
             this.bot.strategy.usdt_to_apply &&
             this.bot.strategy.usdt_to_apply != 0 &&
             this.bot.strategy.usdt_per_order &&
-            this.bot.strategy.usdt_per_order != 0 &&
+            this.bot.strategy.usdt_per_order >= 15 &&
             this.bot.strategy.max_concurrent_trading_pair != 0
           ) {
             allowed = true;
@@ -1127,7 +1127,7 @@ export default {
             this.bot.strategy.usdt_to_apply &&
             this.bot.strategy.usdt_to_apply != 0 &&
             this.bot.strategy.usdt_per_order &&
-            this.bot.strategy.usdt_per_order != 0 &&
+            this.bot.strategy.usdt_per_order >= 15 &&
             this.bot.strategy.max_concurrent_trading_pair != 0
           ) {
             allowed = true;

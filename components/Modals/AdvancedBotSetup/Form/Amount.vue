@@ -214,10 +214,6 @@ export default {
           color: "customPink",
         });
 
-        setTimeout(() => {
-          this.strategy.usdt_per_order = 15;
-          this.$refs.usdt_per_order.focus();
-        });
       }
 
       this.resetRecommendedSettings();

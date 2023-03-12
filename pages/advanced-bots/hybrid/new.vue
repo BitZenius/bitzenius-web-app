@@ -511,7 +511,7 @@ export default {
           console.log("THIS BOT STRATEGY ", this.bot.strategy);
           if (
             this.bot.strategy.usdt_per_order &&
-            this.bot.strategy.usdt_per_order != 0 &&
+            this.bot.strategy.usdt_per_order >= 15 &&
             this.selected_token != "" &&
             this.$refs.SetupAmount.bot_name != "" &&
             this.selectedExchange != ""

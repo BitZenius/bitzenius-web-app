@@ -588,11 +588,6 @@ export default {
           message: "USDT Per Order Cannot Be Under 15!",
           color: "customPink",
         });
-
-        setTimeout(() => {
-          this.strategy.usdt_per_order = 15;
-          this.$refs.usdt_per_order.focus();
-        });
       }
 
       this.resetRecommendedSettings();
