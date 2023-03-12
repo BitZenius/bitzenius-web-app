@@ -507,11 +507,11 @@ export default {
             return this.$router.go("/verification");
           } else {
             console.log("errresponsedata", err.response.data);
-            let message = err.response.data ? err.response.data : err.response.data.message
+            let message = err.response.data
+              ? err.response.data
+              : err.response.data.message;
             this.message = {
-              text: message
-                ? message
-                : "Invalid credentials. Please try again",
+              text: message ? message : "Invalid credentials. Please try again",
               color: "error",
             };
           }

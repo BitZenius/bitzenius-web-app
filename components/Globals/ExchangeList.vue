@@ -116,8 +116,4 @@ export default {
 .v-select {
   width: 100%;
 }
-
-.v-text-field__details {
-  display: none;
-}
 </style>

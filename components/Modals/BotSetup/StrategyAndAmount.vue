@@ -2,213 +2,223 @@
   <v-row align="start" justify="start">
     <v-col :cols="strategy.style.name !== null ? 6 : 12">
       <v-card flat rounded class="pa-5 mt-2">
-        <v-row align="center" justify="center">
-          <v-col :cols="strategy.style.name !== null ? 12 : 8">
-            <div class="d-flex flex-column align-start">
-              <h3 class="mb-4 text-h6 font-weight-bold">Choose the Amount</h3>
-              <!-- <v-btn small @click="_logger">logger</v-btn> -->
+        <v-form ref="form" lazy-validation>
+          <v-row align="center" justify="center">
+            <v-col :cols="strategy.style.name !== null ? 12 : 8">
+              <div class="d-flex flex-column align-start">
+                <h3 class="mb-4 text-h6 font-weight-bold">Choose the Amount</h3>
+                <!-- <v-btn small @click="_logger">logger</v-btn> -->
 
-              <v-row class="d-flex align-end" style="width: 100%">
-                <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
-                  Total USDT To Apply
-                  <v-text-field
-                    v-model="strategy.usdt_to_apply"
-                    @blur="onUsdtToApplyChanged(strategy.usdt_to_apply)"
-                    required
-                    placeholder="Total USDT To Apply"
-                    hide-details=""
-                    rounded
-                    type="number"
-                    class="my-2 custom-input text-body-1"
-                  >
-                    <template v-slot:append>
-                      <v-tooltip bottom color="primary">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-list-item-avatar
-                            v-bind="attrs"
-                            v-on="on"
-                            size="30"
-                            color="white"
-                            class="mx-0 my-1"
-                          >
-                            <v-img
-                              max-width="25px"
-                              max-height="25px"
-                              src="/token_logo/USDT.png"
-                              contain
-                              position="center"
-                            ></v-img>
-                            <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
-                          </v-list-item-avatar>
-                        </template>
-                        <span
-                          >The maximum amount of USDT to be spent for the
-                          bot</span
-                        >
-                      </v-tooltip>
-                    </template>
-                  </v-text-field>
-                </v-col>
-                <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
-                  USDT Per Order
-                  <v-text-field
-                    ref="usdt_per_order"
-                    @blur="onUsdtPerOrderChanged(strategy.usdt_per_order)"
-                    v-model="strategy.usdt_per_order"
-                    required
-                    placeholder="USDT Per Order"
-                    hide-details=""
-                    rounded
-                    type="number"
-                    class="my-2 custom-input text-body-1"
-                  >
-                    <template v-slot:append>
-                      <v-tooltip bottom color="primary">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-list-item-avatar
-                            v-bind="attrs"
-                            v-on="on"
-                            size="30"
-                            color="white"
-                            class="mx-0 my-1"
-                          >
-                            <v-img
-                              max-width="25px"
-                              max-height="25px"
-                              src="/token_logo/USDT.png"
-                              contain
-                              position="center"
-                            ></v-img>
-                            <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
-                          </v-list-item-avatar>
-                        </template>
-                        <span>The amount of USDT purchase per order</span>
-                      </v-tooltip>
-                    </template>
-                  </v-text-field>
-                </v-col>
-
-                <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
-                  Max Concurrent Trading Pair
-                  <v-text-field
-                    v-model="strategy.max_concurrent_trading_pair"
-                    required
-                    placeholder="Max Concurrent Trading Pair"
-                    hide-details=""
-                    rounded
-                    class="my-2 custom-input text-body-1"
-                    type="number"
-                  >
-                    <template v-slot:append>
-                      <v-tooltip bottom color="primary">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-chip
-                            v-bind="attrs"
-                            v-on="on"
-                            class="d-flex align-center justify-center"
-                            color="primary"
-                            label
-                            rounded
-                            small
-                            text-color="white"
-                          >
-                            <v-icon left> mdi-link-box-variant-outline </v-icon>
-                            PAIR
-                          </v-chip>
-                        </template>
-                        <span
-                          >The maximum amount of USDT to be spent for the
-                          bot</span
-                        >
-                      </v-tooltip>
-                    </template>
-                  </v-text-field>
-                </v-col>
-
-                <v-col
-                  cols="6"
-                  v-if="recommendedMaxTradingPair[1] !== ''"
-                  style="height: 100%"
-                >
-                  <i class="text-body-1">*{{ recommendedMaxTradingPair[1] }}</i>
-                </v-col>
-                <v-col
-                  v-if="false"
-                  cols="6"
-                  md="6"
-                  class="text-body-1 font-weight-bold"
-                >
-                  Total USDT To Apply
-                  <v-text-field
-                    required
-                    placeholder="Total USDT To Apply"
-                    hide-details=""
-                    rounded
-                    class="my-2 custom-input text-body-1"
-                  >
-                    <template v-slot:append>
-                      <v-tooltip bottom color="primary">
-                        <template v-slot:activator="{ on, attrs }">
-                          <v-list-item-avatar
-                            v-bind="attrs"
-                            v-on="on"
-                            size="30"
-                            color="white"
-                            class="mx-0 my-1"
-                          >
-                            <v-img
-                              max-width="25px"
-                              max-height="25px"
-                              src="/token_logo/USDT.png"
-                              contain
-                              position="center"
-                            ></v-img>
-                            <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
-                          </v-list-item-avatar>
-                        </template>
-                        <span
-                          >The maximum amount of USDT to be spent for the
-                          bot</span
-                        >
-                      </v-tooltip>
-                    </template>
-                  </v-text-field>
-                </v-col>
-              </v-row>
-
-              <h3 class="my-4 text-h6 font-weight-bold">Choose the Strategy</h3>
-              <v-row
-                class="d-flex align-center justify-center pt-0 mt-0"
-                style="width: 100%"
-              >
-                <v-col cols="12">
-                  <v-radio-group v-model="selectedStrategyName">
-                    <v-row
-                      class="d-flex align-start justify-start pt-0 mt-0"
-                      style="width: 100%"
+                <v-row class="d-flex align-end" style="width: 100%">
+                  <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
+                    Total USDT To Apply
+                    <v-text-field
+                      :rules="rules.usdt_to_apply"
+                      v-model="strategy.usdt_to_apply"
+                      @blur="onUsdtToApplyChanged(strategy.usdt_to_apply)"
+                      required
+                      placeholder="Total USDT To Apply"
+                      rounded
+                      type="number"
+                      class="my-2 custom-input text-body-1"
                     >
-                      <v-col
-                        cols="4"
-                        class="pt-0"
-                        v-for="(item, i) in styleList"
-                        :key="item.name"
-                      >
-                        <v-radio :value="item.name">
-                          <template v-slot:label>
-                            <strong class="text-body-2 font-weight-bold">{{
-                              item.name
-                            }}</strong>
+                      <template v-slot:append>
+                        <v-tooltip bottom color="primary">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-list-item-avatar
+                              v-bind="attrs"
+                              v-on="on"
+                              size="30"
+                              color="white"
+                              class="mx-0 my-1"
+                            >
+                              <v-img
+                                max-width="25px"
+                                max-height="25px"
+                                src="/token_logo/USDT.png"
+                                contain
+                                position="center"
+                              ></v-img>
+                              <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
+                            </v-list-item-avatar>
                           </template>
-                        </v-radio>
-                      </v-col>
-                    </v-row>
-                  </v-radio-group>
-                </v-col>
-              </v-row>
-            </div>
-            <v-row>
-              <v-col cols="6">
-                <!-- <v-tooltip top color="primary">
+                          <span
+                            >The maximum amount of USDT to be spent for the
+                            bot</span
+                          >
+                        </v-tooltip>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+                  <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
+                    USDT Per Order
+                    <v-text-field
+                      ref="usdt_per_order"
+                      :rules="rules.usdt_per_order"
+                      @blur="onUsdtPerOrderChanged(strategy.usdt_per_order)"
+                      v-model="strategy.usdt_per_order"
+                      required
+                      placeholder="USDT Per Order"
+                      rounded
+                      type="number"
+                      class="my-2 custom-input text-body-1"
+                    >
+                      <template v-slot:append>
+                        <v-tooltip bottom color="primary">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-list-item-avatar
+                              v-bind="attrs"
+                              v-on="on"
+                              size="30"
+                              color="white"
+                              class="mx-0 my-1"
+                            >
+                              <v-img
+                                max-width="25px"
+                                max-height="25px"
+                                src="/token_logo/USDT.png"
+                                contain
+                                position="center"
+                              ></v-img>
+                              <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
+                            </v-list-item-avatar>
+                          </template>
+                          <span>The amount of USDT purchase per order</span>
+                        </v-tooltip>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col cols="6" md="6" class="text-body-1 font-weight-bold">
+                    Max Concurrent Trading Pair
+                    <v-text-field
+                      v-model="strategy.max_concurrent_trading_pair"
+                      :rules="rules.max_concurrent_trading_pair"
+                      required
+                      placeholder="Max Concurrent Trading Pair"
+                      rounded
+                      class="my-2 custom-input text-body-1"
+                      type="number"
+                    >
+                      <template v-slot:append>
+                        <v-tooltip bottom color="primary">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-chip
+                              v-bind="attrs"
+                              v-on="on"
+                              class="d-flex align-center justify-center"
+                              color="primary"
+                              label
+                              rounded
+                              small
+                              text-color="white"
+                            >
+                              <v-icon left>
+                                mdi-link-box-variant-outline
+                              </v-icon>
+                              PAIR
+                            </v-chip>
+                          </template>
+                          <span
+                            >The maximum amount of USDT to be spent for the
+                            bot</span
+                          >
+                        </v-tooltip>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+
+                  <v-col
+                    cols="6"
+                    v-if="recommendedMaxTradingPair[1] !== ''"
+                    style="height: 100%"
+                  >
+                    <i class="text-body-1"
+                      >*{{ recommendedMaxTradingPair[1] }}</i
+                    >
+                  </v-col>
+                  <v-col
+                    v-if="false"
+                    cols="6"
+                    md="6"
+                    class="text-body-1 font-weight-bold"
+                  >
+                    Total USDT To Apply
+                    <v-text-field
+                      required
+                      placeholder="Total USDT To Apply"
+                      hide-details=""
+                      rounded
+                      class="my-2 custom-input text-body-1"
+                    >
+                      <template v-slot:append>
+                        <v-tooltip bottom color="primary">
+                          <template v-slot:activator="{ on, attrs }">
+                            <v-list-item-avatar
+                              v-bind="attrs"
+                              v-on="on"
+                              size="30"
+                              color="white"
+                              class="mx-0 my-1"
+                            >
+                              <v-img
+                                max-width="25px"
+                                max-height="25px"
+                                src="/token_logo/USDT.png"
+                                contain
+                                position="center"
+                              ></v-img>
+                              <!-- <v-icon large dark> mdi-currency-usd </v-icon> -->
+                            </v-list-item-avatar>
+                          </template>
+                          <span
+                            >The maximum amount of USDT to be spent for the
+                            bot</span
+                          >
+                        </v-tooltip>
+                      </template>
+                    </v-text-field>
+                  </v-col>
+                </v-row>
+
+                <h3 class="my-4 text-h6 font-weight-bold">
+                  Choose the Strategy
+                </h3>
+                <v-row
+                  class="d-flex align-center justify-center pt-0 mt-0 mb-4"
+                  style="width: 100%"
+                >
+                  <v-col cols="12">
+                    <v-radio-group
+                      :rules="rules.selectedStrategyName"
+                      v-model="selectedStrategyName"
+                    >
+                      <v-row
+                        class="d-flex align-start justify-start pt-0 mt-0"
+                        style="width: 100%"
+                      >
+                        <v-col
+                          cols="4"
+                          class="pt-0"
+                          v-for="(item, i) in styleList"
+                          :key="item.name"
+                        >
+                          <v-radio :value="item.name">
+                            <template v-slot:label>
+                              <strong class="text-body-2 font-weight-bold">{{
+                                item.name
+                              }}</strong>
+                            </template>
+                          </v-radio>
+                        </v-col>
+                      </v-row>
+                    </v-radio-group>
+                  </v-col>
+                </v-row>
+              </div>
+              <v-row>
+                <v-col cols="6">
+                  <!-- <v-tooltip top color="primary">
                   <template v-slot:activator="{ on, attrs }">
 
                   </template>
@@ -217,21 +227,22 @@
                     order to use this feature</span
                   >
                 </v-tooltip> -->
-                <v-btn
-                  :disabled="selectedStrategyName == null"
-                  color="primary"
-                  rounded
-                  @click="recommendSettings"
-                >
-                  Use Recommended Settings</v-btn
-                >
-              </v-col>
-              <v-col cols="6" class="d-flex justify-end">
-                <slot> </slot>
-              </v-col>
-            </v-row>
-          </v-col>
-        </v-row>
+                  <v-btn
+                    :disabled="selectedStrategyName == null"
+                    color="primary"
+                    rounded
+                    @click="recommendSettings"
+                  >
+                    Use Recommended Settings</v-btn
+                  >
+                </v-col>
+                <v-col cols="6" class="d-flex justify-end">
+                  <slot> </slot>
+                </v-col>
+              </v-row>
+            </v-col>
+          </v-row>
+        </v-form>
       </v-card>
     </v-col>
     <v-col
@@ -502,12 +513,29 @@ export default {
   props: ["selectedStrategy"],
   data() {
     return {
+      // RULES
+      rules: {
+        usdt_to_apply: [
+          (v) => !!v || "USDT to apply is required",
+          (v) => (v && v > 0) || "USDT to apply must be more than 0",
+        ],
+        usdt_per_order: [
+          (v) => !!v || "USDT to order is required",
+          (v) => (v && v > 14) || "Min USDT to order is 15",
+        ],
+        max_concurrent_trading_pair: [
+          (v) => !!v || "Max concurrent trading pair is required",
+          (v) => (v && v > 0) || "Min concurrent trading pair is 1",
+        ],
+        selectedStrategyName: [(v) => !!v || "Strategy required"],
+      },
+
       selectedStrategyName: null,
       isForceCustom: false,
       strategy: {
-        usdt_to_apply: 0,
-        usdt_per_order: 0,
-        max_concurrent_trading_pair: 0,
+        usdt_to_apply: 1,
+        usdt_per_order: 15,
+        max_concurrent_trading_pair: 1,
         style: {
           name: null,
         },
@@ -536,6 +564,12 @@ export default {
     };
   },
   methods: {
+    validateForm() {
+      let valid = this.$refs.form.validate();
+      console.log("VALIDATE FORM STRATEGY AND AMOUNT", valid);
+
+      return [valid, null];
+    },
     // FETCH API
     async fetchFormula() {
       console.log("FETCHING DATA USER BOT");
@@ -808,14 +842,6 @@ export default {
   watch: {
     strategy: {
       handler(nv, ov) {
-        nv.usdt_to_apply = nv.usdt_to_apply ? parseFloat(nv.usdt_to_apply) : 1;
-        nv.usdt_per_order = nv.usdt_per_order
-          ? parseFloat(nv.usdt_per_order)
-          : 1;
-        nv.max_concurrent_trading_pair = nv.max_concurrent_trading_pair
-          ? parseFloat(nv.max_concurrent_trading_pair)
-          : 1;
-
         this.$emit("onSelected", nv);
       },
       deep: true,

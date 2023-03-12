@@ -30,6 +30,7 @@
                     : 'custom-stepper mb-2'
                 "
                 :ripple="false"
+                :disabled="!isUpdateMode && !updateMode.a"
                 @click="e1 = 0"
               >
                 <v-progress-circular
@@ -57,6 +58,7 @@
                     : 'custom-stepper mb-2'
                 "
                 :ripple="false"
+                :disabled="!isUpdateMode && !updateMode.b"
                 @click="e1 = 1"
               >
                 <v-progress-circular
@@ -84,6 +86,7 @@
                     : 'custom-stepper mb-2'
                 "
                 :ripple="false"
+                :disabled="!isUpdateMode && !updateMode.c"
                 @click="e1 = 2"
               >
                 <v-progress-circular
@@ -110,6 +113,7 @@
                     : 'custom-stepper mb-2'
                 "
                 :ripple="false"
+                :disabled="!isUpdateMode && !updateMode.d"
                 @click="e1 = 3"
               >
                 <v-progress-circular
@@ -140,7 +144,7 @@
               <ModalsBotSetupStrategyAndAmount
                 v-if="showStrategySetup"
                 :selected-strategy="bot.strategy"
-                ref="strategyRef"
+                ref="SetupStrategyAndAmountRef"
                 @onSelected="onStrategySelected"
               >
                 <v-btn
@@ -163,7 +167,7 @@
                 <ModalsBotSetupTechnicalAnalysis
                   v-if="showTechnicalAnalysis"
                   :selected-technical="bot.analysis"
-                  ref="analysisRef"
+                  ref="SetupTechnicalAnalysis"
                   @onAnalysisSelected="onAnalysisSelected"
                 >
                   <v-row>
@@ -358,9 +362,9 @@
                                 class="text-body-1 font-weight-bold basic-text--text"
                               >
                                 <template v-if="i == 2 || i == 4">
-                              {{ item.value | toCurrency }}</template
-                            >
-                            <template v-else> {{ item.value }}</template>
+                                  {{ item.value | toCurrency }}</template
+                                >
+                                <template v-else> {{ item.value }}</template>
                               </v-list-item-subtitle>
                             </v-list-item-content>
                           </v-list-item>
@@ -441,7 +445,7 @@
       </v-row>
     </v-col>
   </v-row>
-  <v-row v-else class="pt-5">
+  <v-row v-else class="pt-5 ma-0">
     <v-col cols="12" style="position: relative" class="px-5">
       <v-row>
         <v-col cols="12" class="text-h5 font-weight-bold pl-3">
@@ -464,6 +468,7 @@
               <v-btn
                 :color="e1 == 0 ? 'primary' : 'off-white-2'"
                 @click="e1 = 0"
+                :disabled="!isUpdateMode && !updateMode.a"
                 depressed
                 block
                 class="custom-button-tab"
@@ -477,6 +482,7 @@
               <v-btn
                 :color="e1 == 1 ? 'primary' : 'off-white-2'"
                 @click="e1 = 1"
+                :disabled="!isUpdateMode && !updateMode.b"
                 depressed
                 block
                 class="custom-button-tab"
@@ -490,6 +496,7 @@
               <v-btn
                 :color="e1 == 2 ? 'primary' : 'off-white-2'"
                 @click="e1 = 2"
+                :disabled="!isUpdateMode && !updateMode.c"
                 depressed
                 block
                 class="custom-button-tab"
@@ -503,6 +510,7 @@
               <v-btn
                 :color="e1 == 3 ? 'primary' : 'off-white-2'"
                 @click="e1 = 3"
+                :disabled="!isUpdateMode && !updateMode.d"
                 depressed
                 block
                 class="custom-button-tab"
@@ -516,6 +524,7 @@
               <v-btn
                 :color="e1 == 4 ? 'primary' : 'off-white-2'"
                 @click="e1 = 4"
+                :disabled="!isUpdateMode && !updateMode.e"
                 depressed
                 block
                 class="custom-button-tab"
@@ -541,14 +550,14 @@
                 <ModalsBotSetupAmount
                   v-if="showStrategySetup"
                   :selected-strategy="bot.strategy"
-                  ref="strategyRef"
+                  ref="SetupAmount"
                   @onSelected="onStrategySelected"
                 >
                   <v-btn
                     width="120"
                     rounded
                     color="primary"
-                    @click="_continue(2)"
+                    @click="_continueMobile(2)"
                   >
                     Continue
                   </v-btn>
@@ -558,7 +567,7 @@
                 <ModalsBotSetupStrategy
                   v-if="showStrategySetup"
                   :selected-strategy="bot.strategy"
-                  ref="strategyRef"
+                  ref="SetupStrategy"
                   @onSelected="onStrategySelected"
                 >
                   <v-row>
@@ -579,7 +588,7 @@
                           width="120"
                           rounded
                           color="primary"
-                          @click="_continue(3)"
+                          @click="_continueMobile(3)"
                         >
                           Continue
                         </v-btn>
@@ -593,7 +602,7 @@
                   <ModalsBotSetupTechnicalAnalysis
                     v-if="showTechnicalAnalysis"
                     :selected-technical="bot.analysis"
-                    ref="analysisRef"
+                    ref="SetupTechnicalAnalysis"
                     :wide="true"
                     @onAnalysisSelected="onAnalysisSelected"
                   >
@@ -615,7 +624,7 @@
                             width="120"
                             rounded
                             color="primary"
-                            @click="_continue(4)"
+                            @click="_continueMobile(4)"
                           >
                             Continue
                           </v-btn>
@@ -909,6 +918,13 @@ export default {
 
       // STATE
       isUpdateMode: false,
+      updateMode: {
+        a: false,
+        b: false,
+        c: false,
+        d: false,
+        e: false,
+      },
 
       tokens: [],
       shownTokens: [],
@@ -920,9 +936,9 @@ export default {
           style: {
             name: null,
           },
-          usdt_to_apply: 0,
-          usdt_per_order: 0,
-          max_concurrent_trading_pair: 0,
+          usdt_to_apply: 1,
+          usdt_per_order: 15,
+          max_concurrent_trading_pair: 1,
         },
         analysis: {
           first_analysis: {
@@ -1017,74 +1033,201 @@ export default {
   methods: {
     ...mapMutations("exchange", ["setSelectedExchange"]),
     // TRIGGER
-    _continue(target) {
+    _continue(target, from_watch = false, new_target = 0) {
       console.log(target);
-      if (target == 2) {
-        let allowed = false;
-        if (
-          this.bot.strategy.style.name &&
-          this.bot.strategy.style.name != 0 &&
-          this.bot.strategy.usdt_to_apply &&
-          this.bot.strategy.usdt_to_apply != 0 &&
-          this.bot.strategy.usdt_per_order &&
-          this.bot.strategy.usdt_per_order != 0 &&
-          this.bot.strategy.max_concurrent_trading_pair
-        ) {
-          allowed = true;
-        }
-        if (allowed) {
-          this.e1 = target;
-        } else {
-          this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "Please fill all requirements needed!",
-            color: "customPink",
-          });
-        }
-      } else if (target == 3) {
-        let allowed = false;
-        //                 first_analysis: {
-        //     analysis: null
-        // },
-        // second_analysis: {
-        //     analysis: null
-        // },
-        // condition: null,
-        // minimum_trading_volume: null
-        if (
-          this.bot.analysis.first_analysis.analysis &&
-          this.bot.analysis.second_analysis.analysis &&
-          this.bot.analysis.condition &&
-          this.bot.analysis.minimum_trading_volume
-        ) {
-          allowed = true;
-        }
-        if (allowed) {
-          this.e1 = target;
-        } else {
-          this.$store.commit("setShowSnackbar", {
-            show: true,
-            message: "Please fill all requirements needed!",
-            color: "customPink",
-          });
-        }
-        console.log(this.bot.analysis);
+      let allowed = true;
+      let message = null;
+      switch (target) {
+        case 2:
+          [allowed, message] =
+            this.$refs.SetupStrategyAndAmountRef.validateForm();
+          this.bot.strategy = this.$refs.SetupStrategyAndAmountRef.strategy;
+          console.log("THIS BOT STRATEGY ", this.bot.strategy);
+          if (
+            this.bot.strategy.style.name &&
+            this.bot.strategy.style.name != 0 &&
+            this.bot.strategy.usdt_to_apply &&
+            this.bot.strategy.usdt_to_apply != 0 &&
+            this.bot.strategy.usdt_per_order &&
+            this.bot.strategy.usdt_per_order != 0 &&
+            this.bot.strategy.max_concurrent_trading_pair != 0
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.a = true;
+          } else {
+            this.updateMode.a = false;
+            this.updateMode.b = false;
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          break;
+        case 3:
+          [allowed, message] = this.$refs.SetupTechnicalAnalysis.validateForm();
+          if (
+            this.bot.analysis.first_analysis.analysis &&
+            this.bot.analysis.second_analysis.analysis &&
+            this.bot.analysis.condition &&
+            this.bot.analysis.minimum_trading_volume
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.b = true;
+            this.updateMode.c = true;
+            this.updateMode.d = true;
+          } else {
+            this.updateMode.b = false;
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          console.log(this.bot.analysis);
+          break;
+        default:
+          break;
       }
 
-      this.e1 = target - 1;
+      // If allowed go to designated tab
+      // if its a checking from watch, use new target instead (nv from watch)
+      if (allowed) {
+        if (from_watch) {
+          this.e1 = new_target;
+        } else {
+          this.e1 = target - 1;
+        }
+      } else if (from_watch) {
+        this.e1 = target - 2;
+      }
+    },
+    _continueMobile(target, from_watch = false, new_target = 0) {
+      console.log(target);
+      let allowed = true;
+      let message = null;
+      switch (target) {
+        case 2:
+          [allowed, message] = this.$refs.SetupAmount.validateForm();
+          this.bot.strategy = this.$refs.SetupAmount.strategy;
+          console.log("THIS BOT STRATEGY ", this.bot.strategy);
+          if (
+            this.bot.strategy.usdt_to_apply &&
+            this.bot.strategy.usdt_to_apply != 0 &&
+            this.bot.strategy.usdt_per_order &&
+            this.bot.strategy.usdt_per_order != 0 &&
+            this.bot.strategy.max_concurrent_trading_pair != 0
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.a = true;
+          } else {
+            this.updateMode.a = false;
+            this.updateMode.b = false;
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.updateMode.e = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          break;
+        case 3:
+          [allowed, message] = this.$refs.SetupStrategy.validateForm();
+          this.bot.strategy.style = this.$refs.SetupStrategy.strategy.style;
+          console.log("THIS BOT STRATEGY ", this.bot.strategy);
+          if (
+            this.bot.strategy.style.name &&
+            this.bot.strategy.style.name != 0
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.b = true;
+          } else {
+            this.updateMode.b = false;
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.updateMode.e = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          break;
+        case 4:
+          [allowed, message] = this.$refs.SetupTechnicalAnalysis.validateForm();
+          if (
+            this.bot.analysis.first_analysis.analysis &&
+            this.bot.analysis.second_analysis.analysis &&
+            this.bot.analysis.condition &&
+            this.bot.analysis.minimum_trading_volume
+          ) {
+            allowed = true;
+          }
+          if (allowed) {
+            this.updateMode.c = true;
+            this.updateMode.d = true;
+            this.updateMode.e = true;
+          } else {
+            this.updateMode.c = false;
+            this.updateMode.d = false;
+            this.updateMode.e = false;
+            this.$store.commit("setShowSnackbar", {
+              show: true,
+              message: message
+                ? message
+                : "Please fill all requirements needed!",
+              color: "customPink",
+            });
+          }
+          console.log(this.bot.analysis);
+          break;
+        default:
+          break;
+      }
+
+      // If allowed go to designated tab
+      // if its a checking from watch, use new target instead (nv from watch)
+      if (allowed) {
+        if (from_watch) {
+          this.e1 = new_target;
+        } else {
+          this.e1 = target - 1;
+        }
+      } else if (from_watch) {
+        this.e1 = target - 2;
+      }
     },
     loggerContinue() {
       console.log("loggerContinue", this.bot);
-    },
-    onStrategySelected(val) {
-      console.log(val);
     },
     onExchangeSelected(val) {
       this.bot.selected_exchange = val;
     },
     onStrategySelected(val) {
       console.log("onStrategySelected");
-      this.bot.strategy = val;
+      this.bot.strategy = { ...this.bot.strategy, ...val };
     },
     onAnalysisSelected(val) {
       console.log("onAnalysisSelected");
@@ -1256,11 +1399,9 @@ export default {
       setTimeout(() => {
         this.$emit("close-modal", false);
         this.$store.commit("setIsLoading", false);
-        this.fetchCompletion()
+        this.fetchCompletion();
         // this.resetModalState();
       });
-
-
     },
     async _fetchTokenList() {
       console.log("fetch token");
@@ -1321,6 +1462,12 @@ export default {
     this.bot.selected_exchange = this.exchange;
     if (this.botProp) {
       this.isUpdateMode = true;
+      this.title = "Update bots";
+      this.updateMode.a = true;
+      this.updateMode.b = true;
+      this.updateMode.c = true;
+      this.updateMode.d = true;
+      this.updateMode.e = true;
       this.bot.id = this.botProp._id;
       this.bot.strategy = this.botProp.strategy;
       this.bot.analysis.condition = this.botProp.analysis.condition;
@@ -1368,6 +1515,19 @@ export default {
         this.summary[4].value = nv.analysis.minimum_trading_volume;
       },
       deep: true,
+    },
+    e1: {
+      handler(nv, ov) {
+        console.log("CHANGE TO TAB ", nv, ov);
+
+        if (nv !== ov && nv > ov) {
+          if (this.checkMobile()) {
+            this._continueMobile(ov + 2, true, nv);
+          } else {
+            this._continue(ov + 2, true, nv);
+          }
+        }
+      },
     },
   },
 };
