@@ -1322,7 +1322,7 @@ export default {
   },
   unmounted() {},
   beforeDestroy() {
-    this.socket?.close();
+    // this.socket?.close();
 
     // this.socket.emit("disconnect-client", {
     //     ok: "unsubs from bots"
@@ -1442,7 +1442,12 @@ export default {
       }
     },
     streamBinance() {
-      this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
+      let stateStream = this.$store.state.socket.streamTicker;
+      console.log('stateStream', stateStream);
+      if(!stateStream){
+        return alert('no stream data detected')
+      }
+      this.socket = stateStream;
       this.socket.onmessage = (event) => {
         let data = JSON.parse(event.data);
         let index = this.activePosition.findIndex((b) => b.symbol == data.s);

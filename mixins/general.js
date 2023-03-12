@@ -83,11 +83,11 @@ export default {
     // REALTIME DATA STREAM
     async initialStream(cb) {
       let token = await this.currentUser.getIdToken();
-      this.realtimeUpdateSocket = io(process.env.SERVER, {
-        path: "/realtime-update",
-        auth: { token },
-      });
-
+      // this.realtimeUpdateSocket = io(process.env.SERVER, {
+      //   path: "/realtime-update",
+      //   auth: { token },
+      // });
+      this.realtimeUpdateSocket = this.$store.state.socket.streamRealtimeUpdate
       await cb()
     },
 
@@ -154,9 +154,9 @@ export default {
     }
   },
   beforeDestroy() {
-    if (this.realtimeUpdateSocket) {
-      console.log("DISCONNECTING realtimeUpdateSocket")
-      this.realtimeUpdateSocket?.close();
-    }
+    // if (this.realtimeUpdateSocket) {
+    //   console.log("DISCONNECTING realtimeUpdateSocket")
+    //   this.realtimeUpdateSocket?.close();
+    // }
   }
 }

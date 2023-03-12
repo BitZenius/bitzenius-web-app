@@ -462,6 +462,10 @@ export default {
     this.getUserNotifications();
     this.fetchCompletion();
 
+    // INITIAL STREAM FROM STORE
+    this.streamToBinanceTicker();
+    this.streamToRealtimeUpdate();
+
     if (this.checkMobile()) {
       window.addEventListener("scroll", (e) => {
         e.preventDefault();
@@ -657,6 +661,13 @@ export default {
         }
       });
     },
+    streamToBinanceTicker(){
+      this.$store.dispatch("socket/setStreamTickerFunction");
+    },
+    async streamToRealtimeUpdate(){
+      let token = await this.currentUser.getIdToken();
+      this.$store.dispatch("socket/setStreamRealtimeUpdate", {token});
+    }
   },
 };
 </script>
