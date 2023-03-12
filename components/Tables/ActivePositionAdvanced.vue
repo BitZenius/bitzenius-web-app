@@ -985,8 +985,8 @@ export default {
     console.log("USER!!", this.user);
 
     let userId = this.$store.state.authUser.uid;
-      await this._fetchBotsList(this.exchange); // Fetch Bots List
-      await this._fetchAdvancedSetup();
+    await this._fetchBotsList(this.exchange); // Fetch Bots List
+    await this._fetchAdvancedSetup();
 
     // BOTS SOCKET
     this.initialStream(this.listenStream);
@@ -1123,7 +1123,6 @@ export default {
       }
     },
     streamBinance() {
-      console.log(activePosition);
       this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
       this.socket.onmessage = (event) => {
         let data = JSON.parse(event.data);
