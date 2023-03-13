@@ -1,7 +1,7 @@
 <template>
   <v-card :outlined="completed" flat color="success" class="custom-card-item">
     <v-list flat class="pa-0">
-      <v-list-item exact two-line :to="path">
+      <v-list-item two-line @click="taskAction">
         <v-list-item-content>
           <v-list-item-title class="font-weight-bold text-body-2">{{
             title
@@ -25,6 +25,16 @@
 
 <script>
 export default {
+  methods: {
+    taskAction() {
+      console.log(this.path);
+      if (this.path.includes("bots")) {
+        this.$store.commit("setShowCreateBotListModal", true);
+      } else {
+        this.$router.push(`${this.path}?c=1`);
+      }
+    },
+  },
   props: {
     title: {
       type: String,

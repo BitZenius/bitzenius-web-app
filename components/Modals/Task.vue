@@ -31,7 +31,7 @@
                   dense
                   color="success"
                   exact
-                  @click="openPath(item.path)"
+                  @click="taskAction(item)"
                   style="max-width: min-content"
                 >
                   {{ item.title }}
@@ -62,8 +62,14 @@ export default {
     closeModal() {
       this.$emit("close-modal", false);
     },
-    openPath(path) {
-      this.$router.push(path + "?c=1");
+
+    taskAction(task) {
+      if (task.path.includes("bots")) {
+        this.$store.commit("setShowCreateBotListModal", true);
+      } else {
+        this.$router.push(`${task.path}?c=1`);
+      }
+
       this.closeModal();
     },
   },

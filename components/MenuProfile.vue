@@ -98,7 +98,7 @@
             dense
             color="success"
             exact
-            :to="nextTask.path + '?c=1'"
+            @click="nextTaskAction(nextTask)"
           >
             {{ nextTask.title }}
             <v-icon small class="ml-1"> mdi-arrow-right </v-icon>
@@ -111,6 +111,15 @@
 
 <script>
 export default {
+  methods: {
+    nextTaskAction(task) {
+      if (task.path.includes("bots")) {
+        this.$store.commit("setShowCreateBotListModal", true);
+      } else {
+        this.$router.push(`${task.path}?c=1`);
+      }
+    },
+  },
   props: {
     dataMode: {
       type: Boolean,

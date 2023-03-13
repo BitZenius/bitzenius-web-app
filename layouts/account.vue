@@ -1,11 +1,14 @@
 <template>
   <v-app>
+    <!-- GLOBALS COMPONENTS -->
     <GlobalsAddOnLoader />
     <GlobalsAddOnSnackbar />
     <GlobalsAddOnNotification
       :notifications="importantNotifications"
       ref="notification"
     />
+
+    <!-- GLOBAL COMPONENTS -->
 
     <v-navigation-drawer
       v-if="checkMobile() == false"
@@ -383,6 +386,26 @@
     >
       <ModalsTask @close-modal="showTaskModal = false"></ModalsTask>
     </BaseModal>
+    <BaseModalMobile
+      v-if="checkMobile()"
+      @close="showCreateBotModal = false"
+      :parentModel="showCreateBotModal"
+      :maxWidth="'450'"
+    >
+      <ModalsCreateBotLinks
+        @close-modal="showCreateBotModal = false"
+      ></ModalsCreateBotLinks>
+    </BaseModalMobile>
+    <BaseModal
+      v-else
+      @close="showCreateBotModal = false"
+      :parentModel="showCreateBotModal"
+      :maxWidth="'450'"
+    >
+      <ModalsCreateBotLinks
+        @close-modal="showCreateBotModal = false"
+      ></ModalsCreateBotLinks>
+    </BaseModal>
     <!-- GLOBAL MODAL ENDS -->
   </v-app>
 </template>
@@ -413,6 +436,7 @@ export default {
       importantNotifications: [],
 
       showTaskModal: false,
+      showCreateBotModal: false,
     };
   },
   watch: {
@@ -421,6 +445,12 @@ export default {
     },
     showTaskModalStore(nv, ov) {
       this.showTaskModal = nv;
+    },
+    showCreateBotModal(nv, ov) {
+      this.$store.commit("setShowCreateBotListModal", nv);
+    },
+    showCreateBotModalStore(nv, ov) {
+      this.showCreateBotModal = nv;
     },
   },
   computed: {
@@ -441,6 +471,9 @@ export default {
     },
     showTaskModalStore() {
       return this.$store.state.showTaskModal;
+    },
+    showCreateBotModalStore() {
+      return this.$store.state.showCreateBotListModal;
     },
   },
   beforeCreate() {},
@@ -661,13 +694,13 @@ export default {
         }
       });
     },
-    streamToBinanceTicker(){
+    streamToBinanceTicker() {
       this.$store.dispatch("socket/setStreamTickerFunction");
     },
-    async streamToRealtimeUpdate(){
+    async streamToRealtimeUpdate() {
       let token = await this.currentUser.getIdToken();
-      this.$store.dispatch("socket/setStreamRealtimeUpdate", {token});
-    }
+      this.$store.dispatch("socket/setStreamRealtimeUpdate", { token });
+    },
   },
 };
 </script>

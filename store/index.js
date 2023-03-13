@@ -25,7 +25,8 @@ export const state = () => ({
     stepTotal: 1
   },
   profileCompletionLoading: true,
-  showTaskModal: false
+  showTaskModal: false,
+  showCreateBotListModal: false
 })
 
 export const actions = {
@@ -86,6 +87,9 @@ export const mutations = {
       buttonPath: null
     }
     state.snackbar = { ...defaultParam, ...cond };
+  },
+  setShowCreateBotListModal(state, cond) {
+    state.showCreateBotListModal = cond
   },
   setSubscription(state, subscription) {
     state.subscription = subscription;

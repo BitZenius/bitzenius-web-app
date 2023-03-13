@@ -45,9 +45,7 @@
       </v-row>
       <v-row>
         <v-col cols="9">
-          <CardCreateNewBots
-            @showModal="showCreateBotModal = true"
-          ></CardCreateNewBots>
+          <CardCreateNewBots></CardCreateNewBots>
         </v-col>
         <v-col cols="3">
           <CardBalance class="px-2 py-5" />
@@ -128,15 +126,6 @@
         </v-col>
       </v-row>
     </v-col>
-    <BaseModal
-      @close="showCreateBotModal = false"
-      :parentModel="showCreateBotModal"
-      :maxWidth="'450'"
-    >
-      <ModalsCreateBotLinks
-        @close-modal="showCreateBotModal = false"
-      ></ModalsCreateBotLinks>
-    </BaseModal>
   </v-row>
   <v-row class="px-1 ma-0" v-else>
     <v-col cols="12">
@@ -152,9 +141,7 @@
           <GlobalsExchangeList @on-exchange-changed="onExchangeChanged" />
         </v-col>
         <v-col cols="12">
-          <CardCreateNewBots
-            @showModal="showCreateBotModal = true"
-          ></CardCreateNewBots>
+          <CardCreateNewBots></CardCreateNewBots>
         </v-col>
         <v-col cols="12">
           <CardTaskInfo
@@ -259,15 +246,6 @@
         :taskData="profileCompletion.data"
         @close-modal="showUserDetail = false"
       ></ModalsUserDetail>
-    </BaseModalMobile>
-    <BaseModalMobile
-      @close="showCreateBotModal = false"
-      :parentModel="showCreateBotModal"
-      :maxWidth="'450'"
-    >
-      <ModalsCreateBotLinks
-        @close-modal="showCreateBotModal = false"
-      ></ModalsCreateBotLinks>
     </BaseModalMobile>
   </v-row>
 </template>
@@ -445,7 +423,6 @@ export default {
       isLoadingDeals: false,
 
       showUserDetail: false,
-      showCreateBotModal: false,
     };
   },
   head() {

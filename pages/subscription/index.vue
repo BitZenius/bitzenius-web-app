@@ -896,7 +896,7 @@ export default {
           this.isLoading = false;
         })
         .finally(() => {
-          // this.refetch();
+          this.refetch();
           this.fetchCompletion();
           this.isLoading = false;
         });

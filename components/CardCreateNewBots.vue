@@ -113,11 +113,11 @@ export default {
   methods: {
     mainAction() {
       if (this.nextTask && this.nextTask.path == "/bots") {
-        return this.$emit("showModal");
+        return this.$store.commit("setShowCreateBotListModal", true);
       }
 
       this.checkCompletion(() => {
-        this.$emit("showModal");
+        this.$store.commit("setShowCreateBotListModal", true);
       });
     },
   },
