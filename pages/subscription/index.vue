@@ -44,9 +44,11 @@
                 </v-col>
                 <v-col cols="12">
                   <div>
-                    <span class="text-h4 font-weight-bold primary-text--text"
-                      >Premium</span
-                    >
+                    <span class="text-h4 font-weight-bold primary-text--text">{{
+                      userSubscription && userSubscription.plan
+                        ? userSubscription.plan.name
+                        : "Premium"
+                    }}</span>
                     <v-chip
                       v-if="subscription.trial"
                       color="customGreen"
@@ -56,7 +58,13 @@
                       <strong>TRIAL</strong>
                     </v-chip>
                     <p class="primary-text--text">
-                      You're subscribed to our premium membership
+                      You're subscribed to our
+                      {{
+                        userSubscription && userSubscription.plan
+                          ? userSubscription.plan.name
+                          : "premium"
+                      }}
+                      membership
                     </p>
                     <v-btn
                       depressed
@@ -319,8 +327,13 @@
                   </v-col>
                   <v-col cols="6">
                     <div>
-                      <span class="text-h4 font-weight-bold primary-text--text"
-                        >Premium</span
+                      <span
+                        class="text-h4 font-weight-bold primary-text--text"
+                        >{{
+                          userSubscription && userSubscription.plan
+                            ? userSubscription.plan.name
+                            : "Premium"
+                        }}</span
                       >
                       <v-chip
                         v-if="subscription.trial"
@@ -331,7 +344,13 @@
                         <strong>TRIAL</strong>
                       </v-chip>
                       <p class="primary-text--text">
-                        You're subscribed to our premium membership
+                        You're subscribed to our
+                        {{
+                          userSubscription && userSubscription.plan
+                            ? userSubscription.plan.name
+                            : "premium"
+                        }}
+                        membership
                       </p>
                       <v-btn
                         depressed
@@ -604,6 +623,8 @@ export default {
 
       freeTrialDialog: false,
       successDialog: false,
+
+      userSubscription: null,
     };
   },
   head() {
@@ -631,7 +652,10 @@ export default {
     },
   },
   async mounted() {
+    this.userSubscription = this.subscription;
+    this._fetchUserSubscription();
     await this._fetchUserTrial();
+
     this.$store.commit("setTitle", this.title);
     this.initialize();
 
@@ -647,6 +671,8 @@ export default {
   },
   methods: {
     async refetch() {
+      this.userSubscription = this.subscription;
+      this._fetchUserSubscription();
       await this._fetchUserTrial();
 
       this.initialize();
@@ -665,6 +691,20 @@ export default {
       this.anim = anim;
     },
     // FETCHING API
+    async _fetchUserSubscription() {
+      this.isLoading = true;
+      console.log(this.user);
+      try {
+        let res = await this.$api.$get("/user/subscription/check-subscription");
+        this.userSubscription = res.data;
+      } catch (error) {
+        this.$store.commit("setShowSnackbar", {
+          show: true,
+          message: "User doesn't have subscription",
+          color: "danger",
+        });
+      }
+    },
     async _fetchUserTrial() {
       this.isLoading = true;
       console.log(this.user);
@@ -678,11 +718,6 @@ export default {
         this.$store.commit("setHasTrial", res);
         if (res) {
           console.log(res);
-          // this.$store.commit("setShowSnackbar", {
-          //   show: true,
-          //   message: "User has subscription, check console",
-          //   color: "success",
-          // });
         }
       } catch (error) {
         this.$store.commit("setShowSnackbar", {
