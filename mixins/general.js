@@ -64,6 +64,19 @@ export default {
       return check;
     },
 
+    determineType(type) {
+      switch (type) {
+        case "DCA_GRID":
+          return "HYBRID";
+        case "DCA":
+          return "DCA";
+        case "GRID":
+          return "GRID";
+        default:
+          return type
+      }
+    },
+
     // TAWK.TO INTEGRATION
     initiateTawkTo() {
       var Tawk_API = Tawk_API || {},

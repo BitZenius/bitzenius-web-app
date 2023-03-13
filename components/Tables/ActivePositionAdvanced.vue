@@ -197,6 +197,9 @@
                     </v-col>
                   </v-row>
                 </template>
+                <template v-slot:item.type="{ item }">
+                  <span class="">{{ determineType(item.type) }}</span>
+                </template>
                 <template v-slot:item.price="{ item }">
                   <div class="d-flex flex-column align-start justify-center">
                     <span class="text-subtitle-2 font-weight-bold">{{
@@ -329,8 +332,12 @@
             <ProfitHistory :key="`${counter}-profitR`" ref="profitRef" />
           </v-tab-item>
 
-          <v-tab-item key="All Trading History">
-            <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
+          <v-tab-item key="Trading History">
+            <TradingHistory
+              :defaultType="defaultType"
+              :key="`${counter}-tradingR`"
+              ref="tradingRef"
+            />
           </v-tab-item>
         </v-tabs-items>
       </v-card>
@@ -395,6 +402,12 @@
         Create new bots
         <v-icon x-small class="ml-2">$vuetify.icons.DepositIcon</v-icon>
       </v-btn>
+    </v-col>
+
+    <v-col cols="12" class="mb-4 text-center" v-if="defaultType == 'ADVANCED'">
+      <v-chip color="success" class="text-h6 font-weight-bold">
+        All Advanced Bots
+      </v-chip>
     </v-col>
 
     <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 my-2'">
@@ -537,6 +550,9 @@
                       </div>
                     </v-col>
                   </v-row>
+                </template>
+                <template v-slot:item.type="{ item }">
+                  <span class="">{{ determineType(item.type) }}</span>
                 </template>
                 <template v-slot:item.price="{ item }">
                   <div class="d-flex flex-column align-start justify-center">
@@ -698,7 +714,7 @@ export default {
       test1: false,
       counter: 0,
       currentItem: "Active Bots",
-      tables: ["Active Bots", "Inactive Bots"],
+      tables: ["Active Bots", "Inactive Bots", "Trading History"],
 
       dialog: true,
       dialogDelete: false,
@@ -753,6 +769,11 @@ export default {
       // END OF CARD EXCHANGE
       headers: [
         { text: "Exchange", value: "exchange", align: "start" },
+        {
+          text: "Type",
+          value: "type",
+          align: "start",
+        },
         { text: "Pair", value: "symbol", align: "start" },
         {
           text: "Name",
@@ -996,6 +1017,7 @@ export default {
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
+
     listenStream() {
       // BOTS STREAM
       this.realtimeUpdateSocket.on("advanced-bots-insert", (data) => {

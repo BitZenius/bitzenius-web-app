@@ -132,6 +132,9 @@
           </v-col>
         </v-row>
       </template>
+      <template v-slot:item.bot_type="{ item }">
+        {{ determineType(item.bot_type) }}
+      </template>
       <template v-slot:item.type="{ item }">
         <v-chip
           small
@@ -213,6 +216,14 @@
 <script>
 export default {
   layout: "trading-history",
+  props: {
+    defaultType: {
+      type: String,
+      default: () => {
+        return "AUTOMATED";
+      },
+    },
+  },
   data() {
     return {
       currentItem: "tab-Web",
@@ -229,6 +240,11 @@ export default {
           text: "Pair",
           align: "start",
           value: "pair",
+        },
+        {
+          text: "Bot Type",
+          align: "start",
+          value: "bot_type",
         },
         {
           text: "Type",
@@ -390,6 +406,8 @@ export default {
         });
         console.log("tempParams.dates", tempParams.dates);
       }
+
+      tempParams.type = this.defaultType;
 
       let res = await this.$api.$get("/user/trading-history", {
         params: tempParams,
