@@ -205,7 +205,7 @@
                 class="d-flex flex-column align-start pa-5 mt-2"
               >
                 <h3 class="text-h6 font-weight-bold">Token Exceptions</h3>
-                <small class="mb-4">
+                <small class="mb-4 text-body-1">
                   Select the pair that you want to exclude from trading. The bot
                   will not trade that particular pair.
                 </small>
@@ -641,7 +641,7 @@
               <v-tab-item key="3">
                 <v-card style="min-height: 600px" rounded flat class="pa-3">
                   <h3 class="text-h6 font-weight-bold">Token Exceptions</h3>
-                  <small class="mb-4">
+                  <small class="mb-4 text-body-1">
                     Select the pair that you want to exclude from trading. The
                     bot will not trade that particular pair.
                   </small>

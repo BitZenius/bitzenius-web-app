@@ -4,7 +4,7 @@
       <v-row align="center" justify="center">
         <v-col cols="12" :class="wide ? '' : 'pa-5 mt-2'">
           <div class="d-flex flex-column align-start">
-            <small class="mb-4">
+            <small class="mb-4 text-body-1">
               The bot will enter a position based on the indicator that you
               select below.
             </small>

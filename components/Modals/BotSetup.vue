@@ -70,7 +70,7 @@
             <v-card flat class="d-flex flex-column align-center py-8 mt-2">
               <h3>Token Exceptions</h3>
 
-              <small class="mb-4">
+              <small class="mb-4 text-body-1">
                 Select the pair that you want to exclude from trading. The bot
                 will not trade that particular pair.
               </small>

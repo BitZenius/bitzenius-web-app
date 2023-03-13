@@ -4,7 +4,7 @@
       <v-row align="center" justify="center">
         <v-col :cols="wide ? 12 : 8" :class="wide ? '' : 'pa-5 mt-2'">
           <div class="d-flex flex-column align-start">
-            <small class="mb-4">
+            <small class="mb-4 text-body-1">
               The bot will enter a position based on the indicator that you
               select below.
             </small>
@@ -155,7 +155,7 @@
               <h3 v-if="!wide" class="mt-4 text-h6 font-weight-bold">
                 Minimum trading volume in 24h
               </h3>
-              <small class="mb-4" v-if="!wide"
+              <small class="mb-4 text-body-1" v-if="!wide"
                 >The bot will only trade assets with a minimum trading volume
                 that you choose. Higher volumes indicate better liquidity for
                 those assets.</small

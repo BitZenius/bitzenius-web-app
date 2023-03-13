@@ -35,7 +35,7 @@
           mdi-help-circle
         </v-icon>
       </template>
-      <span>All crypto assets in your exchange equivalent to USDT</span>
+      <span>Quantity of trades today</span>
     </v-tooltip>
 
     <!-- ORNAMENTS -->
@@ -80,7 +80,7 @@
           mdi-help-circle
         </v-icon>
       </template>
-      <span>All crypto assets in your exchange equivalent to USDT</span>
+      <span>Quantity of trades today</span>
     </v-tooltip>
 
     <!-- ORNAMENTS -->

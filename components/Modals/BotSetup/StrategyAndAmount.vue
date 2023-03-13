@@ -184,7 +184,7 @@
                 <h3 class="mt-4 text-h6 font-weight-bold">
                   Choose the Strategy
                 </h3>
-                <small
+                <small class="text-body-1"
                   >Choose a strategy that matches your risk profile.
                   Conservative strategies buy and trade less, while very
                   aggressive strategies involve higher risk and potentially
