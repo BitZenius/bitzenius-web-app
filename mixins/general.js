@@ -15,6 +15,14 @@ export default {
     isSubscriptionActive() {
       return this.$moment() < this.subscription.end
     },
+    referralBonusActive() {
+      return false
+    },
+    referralBonus() {
+      return {
+        discount: 10
+      }
+    },
     currentUser() {
       return this.$store.$fire.auth.currentUser;
     },

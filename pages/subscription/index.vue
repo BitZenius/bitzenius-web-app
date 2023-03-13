@@ -295,6 +295,7 @@
         @main-event="purchaseSubscription(freePlan.id)"
         @close-modal="freeTrialDialog = false"
         :planName="freePlan.name"
+        :plan="freePlan"
       ></ModalsFreeTrial>
     </BaseModal>
     <BaseModal
@@ -618,6 +619,8 @@
       <ModalsFreeTrial
         @main-event="purchaseSubscription(freePlan.id)"
         @close-modal="freeTrialDialog = false"
+        :planName="freePlan.name"
+        :plan="freePlan"
       ></ModalsFreeTrial>
     </BaseModalMobile>
     <BaseModalMobile
@@ -910,8 +913,15 @@ export default {
         this.selectedPlan = this.mainPlan;
       }
 
-      this.selectedPlan.discount = 0;
-      this.selectedPlan.total = this.selectedPlan.price;
+      if (this.referralBonusActive) {
+        this.selectedPlan.discount =
+          (this.selectedPlan.price * this.referralBonus.discount) / 100;
+        this.selectedPlan.total =
+          (this.selectedPlan.price * (100 - this.referralBonus.discount)) / 100;
+      } else {
+        this.selectedPlan.discount = 0;
+        this.selectedPlan.total = this.selectedPlan.price;
+      }
     },
     closeOrderDialog() {
       this.orderDialog = false;

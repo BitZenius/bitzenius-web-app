@@ -1,5 +1,9 @@
 <template>
-  <v-card flat rounded>
+  <v-card
+    flat
+    rounded
+    :style="checkMobile() ? 'padding-bottom: 200px !important' : ''"
+  >
     <v-card-title class="text-h6 font-weight-bold primary basic--text mb-5">
       <v-row>
         <v-col cols="6"></v-col>
@@ -11,35 +15,128 @@
       </v-row>
     </v-card-title>
     <v-card-text>
-      <v-row class="pa-5">
-        <v-col cols="6" class="d-flex align-center justify-center">
+      <v-row class="">
+        <v-col cols="12" class="d-flex align-center justify-center">
           <template>
             <!-- width and height are optional -->
             <lottie
-              :width="256"
-              :height="256"
+              :width="200"
+              :height="200"
               :options="lottieOptions"
               v-on:animCreated="handleAnimation"
             />
           </template>
         </v-col>
-        <v-col cols="6" class="d-flex flex-column justify-start align-start">
+        <v-col cols="12" class="d-flex flex-column justify-center align-center">
           <h4 class="primary--text text-h5 font-weight-bold mb-3">
             START YOUR FREE {{ planName.toUpperCase() }} PLAN
           </h4>
-          <p class="font-weight-bold basic-text--text text-body-1">
-            {{ planDesc }}
-          </p>
-          <v-list>
-            <v-list-item v-for="(step, i) in steps" :key="`step-${i}`">
-              <v-list-item-avatar size="20" color="success">
-                <v-icon color="white" small> mdi-check </v-icon>
-              </v-list-item-avatar>
-              <v-list-item-content>
-                <v-list-item-title>{{ step }}</v-list-item-title>
-              </v-list-item-content>
-            </v-list-item>
-          </v-list>
+        </v-col>
+
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Exchanges</v-list-item-title>
+              <v-list-item-subtitle>{{
+                plan.config.max_exchange
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Fully Automated Bots</v-list-item-title>
+              <v-list-item-subtitle>{{
+                plan.config.automated_bot
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Smart Trade</v-list-item-title>
+              <v-list-item-subtitle>{{
+                plan.config.max_smart_trade_bot
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Hybrid Bots</v-list-item-title>
+              <v-list-item-subtitle>{{
+                plan.config.max_grid_bot
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>DCA Bots</v-list-item-title>
+              <v-list-item-subtitle>{{
+                plan.config.max_dca_bot
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Grid Bots</v-list-item-title>
+              <v-list-item-subtitle>{{
+                plan.config.max_grid_bot
+              }}</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Profit Share</v-list-item-title>
+              <v-list-item-subtitle
+                >{{ plan.config.profit_share }}%</v-list-item-subtitle
+              >
+            </v-list-item-content>
+          </v-list-item>
+        </v-col>
+        <v-col md="4" cols="6">
+          <v-list-item three-line>
+            <v-list-item-avatar size="20" color="success">
+              <v-icon color="white" small> mdi-check </v-icon>
+            </v-list-item-avatar>
+            <v-list-item-content>
+              <v-list-item-title>Referral Rewards</v-list-item-title>
+              <v-list-item-subtitle v-if="plan.config.referral == 'Yes'">
+                {{ plan.config.referral_bonus }}%</v-list-item-subtitle
+              >
+              <v-list-item-subtitle v-else>-</v-list-item-subtitle>
+            </v-list-item-content>
+          </v-list-item>
         </v-col>
       </v-row>
     </v-card-text>
@@ -64,6 +161,7 @@ export default {
         return "Lorem ipsum dolor sit amet, consetetur sadipscing elitr.";
       },
     },
+    plan: Object,
   },
   components: {
     lottie,

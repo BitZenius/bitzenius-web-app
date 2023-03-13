@@ -13,6 +13,11 @@
         </div>
       </v-col>
     </v-row>
+    <v-row justify="center" v-if="referralBonusActive">
+      <v-col md="8" cols="12">
+        <CardReferralInfo></CardReferralInfo>
+      </v-col>
+    </v-row>
     <!-- <v-row>
           <v-col cols="12" class="d-flex justify-center">
             <div class="mb-5">
@@ -67,9 +72,26 @@
                   >{{ (i.price / 12) | currency("", 2)
                   }}<span class="text-h5">/month</span></span
                 >
-                <span class="text-center mt-2 text-h6 font-weight-black">
-                  Pay annually at {{ i.price | toCurrency }}
-                </span>
+
+                <template v-if="referralBonusActive">
+                  <span
+                    class="text-center mt-2 text-h6 font-weight-black text-decoration-line-through"
+                  >
+                    Pay annually at {{ i.price | toCurrency }}
+                  </span>
+                  <span class="text-center mt-2 text-h6 font-weight-black">
+                    Pay annually at
+                    {{
+                      ((i.price * (100 - referralBonus.discount)) / 100)
+                        | toCurrency
+                    }}
+                  </span>
+                </template>
+                <template v-else>
+                  <span class="text-center mt-2 text-h6 font-weight-black">
+                    Pay annually at {{ i.price | toCurrency }}
+                  </span>
+                </template>
               </div>
               <v-list>
                 <v-divider />
