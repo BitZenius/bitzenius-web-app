@@ -1671,7 +1671,7 @@ export default {
         .finally(() => {
           this.dialogDelete = false;
           this.$store.commit("setIsLoading", false);
-          this.refetch();
+          this.$router.go();
         });
     },
     close() {
