@@ -17,7 +17,6 @@
       :parentModel="showActivePosition"
       @close-modal="closeModal"
       @close="showActivePosition = false"
-      @refetch="refetch"
     />
 
     <v-snackbar
@@ -35,171 +34,128 @@
         </v-btn>
       </template>
     </v-snackbar>
-    <v-col cols="12" v-if="!tableOnly">
-      <v-btn
-        rounded
-        class="text-capitalize"
-        color="primary"
-        depressed
-        @click="$emit('showHowItWorksModal')"
-      >
-        Learn how it works
-      </v-btn>
-      <v-btn
-        rounded
-        class="text-capitalize float-right"
-        color="primary"
-        depressed
-        @click="$router.push(nextRoute)"
-      >
-        Create new bots
-        <v-icon x-small class="ml-2">$vuetify.icons.DepositIcon</v-icon>
-      </v-btn>
-    </v-col>
 
     <v-col cols="12">
-      <v-card v-show="showTabs" class="pa-3 mb-5" flat rounded>
-        <v-tabs class="pa-2" v-model="currentItem">
-          <v-tab :ripple="false" v-for="item in tables" :key="item">
-            <span class="text-body-1 text-capitalize">{{ item }}</span>
-          </v-tab>
-        </v-tabs>
-      </v-card>
-      <v-card class="pa-3" flat rounded>
-        <v-tabs-items v-model="currentItem">
-          <v-tab-item key="Active Positions">
-            <v-card :key="`${counter}-default`" class="pa-8" flat>
-              <v-row class="mb-3">
-                <v-col cols="3">
-                  <v-text-field
-                    v-model="searchQuery"
-                    placeholder="Search By Pair"
-                    rounded
-                    :hide-details="true"
-                    class="custom-input off-white mb-2"
-                  >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
-                    </template></v-text-field
-                  >
-                </v-col>
-                <v-col cols="4">
-                  <v-text-field
-                    v-model="searchQuery"
-                    placeholder="Search By Exchange"
-                    rounded
-                    :hide-details="true"
-                    class="custom-input off-white"
-                  >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
-                    </template></v-text-field
-                  >
-                </v-col>
-              </v-row>
-              <v-data-table
-                style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
-                @click:row="_onSelectPair"
-                :sort-by.sync="sortBy"
-                :sort-desc.sync="sortDesc"
-                :headers="headers"
-                :items="botsFiltered"
-                :loading="isLoading"
-                class="elevation-0 no-scrollbar"
-                loading-text="Loading... Please wait"
-              >
-                <template v-slot:header.pair="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
-                </template>
-                <template v-slot:header.price="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
-                </template>
-                <template v-slot:header.profit="{ header }">
-                  <v-tooltip top color="primary">
-                    <template v-slot:activator="{ on, attrs }">
-                      <strong
-                        v-bind="attrs"
-                        v-on="on"
-                        class="basic-text--text text-body-1 font-weight-bold"
-                      >
-                        {{ header.text }}
-                      </strong>
-                    </template>
-                    <div style="max-width: 200px">
-                      Please note that the data provided below represents the
-                      total of both realized and floating profit and losses
-                      (PNL). It is important to keep in mind that the floating
-                      PNL is not finalized and will remain subject to change.
-                    </div>
-                  </v-tooltip>
-                </template>
-                <template v-slot:header.status="{ header }">
-                  <v-tooltip top color="primary">
-                    <template v-slot:activator="{ on, attrs }">
-                      <strong
-                        v-bind="attrs"
-                        v-on="on"
-                        class="basic-text--text text-body-1 font-weight-bold"
-                      >
-                        {{ header.text }}
-                      </strong>
-                    </template>
-                    <div>
-                      <ol>
-                        <li>
-                          ACTIVE - The bot currently has active positions.
-                        </li>
-                        <li>
-                          WAITING FOR POSITION - The bot is currently waiting
-                          for signals to enter a position.
-                        </li>
-                        <li>
-                          PAUSED - The bot is currently paused and not executing
-                          trades.
-                        </li>
-                      </ol>
-                    </div>
-                  </v-tooltip>
-                </template>
+      <v-card :key="`${counter}-default`" class="pa-8" flat>
+        <v-row class="mb-3">
+          <v-col cols="3">
+            <v-text-field
+              v-model="searchQuery"
+              placeholder="Search By Pair"
+              rounded
+              :hide-details="true"
+              class="custom-input off-white mb-2"
+            >
+              <template v-slot:prepend-inner>
+                <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+              </template></v-text-field
+            >
+          </v-col>
+          <v-col cols="4">
+            <v-text-field
+              v-model="searchQuery"
+              placeholder="Search By Exchange"
+              rounded
+              :hide-details="true"
+              class="custom-input off-white"
+            >
+              <template v-slot:prepend-inner>
+                <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+              </template></v-text-field
+            >
+          </v-col>
+        </v-row>
+        <v-data-table
+          style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
+          @click:row="_onSelectPair"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
+          :headers="headers"
+          :items="botsFiltered"
+          :loading="isLoading"
+          class="elevation-0 no-scrollbar"
+          loading-text="Loading... Please wait"
+        >
+          <template v-slot:header.pair="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.price="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.profit="{ header }">
+            <v-tooltip top color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <strong
+                  v-bind="attrs"
+                  v-on="on"
+                  class="basic-text--text text-body-1 font-weight-bold"
+                >
+                  {{ header.text }}
+                </strong>
+              </template>
+              <div style="max-width: 200px">
+                Please note that the data provided below represents the total of
+                both realized and floating profit and losses (PNL). It is
+                important to keep in mind that the floating PNL is not finalized
+                and will remain subject to change.
+              </div>
+            </v-tooltip>
+          </template>
+          <template v-slot:header.status="{ header }">
+            <v-tooltip top color="primary">
+              <template v-slot:activator="{ on, attrs }">
+                <strong
+                  v-bind="attrs"
+                  v-on="on"
+                  class="basic-text--text text-body-1 font-weight-bold"
+                >
+                  {{ header.text }}
+                </strong>
+              </template>
+              <div>
+                <ol>
+                  <li>ACTIVE - The bot currently has active positions.</li>
+                  <li>
+                    WAITING FOR POSITION - The bot is currently waiting for
+                    signals to enter a position.
+                  </li>
+                  <li>
+                    PAUSED - The bot is currently paused and not executing
+                    trades.
+                  </li>
+                </ol>
+              </div>
+            </v-tooltip>
+          </template>
 
-                <!-- hide-default-footer disable-pagination -->
-                <template v-slot:top>
-                  <div>
-                    <v-dialog
-                      v-model="dialogDelete"
-                      max-width="400px"
-                      persistent
-                    >
-                      <v-card>
-                        <v-card-title class="headline">
-                          Delete Bot Confirmation
-                        </v-card-title>
-                        <v-card-text>
-                          Are you sure you want to delete this bot setup?
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer />
-                          <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="closeDelete"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn color="primary" @click="deleteItemConfirm">
-                            OK
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </div>
-                  <!-- <div>
+          <!-- hide-default-footer disable-pagination -->
+          <template v-slot:top>
+            <div>
+              <v-dialog v-model="dialogDelete" max-width="400px" persistent>
+                <v-card>
+                  <v-card-title class="headline">
+                    Delete Bot Confirmation
+                  </v-card-title>
+                  <v-card-text>
+                    Are you sure you want to delete this bot setup?
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="blue darken-1" text @click="closeDelete">
+                      Cancel
+                    </v-btn>
+                    <v-btn color="primary" @click="deleteItemConfirm">
+                      OK
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+            <!-- <div>
                         <v-row>
                             <v-col cols="12">
                                 <span v-if="selectedExchangeReport" class="exchange-table-selected">
@@ -208,177 +164,123 @@
                             </v-col>
                         </v-row>
                     </div> -->
-                </template>
-                <template v-slot:item.pair="{ item }">
-                  <v-row class="py-2">
-                    <v-col cols="12" class="d-flex align-center justify-start">
-                      <v-list-item-avatar class="ma-0">
-                        <v-img
-                          style="width: 28px !important"
-                          @error="errorHandler"
-                          max-width="28"
-                          max-height="28"
-                          :alt="item.logo"
-                          :src="getImgUrl(item.pair_from)"
-                        ></v-img>
-                      </v-list-item-avatar>
-                      <div class="d-flex flex-column ml-3">
-                        <div class="d-flex">
-                          <span class="text-subtitle-2 font-weight-bold"
-                            >{{ item.pair_from }} / {{ item.pair_to }}
-                          </span>
-                        </div>
-                        <span class="text-subtitle-2">{{ item.quantity }}</span>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </template>
-                <template v-slot:item.type="{ item }">
-                  <span class="">{{ determineType(item.type) }}</span>
-                </template>
-                <template v-slot:item.price="{ item }">
-                  <div class="d-flex flex-column align-start justify-center">
-                    <span class="text-subtitle-2 font-weight-bold">{{
-                      item.price.value
-                    }}</span>
-                    <span
-                      v-if="parseFloat(item.price.percentage) < 0"
-                      class="danger--text text-subtitle-2 font-weight-bold"
-                      >{{ item.price.percentage }}%</span
-                    >
-                    <span
-                      v-else
-                      class="success--text text-subtitle-2 font-weight-bold"
-                      >{{ item.price.percentage }}%</span
-                    >
+          </template>
+          <template v-slot:item.pair="{ item }">
+            <v-row class="py-2">
+              <v-col cols="12" class="d-flex align-center justify-start">
+                <v-list-item-avatar class="ma-0">
+                  <v-img
+                    style="width: 28px !important"
+                    @error="errorHandler"
+                    max-width="28"
+                    max-height="28"
+                    :alt="item.logo"
+                    :src="getImgUrl(item.pair_from)"
+                  ></v-img>
+                </v-list-item-avatar>
+                <div class="d-flex flex-column ml-3">
+                  <div class="d-flex">
+                    <span class="text-subtitle-2 font-weight-bold"
+                      >{{ item.pair_from }} / {{ item.pair_to }}
+                    </span>
                   </div>
-                </template>
-                <template v-slot:item.profit="{ item }">
-                  <div class="d-flex flex-column align-start justify-center">
-                    <!-- <code>{{item.status}}</code> -->
-                    <strong
-                      class="danger--text text-subtitle-2 font-weight-bold"
-                      v-if="
-                        item.status == 'ACTIVE' &&
-                        parseFloat(item.profit.percentage) < 0
-                      "
-                      >{{ item.profit.percentage }}%</strong
-                    >
-                    <strong
-                      class="success--text text-subtitle-2 font-weight-bold"
-                      v-if="
-                        item.status == 'ACTIVE' &&
-                        parseFloat(item.profit.percentage) > 0
-                      "
-                      >{{ item.profit.percentage }}%</strong
-                    >
-                    <strong
-                      class="primary--text text-subtitle-2 font-weight-bold"
-                      v-if="
-                        item.status == 'INACTIVE' ||
-                        item.status == 'WAITING_POSITION' ||
-                        parseFloat(item.profit.percentage) == 0
-                      "
-                      >0%</strong
-                    >
-
-                    <span
-                      v-if="parseFloat(item.profit.value) < 0"
-                      class="danger--text text-subtitle-2 font-weight-bold"
-                      >{{ item.profit.value }} USDT</span
-                    >
-                    <span
-                      v-else
-                      class="success--text text-subtitle-2 font-weight-bold"
-                      >{{ item.profit.value }} USDT</span
-                    >
-                  </div>
-                </template>
-                <template v-slot:item.status="{ item }">
-                  <v-chip
-                    v-if="item.status == 'WAITING_POSITION'"
-                    class="orange--text font-weight-bold"
-                    color="customYellow lighten-2"
-                    small
-                    label
-                  >
-                    Waiting for Position
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 'ACTIVE'"
-                    small
-                    class="white--text font-weight-bold"
-                    color="success"
-                    label
-                  >
-                    Active
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 'INACTIVE'"
-                    small
-                    color="grey"
-                    dark
-                    label
-                  >
-                    Inactive
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 'BLACKLISTED'"
-                    small
-                    color="danger"
-                    dark
-                    label
-                  >
-                    Blacklisted
-                  </v-chip>
-
-                  <v-chip
-                    v-if="item.status == 'PAUSED'"
-                    small
-                    color="grey"
-                    dark
-                    label
-                  >
-                    Paused
-                  </v-chip>
-                </template>
-                <template v-slot:no-data>
-                  <template v-if="!isBuildingBot">
-                    <BaseNoData :label="`No automated bots`"></BaseNoData>
-                  </template>
-                  <v-row v-else>
-                    <v-col cols="12" class="text-center">
-                      Creating your bots, this might take a while...
-                    </v-col>
-                  </v-row>
-                </template>
-              </v-data-table>
-              <v-card
-                class="pa-5 loading-bot-container off-white"
-                v-if="isBuildingBot"
+                  <span class="text-subtitle-2">{{ item.quantity }}</span>
+                </div>
+              </v-col>
+            </v-row>
+          </template>
+          <template v-slot:item.type="{ item }">
+            <span class="">{{ determineType(item.type) }}</span>
+          </template>
+          <template v-slot:item.price="{ item }">
+            <div class="d-flex flex-column align-start justify-center">
+              <span class="text-subtitle-2 font-weight-bold">{{
+                item.price.value
+              }}</span>
+              <span
+                v-if="parseFloat(item.price.percentage) < 0"
+                class="danger--text text-subtitle-2 font-weight-bold"
+                >{{ item.price.percentage }}%</span
               >
-                <BaseBuildingBotLoading
-                  :label="`Assembling bots...`"
-                ></BaseBuildingBotLoading>
-              </v-card>
-            </v-card>
-          </v-tab-item>
+              <span
+                v-else
+                class="success--text text-subtitle-2 font-weight-bold"
+                >{{ item.price.percentage }}%</span
+              >
+            </div>
+          </template>
+          <template v-slot:item.profit="{ item }">
+            <div class="d-flex flex-column align-start justify-center">
+              <!-- <code>{{item.status}}</code> -->
+              <strong
+                class="danger--text text-subtitle-2 font-weight-bold"
+                v-if="
+                  item.status == 'ACTIVE' &&
+                  parseFloat(item.profit.percentage) < 0
+                "
+                >{{ item.profit.percentage }}%</strong
+              >
+              <strong
+                class="success--text text-subtitle-2 font-weight-bold"
+                v-if="
+                  item.status == 'ACTIVE' &&
+                  parseFloat(item.profit.percentage) > 0
+                "
+                >{{ item.profit.percentage }}%</strong
+              >
+              <strong
+                class="primary--text text-subtitle-2 font-weight-bold"
+                v-if="
+                  item.status == 'INACTIVE' ||
+                  item.status == 'WAITING_POSITION' ||
+                  parseFloat(item.profit.percentage) == 0
+                "
+                >0%</strong
+              >
 
-          <v-tab-item key="Inactive Bots">
-            <TablesInactivePositionAdvanced
-              :key="`${counter}-inactive`"
-              :defaultType="defaultType"
-            />
-          </v-tab-item>
-
-          <v-tab-item key="Trading History">
-            <TradingHistory
-              :defaultType="defaultType"
-              :key="`${counter}-tradingR`"
-              ref="tradingRef"
-            />
-          </v-tab-item>
-        </v-tabs-items>
+              <span
+                v-if="parseFloat(item.profit.value) < 0"
+                class="danger--text text-subtitle-2 font-weight-bold"
+                >{{ item.profit.value }} USDT</span
+              >
+              <span
+                v-else
+                class="success--text text-subtitle-2 font-weight-bold"
+                >{{ item.profit.value }} USDT</span
+              >
+            </div>
+          </template>
+          <template v-slot:item.status="{ item }">
+            <v-chip
+              v-if="item.status == 'INACTIVE'"
+              small
+              color="grey"
+              dark
+              label
+            >
+              Inactive
+            </v-chip>
+            <v-chip v-else small color="grey" dark label> Paused </v-chip>
+          </template>
+          <template v-slot:no-data>
+            <template v-if="!isBuildingBot">
+              <BaseNoData :label="`No inactive bots`"></BaseNoData>
+            </template>
+            <v-row v-else>
+              <v-col cols="12" class="text-center">
+                Creating your bots, this might take a while...
+              </v-col>
+            </v-row>
+          </template>
+        </v-data-table>
+        <v-card
+          class="pa-5 loading-bot-container off-white"
+          v-if="isBuildingBot"
+        >
+          <BaseBuildingBotLoading
+            :label="`Assembling bots...`"
+          ></BaseBuildingBotLoading>
+        </v-card>
       </v-card>
     </v-col>
   </v-row>
@@ -400,7 +302,6 @@
       :parentModel="showActivePosition"
       @close-modal="closeModal"
       @close="showActivePosition = false"
-      @refetch="refetch"
     />
 
     <v-snackbar
@@ -423,141 +324,91 @@
       :class="checkMobile() == false ? '' : 'pa-0 my-2'"
       v-if="!tableOnly"
     >
-      <v-btn
-        rounded
-        class="text-capitalize"
-        color="primary"
-        depressed
-        @click="$emit('showHowItWorksModal')"
-      >
-        Learn how it works
-      </v-btn>
-      <v-btn
-        rounded
-        class="text-capitalize float-right"
-        color="primary"
-        depressed
-        @click="$router.push(nextRoute)"
-      >
-        Create new bots
-        <v-icon x-small class="ml-2">$vuetify.icons.DepositIcon</v-icon>
-      </v-btn>
-    </v-col>
+      <v-card :key="`${counter}-default`" flat>
+        <v-row class="mb-3">
+          <v-col cols="12">
+            <v-text-field
+              v-model="searchQuery"
+              placeholder="Search By Pair"
+              rounded
+              :hide-details="true"
+              class="custom-input off-white mb-2"
+            >
+              <template v-slot:prepend-inner>
+                <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+              </template></v-text-field
+            >
+          </v-col>
+          <v-col cols="12">
+            <v-text-field
+              v-model="searchQuery"
+              placeholder="Search By Exchange"
+              rounded
+              :hide-details="true"
+              class="custom-input off-white"
+            >
+              <template v-slot:prepend-inner>
+                <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
+              </template></v-text-field
+            >
+          </v-col>
+        </v-row>
+        <v-data-table
+          style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
+          @click:row="_onSelectPair"
+          :sort-by.sync="sortBy"
+          :sort-desc.sync="sortDesc"
+          :headers="headers"
+          :items="botsFiltered"
+          :loading="isLoading"
+          class="elevation-0 no-scrollbar"
+          loading-text="Loading... Please wait"
+        >
+          <template v-slot:header.pair="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.price="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.profit="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
+          <template v-slot:header.status="{ header }">
+            <strong class="basic-text--text text-body-1 font-weight-bold">{{
+              header.text
+            }}</strong>
+          </template>
 
-    <v-col cols="12" class="mb-4 text-center" v-if="defaultType == 'ADVANCED'">
-      <v-chip color="success" class="text-h6 font-weight-bold">
-        All Advanced Bots
-      </v-chip>
-    </v-col>
-
-    <v-col cols="12" :class="checkMobile() == false ? '' : 'pa-0 my-2'">
-      <v-card v-show="showTabs" class="mb-5" flat rounded>
-        <v-tabs hide-slider :show-arrows="true" v-model="currentItem">
-          <v-tab :ripple="false" v-for="item in tables" :key="item">
-            <span class="text-body-1 text-capitalize">{{ item }}</span>
-          </v-tab>
-        </v-tabs>
-      </v-card>
-      <v-card class="pa-3" flat rounded>
-        <v-tabs-items v-model="currentItem" :touchless="true">
-          <v-tab-item key="Active Positions">
-            <v-card :key="`${counter}-default`" flat>
-              <v-row class="mb-3">
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="searchQuery"
-                    placeholder="Search By Pair"
-                    rounded
-                    :hide-details="true"
-                    class="custom-input off-white mb-2"
-                  >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
-                    </template></v-text-field
-                  >
-                </v-col>
-                <v-col cols="12">
-                  <v-text-field
-                    v-model="searchQuery"
-                    placeholder="Search By Exchange"
-                    rounded
-                    :hide-details="true"
-                    class="custom-input off-white"
-                  >
-                    <template v-slot:prepend-inner>
-                      <v-icon class="mr-4 primary--text">mdi-magnify</v-icon>
-                    </template></v-text-field
-                  >
-                </v-col>
-              </v-row>
-              <v-data-table
-                style="overflow-y: scroll; height: 50vh; overflow-x: hidden"
-                @click:row="_onSelectPair"
-                :sort-by.sync="sortBy"
-                :sort-desc.sync="sortDesc"
-                :headers="headers"
-                :items="botsFiltered"
-                :loading="isLoading"
-                class="elevation-0 no-scrollbar"
-                loading-text="Loading... Please wait"
-              >
-                <template v-slot:header.pair="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
-                </template>
-                <template v-slot:header.price="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
-                </template>
-                <template v-slot:header.profit="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
-                </template>
-                <template v-slot:header.status="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
-                </template>
-
-                <!-- hide-default-footer disable-pagination -->
-                <template v-slot:top>
-                  <div>
-                    <v-dialog
-                      v-model="dialogDelete"
-                      max-width="400px"
-                      persistent
-                    >
-                      <v-card>
-                        <v-card-title class="headline">
-                          Delete Bot Confirmation
-                        </v-card-title>
-                        <v-card-text>
-                          Are you sure you want to delete this bot setup?
-                        </v-card-text>
-                        <v-card-actions>
-                          <v-spacer />
-                          <v-btn
-                            color="blue darken-1"
-                            text
-                            @click="closeDelete"
-                          >
-                            Cancel
-                          </v-btn>
-                          <v-btn color="primary" @click="deleteItemConfirm">
-                            OK
-                          </v-btn>
-                        </v-card-actions>
-                      </v-card>
-                    </v-dialog>
-                  </div>
-                  <!-- <div>
+          <!-- hide-default-footer disable-pagination -->
+          <template v-slot:top>
+            <div>
+              <v-dialog v-model="dialogDelete" max-width="400px" persistent>
+                <v-card>
+                  <v-card-title class="headline">
+                    Delete Bot Confirmation
+                  </v-card-title>
+                  <v-card-text>
+                    Are you sure you want to delete this bot setup?
+                  </v-card-text>
+                  <v-card-actions>
+                    <v-spacer />
+                    <v-btn color="blue darken-1" text @click="closeDelete">
+                      Cancel
+                    </v-btn>
+                    <v-btn color="primary" @click="deleteItemConfirm">
+                      OK
+                    </v-btn>
+                  </v-card-actions>
+                </v-card>
+              </v-dialog>
+            </div>
+            <!-- <div>
                         <v-row>
                             <v-col cols="12">
                                 <span v-if="selectedExchangeReport" class="exchange-table-selected">
@@ -566,173 +417,125 @@
                             </v-col>
                         </v-row>
                     </div> -->
-                </template>
-                <template v-slot:item.pair="{ item }">
-                  <v-row class="py-2">
-                    <v-col cols="12" class="d-flex align-center justify-start">
-                      <v-list-item-avatar class="ma-0">
-                        <v-img
-                          style="width: 28px !important"
-                          @error="errorHandler"
-                          max-width="28"
-                          max-height="28"
-                          :alt="item.logo"
-                          :src="getImgUrl(item.pair_from)"
-                        ></v-img>
-                      </v-list-item-avatar>
-                      <div class="d-flex flex-column ml-3">
-                        <div class="d-flex">
-                          <span class="text-subtitle-2 font-weight-bold"
-                            >{{ item.pair_from }} / {{ item.pair_to }}
-                          </span>
-                        </div>
-                        <span class="text-subtitle-2">{{ item.quantity }}</span>
-                      </div>
-                    </v-col>
-                  </v-row>
-                </template>
-                <template v-slot:item.type="{ item }">
-                  <span class="">{{ determineType(item.type) }}</span>
-                </template>
-                <template v-slot:item.price="{ item }">
-                  <div class="d-flex flex-column align-start justify-center">
-                    <span class="text-subtitle-2 font-weight-bold">{{
-                      item.price.value
-                    }}</span>
-                    <span
-                      v-if="parseFloat(item.price.percentage) < 0"
-                      class="danger--text text-subtitle-2 font-weight-bold"
-                      >{{ item.price.percentage }}%</span
-                    >
-                    <span
-                      v-else
-                      class="success--text text-subtitle-2 font-weight-bold"
-                      >{{ item.price.percentage }}%</span
-                    >
+          </template>
+          <template v-slot:item.pair="{ item }">
+            <v-row class="py-2">
+              <v-col cols="12" class="d-flex align-center justify-start">
+                <v-list-item-avatar class="ma-0">
+                  <v-img
+                    style="width: 28px !important"
+                    @error="errorHandler"
+                    max-width="28"
+                    max-height="28"
+                    :alt="item.logo"
+                    :src="getImgUrl(item.pair_from)"
+                  ></v-img>
+                </v-list-item-avatar>
+                <div class="d-flex flex-column ml-3">
+                  <div class="d-flex">
+                    <span class="text-subtitle-2 font-weight-bold"
+                      >{{ item.pair_from }} / {{ item.pair_to }}
+                    </span>
                   </div>
-                </template>
-                <template v-slot:item.profit="{ item }">
-                  <div class="d-flex flex-column align-start justify-center">
-                    <!-- <code>{{item.status}}</code> -->
-                    <strong
-                      class="danger--text text-subtitle-2 font-weight-bold"
-                      v-if="
-                        item.status == 'ACTIVE' &&
-                        parseFloat(item.profit.percentage) < 0
-                      "
-                      >{{ item.profit.percentage }}%</strong
-                    >
-                    <strong
-                      class="success--text text-subtitle-2 font-weight-bold"
-                      v-if="
-                        item.status == 'ACTIVE' &&
-                        parseFloat(item.profit.percentage) > 0
-                      "
-                      >{{ item.profit.percentage }}%</strong
-                    >
-                    <strong
-                      class="primary--text text-subtitle-2 font-weight-bold"
-                      v-if="
-                        item.status == 'INACTIVE' ||
-                        item.status == 'WAITING_POSITION' ||
-                        parseFloat(item.profit.percentage) == 0
-                      "
-                      >0%</strong
-                    >
-
-                    <span
-                      v-if="parseFloat(item.profit.value) < 0"
-                      class="danger--text text-subtitle-2 font-weight-bold"
-                      >{{ item.profit.value }} USDT</span
-                    >
-                    <span
-                      v-else
-                      class="success--text text-subtitle-2 font-weight-bold"
-                      >{{ item.profit.value }} USDT</span
-                    >
-                  </div>
-                </template>
-                <template v-slot:item.status="{ item }">
-                  <v-chip
-                    v-if="item.status == 'WAITING_POSITION'"
-                    class="orange--text font-weight-bold"
-                    color="customYellow lighten-2"
-                    small
-                    label
-                  >
-                    Waiting for Position
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 'ACTIVE'"
-                    small
-                    class="white--text font-weight-bold"
-                    color="success"
-                    label
-                  >
-                    Active
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 'INACTIVE'"
-                    small
-                    color="grey"
-                    dark
-                    label
-                  >
-                    Inactive
-                  </v-chip>
-                  <v-chip
-                    v-if="item.status == 'BLACKLISTED'"
-                    small
-                    color="danger"
-                    dark
-                    label
-                  >
-                    Blacklisted
-                  </v-chip>
-
-                  <v-chip
-                    v-if="item.status == 'PAUSED'"
-                    small
-                    color="grey"
-                    dark
-                    label
-                  >
-                    Paused
-                  </v-chip>
-                </template>
-                <template v-slot:no-data>
-                  <template v-if="!isBuildingBot">
-                    <BaseNoData :label="`No automated bots`"></BaseNoData>
-                  </template>
-                  <v-row v-else>
-                    <v-col cols="12" class="text-center">
-                      Creating your bots, this might take a while...
-                    </v-col>
-                  </v-row>
-                </template>
-              </v-data-table>
-              <v-card
-                class="pa-5 loading-bot-container off-white"
-                v-if="isBuildingBot"
+                  <span class="text-subtitle-2">{{ item.quantity }}</span>
+                </div>
+              </v-col>
+            </v-row>
+          </template>
+          <template v-slot:item.type="{ item }">
+            <span class="">{{ determineType(item.type) }}</span>
+          </template>
+          <template v-slot:item.price="{ item }">
+            <div class="d-flex flex-column align-start justify-center">
+              <span class="text-subtitle-2 font-weight-bold">{{
+                item.price.value
+              }}</span>
+              <span
+                v-if="parseFloat(item.price.percentage) < 0"
+                class="danger--text text-subtitle-2 font-weight-bold"
+                >{{ item.price.percentage }}%</span
               >
-                <BaseBuildingBotLoading
-                  :label="`Assembling bots...`"
-                ></BaseBuildingBotLoading>
-              </v-card>
-            </v-card>
-          </v-tab-item>
+              <span
+                v-else
+                class="success--text text-subtitle-2 font-weight-bold"
+                >{{ item.price.percentage }}%</span
+              >
+            </div>
+          </template>
+          <template v-slot:item.profit="{ item }">
+            <div class="d-flex flex-column align-start justify-center">
+              <!-- <code>{{item.status}}</code> -->
+              <strong
+                class="danger--text text-subtitle-2 font-weight-bold"
+                v-if="
+                  item.status == 'ACTIVE' &&
+                  parseFloat(item.profit.percentage) < 0
+                "
+                >{{ item.profit.percentage }}%</strong
+              >
+              <strong
+                class="success--text text-subtitle-2 font-weight-bold"
+                v-if="
+                  item.status == 'ACTIVE' &&
+                  parseFloat(item.profit.percentage) > 0
+                "
+                >{{ item.profit.percentage }}%</strong
+              >
+              <strong
+                class="primary--text text-subtitle-2 font-weight-bold"
+                v-if="
+                  item.status == 'INACTIVE' ||
+                  item.status == 'WAITING_POSITION' ||
+                  parseFloat(item.profit.percentage) == 0
+                "
+                >0%</strong
+              >
 
-          <v-tab-item key="Inactive Bots">
-            <TablesInactivePositionAdvanced
-              :key="`${counter}-inactive`"
-              :defaultType="defaultType"
-            />
-          </v-tab-item>
-
-          <v-tab-item key="All Trading History">
-            <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
-          </v-tab-item>
-        </v-tabs-items>
+              <span
+                v-if="parseFloat(item.profit.value) < 0"
+                class="danger--text text-subtitle-2 font-weight-bold"
+                >{{ item.profit.value }} USDT</span
+              >
+              <span
+                v-else
+                class="success--text text-subtitle-2 font-weight-bold"
+                >{{ item.profit.value }} USDT</span
+              >
+            </div>
+          </template>
+          <template v-slot:item.status="{ item }"
+            ><v-chip
+              v-if="item.status == 'INACTIVE'"
+              small
+              color="grey"
+              dark
+              label
+            >
+              Inactive
+            </v-chip>
+            <v-chip v-else small color="grey" dark label>
+              Paused
+            </v-chip></template
+          >
+          <template v-slot:no-data>
+            <template v-if="!isBuildingBot">
+              <BaseNoData :label="`No inactive bots`"></BaseNoData>
+            </template>
+            <v-row v-else>
+              <v-col cols="12" class="text-center">
+                Creating your bots, this might take a while...
+              </v-col>
+            </v-row>
+          </template>
+        </v-data-table>
+        <v-card
+          class="pa-5 loading-bot-container off-white"
+          v-if="isBuildingBot"
+        >
+          <BaseBuildingBotLoading
+            :label="`Assembling bots...`"
+          ></BaseBuildingBotLoading>
+        </v-card>
       </v-card>
     </v-col>
   </v-row>
@@ -1046,7 +849,7 @@ export default {
 
     let userId = this.$store.state.authUser.uid;
     await this._fetchBotsList(this.exchange); // Fetch Bots List
-    await this._fetchAdvancedSetup();
+    // await this._fetchAdvancedSetup();
 
     // BOTS SOCKET
     this.initialStream(this.listenStream);
@@ -1060,13 +863,7 @@ export default {
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
-    async refetch() {
-      this.$store.commit("setIsLoading", true);
-      this.counter++
-      await this._fetchBotsList(this.exchange); // Fetch Bots List
-      await this._fetchAdvancedSetup();
-      this.$store.commit("setIsLoading", false);
-    },
+
     listenStream() {
       // BOTS STREAM
       this.realtimeUpdateSocket.on("advanced-bots-insert", (data) => {
@@ -1190,12 +987,7 @@ export default {
       }
     },
     streamBinance() {
-      let stateStream = this.$store.state.socket.streamTicker;
-      console.log("stateStream", stateStream);
-      if (!stateStream) {
-        return alert("no stream data detected");
-      }
-      this.socket = stateStream;
+      this.socket = new WebSocket(`wss://stream.bitzenius.com/stream/ticker`);
       this.socket.onmessage = (event) => {
         let data = JSON.parse(event.data);
         let index = this.activePosition.findIndex((b) => b.symbol == data.s);
@@ -1260,6 +1052,7 @@ export default {
         .$get("/user/bot-user", {
           params: {
             type: this.defaultType,
+            status: "INACTIVE",
           },
         })
         .then(async (res) => {
@@ -1310,8 +1103,11 @@ export default {
       // RE-FETCH LIST
       this._fetchBotsList();
     },
+
+    // DISABLED ON INACTIVE
     async _onSelectPair(val) {
       console.log("selectedPair", val);
+      return;
       this.$store.commit("setIsLoading", true);
 
       try {

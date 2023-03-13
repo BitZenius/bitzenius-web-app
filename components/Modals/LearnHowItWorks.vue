@@ -5,7 +5,7 @@
         <v-col cols="6"> Learn how it works! </v-col>
         <v-col cols="6" class="d-flex justify-end">
           <v-btn color="white--text" icon @click="closeModal">
-            <v-icon>mdi-close</v-icon>
+            <v-icon color="white">mdi-close</v-icon>
           </v-btn>
         </v-col>
       </v-row>

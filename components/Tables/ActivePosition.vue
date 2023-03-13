@@ -22,6 +22,7 @@
       :parentModel="showActivePosition"
       @close-modal="closeModal"
       @close="showActivePosition = false"
+      @refetch="refetch"
     />
     <v-dialog v-model="dialogDelete" max-width="400px" persistent>
       <v-card>
@@ -521,6 +522,7 @@
       :parentModel="showActivePosition"
       @close-modal="closeModal"
       @close="showActivePosition = false"
+      @refetch="refetch"
     />
     <v-dialog v-model="dialogDelete" max-width="400px" persistent>
       <v-card>
@@ -1272,6 +1274,12 @@ export default {
   },
   methods: {
     ...mapActions("position", ["fetchPosition"]),
+    async refetch() {
+      this.$store.commit("setIsLoading", true)
+      this.counter++
+      await this._fetchBotsList(this.exchange);
+      this.$store.commit("setIsLoading", false)
+    },
     listenStream() {
       this.realtimeUpdateSocket.on("bots-insert", (data) => {
         console.log("LISTEN bots insert", data);

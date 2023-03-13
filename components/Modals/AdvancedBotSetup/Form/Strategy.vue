@@ -51,6 +51,10 @@
         <v-list-item-title class="text-h5 font-weight-bold">{{
           isForceCustom ? "Custom" : selectedStrategyName
         }}</v-list-item-title>
+        <span class="text-body-1">
+          Please note that the initial step (the step before step 1) will always
+          have the same take profit percentage as step 1
+        </span>
       </v-list-item-content>
     </v-list-item>
 

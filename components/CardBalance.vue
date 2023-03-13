@@ -76,7 +76,9 @@
                     <v-col cols="12" md="8">
                       <div class="mb-5">
                         <p class="font-weight-bold">
-                          Network<br /><strong>POLYGON (ERC20)</strong>
+                          Network<br /><strong
+                            >Binance Smart Chain (BEP20)</strong
+                          >
                         </p>
                         <p class="font-weight-bold">
                           Address<br /><strong>{{ userData.wallet_va }}</strong>
@@ -139,7 +141,9 @@
                   applied. For instance, if you transfer $100, your balance will
                   be credited with $99.
                   <div class="mt-5">
-                    <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
+                    <p>
+                      Network<br /><strong>Binance Smart Chain (BEP20)</strong>
+                    </p>
                     <p>
                       Address<br /><strong>{{ userData.wallet_va }}</strong>
                     </p>

@@ -607,11 +607,12 @@ export default {
     async _stopTrading() {
       let query = { id: this.pair._id };
       let paramTemp = { key: "paused" };
+
+      this.$store.commit("setIsLoading", true);
       let res = await this.$api.$put("/user/action", paramTemp, {
         params: query,
       });
       console.log(res);
-      this.$store.commit("setIsLoading", true);
       if (res.success) {
         setTimeout(() => {
           this.$emit("close-modal", false);
@@ -622,6 +623,7 @@ export default {
           });
           this.$forceUpdate();
           this.$store.commit("setIsLoading", false);
+          this.$emit("refetch");
         });
       } else {
         setTimeout(() => {

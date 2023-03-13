@@ -354,7 +354,7 @@
                     <tbody>
                       <tr>
                         <td><b>Network</b></td>
-                        <td>POLYGON (ERC20)</td>
+                        <td>Binance Smart Chain (BEP20)</td>
                       </tr>
                       <tr>
                         <td><b>Address</b></td>
@@ -880,7 +880,7 @@
                     <tbody>
                       <tr>
                         <td><b>Network</b></td>
-                        <td>POLYGON (ERC20)</td>
+                        <td>Binance Smart Chain (BEP20)</td>
                       </tr>
                       <tr>
                         <td><b>Address</b></td>

@@ -1,5 +1,3 @@
-import io from "socket.io-client";
-
 export default {
   data() {
     return {
@@ -13,6 +11,9 @@ export default {
     },
     subscription() {
       return this.$store.state.subscription;
+    },
+    isSubscriptionActive() {
+      return this.$moment() < this.subscription.end
     },
     currentUser() {
       return this.$store.$fire.auth.currentUser;

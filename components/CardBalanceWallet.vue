@@ -79,7 +79,7 @@
               <v-col cols="12" md="8">
                 <div class="mb-5">
                   <p class="font-weight-bold">
-                    Network<br /><strong>POLYGON (ERC20)</strong>
+                    Network<br /><strong>Binance Smart Chain (BEP20)</strong>
                   </p>
                   <p class="font-weight-bold">
                     Address<br /><strong>{{ userData.wallet_va }}</strong>
@@ -297,7 +297,7 @@
               <v-col cols="12" md="8">
                 <div class="mb-5">
                   <p class="font-weight-bold">
-                    Network<br /><strong>POLYGON (ERC20)</strong>
+                    Network<br /><strong>Binance Smart Chain (BEP20)</strong>
                   </p>
                   <p class="font-weight-bold">
                     Address<br /><strong>{{ userData.wallet_va }}</strong>
