@@ -183,7 +183,9 @@
                 <v-col cols="2">
                   <v-avatar size="100">
                     <img
-                      :src="userData.photo_url"
+                      :src="
+                        user.photo_url ? user.photo_url : userData.photo_url
+                      "
                       :alt="userData.display_name"
                     />
                   </v-avatar>
@@ -193,19 +195,27 @@
                     <v-col cols="12" class="d-flex align-center mt-8">
                       <v-btn
                         depressed
-                        :loading="isSelecting"
+                        :loading="
+                          isLoading || isSelecting || uploadProgress != 100
+                        "
                         @click.stop="doUpload"
+                        :disabled="isLoading || uploadProgress != 100"
                         color="primary"
                         rounded
                         class="mr-5"
                       >
-                        Upload New Picture
+                        {{
+                          uploadProgress != 100
+                            ? "Uploading"
+                            : "Upload New Picture"
+                        }}
                       </v-btn>
 
                       <v-file-input
                         ref="uploader"
                         @change="(file) => uploadImage(file)"
                         hide-input
+                        accept="image/png, image/jpeg"
                         class="d-none"
                       />
                     </v-col>
@@ -545,13 +555,14 @@
               style="position: relative"
             >
               <v-avatar size="125">
-                <img :src="userData.photo_url" :alt="userData.display_name" />
+                <img :src="user.photo_url" :alt="userData.display_name" />
               </v-avatar>
 
               <v-btn
                 depressed
-                :loading="isSelecting"
+                :loading="isLoading || isSelecting || uploadProgress != 100"
                 @click.stop="doUpload"
+                :disabled="isLoading || uploadProgress != 100"
                 color="primary"
                 rounded
                 fab
@@ -568,6 +579,7 @@
                     ref="uploader"
                     @change="(file) => uploadImage(file)"
                     hide-input
+                    accept="image/png, image/jpeg"
                     class="d-none"
                   />
                 </v-col>
@@ -847,7 +859,7 @@ export default {
       showEnableTwoFactorModal: false,
       isLoading: false,
       progressDialog: null,
-      uploadProgress: null,
+      uploadProgress: 100,
       isSelecting: false,
       userData: null,
       switch1: false,
@@ -891,12 +903,21 @@ export default {
     },
     uploadImage(file) {
       if (typeof file != "undefined") {
-        this.uploadProgress = null;
-        this.progressDialog = true;
+        if (!file.type.includes("image")) {
+          return this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: "Please upload valid image file",
+            color: "danger",
+          });
+        }
+        this.uploadProgress = 0;
+        // this.progressDialog = true;
 
         const filePath = `user-avatars/${new Date().getTime()}-` + file.name;
         const storageRef = this.$fire.storage.ref().child(filePath);
         const uploadTask = storageRef.put(file);
+        this.isLoading = true;
+        this.$store.commit("setIsLoading", true);
 
         uploadTask.on(
           "state_changed",
@@ -917,10 +938,12 @@ export default {
           },
           (error) => {
             console.log(error);
+            this.$store.commit("setIsLoading", false);
           },
           () => {
             uploadTask.snapshot.ref.getDownloadURL().then((downloadURL) => {
               this.userData.photo_url = downloadURL;
+              this.save();
             });
           }
         );
@@ -928,7 +951,7 @@ export default {
     },
     closeDialog() {
       this.progressDialog = false;
-      this.uploadProgress = null;
+      this.uploadProgress = 100;
       this.save();
     },
     doUpload() {
@@ -945,6 +968,7 @@ export default {
       this.$refs.uploader.$refs.input.click();
     },
     save() {
+      this.$store.commit("setIsLoading", true);
       this.isLoading = true;
       this.$api
         .$put("/user/profile", {
@@ -968,6 +992,7 @@ export default {
         })
         .finally(() => {
           this.isLoading = false;
+          this.$store.commit("setIsLoading", false);
         });
     },
     connectTelegram() {

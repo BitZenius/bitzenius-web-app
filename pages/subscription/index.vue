@@ -631,7 +631,7 @@ export default {
     },
   },
   async mounted() {
-    await this._fetchUserSubscription();
+    this._fetchUserTrial();
     this.$store.commit("setTitle", this.title);
     this.initialize();
 
@@ -647,7 +647,7 @@ export default {
   },
   methods: {
     async refetch() {
-      await this._fetchUserSubscription();
+      this._fetchUserTrial();
 
       this.initialize();
 
@@ -665,7 +665,7 @@ export default {
       this.anim = anim;
     },
     // FETCHING API
-    async _fetchUserSubscription() {
+    async _fetchUserTrial() {
       this.isLoading = true;
       console.log(this.user);
       try {
