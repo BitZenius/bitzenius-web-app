@@ -22,7 +22,8 @@ export default {
     },
     profileCompletionLoading() {
       return this.$store.state.profileCompletionLoading
-    }
+    },
+
   },
   watch: {
     tawkToInitialized(val) {
@@ -92,7 +93,7 @@ export default {
     },
 
     // CHECK COMPLETION
-    async checkCompletion(cb = function () { }) {
+    async checkCompletion(cb = function () { },) {
       var data = this.profileCompletion
       if (data.step == data.stepTotal) {
         cb()

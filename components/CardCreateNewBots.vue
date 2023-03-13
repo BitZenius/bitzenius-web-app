@@ -38,11 +38,7 @@
           :disabled="profileCompletionLoading"
           color="primary"
           class="float-right"
-          @click="
-            checkCompletion(() => {
-              $router.push('/bots');
-            })
-          "
+          @click="mainAction"
         >
           {{
             profileCompletionLoading
@@ -97,11 +93,7 @@
           :disabled="profileCompletionLoading"
           color="primary"
           class="float-right"
-          @click="
-            checkCompletion(() => {
-              $router.push('/bots');
-            })
-          "
+          @click="mainAction"
         >
           {{
             profileCompletionLoading
@@ -118,7 +110,17 @@
 
 <script>
 export default {
-  methods: {},
+  methods: {
+    mainAction() {
+      if (this.nextTask && this.nextTask.path == "/bots") {
+        return this.$emit("showModal");
+      }
+
+      this.checkCompletion(() => {
+        this.$emit("showModal");
+      });
+    },
+  },
   computed: {
     profileCompletion() {
       return this.$store.state.profileCompletion;
@@ -128,6 +130,21 @@ export default {
       return (
         (this.profileCompletion.step / this.profileCompletion.stepTotal) * 100
       );
+    },
+    nextTask() {
+      var result = null;
+
+      if (!this.profileCompletion.data) return result;
+
+      for (let index = 0; index < this.profileCompletion.data.length; index++) {
+        const task = this.profileCompletion.data[index];
+        if (!task.completed) {
+          result = task;
+          break;
+        }
+      }
+
+      return result;
     },
   },
 };
