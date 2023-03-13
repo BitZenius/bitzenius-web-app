@@ -43,7 +43,7 @@
                 <v-col cols="12" class="d-flex align-end justify-start">
                 </v-col>
                 <v-col cols="12">
-                  <div>
+                  <div v-if="$moment(subscription.end) >= $moment()">
                     <span class="text-h4 font-weight-bold primary-text--text">{{
                       userSubscription && userSubscription.plan
                         ? userSubscription.plan.name
@@ -56,6 +56,14 @@
                       depressed
                     >
                       <strong>TRIAL</strong>
+                    </v-chip>
+                    <v-chip
+                      v-else-if="$moment(subscription.end) < $moment()"
+                      color="danger"
+                      class="ml-2 primary-text--text"
+                      depressed
+                    >
+                      <strong>INACTIVE</strong>
                     </v-chip>
                     <p class="primary-text--text">
                       You're subscribed to our
@@ -76,11 +84,27 @@
                       {{ $moment(subscription.end).format("DD MMM YYYY") }}
                     </v-btn>
                   </div>
+                  <div v-else>
+                    <p class="primary-text--text">
+                      Your subscription has ended at
+                      {{ $moment(subscription.end).format("DD MMM YYYY") }}
+                      <br />
+                      Please renew your subscription
+                    </p>
+                    <v-chip
+                      color="danger"
+                      class="ml-2 primary-text--text"
+                      depressed
+                    >
+                      <strong>SUBSCRIPTION INACTIVE</strong>
+                    </v-chip>
+                  </div>
                 </v-col>
               </v-row>
             </v-card>
 
             <Invoices
+              ref="invoices"
               class="card-2 pa-2"
               :invoice_id.sync="invoiceId"
               :promoCodeData="promoCodeData"
@@ -90,6 +114,7 @@
                   clearPromoCode();
                 }
               "
+              @refetch="refetch"
               @validatePromoCode="
                 (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
               "
@@ -151,6 +176,7 @@
                 clearPromoCode();
               }
             "
+            @refetch="refetch"
             @validatePromoCode="
               (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
             "
@@ -326,7 +352,7 @@
                     </template>
                   </v-col>
                   <v-col cols="6">
-                    <div>
+                    <div v-if="$moment(subscription.end) >= $moment()">
                       <span
                         class="text-h4 font-weight-bold primary-text--text"
                         >{{
@@ -342,6 +368,14 @@
                         depressed
                       >
                         <strong>TRIAL</strong>
+                      </v-chip>
+                      <v-chip
+                        v-else-if="$moment(subscription.end) < $moment()"
+                        color="danger"
+                        class="ml-2 primary-text--text"
+                        depressed
+                      >
+                        <strong>INACTIVE</strong>
                       </v-chip>
                       <p class="primary-text--text">
                         You're subscribed to our
@@ -362,6 +396,21 @@
                         {{ $moment(subscription.end).format("DD MMM YYYY") }}
                       </v-btn>
                     </div>
+                    <div v-else>
+                      <p class="primary-text--text">
+                        Your subscription has ended at
+                        {{ $moment(subscription.end).format("DD MMM YYYY") }}
+                        <br />
+                        Please renew your subscription
+                      </p>
+                      <v-chip
+                        color="danger"
+                        class="ml-2 primary-text--text"
+                        depressed
+                      >
+                        <strong>SUBSCRIPTION INACTIVE</strong>
+                      </v-chip>
+                    </div>
                   </v-col>
                 </v-row>
               </v-card>
@@ -369,6 +418,7 @@
             <v-col cols="12">
               <Invoices
                 class="pa-2"
+                ref="invoices"
                 :invoice_id.sync="invoiceId"
                 :promoCodeData="promoCodeData"
                 :isValidatingPromoCode="isValidatingPromoCode"
@@ -377,6 +427,7 @@
                     clearPromoCode();
                   }
                 "
+                @refetch="refetch"
                 @validatePromoCode="
                   (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
                 "
@@ -412,6 +463,7 @@
                 clearPromoCode();
               }
             "
+            @refetch="refetch"
             @validatePromoCode="
               (promoCode, plan_id) => validatePromoCode(promoCode, plan_id)
             "
@@ -817,20 +869,31 @@ export default {
         })
         .then((data) => {
           this.invoiceId = data.result._id;
-          this.successDialog = true;
+          // this.successDialog = true;
           this.closeOrderDialog();
-        })
-        .catch((err) => {
           this.$store.commit("setShowSnackbar", {
             show: true,
-            message: err.response.data.message,
-            color: "#E53935",
+            message: "Order submitted",
+            color: "success",
+          });
+          setTimeout(() => {
+            this.$refs.invoices.getInvoice(this.invoiceId);
+          }, 100);
+        })
+        .catch((err) => {
+          console.log("Purchase subscription error", err);
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: err.response
+              ? err.response.data.message
+              : "Purchase subscription error",
+            color: "danger",
           });
           console.log(err);
           this.isLoading = false;
         })
         .finally(() => {
-          this.refetch();
+          // this.refetch();
           this.fetchCompletion();
           this.isLoading = false;
         });

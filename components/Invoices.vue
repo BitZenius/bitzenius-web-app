@@ -1141,9 +1141,18 @@ export default {
             message: res.message,
             color: "success",
           });
+
+          this.$emit("refetch");
         })
         .catch((err) => {
           console.log(err);
+          this.$store.commit("setShowSnackbar", {
+            show: true,
+            message: err.response
+              ? err.response.data.message
+              : "Pay subscription error",
+            color: "danger",
+          });
           this.isLoading = false;
         })
         .finally(() => {
