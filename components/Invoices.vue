@@ -12,7 +12,7 @@
         >
           <!-- <h2>Invoices</h2> -->
           <p class="text-center mt-2">
-            Track your invoices or subscription history
+            Track your billings or subscription history
           </p>
         </div>
       </v-col>
@@ -138,7 +138,7 @@
                     <v-list-item-title
                       class="text-body-2 font-weight-bold basic-text--text"
                     >
-                      Invoice ID
+                      Billing ID
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       <strong class="text-body-1">
@@ -347,7 +347,7 @@
                   </v-radio>
                 </v-radio-group>
                 <div v-if="payment == 'crypto'">
-                  To make payment to this invoice, please transfer
+                  To make payment to this billing, please transfer
                   {{ activeInvoice.totals.total | currency("$") }} of USDT to
                   your virtual account with the following details:
                   <table class="invoice">
@@ -454,7 +454,7 @@
             <!-- </v-list-item-avatar> -->
             <v-list-item-content>
               <v-list-item-title class="text-h5 font-weight-bold"
-                >My Invoices</v-list-item-title
+                >My Billings</v-list-item-title
               >
               <v-list-item-subtitle class="text-body-2">
                 Payment history
@@ -481,7 +481,7 @@
                 <v-list-item two-line>
                   <v-list-item-content>
                     <v-list-item-title class="text-body-2">
-                      Invoice ID
+                      Billing ID
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       {{ item.invoice_id }}
@@ -664,7 +664,7 @@
                     <v-list-item-title
                       class="text-body-2 font-weight-bold basic-text--text"
                     >
-                      Invoice ID
+                      Billing ID
                     </v-list-item-title>
                     <v-list-item-subtitle>
                       <strong class="text-body-1">
@@ -873,7 +873,7 @@
                   </v-radio>
                 </v-radio-group>
                 <div v-if="payment == 'crypto'">
-                  To make payment to this invoice, please transfer
+                  To make payment to this billing, please transfer
                   {{ activeInvoice.totals.total | currency("$") }} of USDT to
                   your virtual account with the following details:
                   <table class="invoice">
@@ -987,7 +987,7 @@ export default {
       isLoading: false,
       headers: [
         {
-          text: "Invoice ID",
+          text: "Billing ID",
           align: "left",
           value: "invoice_id",
         },

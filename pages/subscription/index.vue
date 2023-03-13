@@ -631,7 +631,7 @@ export default {
     },
   },
   async mounted() {
-    this._fetchUserTrial();
+    await this._fetchUserTrial();
     this.$store.commit("setTitle", this.title);
     this.initialize();
 
@@ -647,7 +647,7 @@ export default {
   },
   methods: {
     async refetch() {
-      this._fetchUserTrial();
+      await this._fetchUserTrial();
 
       this.initialize();
 
