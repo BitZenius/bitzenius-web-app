@@ -120,8 +120,8 @@
                             </v-chip>
                           </template>
                           <span
-                            >The maximum amount of USDT to be spent for the
-                            bot</span
+                            >Maximum trading pair the bot can
+                            trade simultaneously</span
                           >
                         </v-tooltip>
                       </template>
