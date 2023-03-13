@@ -205,7 +205,7 @@
         <!-- </br><code>{{item._qty}}</code> -->
       </template>
       <template v-slot:no-data>
-        <BaseNoData :label="`No profit history found`"></BaseNoData>
+        <BaseNoData :label="`No trading history found`"></BaseNoData>
       </template>
     </v-data-table>
   </div>
