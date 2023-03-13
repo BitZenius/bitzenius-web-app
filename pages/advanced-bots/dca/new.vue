@@ -1,5 +1,5 @@
 <template>
-  <v-row class="py-5 pa-3">
+ <v-row class="py-5 pa-3 ma-0">
     <v-col
       v-if="checkMobile() == false"
       cols="12"
@@ -864,7 +864,7 @@ export default {
           return "$vuetify.icon.ExchangeIcon";
         case "Strategy":
           return "$vuetify.icon.ProfitBarChartIcon";
-        case "Total USDT":
+        case "Total USDT Per Order":
           return "$vuetify.icon.CardWithdrawIcon";
         case "Technical Analysis":
           return "$vuetify.icon.ChartArrowUpIcon";

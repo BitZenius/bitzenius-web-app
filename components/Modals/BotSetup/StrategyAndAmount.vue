@@ -181,9 +181,15 @@
                   </v-col>
                 </v-row>
 
-                <h3 class="my-4 text-h6 font-weight-bold">
+                <h3 class="mt-4 text-h6 font-weight-bold">
                   Choose the Strategy
                 </h3>
+                <small
+                  >Choose a strategy that matches your risk profile.
+                  Conservative strategies buy and trade less, while very
+                  aggressive strategies involve higher risk and potentially
+                  higher returns.</small
+                >
                 <v-row
                   class="d-flex align-center justify-center pt-0 mt-0 mb-4"
                   style="width: 100%"

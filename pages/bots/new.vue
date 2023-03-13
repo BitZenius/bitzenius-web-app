@@ -204,7 +204,11 @@
                 flat
                 class="d-flex flex-column align-start pa-5 mt-2"
               >
-                <h3 class="mb-4 text-h6 font-weight-bold">Token Exceptions</h3>
+                <h3 class="text-h6 font-weight-bold">Token Exceptions</h3>
+                <small class="mb-4">
+                  Select the pair that you want to exclude from trading. The bot
+                  will not trade that particular pair.
+                </small>
                 <v-row>
                   <v-col cols="12"
                     ><v-row align="center">
@@ -636,9 +640,11 @@
               </v-tab-item>
               <v-tab-item key="3">
                 <v-card style="min-height: 600px" rounded flat class="pa-3">
-                  <h3 class="mb-4 text-h6 font-weight-bold">
-                    Token Exceptions
-                  </h3>
+                  <h3 class="text-h6 font-weight-bold">Token Exceptions</h3>
+                  <small class="mb-4">
+                    Select the pair that you want to exclude from trading. The
+                    bot will not trade that particular pair.
+                  </small>
                   <v-row>
                     <v-col cols="12">
                       <v-row align="center">
@@ -984,7 +990,7 @@ export default {
         {
           color: "green",
           icon: "mdi-buffer",
-          title: "Total USDT",
+          title: "Total USDT to Apply",
           // value: '$2000'
           value: null,
         },
@@ -1442,7 +1448,7 @@ export default {
           return "$vuetify.icon.ExchangeIcon";
         case "Strategy":
           return "$vuetify.icon.ProfitBarChartIcon";
-        case "Total USDT":
+        case "Total USDT to Apply":
           return "$vuetify.icon.CardWithdrawIcon";
         case "Technical Analysis":
           return "$vuetify.icon.ChartArrowUpIcon";

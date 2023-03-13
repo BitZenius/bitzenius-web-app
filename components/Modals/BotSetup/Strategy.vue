@@ -1,6 +1,11 @@
 <template>
   <v-card flat rounded class="pa-3" style="min-height: 600px">
-    <h3 class="mb-4 text-h6 font-weight-bold">Choose Strategy</h3>
+    <h3 class="text-h6 font-weight-bold">Choose Strategy</h3>
+    <small class="mb-4"
+      >Choose a strategy that matches your risk profile. Conservative strategies
+      buy and trade less, while very aggressive strategies involve higher risk
+      and potentially higher returns.</small
+    >
     <v-form ref="form" lazy-validation>
       <v-row
         class="d-flex align-center justify-center pt-0 mt-0"

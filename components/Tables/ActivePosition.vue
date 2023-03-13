@@ -325,10 +325,17 @@
                     </template>
                     <div>
                       <ol>
-                        <li>ACTIVE - Lorem ipsum</li>
-                        <li>WAITING FOR POSITION - Lorem ipsum</li>
-                        <li>INACTIVE - Lorem ipsum</li>
-                        <li>BLACKLISTED - Lorem ipsum</li>
+                        <li>
+                          ACTIVE - The bot currently has active positions.
+                        </li>
+                        <li>
+                          WAITING FOR POSITION - The bot is currently waiting
+                          for signals to enter a position.
+                        </li>
+                        <li>
+                          PAUSED - The bot is currently paused and not executing
+                          trades.
+                        </li>
                       </ol>
                     </div>
                   </v-tooltip>

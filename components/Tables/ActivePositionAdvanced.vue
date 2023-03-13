@@ -120,16 +120,51 @@
                   >
                 </template>
                 <template v-slot:header.profit="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
+                  <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on, attrs }">
+                      <strong
+                        v-bind="attrs"
+                        v-on="on"
+                        class="basic-text--text text-body-1 font-weight-bold"
+                      >
+                        {{ header.text }}
+                      </strong>
+                    </template>
+                    <div style="max-width: 200px">
+                      Please note that the data provided below represents the
+                      total of both realized and floating profit and losses
+                      (PNL). It is important to keep in mind that the floating
+                      PNL is not finalized and will remain subject to change.
+                    </div>
+                  </v-tooltip>
                 </template>
                 <template v-slot:header.status="{ header }">
-                  <strong
-                    class="basic-text--text text-body-1 font-weight-bold"
-                    >{{ header.text }}</strong
-                  >
+                  <v-tooltip top color="primary">
+                    <template v-slot:activator="{ on, attrs }">
+                      <strong
+                        v-bind="attrs"
+                        v-on="on"
+                        class="basic-text--text text-body-1 font-weight-bold"
+                      >
+                        {{ header.text }}
+                      </strong>
+                    </template>
+                    <div>
+                      <ol>
+                        <li>
+                          ACTIVE - The bot currently has active positions.
+                        </li>
+                        <li>
+                          WAITING FOR POSITION - The bot is currently waiting
+                          for signals to enter a position.
+                        </li>
+                        <li>
+                          PAUSED - The bot is currently paused and not executing
+                          trades.
+                        </li>
+                      </ol>
+                    </div>
+                  </v-tooltip>
                 </template>
 
                 <!-- hide-default-footer disable-pagination -->

@@ -69,6 +69,11 @@
           <v-stepper-content class="py-0" step="3">
             <v-card flat class="d-flex flex-column align-center py-8 mt-2">
               <h3>Token Exceptions</h3>
+
+              <small class="mb-4">
+                Select the pair that you want to exclude from trading. The bot
+                will not trade that particular pair.
+              </small>
               <v-select
                 v-if="tokens.length > 0"
                 dense

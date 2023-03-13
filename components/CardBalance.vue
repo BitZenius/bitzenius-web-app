@@ -102,12 +102,11 @@
                         </p>
                       </div>
                       <div class="text-chip font-weight-bold off-white">
-                        To make deposit <b>USDT</b> to your account, please
-                        transfer amount to your
-                        <b>Virtual Account Wallet</b> with the following
-                        information. Minimum transfer amount is <b>$10</b> and
-                        <b>$1</b> of admin fee will be applied. For example, if
-                        you transfer $100, so $99 will be added to your balance.
+                        To deposit USDT into your account, transfer the desired
+                        amount to your Virtual Account Wallet with the following
+                        details. The minimum transfer amount is $10, and an
+                        admin fee of $1 will be applied. For instance, if you
+                        transfer $100, your balance will be credited with $99.
                       </div>
                     </v-col>
                   </v-row>
@@ -134,12 +133,11 @@
                   </v-btn>
                 </v-card-title>
                 <v-card-text v-if="userData" class="mt-3">
-                  To make deposit <b>USDT</b> to your account, please transfer
-                  amount to your <b>Virtual Account Wallet</b> with the
-                  following information. Minimum transfer amount is
-                  <b>$10</b> and <b>$1</b> of admin fee will be applied. For
-                  example, if you transfer $100, so $99 will be added to your
-                  balance.
+                  To deposit USDT into your account, transfer the desired amount
+                  to your Virtual Account Wallet with the following details. The
+                  minimum transfer amount is $10, and an admin fee of $1 will be
+                  applied. For instance, if you transfer $100, your balance will
+                  be credited with $99.
                   <div class="mt-5">
                     <p>Network<br /><strong>POLYGON (ERC20)</strong></p>
                     <p>
