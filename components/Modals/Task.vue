@@ -25,7 +25,14 @@
           <v-expansion-panel-content>
             <div class="d-flex flex-column text-body-1">
               {{ item.description }}
-              <div class="d-flex justify-end" v-if="!item.completed">
+              <div
+                :class="
+                  checkMobile()
+                    ? 'd-flex justify-center mt-4'
+                    : 'd-flex justify-end mt-2'
+                "
+                v-if="!item.completed"
+              >
                 <v-btn
                   rounded
                   dense
