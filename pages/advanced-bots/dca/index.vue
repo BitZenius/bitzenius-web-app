@@ -24,9 +24,10 @@
     <BaseModal
       @close="showHowItWorks = false"
       :parentModel="showHowItWorks"
-      :maxWidth="'650'"
+      :maxWidth="'850'"
     >
       <ModalsLearnHowItWorks
+        :defaultType="'DCA'"
         @close-modal="showHowItWorks = false"
       ></ModalsLearnHowItWorks>
     </BaseModal>

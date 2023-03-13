@@ -1,6 +1,6 @@
 <template>
   <v-row v-if="checkMobile() == false && this.user">
-    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'650'">
+    <BaseModal @close="test1 = false" :parentModel="test1" :maxWidth="'800'">
       <ModalsLearnHowItWorks
         @close-modal="test1 = false"
       ></ModalsLearnHowItWorks>

@@ -12,37 +12,39 @@
     </v-card-title>
     <v-card-text class="content">
       <v-row class="pa-5">
-        <v-col cols="12">
-          <v-img
-            :src="'/animation/animation-bots.gif'"
-            @load="onGifLoaded"
-            style="width: 100%"
-          />
-          <lottie
-            :width="256"
-            :height="256"
-            :options="lottieOptions"
-            v-on:animCreated="handleAnimation"
-            v-if="!isLoaded"
-          />
-          <h3 v-if="!isLoaded">Image is loading!</h3>
+        <v-col cols="12" v-if="defaultType == 'AUTOMATED'">
+          <div
+            class="d-flex justify-center align-center"
+            style="margin: auto; width: 60%"
+          >
+            <v-img
+              :src="'/animation/animation-bots.gif'"
+              @load="onGifLoaded"
+              style="width: 100%"
+            />
+            <lottie
+              :width="256"
+              :height="256"
+              :options="lottieOptions"
+              v-on:animCreated="handleAnimation"
+              v-if="!isLoaded"
+            />
+            <h3 v-if="!isLoaded">Image is loading!</h3>
+          </div>
         </v-col>
         <v-col cols="12" class="d-flex flex-column align-center">
-          <div>
-            <p style="text-align: justify">
-              Lorem ipsum, dolor sit amet consectetur adipisicing elit. Quas est
-              iusto facilis vel nisi, doloremque perferendis ad quasi repellat
-              tempore recusandae quod aperiam, laboriosam quis nostrum veniam
-              laudantium necessitatibus eius?
-            </p>
-            <ul>
-              <li>Hello World</li>
-              <li>Hello World</li>
-              <li>Hello World</li>
-              <li>Hello World</li>
-              <li>Hello World</li>
-            </ul>
-          </div>
+          <MiscHowItWorksAutomated
+            v-if="defaultType == 'AUTOMATED'"
+          ></MiscHowItWorksAutomated>
+          <MiscHowItWorksHybrid
+            v-else-if="defaultType == 'DCA_GRID'"
+          ></MiscHowItWorksHybrid>
+          <MiscHowItWorksDCA
+            v-else-if="defaultType == 'DCA'"
+          ></MiscHowItWorksDCA>
+          <MiscHowItWorksGrid
+            v-else-if="defaultType == 'GRID'"
+          ></MiscHowItWorksGrid>
         </v-col>
       </v-row>
     </v-card-text>
@@ -54,6 +56,14 @@ import lottie from "vue-lottie/src/lottie.vue";
 import * as animationData from "~/assets/lottie/dashboard/Subs me Bot.json";
 
 export default {
+  props: {
+    defaultType: {
+      type: String,
+      default: () => {
+        return "AUTOMATED";
+      },
+    },
+  },
   components: {
     lottie,
   },
