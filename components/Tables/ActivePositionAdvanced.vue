@@ -379,6 +379,7 @@
             />
           </v-tab-item>
         </v-tabs-items>
+        <MiscSubscriptionInactiveOverlay></MiscSubscriptionInactiveOverlay>
       </v-card>
     </v-col>
   </v-row>
@@ -733,6 +734,7 @@
             <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
           </v-tab-item>
         </v-tabs-items>
+        <MiscSubscriptionInactiveOverlay></MiscSubscriptionInactiveOverlay>
       </v-card>
     </v-col>
   </v-row>
@@ -1062,7 +1064,7 @@ export default {
     ...mapActions("position", ["fetchPosition"]),
     async refetch() {
       this.$store.commit("setIsLoading", true);
-      this.counter++
+      this.counter++;
       await this._fetchBotsList(this.exchange); // Fetch Bots List
       await this._fetchAdvancedSetup();
       this.$store.commit("setIsLoading", false);

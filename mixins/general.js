@@ -13,7 +13,10 @@ export default {
       return this.$store.state.subscription;
     },
     isSubscriptionActive() {
-      return this.$moment() < this.subscription.end
+      if (!this.subscription) {
+        return true
+      }
+      return this.$moment() < this.$moment(this.subscription.end)
     },
     referralBonusActive() {
       return false
