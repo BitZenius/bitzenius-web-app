@@ -117,6 +117,7 @@
                           v-clipboard:copy="userData.wallet_va"
                           v-clipboard:success="onCopy"
                           v-clipboard:error="onError"
+                          @click="copyToClipboard(userData.wallet_va)"
                         >
                           <v-icon color="grey lighten-1">
                             mdi-content-copy

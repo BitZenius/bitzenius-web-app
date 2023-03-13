@@ -172,9 +172,16 @@ export default {
           this.$store.commit('setProfileCompletionLoading', false)
 
         });
-
-
-    }
+    },
+    copyToClipboard(str) {
+      const el = document.createElement('textarea');
+      el.addEventListener('focusin', e => e.stopPropagation());
+      el.value = str;
+      document.body.appendChild(el);
+      el.select();
+      document.execCommand('copy');
+      document.body.removeChild(el);
+    },
   },
   beforeDestroy() {
     // if (this.realtimeUpdateSocket) {

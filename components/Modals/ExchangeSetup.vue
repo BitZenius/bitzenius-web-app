@@ -39,6 +39,7 @@
                   v-clipboard:copy="whitelistIp"
                   v-clipboard:success="onCopy"
                   v-clipboard:error="onError"
+                  @click="copyToClipboard(whitelistIp)"
                 >
                   <v-icon small color="primary-text"> mdi-content-copy </v-icon>
                 </v-btn>

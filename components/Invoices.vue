@@ -371,6 +371,9 @@
                                 v-clipboard:copy="activeInvoice.wallet_va"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
+                                @click="
+                                  copyToClipboard(activeInvoice.wallet_va)
+                                "
                               >
                                 <v-icon color="grey lighten-1">
                                   mdi-content-copy
@@ -897,6 +900,9 @@
                                 v-clipboard:copy="activeInvoice.wallet_va"
                                 v-clipboard:success="onCopy"
                                 v-clipboard:error="onError"
+                                @click="
+                                  copyToClipboard(activeInvoice.wallet_va)
+                                "
                               >
                                 <v-icon color="grey lighten-1">
                                   mdi-content-copy

@@ -52,6 +52,7 @@
                           v-clipboard:copy="referralCode"
                           v-clipboard:success="onCopy"
                           v-clipboard:error="onError"
+                          @click="copyToClipboard(referralCode)"
                           class="text-h4 font-weight-bold primary--text"
                           style="cursor: pointer"
                         >
@@ -82,6 +83,7 @@
                             v-clipboard:copy="referralLink"
                             v-clipboard:success="onCopy2"
                             v-clipboard:error="onError"
+                            @click="copyToClipboard(referralLink)"
                           >
                             <v-icon color="primary" class="ml-2">
                               $vuetify.icons.CopyIcon
@@ -317,6 +319,7 @@
                             v-clipboard:copy="referralCode"
                             v-clipboard:success="onCopy"
                             v-clipboard:error="onError"
+                            @click="copyToClipboard(referralCode)"
                             style="cursor: pointer"
                             class="text-h6 font-weight-bold primary--text"
                           >
@@ -355,6 +358,7 @@
                             v-clipboard:copy="referralLink"
                             v-clipboard:success="onCopy2"
                             v-clipboard:error="onError"
+                            @click="copyToClipboard(referralLink)"
                           >
                             <v-icon color="primary" class="ml-1">
                               $vuetify.icons.CopyIcon
