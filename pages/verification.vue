@@ -36,7 +36,9 @@
           </v-btn>
         </div>
         <div v-if="onError" class="d-flex justify-center align-center mt-4">
-            <span class="danger--text">Too many request attempt, please try again in 30 seconds!</span>
+          <span class="danger--text"
+            >Too many request attempt, please try again in 30 seconds!</span
+          >
         </div>
       </v-card-text>
     </v-card>
@@ -54,9 +56,9 @@ export default {
   },
   data: () => ({
     isLoading: false,
-    onError:false,
+    onError: false,
     emailSent: false,
-    onDisabled:false,
+    onDisabled: false,
     message:
       "A verification link has been sent to your inbox. Please ensure to check your spam folder as well",
     buttonText: "Send Email",
@@ -118,20 +120,19 @@ export default {
           email: this.user.email,
         })
         .then((result) => {
-          alert('then')
           console.log(result);
-          this.emailSent  = true;
-          this.message    = `We have sent a verification email to ${this.user.email}`;
+          this.emailSent = true;
+          this.message = `We have sent a verification email to ${this.user.email}`;
           this.buttonText = "Resend Email";
         })
         .catch((err) => {
           this.onDisabled = true;
           this.onError = true;
-          setTimeout(()=>{
+          setTimeout(() => {
             this.onError = false;
             this.isLoading = false;
             this.onDisabled = false;
-          },30000)
+          }, 30000);
         })
         .finally(() => {
           this.isLoading = false;
