@@ -440,7 +440,7 @@ export default {
         {
           color: "green",
           icon: "mdi-buffer",
-          title: "Total USDT",
+          title: "Total USDT Per Order",
           // value: '$2000'
           value: null,
         },
@@ -878,41 +878,41 @@ export default {
   },
   async mounted() {
     // PARAM FROM STORE
-    this.botProp = this.selectedBot;
+    // this.botProp = this.selectedBot;
     this.exchange = this.selectedExchange;
 
     this.bot.selected_exchange = this.exchange;
-    if (this.botProp) {
-      this.isUpdateMode = true;
-      this.title = "Update Grid bots";
-      this.updateMode.a = true;
-      this.updateMode.b = true;
-      this.updateMode.c = true;
-      this.updateMode.d = true;
-      this.updateMode.e = true;
-      this.bot.id = this.botProp._id;
-      this.bot.strategy = this.botProp.strategy;
-      this.bot.analysis.condition = this.botProp.analysis.condition;
-      this.bot.analysis.minimum_trading_volume =
-        this.botProp.analysis.minimum_trading_volume;
-      let index = 0;
-      for (let indicator of this.botProp.analysis.indicators) {
-        if (index == 0) {
-          this.bot.analysis.first_analysis = {
-            analysis: indicator.indicator,
-            time: indicator.timeperiod,
-          };
-        } else if (index == 1) {
-          this.bot.analysis.second_analysis = {
-            analysis: indicator.indicator,
-            time: indicator.timeperiod,
-          };
-        }
-        console.log(indicator);
-        index++;
-      }
-      this.tokenException = this.botProp.token_exception;
-    }
+    // if (this.botProp) {
+    //   this.isUpdateMode = true;
+    //   this.title = "Update Grid bots";
+    //   this.updateMode.a = true;
+    //   this.updateMode.b = true;
+    //   this.updateMode.c = true;
+    //   this.updateMode.d = true;
+    //   this.updateMode.e = true;
+    //   this.bot.id = this.botProp._id;
+    //   this.bot.strategy = this.botProp.strategy;
+    //   this.bot.analysis.condition = this.botProp.analysis.condition;
+    //   this.bot.analysis.minimum_trading_volume =
+    //     this.botProp.analysis.minimum_trading_volume;
+    //   let index = 0;
+    //   for (let indicator of this.botProp.analysis.indicators) {
+    //     if (index == 0) {
+    //       this.bot.analysis.first_analysis = {
+    //         analysis: indicator.indicator,
+    //         time: indicator.timeperiod,
+    //       };
+    //     } else if (index == 1) {
+    //       this.bot.analysis.second_analysis = {
+    //         analysis: indicator.indicator,
+    //         time: indicator.timeperiod,
+    //       };
+    //     }
+    //     console.log(indicator);
+    //     index++;
+    //   }
+    //   this.tokenException = this.botProp.token_exception;
+    // }
     this._fetchTokenList();
     setTimeout(() => {
       this.showStrategySetup = true;
@@ -932,7 +932,7 @@ export default {
         this.summary[1].value = nv.selected_exchange;
         this.summary[2].value = nv.selected_token;
         this.summary[3].value = nv.strategy.style.name;
-        this.summary[4].value = "$" + nv.strategy.usdt_to_apply;
+        this.summary[4].value = "$" + nv.strategy.usdt_per_order;
         this.summary[5].value = `${nv.analysis.first_analysis.analysis} ${
           nv.analysis.condition == "AND" ? "&" : "/"
         } ${nv.analysis.second_analysis.analysis}`;
