@@ -731,7 +731,11 @@
           </v-tab-item>
 
           <v-tab-item key="All Trading History">
-            <TradingHistory :key="`${counter}-tradingR`" ref="tradingRef" />
+            <TradingHistory
+              :defaultType="defaultType"
+              :key="`${counter}-tradingR`"
+              ref="tradingRef"
+            />
           </v-tab-item>
         </v-tabs-items>
         <MiscSubscriptionInactiveOverlay></MiscSubscriptionInactiveOverlay>
