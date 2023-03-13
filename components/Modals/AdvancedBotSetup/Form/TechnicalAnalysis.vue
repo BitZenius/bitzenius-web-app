@@ -244,42 +244,68 @@ export default {
         },
       ],
       timeList: ["5m", "15m", "30m", "1h", "2h", "4h", "12h"],
-      tradingVolumeList: [
-        {
-          value: 5000000,
-          name: "5 mil USD",
-        },
-        {
-          value: 10000000,
-          name: "10 mil USD",
-        },
-        {
-          value: 15000000,
-          name: "15 mil USD",
-        },
-        {
-          value: 20000000,
-          name: "20 mil USD",
-        },
-        {
-          value: 30000000,
-          name: "30 mil USD",
-        },
-        {
-          value: 50000000,
-          name: "50 mil USD",
-        },
-        {
-          value: 75000000,
-          name: "75 mil USD",
-        },
-        {
-          value: 100000000,
-          name: "100 mil USD",
-        },
-      ],
       condition: "AND",
     };
+  },
+  computed: {
+    selectedExchange() {
+      return this.$store.state.exchange.selectedExchange;
+    },
+    tradingVolumeList() {
+      switch (this.selectedExchange) {
+        case "Kucoin":
+          return [
+            {
+              value: 1000000,
+              name: "1 mil USD",
+            },
+            {
+              value: 5000000,
+              name: "5 mil USD",
+            },
+            {
+              value: 10000000,
+              name: "10 mil USD",
+            },
+          ];
+
+        default:
+          return [
+            {
+              value: 5000000,
+              name: "5 mil USD",
+            },
+            {
+              value: 10000000,
+              name: "10 mil USD",
+            },
+            {
+              value: 15000000,
+              name: "15 mil USD",
+            },
+            {
+              value: 20000000,
+              name: "20 mil USD",
+            },
+            {
+              value: 30000000,
+              name: "30 mil USD",
+            },
+            {
+              value: 50000000,
+              name: "50 mil USD",
+            },
+            {
+              value: 75000000,
+              name: "75 mil USD",
+            },
+            {
+              value: 100000000,
+              name: "100 mil USD",
+            },
+          ];
+      }
+    },
   },
   methods: {
     validateForm() {
